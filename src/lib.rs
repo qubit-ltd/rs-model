@@ -48,11 +48,13 @@ pub mod upload;
 pub mod util;
 pub mod work;
 mod entity;
+mod field;
 mod module;
 mod operation;
 
 pub use commons::*;
 pub use entity::Entity;
+pub use field::Field;
 pub use error::{ModelError, ValidationViolation};
 pub use module::Module;
 pub use operation::Operation;
