@@ -10,12 +10,11 @@
 
 use qubit_model::{
     order::{
-        ConfirmStatus, OpenidType, OrderStatus, PayType,
-        RefererOrderRecordStatus, ReturnIssuer, ReturnReason, ReturnStatus,
+        ConfirmStatus, OpenidType, OrderStatus, PayType, RefererOrderRecordStatus, ReturnIssuer,
+        ReturnReason, ReturnStatus,
     },
     payment::{
-        AccountType, ParticipantType, PaymentChannel, PaymentMode,
-        PaymentOption, PaymentType,
+        AccountType, ParticipantType, PaymentChannel, PaymentMode, PaymentOption, PaymentType,
     },
     settlement::{TransactionStatus, TransactionType},
 };
@@ -24,16 +23,13 @@ use qubit_model::{
 #[test]
 fn test_commerce_enums_preserve_java_wire_values() {
     let cases = [
-        serde_json::to_string(&OrderStatus::PaidSuccess)
-            .expect("order status should serialize"),
+        serde_json::to_string(&OrderStatus::PaidSuccess).expect("order status should serialize"),
         serde_json::to_string(&ReturnReason::MismatchDescription)
             .expect("return reason should serialize"),
         serde_json::to_string(&PaymentChannel::WechatPay)
             .expect("payment channel should serialize"),
-        serde_json::to_string(&PaymentMode::ActiveQr)
-            .expect("payment mode should serialize"),
-        serde_json::to_string(&TransactionType::Refund)
-            .expect("transaction type should serialize"),
+        serde_json::to_string(&PaymentMode::ActiveQr).expect("payment mode should serialize"),
+        serde_json::to_string(&TransactionType::Refund).expect("transaction type should serialize"),
     ];
 
     assert_eq!(

@@ -27,13 +27,11 @@ fn test_shipping_structs_expose_all_source_fields() {
 #[test]
 fn test_shipping_enums_preserve_java_wire_values() {
     assert_eq!(
-        serde_json::to_string(&Packing::WoodenFrame)
-            .expect("packing should serialize"),
+        serde_json::to_string(&Packing::WoodenFrame).expect("packing should serialize"),
         "\"WOODEN_FRAME\""
     );
     assert_eq!(
-        serde_json::to_string(&ShippingMode::SelfPickup)
-            .expect("shipping mode should serialize"),
+        serde_json::to_string(&ShippingMode::SelfPickup).expect("shipping mode should serialize"),
         "\"SELF\""
     );
 }

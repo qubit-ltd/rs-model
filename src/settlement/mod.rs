@@ -14,7 +14,7 @@ mod transaction;
 mod transaction_status;
 mod transaction_type;
 
-pub use transaction_status::TransactionStatus;
-pub use transaction_type::TransactionType;
 pub use settlement::Settlement;
 pub use transaction::Transaction;
+pub use transaction_status::TransactionStatus;
+pub use transaction_type::TransactionType;

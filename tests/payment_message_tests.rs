@@ -28,9 +28,17 @@ use qubit_model_metadata::metadata_of;
 #[test]
 fn test_payment_message_structs_expose_all_source_fields() {
     assert_eq!(metadata_of::<PaymentRequest>().struct_fields().len(), 4);
-    assert_eq!(metadata_of::<PaymentRequestTransformer>().struct_fields().len(), 0);
+    assert_eq!(
+        metadata_of::<PaymentRequestTransformer>()
+            .struct_fields()
+            .len(),
+        0
+    );
     assert_eq!(metadata_of::<PaymentResponse>().struct_fields().len(), 4);
-    assert_eq!(metadata_of::<PaymentResponseBase64>().struct_fields().len(), 1);
+    assert_eq!(
+        metadata_of::<PaymentResponseBase64>().struct_fields().len(),
+        1
+    );
 }
 
 /// Verifies gateway filtering removes provider-irrelevant transaction data.
