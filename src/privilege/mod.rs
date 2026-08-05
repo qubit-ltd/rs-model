@@ -4,6 +4,6 @@ mod privileges;
 mod role;
 mod user_role;
 
-pub use privileges::{Privileges, PrivilegesCodecError};
+pub use privileges::{Privileges, PrivilegesCodec, PrivilegesCodecError};
 pub use role::Role;
 pub use user_role::UserRole;
