@@ -5,12 +5,26 @@
 // =============================================================================
 //! Typed system settings and their stable names.
 
+mod setting_adapter_error;
+mod setting_json_deserializer;
+mod setting_json_serializer;
+mod setting_randomizer;
+mod setting_xml_adapted;
+mod setting_xml_adapter;
+
 use std::cmp::Ordering;
 
 use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
+
+pub use setting_adapter_error::SettingAdapterError;
+pub use setting_json_deserializer::SettingJsonDeserializer;
+pub use setting_json_serializer::SettingJsonSerializer;
+pub use setting_randomizer::SettingRandomizer;
+pub use setting_xml_adapted::SettingXmlAdapted;
+pub use setting_xml_adapter::SettingXmlAdapter;
 
 /// The value type declared by a setting.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
@@ -185,6 +199,39 @@ impl Ord for Setting {
 impl PartialOrd for Setting {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
+    }
+}
+
+/// Parses a case-insensitive source data-type name.
+fn parse_data_type_name(name: &str) -> Option<DataType> {
+    let normalized = name.trim().replace('-', "_").to_ascii_uppercase();
+    serde_json::from_value(serde_json::Value::String(normalized)).ok()
+}
+
+/// Returns the source enumeration name for a data type.
+fn data_type_source_name(data_type: DataType) -> &'static str {
+    match data_type {
+        DataType::Bool => "BOOL",
+        DataType::Char => "CHAR",
+        DataType::Byte => "BYTE",
+        DataType::Short => "SHORT",
+        DataType::Int => "INT",
+        DataType::Long => "LONG",
+        DataType::Float => "FLOAT",
+        DataType::Double => "DOUBLE",
+        DataType::String => "STRING",
+        DataType::Date => "DATE",
+        DataType::Time => "TIME",
+        DataType::Datetime => "DATETIME",
+        DataType::Instant => "INSTANT",
+        DataType::Timestamp => "TIMESTAMP",
+        DataType::ByteArray => "BYTE_ARRAY",
+        DataType::Class => "CLASS",
+        DataType::BigInteger => "BIG_INTEGER",
+        DataType::BigDecimal => "BIG_DECIMAL",
+        DataType::StringArray => "STRING_ARRAY",
+        DataType::Enum => "ENUM",
+        DataType::EnumArray => "ENUM_ARRAY",
     }
 }
 
