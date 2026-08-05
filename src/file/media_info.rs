@@ -2,6 +2,8 @@
 //    Copyright (c) 2025 - 2026 Haixing Hu.
 //
 //    SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 //! Compact media metadata.
 
@@ -13,7 +15,7 @@ use super::MediaType;
 
 /// Metadata describing an independently referenced media resource.
 #[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(default)]
 pub struct MediaInfo {
     /// Media classification.
     pub r#type: MediaType,

@@ -2,20 +2,23 @@
 //    Copyright (c) 2025 - 2026 Haixing Hu.
 //
 //    SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 //! Stored-file metadata.
 
 use std::path::PathBuf;
 
 use bigdecimal::BigDecimal;
+use qubit_mixin::Emptyful;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
 /// Storage metadata for a file, image, video, or audio asset.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
-#[model(unique(name = "file_info_path", fields(path)))]
-#[serde(rename_all = "camelCase")]
+#[serde(default)]
+#[model(unique(name = "file_info_path", fields(path), ignore_case(path)))]
 pub struct FileInfo {
     /// ASCII filesystem path or storage URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
@@ -30,13 +33,17 @@ pub struct FileInfo {
     /// File size in bytes.
     pub size: i64,
     /// Optional image or video width in pixels.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub width: Option<i32>,
     /// Optional image or video height in pixels.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub height: Option<i32>,
     /// Optional audio or video duration in seconds.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<i32>,
     /// Optional compression quality percentage with two fractional digits.
     #[model(decimal(scale = 2))]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub quality: Option<BigDecimal>,
 }
 
@@ -45,6 +52,13 @@ impl FileInfo {
     #[must_use]
     pub fn is_empty(&self) -> bool {
         self.path.is_empty()
+            && self.format.is_empty()
+            && self.content_type.is_empty()
+            && self.size == 0
+            && self.width.is_none()
+            && self.height.is_none()
+            && self.duration.is_none()
+            && self.quality.is_none()
     }
 
     /// Returns this object's local filesystem path.
@@ -65,5 +79,11 @@ impl FileInfo {
                 self.height = None;
             }
         }
+    }
+}
+
+impl Emptyful for FileInfo {
+    fn is_empty(&self) -> bool {
+        Self::is_empty(self)
     }
 }

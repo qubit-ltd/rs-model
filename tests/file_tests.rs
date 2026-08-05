@@ -2,13 +2,15 @@
 //    Copyright (c) 2025 - 2026 Haixing Hu.
 //
 //    SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
 use qubit_model::{
     commons::State,
     file::{Attachment, AttachmentType, FileInfo, MediaInfo, MediaType, Upload, UploadParams},
 };
-use qubit_model_metadata::metadata_of;
+use qubit_model_metadata::{UniqueComparison, metadata_of};
 use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
@@ -46,6 +48,13 @@ fn file_model_constraints_preserve_source_annotations() {
     assert!(
         file.unique_constraints()
             .any(|unique| unique.contains("path"))
+    );
+    assert_eq!(
+        file.unique_constraints()
+            .next()
+            .unwrap()
+            .comparison_of("path"),
+        Some(UniqueComparison::IgnoreCase)
     );
 
     let upload = metadata_of::<Upload>();
@@ -131,6 +140,16 @@ fn attachment_create_copies_upload_defaults_and_proxies_paths() {
         attachment.large_thumbnail_path(),
         Some("/private/large.jpg")
     );
+
+    let serialized = serde_json::to_value(&attachment).unwrap();
+    assert_eq!(serialized["file_path"], "/private/original.jpg");
+    assert_eq!(serialized["screenshot_path"], "/private/screenshot.jpg");
+    assert_eq!(serialized["small_thumbnail_path"], "/private/small.jpg");
+    assert_eq!(serialized["large_thumbnail_path"], "/private/large.jpg");
+
+    let empty = Attachment::default();
+    assert_eq!(empty.file_path(), Some(""));
+    assert_eq!(serde_json::to_value(empty).unwrap()["file_path"], "");
 }
 
 #[test]
@@ -154,23 +173,41 @@ fn file_info_and_upload_preserve_source_helpers() {
     };
     assert_eq!(upload.set_content_type("image/webp"), AttachmentType::Image);
     assert_eq!(upload.file.content_type, "image/webp");
-    assert!(
-        upload
-            .set_screenshot_info()
-            .path
-            .ends_with("image_screenshot.jpg")
+    let screenshot = upload.set_screenshot_info().path.clone();
+    let small = upload.set_small_thumbnail_info().path.clone();
+    let large = upload.set_large_thumbnail_info().path.clone();
+    assert!(screenshot.contains("image_screenshot-"));
+    assert!(small.contains("image_thumbnail_small-"));
+    assert!(large.contains("image_thumbnail_large-"));
+    assert!(screenshot.ends_with(".jpg"));
+    assert!(small.ends_with(".jpg"));
+    assert!(large.ends_with(".jpg"));
+    assert_ne!(
+        screenshot,
+        upload.set_screenshot_info().path,
+        "generated rendition paths must not collide"
     );
+    assert_eq!(Upload::IMAGE_EXTENSION, ".jpg");
+    assert_eq!(Upload::IMAGE_FORMAT, "jpeg");
+}
+
+#[test]
+fn file_emptiness_observes_every_source_field() {
+    assert!(FileInfo::default().is_empty());
     assert!(
-        upload
-            .set_small_thumbnail_info()
-            .path
-            .ends_with("image_small.jpg")
+        !FileInfo {
+            format: "jpeg".into(),
+            ..FileInfo::default()
+        }
+        .is_empty()
     );
+    assert!(Upload::default().is_empty());
     assert!(
-        upload
-            .set_large_thumbnail_info()
-            .path
-            .ends_with("image_large.jpg")
+        !Upload {
+            hash_algorithm: Some("SHA-256".into()),
+            ..Upload::default()
+        }
+        .is_empty()
     );
 }
 
@@ -187,13 +224,27 @@ fn upload_create_populates_file_and_verification_metadata() {
 
     let upload = Upload::create(&path, &params).unwrap();
 
-    assert_eq!(upload.original_filename.as_deref(), Some("Cargo.toml"));
+    assert_eq!(upload.original_filename, None);
     assert_eq!(upload.file.path, path.to_string_lossy());
     assert!(upload.file.size > 0);
     assert_eq!(upload.file.content_type, "application/toml");
     assert_eq!(upload.r#type, AttachmentType::Document);
     assert_eq!(upload.hash_algorithm.as_deref(), Some("SHA-256"));
     assert_eq!(upload.hash_value.as_deref(), Some("expected-hash"));
+
+    let serialized = serde_json::to_value(&upload).unwrap();
+    assert!(serialized.get("original_filename").is_none());
+    assert!(serialized.get("originalFilename").is_none());
+    assert!(serialized.get("id").is_none());
+    assert_eq!(serialized["hash_algorithm"], "SHA-256");
+}
+
+#[test]
+fn upload_create_rejects_the_source_invalid_missing_content_type() {
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let error = Upload::create(&path, &UploadParams::default()).unwrap_err();
+
+    assert_eq!(error.kind(), std::io::ErrorKind::InvalidInput);
 }
 
 #[test]
