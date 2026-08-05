@@ -26,3 +26,14 @@ include = [
 [lib]
 name = "qubit_model"
 doctest = true
+
+[dependencies]
+bigdecimal = { version = "0.4", features = ["serde"] }
+chrono = { version = "0.4", default-features = false, features = ["serde", "std"] }
+qubit-mixin = { path = "../rs-mixin" }
+qubit-model-derive = { path = "../rs-model-derive" }
+qubit-model-metadata = { path = "../rs-model-metadata", features = ["big-decimal", "chrono"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+uuid = { version = "1", features = ["serde", "v4"] }
