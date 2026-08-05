@@ -36,7 +36,7 @@ The currently exported foundation is `qubit_model::ModelError`.
 
 | Java FQCN | Target Rust path | Type category | Direct migration dependencies | Migration status |
 | --- | --- | --- | --- | --- |
-| `ltd.qubit.commons.error.BeanValidationFailedException` | `qubit_model::error::BeanValidationFailedException` | struct (Java class) | - | planned |
+| `ltd.qubit.commons.error.BeanValidationFailedException` | `qubit_model::ModelError::ValidationFailed` | ModelError validation variant | - | planned |
 | `ltd.qubit.commons.mixin.Auditable` | `qubit_mixin::Auditable` | trait (Java interface) | - | available in qubit-mixin |
 | `ltd.qubit.commons.mixin.Creatable` | `qubit_mixin::Creatable` | trait (Java interface) | - | available in qubit-mixin |
 | `ltd.qubit.commons.mixin.DataWithMaxAge` | `qubit_mixin::DataWithMaxAge` | struct (Java class) | - | available in qubit-mixin |
@@ -60,7 +60,7 @@ The currently exported foundation is `qubit_model::ModelError`.
 | `ltd.qubit.commons.mixin.WithCode` | `qubit_mixin::WithCode` | trait (Java interface) | - | available in qubit-mixin |
 | `ltd.qubit.commons.mixin.WithComment` | `qubit_mixin::WithComment` | trait (Java interface) | - | available in qubit-mixin |
 | `ltd.qubit.commons.mixin.WithEmail` | `qubit_mixin::WithEmail` | trait (Java interface) | - | available in qubit-mixin |
-| `ltd.qubit.commons.mixin.WithEntity` | `qubit_mixin::WithEntity` | trait (Java interface) | - | available in qubit-mixin |
+| `ltd.qubit.commons.mixin.WithEntity` | `qubit_mixin::WithEntity` | trait (Java interface) | ltd.qubit.commons.util.NameBuilder | available in qubit-mixin |
 | `ltd.qubit.commons.mixin.WithIndex` | `qubit_mixin::WithIndex` | trait (Java interface) | - | available in qubit-mixin |
 | `ltd.qubit.commons.mixin.WithKey` | `qubit_mixin::WithKey` | trait (Java interface) | - | available in qubit-mixin |
 | `ltd.qubit.commons.mixin.WithName` | `qubit_mixin::WithName` | trait (Java interface) | - | available in qubit-mixin |
@@ -134,7 +134,7 @@ The currently exported foundation is `qubit_model::ModelError`.
 | `ltd.qubit.model.commons.Kinship` | `qubit_model::commons::Kinship` | enum | - | planned |
 | `ltd.qubit.model.commons.MqFailedTask` | `qubit_model::commons::MqFailedTask` | final struct (Java class) | ltd.qubit.commons.mixin.Identifiable | planned |
 | `ltd.qubit.model.commons.MqType` | `qubit_model::commons::MqType` | enum | - | planned |
-| `ltd.qubit.model.commons.Owner` | `qubit_model::commons::Owner` | struct (Java class) | ltd.qubit.commons.mixin.Emptyful, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.Normalizable | planned |
+| `ltd.qubit.model.commons.Owner` | `qubit_model::commons::Owner` | struct (Java class) | ltd.qubit.commons.mixin.Emptyful, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.Normalizable, ltd.qubit.commons.util.NameBuilder | planned |
 | `ltd.qubit.model.commons.Owners` | `qubit_model::commons::Owners` | struct (Java class) | ltd.qubit.commons.mixin.Emptyful, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.Normalizable | planned |
 | `ltd.qubit.model.commons.Payload` | `qubit_model::commons::Payload` | struct (Java class) | ltd.qubit.commons.mixin.Auditable, ltd.qubit.commons.mixin.Emptyful, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.Normalizable, ltd.qubit.commons.mixin.WithKey, ltd.qubit.model.mixin.WithOwner | planned |
 | `ltd.qubit.model.commons.RequestStatus` | `qubit_model::commons::RequestStatus` | enum | - | planned |
@@ -374,11 +374,11 @@ The currently exported foundation is `qubit_model::ModelError`.
 | `ltd.qubit.model.system.SettingJsonDeserializer` | `qubit_model::system::SettingJsonDeserializer` | struct (Java class) | - | planned |
 | `ltd.qubit.model.system.SettingJsonSerializer` | `qubit_model::system::SettingJsonSerializer` | struct (Java class) | - | planned |
 | `ltd.qubit.model.system.SettingRandomizer` | `qubit_model::system::SettingRandomizer` | struct (Java class) | - | planned |
-| `ltd.qubit.model.system.SettingXmlAdapter` | `qubit_model::system::SettingXmlAdapter` | struct (Java class) | - | planned |
+| `ltd.qubit.model.system.SettingXmlAdapter` | `qubit_model::system::SettingXmlAdapter` | struct (Java class) | static ltd.qubit.model.system.SettingXmlAdapter.Adapted | planned |
 | `ltd.qubit.model.system.VerifyCode` | `qubit_model::system::VerifyCode` | struct (Java class) | ltd.qubit.commons.mixin.Creatable, ltd.qubit.commons.mixin.Desensitizable, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.model.commons.App, ltd.qubit.model.contact.Phone, ltd.qubit.model.mixin.StatefulInfo, ltd.qubit.model.mixin.WithApp | planned |
 | `ltd.qubit.model.system.VerifyScene` | `qubit_model::system::VerifyScene` | enum | - | planned |
 | `ltd.qubit.model.task.TaskAction` | `qubit_model::task::TaskAction` | enum | - | planned |
-| `ltd.qubit.model.task.TaskInfo` | `qubit_model::task::TaskInfo` | struct (Java class) | ltd.qubit.commons.mixin.Creatable, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.InfoWithEntity, ltd.qubit.commons.mixin.Modifiable, ltd.qubit.commons.mixin.WithStatus, ltd.qubit.model.commons.Category, ltd.qubit.model.mixin.WithCreator, ltd.qubit.model.person.User, ltd.qubit.model.person.UserInfo | planned |
+| `ltd.qubit.model.task.TaskInfo` | `qubit_model::task::TaskInfo` | struct (Java class) | ltd.qubit.commons.mixin.Creatable, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.InfoWithEntity, ltd.qubit.commons.mixin.Modifiable, ltd.qubit.commons.mixin.WithStatus, ltd.qubit.commons.util.NameBuilder, ltd.qubit.model.commons.Category, ltd.qubit.model.mixin.WithCreator, ltd.qubit.model.person.User, ltd.qubit.model.person.UserInfo | planned |
 | `ltd.qubit.model.task.Task` | `qubit_model::task::Task` | trait (Java interface) | ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.InfoWithEntity | planned |
 | `ltd.qubit.model.task.TaskPipeline` | `qubit_model::task::TaskPipeline` | trait (Java interface) | ltd.qubit.commons.mixin.Identifiable | planned |
 | `ltd.qubit.model.task.TaskPipelineStatus` | `qubit_model::task::TaskPipelineStatus` | enum | - | planned |

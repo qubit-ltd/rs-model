@@ -3,12 +3,18 @@
 use thiserror::Error;
 
 /// Describes a failure encountered while constructing, converting, or validating a model.
-///
-/// The contained message preserves the model-specific context supplied by the caller.
 #[derive(Debug, Error)]
 #[non_exhaustive]
 pub enum ModelError {
-    /// A model operation failed with the supplied explanatory message.
-    #[error("{0}")]
-    Message(String),
+    /// A named model field violates a declared validation constraint.
+    ///
+    /// `field` identifies the invalid field and `reason` identifies the failed
+    /// constraint without including the rejected field value.
+    #[error("model validation failed for field `{field}`: {reason}")]
+    ValidationFailed {
+        /// The field whose constraint failed.
+        field: String,
+        /// The constraint failure reason.
+        reason: String,
+    },
 }
