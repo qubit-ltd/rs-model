@@ -23,6 +23,7 @@ pub mod settlement;
 pub mod task;
 pub mod audit;
 pub mod activity;
+pub mod ai;
 pub mod claim;
 pub mod china;
 pub mod invoice;
