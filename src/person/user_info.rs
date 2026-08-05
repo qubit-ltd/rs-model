@@ -1,7 +1,15 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0.
+// =============================================================================
 //! Lightweight system-user information values.
 
 use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
+use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
 use crate::commons::State;
@@ -9,7 +17,7 @@ use crate::contact::Phone;
 use crate::person::Gender;
 
 /// A compact user-information snapshot.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct UserInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
@@ -29,9 +37,11 @@ pub struct UserInfo {
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub avatar: Option<String>,
     /// Optional mobile number.
+    #[redact(nested)]
     pub mobile: Option<Phone>,
     /// Optional email address.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
+    #[redact(level = "secret")]
     pub email: Option<String>,
     /// Lifecycle state.
     pub state: State,
@@ -40,4 +50,22 @@ pub struct UserInfo {
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
+}
+
+impl Default for UserInfo {
+    fn default() -> Self {
+        Self {
+            id: None,
+            username: String::new(),
+            name: None,
+            nickname: None,
+            gender: None,
+            avatar: None,
+            mobile: None,
+            email: None,
+            state: State::Normal,
+            test: false,
+            delete_time: None,
+        }
+    }
 }
