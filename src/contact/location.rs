@@ -2,12 +2,13 @@
 
 use bigdecimal::BigDecimal;
 use qubit_model_derive::Model;
+use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
 use crate::contact::CoordinateSystem;
 
 /// A geographic location expressed as longitude, latitude, and optional altitude.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Location {
     /// Longitude in decimal degrees, normalized to six decimal places.
     #[model(decimal(scale = 6))]

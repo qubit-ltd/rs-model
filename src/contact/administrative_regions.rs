@@ -3,12 +3,13 @@
 use chrono::{DateTime, Utc};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
+use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
 use crate::contact::Location;
 
 /// A country in the administrative hierarchy.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Country {
     /// Optional persisted identifier.
     pub id: Option<i64>,
@@ -46,7 +47,7 @@ pub struct Country {
 }
 
 /// A province in the administrative hierarchy.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Province {
     /// Optional persisted identifier.
     pub id: Option<i64>,
@@ -86,7 +87,7 @@ pub struct Province {
 }
 
 /// A city in the administrative hierarchy.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct City {
     /// Optional persisted identifier.
     pub id: Option<i64>,
@@ -131,7 +132,7 @@ pub struct City {
 }
 
 /// A district in the administrative hierarchy.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct District {
     /// Optional persisted identifier.
     pub id: Option<i64>,
@@ -173,7 +174,7 @@ pub struct District {
 }
 
 /// A street in the administrative hierarchy.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Street {
     /// Optional persisted identifier.
     pub id: Option<i64>,

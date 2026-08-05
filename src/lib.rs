@@ -23,6 +23,7 @@ pub mod settlement;
 pub mod task;
 pub mod audit;
 pub mod activity;
+pub mod address;
 pub mod ai;
 pub mod appointment;
 pub mod claim;
