@@ -9,9 +9,13 @@
 //! Role assignments and permission collections.
 
 mod privileges;
+mod privileges_codec;
+mod privileges_codec_error;
 mod role;
 mod user_role;
 
-pub use privileges::{Privileges, PrivilegesCodec, PrivilegesCodecError};
+pub use privileges::Privileges;
+pub use privileges_codec::PrivilegesCodec;
+pub use privileges_codec_error::PrivilegesCodecError;
 pub use role::Role;
 pub use user_role::UserRole;
