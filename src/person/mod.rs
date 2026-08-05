@@ -9,6 +9,7 @@ mod enums;
 #[allow(clippy::module_inception)]
 mod person;
 mod person_info;
+mod social_network_account;
 mod user;
 mod user_info;
 
@@ -18,5 +19,6 @@ pub use enums::{
 };
 pub use person::{Person, PersonIdentity};
 pub use person_info::PersonInfo;
+pub use social_network_account::SocialNetworkAccount;
 pub use user::User;
 pub use user_info::UserInfo;

@@ -18,6 +18,7 @@ use serde::{Deserialize, Serialize, Serializer, ser::SerializeStruct};
 use crate::{
     commons::{App, Token},
     mixin::StatefulInfo,
+    organization::Organization,
     person::{User, UserInfo},
     privilege::Role,
 };
@@ -47,7 +48,7 @@ pub struct Session {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<UserInfo>,
     /// Optional organization information.
-    #[model(opaque)]
+    #[model(reference(target = Organization, target_field = info), opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub organization: Option<StatefulInfo>,
     /// Optional user access token.
