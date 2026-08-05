@@ -1,0 +1,34 @@
+//! Coupons issued by marketing activities.
+
+use chrono::{DateTime, Utc};
+use qubit_mixin::Info;
+use qubit_model_derive::Model;
+use qubit_redact_derive::Redact;
+use serde::{Deserialize, Serialize};
+
+use crate::order::OrderInfo;
+use crate::person::Person;
+
+/// A coupon issued to a person by an activity.
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+pub struct ActivityCoupon {
+    /// Optional persisted identifier.
+    #[model(identifier)]
+    pub id: Option<i64>,
+    /// Activity that issued the coupon.
+    #[model(opaque)]
+    pub activity: Info,
+    /// Coupon redemption code.
+    #[model(text(min_chars = 1, max_chars = 128))]
+    pub coupon_code: String,
+    /// Person receiving the coupon.
+    pub person: Person,
+    /// Order in which the coupon is used.
+    pub order: OrderInfo,
+    /// UTC creation timestamp.
+    #[model(time(precision = second, normalization = utc))]
+    pub create_time: DateTime<Utc>,
+    /// UTC receipt timestamp.
+    #[model(time(precision = second, normalization = utc))]
+    pub receive_time: DateTime<Utc>,
+}
