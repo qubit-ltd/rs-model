@@ -20,10 +20,83 @@ PUBLIC_TYPE_PATTERN = re.compile(
     r"\bpublic\s+(?:(?:abstract|final|non-sealed|sealed|static|strictfp)\s+)*"
     r"(?:class|enum|interface|record|@interface)\s+(?P<name>[A-Za-z_]\w*)"
 )
-JAVA_COMMENT_PATTERN = re.compile(r"/\*.*?\*/|//[^\n]*", re.DOTALL)
 JAVA_STRUCTURE_PATTERN = re.compile(
     rf"(?P<declaration>{PUBLIC_TYPE_PATTERN.pattern})|(?P<open>\{{)|(?P<close>\}})"
 )
+
+
+def java_code_only(source: str) -> str:
+    """Replace Java comments and literal bodies with spaces while preserving newlines."""
+    output: list[str] = []
+    index = 0
+    state = "code"
+    while index < len(source):
+        character = source[index]
+        next_character = source[index + 1] if index + 1 < len(source) else ""
+        next_three = source[index : index + 3]
+        if state == "code":
+            if next_three == '\"\"\"':
+                output.extend("   ")
+                index += 3
+                state = "text_block"
+            elif character == '"':
+                output.append(" ")
+                index += 1
+                state = "string"
+            elif character == "'":
+                output.append(" ")
+                index += 1
+                state = "character"
+            elif character == "/" and next_character == "/":
+                output.extend("  ")
+                index += 2
+                state = "line_comment"
+            elif character == "/" and next_character == "*":
+                output.extend("  ")
+                index += 2
+                state = "block_comment"
+            else:
+                output.append(character)
+                index += 1
+        elif state == "line_comment":
+            output.append("\n" if character == "\n" else " ")
+            index += 1
+            if character == "\n":
+                state = "code"
+        elif state == "block_comment":
+            if character == "*" and next_character == "/":
+                output.extend("  ")
+                index += 2
+                state = "code"
+            else:
+                output.append("\n" if character == "\n" else " ")
+                index += 1
+        elif state == "text_block":
+            if next_three == '\"\"\"':
+                output.extend("   ")
+                index += 3
+                state = "code"
+            else:
+                output.append("\n" if character == "\n" else " ")
+                index += 1
+        else:
+            if character == "\\":
+                output.append(" ")
+                index += 1
+                if index < len(source):
+                    escaped = source[index]
+                    output.append("\n" if escaped == "\n" else " ")
+                    index += 1
+            elif (state == "string" and character == '"') or (
+                state == "character" and character == "'"
+            ):
+                output.append(" ")
+                index += 1
+                state = "code"
+            else:
+                output.append("\n" if character == "\n" else " ")
+                index += 1
+    return "".join(output)
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -67,7 +140,7 @@ def public_declarations(
             nesting: list[tuple[str, int]] = []
             pending_type: str | None = None
             brace_depth = 0
-            for token in JAVA_STRUCTURE_PATTERN.finditer(JAVA_COMMENT_PATTERN.sub("", contents)):
+            for token in JAVA_STRUCTURE_PATTERN.finditer(java_code_only(contents)):
                 if token.group("declaration") is not None:
                     pending_type = token.group("name")
                 elif token.group("open") is not None:

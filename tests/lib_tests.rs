@@ -122,7 +122,12 @@ fn test_java_migration_dependency_scanner_rejects_inventory_declaration_mismatch
     .expect("the mixin fixture should be written");
     fs::write(
         common_model_source.join("VisibleModel.java"),
-        "package test.model; public class VisibleModel { public static class NestedVisible {} }",
+        "package test.model; public class VisibleModel {\n\
+         String brace = \"}\";\n\
+         char open = '{';\n\
+         String block = \"\"\" { ignored } \"\"\";\n\
+         public static class NestedVisible {}\n\
+         }",
     )
     .expect("the model fixture should be written");
     let inventory = test_dir.join("inventory.md");
