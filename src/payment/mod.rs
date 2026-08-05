@@ -8,15 +8,22 @@
 
 //! Payment accounts, participants, records, and gateway messages.
 
+mod account;
 mod account_type;
+mod participant;
 mod participant_type;
+#[allow(clippy::module_inception)]
+mod payment;
 mod payment_channel;
 mod payment_mode;
 mod payment_option;
 mod payment_type;
 
+pub use account::Account;
 pub use account_type::AccountType;
+pub use participant::Participant;
 pub use participant_type::ParticipantType;
+pub use payment::Payment;
 pub use payment_channel::PaymentChannel;
 pub use payment_mode::PaymentMode;
 pub use payment_option::PaymentOption;
