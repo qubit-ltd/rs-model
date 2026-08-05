@@ -13,10 +13,15 @@ use bigdecimal::BigDecimal;
 use qubit_mixin::Emptyful;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Storage metadata for a file, image, video, or audio asset.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "file_info_path", fields(path), ignore_case(path)))]
 pub struct FileInfo {

@@ -11,15 +11,22 @@
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     commons::CredentialInfo,
     contact::Phone,
-    payment::{Account, ParticipantType},
+    payment::{
+        Account,
+        ParticipantType,
+    },
 };
 
-/// Identifying, contact, account, and category information for a payer or payee.
+/// Identifying, contact, account, and category information for a payer or
+/// payee.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Participant {
     /// Optional persisted identifier.

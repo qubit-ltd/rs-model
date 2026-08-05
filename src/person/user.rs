@@ -8,12 +8,22 @@
 
 //! System-user domain models.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::commons::{AuthorizeRecord, State, VerifyState};
+use crate::commons::{
+    AuthorizeRecord,
+    State,
+    VerifyState,
+};
 use crate::contact::Phone;
 use crate::mixin::StatefulInfo;
 use crate::person::Gender;

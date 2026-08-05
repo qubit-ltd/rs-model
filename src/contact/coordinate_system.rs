@@ -9,7 +9,10 @@
 //! Geographic coordinate-system values.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Identifies the coordinate system used by a geographic location.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
@@ -34,7 +37,8 @@ impl CoordinateSystem {
         }
     }
 
-    /// Returns the English source-domain description for this coordinate system.
+    /// Returns the English source-domain description for this coordinate
+    /// system.
     #[must_use]
     pub const fn description(self) -> &'static str {
         match self {

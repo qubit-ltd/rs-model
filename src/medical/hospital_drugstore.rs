@@ -8,10 +8,16 @@
 
 //! Hospital-to-drugstore relationships.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// A relationship between a hospital and one of its dispensing drugstores.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

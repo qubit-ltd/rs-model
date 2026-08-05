@@ -9,7 +9,10 @@
 //! Order submission messages.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::order::Order;
 

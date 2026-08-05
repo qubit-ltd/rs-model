@@ -8,10 +8,16 @@
 
 //! General clinic visit information.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Hospital-system information for a general outpatient visit.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

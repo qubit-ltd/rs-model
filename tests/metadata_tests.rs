@@ -10,11 +10,22 @@ use qubit_mixin::Normalizable;
 use qubit_model::{
     commons::State,
     metadata::{
-        AggregateRef, Category, Dict, DictEntry, DictEntryInfo, FullDict, Payload, Scope,
-        ScopeType, Source,
+        AggregateRef,
+        Category,
+        Dict,
+        DictEntry,
+        DictEntryInfo,
+        FullDict,
+        Payload,
+        Scope,
+        ScopeType,
+        Source,
     },
 };
-use qubit_model_metadata::{UniqueComparison, metadata_of};
+use qubit_model_metadata::{
+    UniqueComparison,
+    metadata_of,
+};
 use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
@@ -82,11 +93,9 @@ fn metadata_model_constraints_preserve_source_annotations() {
     );
 
     let payload = metadata_of::<Payload>();
-    assert!(
-        payload
-            .unique_constraints()
-            .any(|unique| unique.contains("key") && unique.contains("aggregate_ref"))
-    );
+    assert!(payload.unique_constraints().any(
+        |unique| unique.contains("key") && unique.contains("aggregate_ref")
+    ));
     assert_eq!(
         payload
             .unique_constraints()

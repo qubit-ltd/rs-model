@@ -7,21 +7,45 @@
 // =============================================================================
 //! Complete employee records.
 
-use chrono::{DateTime, NaiveDate, Utc};
-use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
+use chrono::{
+    DateTime,
+    NaiveDate,
+    Utc,
+};
+use qubit_mixin::{
+    Emptyful,
+    InfoWithEntity,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
-    commons::{Category, Credential, CredentialInfo, State},
+    commons::{
+        Category,
+        Credential,
+        CredentialInfo,
+        State,
+    },
     contact::Phone,
     mixin::StatefulInfo,
-    person::{Gender, Person, User},
+    person::{
+        Gender,
+        Person,
+        User,
+    },
     upload::Attachment,
 };
 
-use super::{Department, EmployeeInfo, Organization};
+use super::{
+    Department,
+    EmployeeInfo,
+    Organization,
+};
 
 /// A complete employee record within an organization.
 #[allow(clippy::duplicated_attributes)]
@@ -34,7 +58,10 @@ use super::{Department, EmployeeInfo, Organization};
         fields(organization, internal_code),
         ignore_case(internal_code)
     ),
-    unique(name = "employee_organization_mobile", fields(organization, mobile)),
+    unique(
+        name = "employee_organization_mobile",
+        fields(organization, mobile)
+    ),
     unique(
         name = "employee_organization_email",
         fields(organization, email),

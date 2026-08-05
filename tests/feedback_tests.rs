@@ -7,8 +7,13 @@
 // =============================================================================
 
 use qubit_model::feedback::{
-    Feedback, FeedbackAction, FeedbackProcessingRule, FeedbackRating, FeedbackStatus,
-    FeedbackTrack, FeedbackType,
+    Feedback,
+    FeedbackAction,
+    FeedbackProcessingRule,
+    FeedbackRating,
+    FeedbackStatus,
+    FeedbackTrack,
+    FeedbackType,
 };
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
@@ -31,7 +36,8 @@ fn test_feedback_public_types_expose_model_and_redact_contracts() {
 #[test]
 fn test_feedback_enums_preserve_java_wire_names() {
     assert_eq!(
-        serde_json::to_string(&FeedbackType::Complaint).expect("feedback type should serialize"),
+        serde_json::to_string(&FeedbackType::Complaint)
+            .expect("feedback type should serialize"),
         "\"COMPLAINT\""
     );
     assert_eq!(
@@ -64,43 +70,73 @@ fn test_feedback_processing_rule_preserves_complete_lifecycle() {
         FeedbackStatus::Withdrawn
     ));
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::Submitted, FeedbackAction::AdminReview,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Submitted,
+            FeedbackAction::AdminReview,
+        ),
         Some(FeedbackStatus::UnderReview)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::UnderReview, FeedbackAction::AdminAccept,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::UnderReview,
+            FeedbackAction::AdminAccept,
+        ),
         Some(FeedbackStatus::Processing)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::UnderReview, FeedbackAction::AdminReject,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::UnderReview,
+            FeedbackAction::AdminReject,
+        ),
         Some(FeedbackStatus::Rejected)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::Processing, FeedbackAction::AdminResolve,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Processing,
+            FeedbackAction::AdminResolve,
+        ),
         Some(FeedbackStatus::Resolved)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::Resolved, FeedbackAction::UserApprove,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Resolved,
+            FeedbackAction::UserApprove,
+        ),
         Some(FeedbackStatus::Closed)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::Rejected, FeedbackAction::UserDisapprove,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Rejected,
+            FeedbackAction::UserDisapprove,
+        ),
         Some(FeedbackStatus::Disapproved)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::Disapproved, FeedbackAction::AdminReopen,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Disapproved,
+            FeedbackAction::AdminReopen,
+        ),
         Some(FeedbackStatus::Reopened)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::Reopened, FeedbackAction::AdminReview,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Reopened,
+            FeedbackAction::AdminReview,
+        ),
         Some(FeedbackStatus::UnderReview)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::Submitted, FeedbackAction::UserWithdraw,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Submitted,
+            FeedbackAction::UserWithdraw,
+        ),
         Some(FeedbackStatus::Withdrawn)
     );
     assert_eq!(
-        FeedbackProcessingRule::next(FeedbackStatus::Processing, FeedbackAction::UserDisapprove,),
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Processing,
+            FeedbackAction::UserDisapprove,
+        ),
         None
     );
 }

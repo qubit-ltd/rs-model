@@ -9,10 +9,15 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// User-supplied upload hints and hash-verification material.
-#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct UploadParams {
     /// Optional original filename.

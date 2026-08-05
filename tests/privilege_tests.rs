@@ -10,7 +10,11 @@ use chrono::Utc;
 use qubit_model::{
     commons::State,
     mixin::StatefulInfo,
-    privilege::{Privileges, PrivilegesCodecError, Role},
+    privilege::{
+        Privileges,
+        PrivilegesCodecError,
+        Role,
+    },
 };
 
 fn role(privileges: &[&str]) -> Role {
@@ -22,7 +26,10 @@ fn role(privileges: &[&str]) -> Role {
         description: None,
         guest: Some(false),
         basic: Some(true),
-        privileges: privileges.iter().map(|value| (*value).to_owned()).collect(),
+        privileges: privileges
+            .iter()
+            .map(|value| (*value).to_owned())
+            .collect(),
         state: State::Normal,
         create_time: Utc::now(),
         modify_time: None,

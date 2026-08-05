@@ -12,14 +12,23 @@ use chrono::NaiveDate;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
-    commons::{CredentialInfo, Kinship},
+    commons::{
+        CredentialInfo,
+        Kinship,
+    },
     contact::Phone,
     medical::MedicareType,
     order::ReturnStatus,
-    person::{Gender, PersonInfo},
+    person::{
+        Gender,
+        PersonInfo,
+    },
 };
 
 /// Identity, benefits, guardian, and return information for a product client.

@@ -9,7 +9,10 @@
 //! Claim-invoice classifications.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Identifies the medical encounter represented by a claim invoice.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

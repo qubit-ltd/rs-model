@@ -10,9 +10,15 @@
 
 use bigdecimal::BigDecimal;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{commons::DictEntryInfo, medical::MedicareItemType};
+use crate::{
+    commons::DictEntryInfo,
+    medical::MedicareItemType,
+};
 
 /// A charged medical item and its insurance reimbursement breakdown.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

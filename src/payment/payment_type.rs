@@ -9,7 +9,10 @@
 //! Payment classifications.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Identifies the business program used for a payment.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

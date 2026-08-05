@@ -9,8 +9,13 @@
 //! Integration coverage for individual insurance-claim models.
 
 use qubit_model::claim::{
-    InsuranceClaim, InsuranceClaimAmount, InsuranceClaimEvent, InsuranceClaimInvoice,
-    InsuranceClaimInvoiceCost, InsuranceClaimMedical, InsuranceProductRule,
+    InsuranceClaim,
+    InsuranceClaimAmount,
+    InsuranceClaimEvent,
+    InsuranceClaimInvoice,
+    InsuranceClaimInvoiceCost,
+    InsuranceClaimMedical,
+    InsuranceProductRule,
 };
 use qubit_model_metadata::metadata_of;
 

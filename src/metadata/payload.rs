@@ -7,16 +7,27 @@
 // =============================================================================
 //! Aggregate payload values.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, Normalizable};
+use chrono::{
+    DateTime,
+    Utc,
+};
+use qubit_mixin::{
+    Emptyful,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use super::AggregateRef;
 
 /// A named string payload attached to an aggregate root.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(
     name = "payload_aggregate_key",

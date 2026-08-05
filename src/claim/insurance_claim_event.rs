@@ -8,12 +8,21 @@
 
 //! Individual claim workflow events.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::claim::{InsuranceClaimStatus, InsuranceClaimStatusGroup};
+use crate::claim::{
+    InsuranceClaimStatus,
+    InsuranceClaimStatusGroup,
+};
 
 /// A state transition recorded for an individual insurance claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

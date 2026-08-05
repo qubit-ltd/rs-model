@@ -5,18 +5,30 @@
 // =============================================================================
 //! Lightweight personally identifying information.
 
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::{
+    DateTime,
+    NaiveDate,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::commons::CredentialInfo;
 use crate::contact::Phone;
-use crate::person::{Gender, User};
+use crate::person::{
+    Gender,
+    User,
+};
 use crate::upload::Attachment;
 
 /// A compact person snapshot used by references outside the person domain.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct PersonInfo {
     /// Optional persisted identifier.
     #[model(identifier)]

@@ -10,7 +10,10 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// A payment gateway response serialized as a Base64 string.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

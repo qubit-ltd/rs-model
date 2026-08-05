@@ -10,10 +10,15 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// The operation for which a verification code was issued.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum VerifyScene {
     /// Account registration.

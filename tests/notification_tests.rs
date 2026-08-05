@@ -6,12 +6,20 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model::{
     contact::Phone,
     error::ErrorType,
     mixin::StatefulInfo,
-    notification::{NotificationErrorCode, SendSmsException, VerifyCode, VerifyScene},
+    notification::{
+        NotificationErrorCode,
+        SendSmsException,
+        VerifyCode,
+        VerifyScene,
+    },
 };
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
@@ -46,7 +54,8 @@ fn test_notification_public_types_expose_model_and_redact_contracts() {
 #[test]
 fn test_verify_scene_preserves_java_wire_names() {
     assert_eq!(
-        serde_json::to_string(&VerifyScene::ResetPassword).expect("verify scene should serialize"),
+        serde_json::to_string(&VerifyScene::ResetPassword)
+            .expect("verify scene should serialize"),
         "\"RESET_PASSWORD\""
     );
     assert_eq!(

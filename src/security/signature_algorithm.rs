@@ -9,10 +9,24 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// JDK-compatible digital-signature algorithm.
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Deserialize,
+    Eq,
+    Model,
+    PartialEq,
+    Redact,
+    Serialize,
+)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SignatureAlgorithm {
     /// MD2 with RSA.

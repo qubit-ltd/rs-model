@@ -9,12 +9,22 @@
 //! Individual claim medical encounters.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::{
+    DateTime,
+    NaiveDate,
+    Utc,
+};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{claim::InsuranceClaimInvoice, medical::MedicalType};
+use crate::{
+    claim::InsuranceClaimInvoice,
+    medical::MedicalType,
+};
 
 /// A medical encounter and its invoices within an individual claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

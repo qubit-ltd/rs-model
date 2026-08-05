@@ -8,10 +8,16 @@
 
 //! Disease reference records.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// A coded disease definition used by diagnoses and medical catalogs.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

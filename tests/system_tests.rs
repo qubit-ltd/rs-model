@@ -6,13 +6,27 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use chrono::{TimeZone, Utc};
+use chrono::{
+    TimeZone,
+    Utc,
+};
 use qubit_mixin::Normalizable;
 use qubit_model::{
     person::UserInfo,
     system::{
-        Action, Environment, Expired, ExpiredReason, Host, Log, OperationLog, OperationLogInfo,
-        Platform, Session, Setting, VerifyCode, VerifyScene,
+        Action,
+        Environment,
+        Expired,
+        ExpiredReason,
+        Host,
+        Log,
+        OperationLog,
+        OperationLogInfo,
+        Platform,
+        Session,
+        Setting,
+        VerifyCode,
+        VerifyScene,
     },
 };
 use qubit_model_metadata::metadata_of;

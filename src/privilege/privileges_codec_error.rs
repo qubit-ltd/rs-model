@@ -19,7 +19,8 @@ pub enum PrivilegesCodecError {
         /// Zero-based element index.
         index: usize,
     },
-    /// A privilege contains the comma delimiter and cannot be encoded unambiguously.
+    /// A privilege contains the comma delimiter and cannot be encoded
+    /// unambiguously.
     #[error("privilege at index {index} contains a comma")]
     ContainsSeparator {
         /// Zero-based element index.

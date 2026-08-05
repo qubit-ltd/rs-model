@@ -10,7 +10,10 @@
 
 use bigdecimal::BigDecimal;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Storage metadata for a file, image, video, or audio asset.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

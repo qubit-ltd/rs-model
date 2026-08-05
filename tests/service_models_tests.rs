@@ -9,8 +9,13 @@
 //! Integration coverage for medical-service models.
 
 use qubit_model::service::{
-    EmployeeMedicalItem, MedicalItem, MedicalItemUseRecord, MedicalPackage, MedicalPackageItem,
-    UserMedicalItem, UserMedicalPackage,
+    EmployeeMedicalItem,
+    MedicalItem,
+    MedicalItemUseRecord,
+    MedicalPackage,
+    MedicalPackageItem,
+    UserMedicalItem,
+    UserMedicalPackage,
 };
 use qubit_model_metadata::metadata_of;
 

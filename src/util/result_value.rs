@@ -8,7 +8,10 @@
 
 //! REST response value wrappers.
 
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Wraps one REST response value so it serializes as a JSON object.
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]

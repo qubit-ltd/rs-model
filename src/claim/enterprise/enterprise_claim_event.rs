@@ -8,11 +8,20 @@
 
 //! Enterprise claim workflow events.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::claim::enterprise::{EnterpriseClaimStatus, EnterpriseClaimStatusGroup};
+use crate::claim::enterprise::{
+    EnterpriseClaimStatus,
+    EnterpriseClaimStatusGroup,
+};
 
 /// A state transition recorded for an enterprise insurance claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

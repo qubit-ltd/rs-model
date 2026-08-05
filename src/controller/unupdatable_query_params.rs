@@ -7,12 +7,21 @@
 // =============================================================================
 //! Query parameters for creatable and deletable entities.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use super::{NullSortOption, SortOrder};
+use super::{
+    NullSortOption,
+    SortOrder,
+};
 
 /// Paging, sorting, deletion, creation-time, and deletion-time filters.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

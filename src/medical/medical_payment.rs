@@ -10,7 +10,10 @@
 
 use bigdecimal::BigDecimal;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// A complete breakdown of patient, insurer, fund, and prepayment amounts.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

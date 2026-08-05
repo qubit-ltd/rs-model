@@ -9,7 +9,10 @@
 //! Enterprise claim persistence states.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Describes whether imported enterprise claim data was saved.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

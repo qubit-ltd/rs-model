@@ -7,7 +7,11 @@
 // =============================================================================
 //! String codec for credential information.
 
-use crate::commons::{CredentialInfo, CredentialInfoCodecError, CredentialType};
+use crate::commons::{
+    CredentialInfo,
+    CredentialInfoCodecError,
+    CredentialType,
+};
 
 /// Converts credential information to and from its Java-compatible wire format.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -18,7 +22,9 @@ impl CredentialInfoCodec {
     pub fn decode(
         source: Option<&str>,
     ) -> Result<Option<CredentialInfo>, CredentialInfoCodecError> {
-        let Some(source) = source.map(str::trim).filter(|value| !value.is_empty()) else {
+        let Some(source) =
+            source.map(str::trim).filter(|value| !value.is_empty())
+        else {
             return Ok(None);
         };
         let Some((type_name, number)) = source.split_once('-') else {
@@ -47,20 +53,26 @@ impl CredentialInfoCodec {
 }
 
 /// Resolves the Java enumeration name without accepting aliases.
-fn credential_type_for_name(name: &str) -> Result<CredentialType, CredentialInfoCodecError> {
+fn credential_type_for_name(
+    name: &str,
+) -> Result<CredentialType, CredentialInfoCodecError> {
     let value = match name {
         "IDENTITY_CARD" => CredentialType::IdentityCard,
         "RESIDENCE_BOOKLET" => CredentialType::ResidenceBooklet,
         "PASSPORT" => CredentialType::Passport,
         "OFFICER_CARD" => CredentialType::OfficerCard,
         "DRIVING_CARD" => CredentialType::DrivingCard,
-        "HONGKONG_MACAO_RETURN_PERMIT" => CredentialType::HongkongMacaoReturnPermit,
+        "HONGKONG_MACAO_RETURN_PERMIT" => {
+            CredentialType::HongkongMacaoReturnPermit
+        }
         "TAIWAN_RETURN_PERMIT" => CredentialType::TaiwanReturnPermit,
         "POLICE_CARD" => CredentialType::PoliceCard,
         "HONGKONG_PASSPORT" => CredentialType::HongkongPassport,
         "MACAO_PASSPORT" => CredentialType::MacaoPassport,
         "TAIWAN_PASSPORT" => CredentialType::TaiwanPassport,
-        "FOREIGNER_PERMANENT_RESIDENCE_PERMIT" => CredentialType::ForeignerPermanentResidencePermit,
+        "FOREIGNER_PERMANENT_RESIDENCE_PERMIT" => {
+            CredentialType::ForeignerPermanentResidencePermit
+        }
         "HONGKONG_MACAO_TAIWAN_RESIDENCE_PERMIT" => {
             CredentialType::HongkongMacaoTaiwanResidencePermit
         }
@@ -73,7 +85,11 @@ fn credential_type_for_name(name: &str) -> Result<CredentialType, CredentialInfo
         "BUSINESS_LICENSE" => CredentialType::BusinessLicense,
         "ORGANIZATION_CODE" => CredentialType::OrganizationCode,
         "OTHER" => CredentialType::Other,
-        _ => return Err(CredentialInfoCodecError::UnsupportedType(name.to_owned())),
+        _ => {
+            return Err(CredentialInfoCodecError::UnsupportedType(
+                name.to_owned(),
+            ));
+        }
     };
     Ok(value)
 }
@@ -86,13 +102,17 @@ const fn credential_type_name(value: CredentialType) -> &'static str {
         CredentialType::Passport => "PASSPORT",
         CredentialType::OfficerCard => "OFFICER_CARD",
         CredentialType::DrivingCard => "DRIVING_CARD",
-        CredentialType::HongkongMacaoReturnPermit => "HONGKONG_MACAO_RETURN_PERMIT",
+        CredentialType::HongkongMacaoReturnPermit => {
+            "HONGKONG_MACAO_RETURN_PERMIT"
+        }
         CredentialType::TaiwanReturnPermit => "TAIWAN_RETURN_PERMIT",
         CredentialType::PoliceCard => "POLICE_CARD",
         CredentialType::HongkongPassport => "HONGKONG_PASSPORT",
         CredentialType::MacaoPassport => "MACAO_PASSPORT",
         CredentialType::TaiwanPassport => "TAIWAN_PASSPORT",
-        CredentialType::ForeignerPermanentResidencePermit => "FOREIGNER_PERMANENT_RESIDENCE_PERMIT",
+        CredentialType::ForeignerPermanentResidencePermit => {
+            "FOREIGNER_PERMANENT_RESIDENCE_PERMIT"
+        }
         CredentialType::HongkongMacaoTaiwanResidencePermit => {
             "HONGKONG_MACAO_TAIWAN_RESIDENCE_PERMIT"
         }

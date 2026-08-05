@@ -9,18 +9,33 @@
 //! Order aggregate records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     commons::Currency,
     invoice::InvoiceStatus,
     mixin::StatefulInfo,
-    order::{Buyer, Consignee, OrderItem, OrderStatus, PayType},
+    order::{
+        Buyer,
+        Consignee,
+        OrderItem,
+        OrderStatus,
+        PayType,
+    },
     product::Seller,
-    shipping::{ShippingDemand, ShippingMode},
+    shipping::{
+        ShippingDemand,
+        ShippingMode,
+    },
     system::Environment,
 };
 

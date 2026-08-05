@@ -9,7 +9,10 @@
 //! Detailed individual claim workflow states.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::claim::InsuranceClaimStatusGroup;
 
@@ -59,12 +62,19 @@ impl InsuranceClaimStatus {
             | Self::TemporarySaved => InsuranceClaimStatusGroup::PendingCase,
             Self::SystemAudited => InsuranceClaimStatusGroup::Unreached,
             Self::SystemRejected => InsuranceClaimStatusGroup::Rejected,
-            Self::WaitInsuranceCompanyAudited => InsuranceClaimStatusGroup::Registed,
-            Self::InsuranceCompanyAccepted => InsuranceClaimStatusGroup::UnderReview,
-            Self::InsuranceCompanyRejected | Self::InsuranceCompanyAnnulOrRefused => {
+            Self::WaitInsuranceCompanyAudited => {
+                InsuranceClaimStatusGroup::Registed
+            }
+            Self::InsuranceCompanyAccepted => {
+                InsuranceClaimStatusGroup::UnderReview
+            }
+            Self::InsuranceCompanyRejected
+            | Self::InsuranceCompanyAnnulOrRefused => {
                 InsuranceClaimStatusGroup::AuditRejection
             }
-            Self::InsuranceCompanyCompleted => InsuranceClaimStatusGroup::Completed,
+            Self::InsuranceCompanyCompleted => {
+                InsuranceClaimStatusGroup::Completed
+            }
             Self::Canceled => InsuranceClaimStatusGroup::Canceld,
         }
     }

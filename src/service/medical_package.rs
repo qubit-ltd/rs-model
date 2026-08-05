@@ -8,11 +8,20 @@
 
 //! Medical service packages.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{mixin::StatefulInfo, service::MedicalPackageItem};
+use crate::{
+    mixin::StatefulInfo,
+    service::MedicalPackageItem,
+};
 
 /// A named package of medical service items belonging to an organization.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

@@ -9,7 +9,10 @@
 //! Referral order record states.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Describes the payment outcome tracked for a referred order.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

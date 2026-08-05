@@ -1,0 +1,56 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0.
+// =============================================================================
+
+//! Demographic and social classification values.
+
+#[allow(unused_imports)]
+use super::{
+    Blood,
+    Education,
+    Ethnic,
+    Gender,
+    Incoming,
+    Industry,
+    JobTitle,
+    Person,
+    PersonIdentity,
+    Politics,
+    Religion,
+    SexOrientation,
+    SocialNetwork,
+};
+
+use qubit_model_derive::Model;
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
+/// Source-domain Marriage classification.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum Marriage {
+    /// Source variant `UNMARRIED`.
+    Unmarried,
+    /// Source variant `MARRIED`.
+    Married,
+    /// Source variant `MARRIED_FIRST_TIME`.
+    MarriedFirstTime,
+    /// Source variant `MARRIED_AGAIN`.
+    MarriedAgain,
+    /// Source variant `MARRIED_RESTORED`.
+    MarriedRestored,
+    /// Source variant `WIDOWED`.
+    Widowed,
+    /// Source variant `DIVORCED`.
+    Divorced,
+    /// Source variant `SEPARATED`.
+    Separated,
+    /// Source variant `UNPROVIDED`.
+    Unprovided,
+}

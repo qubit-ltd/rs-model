@@ -8,7 +8,10 @@
 
 //! Permission collections.
 
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::privilege::PrivilegesCodecError;
 
@@ -20,9 +23,12 @@ pub struct Privileges(pub Vec<String>);
 impl Privileges {
     /// Decodes the Java-compatible comma-separated representation.
     ///
-    /// `None` remains `None`; an empty string becomes an empty collection. Surrounding
-    /// whitespace and empty segments are ignored, matching the source `Splitter` settings.
-    pub fn decode(value: Option<&str>) -> Result<Option<Self>, PrivilegesCodecError> {
+    /// `None` remains `None`; an empty string becomes an empty collection.
+    /// Surrounding whitespace and empty segments are ignored, matching the
+    /// source `Splitter` settings.
+    pub fn decode(
+        value: Option<&str>,
+    ) -> Result<Option<Self>, PrivilegesCodecError> {
         let Some(value) = value else {
             return Ok(None);
         };
@@ -41,8 +47,8 @@ impl Privileges {
 
     /// Encodes this collection using the Java-compatible comma delimiter.
     ///
-    /// Returns an error if a member is empty or contains a comma, because either value would
-    /// lose information in the encoded form.
+    /// Returns an error if a member is empty or contains a comma, because
+    /// either value would lose information in the encoded form.
     pub fn encode(&self) -> Result<String, PrivilegesCodecError> {
         Self::validate(&self.0)?;
         Ok(self.0.join(","))

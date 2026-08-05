@@ -7,15 +7,26 @@
 // =============================================================================
 //! Canonical information covered by a signature.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use super::{KeyValuePair, SignatureAlgorithm};
+use super::{
+    KeyValuePair,
+    SignatureAlgorithm,
+};
 
 /// Message, signer identity, key material, and payload covered by a signature.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct SignedInfo {
     /// Message to sign.

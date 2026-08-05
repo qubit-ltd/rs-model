@@ -9,14 +9,25 @@
 //! Order return records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     commons::Currency,
     invoice::InvoiceStatus,
-    order::{Client, ReturnIssuer, ReturnReason, ReturnStatus},
+    order::{
+        Client,
+        ReturnIssuer,
+        ReturnReason,
+        ReturnStatus,
+    },
     product::ProductInfo,
     system::Environment,
 };

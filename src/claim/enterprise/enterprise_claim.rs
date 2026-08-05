@@ -8,13 +8,27 @@
 
 //! Enterprise insurance claims.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
-    claim::enterprise::{EnterpriseClaimEvent, EnterpriseClaimStatus, EnterpriseClaimStatusGroup},
-    claim::{AccidentReason, InsuredStatus, QuickCompensationState},
+    claim::enterprise::{
+        EnterpriseClaimEvent,
+        EnterpriseClaimStatus,
+        EnterpriseClaimStatusGroup,
+    },
+    claim::{
+        AccidentReason,
+        InsuredStatus,
+        QuickCompensationState,
+    },
     commons::Kinship,
     order::Client,
     product::Product,
@@ -79,15 +93,18 @@ impl EnterpriseClaim {
     pub const fn allow_client_operation(&self) -> bool {
         matches!(
             self.status,
-            EnterpriseClaimStatus::NotSubmitted | EnterpriseClaimStatus::SystemRejected
+            EnterpriseClaimStatus::NotSubmitted
+                | EnterpriseClaimStatus::SystemRejected
         )
     }
 
-    /// Returns whether the current state permits rejection back to the claimant.
+    /// Returns whether the current state permits rejection back to the
+    /// claimant.
     ///
     /// # Returns
     ///
-    /// `true` while the application awaits audit, passed audit, or is temporarily saved.
+    /// `true` while the application awaits audit, passed audit, or is
+    /// temporarily saved.
     #[inline(always)]
     #[must_use]
     pub const fn allow_reject(&self) -> bool {
@@ -109,7 +126,8 @@ impl EnterpriseClaim {
     pub const fn allow_admin_operation(&self) -> bool {
         matches!(
             self.status,
-            EnterpriseClaimStatus::ClaimApplicationAudited | EnterpriseClaimStatus::TemporarySaved
+            EnterpriseClaimStatus::ClaimApplicationAudited
+                | EnterpriseClaimStatus::TemporarySaved
         )
     }
 }

@@ -7,16 +7,31 @@
 // =============================================================================
 //! Channel and acquisition sources.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
+use chrono::{
+    DateTime,
+    Utc,
+};
+use qubit_mixin::{
+    Emptyful,
+    InfoWithEntity,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use super::{Category, Scope};
+use super::{
+    Category,
+    Scope,
+};
 
 /// A channel source associated with an entity type.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "source_code", fields(code), ignore_case(code)))]
 pub struct Source {

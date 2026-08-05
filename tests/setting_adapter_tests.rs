@@ -7,13 +7,19 @@
 // =============================================================================
 
 use qubit_model::setting::{
-    DataType, Setting, SettingJsonDeserializer, SettingJsonSerializer, SettingRandomizer,
-    SettingXmlAdapted, SettingXmlAdapter,
+    DataType,
+    Setting,
+    SettingJsonDeserializer,
+    SettingJsonSerializer,
+    SettingRandomizer,
+    SettingXmlAdapted,
+    SettingXmlAdapter,
 };
 use qubit_model::system::{
     SettingJsonDeserializer as SystemSettingJsonDeserializer,
     SettingJsonSerializer as SystemSettingJsonSerializer,
-    SettingRandomizer as SystemSettingRandomizer, SettingXmlAdapted as SystemSettingXmlAdapted,
+    SettingRandomizer as SystemSettingRandomizer,
+    SettingXmlAdapted as SystemSettingXmlAdapted,
     SettingXmlAdapter as SystemSettingXmlAdapter,
 };
 use qubit_model_metadata::metadata_of;
@@ -36,8 +42,10 @@ fn test_setting_json_adapters_preserve_defaults_and_values() {
     assert!(decoded.multiple);
     assert!(!decoded.encrypted);
 
-    let encoded = SettingJsonSerializer::serialize(&decoded).expect("encode setting");
-    let value: serde_json::Value = serde_json::from_str(&encoded).expect("setting JSON");
+    let encoded =
+        SettingJsonSerializer::serialize(&decoded).expect("encode setting");
+    let value: serde_json::Value =
+        serde_json::from_str(&encoded).expect("setting JSON");
     assert_eq!(value["type"], "INT");
     assert_eq!(value["values"][0], "5");
 }
@@ -49,7 +57,8 @@ fn test_setting_xml_adapter_omits_defaults_and_round_trips() {
     setting.description = Some("System time zone".into());
     setting.values = vec!["Asia/Shanghai".into()];
 
-    let adapted = SettingXmlAdapter::marshal(Some(&setting)).expect("adapted setting");
+    let adapted =
+        SettingXmlAdapter::marshal(Some(&setting)).expect("adapted setting");
     assert_eq!(adapted.name, "system.time_zone");
     assert_eq!(adapted.type_name, None);
     assert_eq!(adapted.readonly, Some(true));

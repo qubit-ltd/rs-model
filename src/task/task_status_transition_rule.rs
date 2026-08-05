@@ -8,29 +8,24 @@
 
 //! The complete legal task-state transition table.
 
-use thiserror::Error;
-
-use crate::task::{TaskAction, TaskStatus};
+#[allow(unused_imports)]
+use super::{
+    TaskAction,
+    TaskExecutionError,
+    TaskPipelineStatus,
+    TaskStatus,
+    TaskStatusTransitionError,
+};
 
 /// Evaluates the fixed task lifecycle transition table.
 #[derive(Clone, Copy, Debug, Default)]
 pub struct TaskStatusTransitionRule;
-
-/// An attempted task transition that the lifecycle does not permit.
-#[derive(Clone, Copy, Debug, Error, PartialEq, Eq)]
-#[error("cannot apply {action:?} to task status {status:?}")]
-pub struct TaskStatusTransitionError {
-    /// State before the invalid action.
-    pub status: TaskStatus,
-    /// Action that is invalid for `status`.
-    pub action: TaskAction,
-}
-
 impl TaskStatusTransitionRule {
     /// Returns the status reached by applying `action` to `status`.
     ///
-    /// Returns [`TaskStatusTransitionError`] when this pair is not listed in the Java task
-    /// lifecycle; terminal states therefore have no outgoing transitions.
+    /// Returns [`TaskStatusTransitionError`] when this pair is not listed in
+    /// the Java task lifecycle; terminal states therefore have no outgoing
+    /// transitions.
     pub fn next(
         status: TaskStatus,
         action: TaskAction,
@@ -38,10 +33,16 @@ impl TaskStatusTransitionRule {
         let next = match (status, action) {
             (TaskStatus::Created, TaskAction::Submit) => TaskStatus::Submitted,
             (TaskStatus::Created, TaskAction::Fail) => TaskStatus::Failed,
-            (TaskStatus::Submitted, TaskAction::Init) => TaskStatus::Initializing,
+            (TaskStatus::Submitted, TaskAction::Init) => {
+                TaskStatus::Initializing
+            }
             (TaskStatus::Submitted, TaskAction::Fail) => TaskStatus::Failed,
-            (TaskStatus::Initializing, TaskAction::Start) => TaskStatus::Running,
-            (TaskStatus::Initializing, TaskAction::Cancel) => TaskStatus::Cancelled,
+            (TaskStatus::Initializing, TaskAction::Start) => {
+                TaskStatus::Running
+            }
+            (TaskStatus::Initializing, TaskAction::Cancel) => {
+                TaskStatus::Cancelled
+            }
             (TaskStatus::Initializing, TaskAction::Fail) => TaskStatus::Failed,
             (TaskStatus::Running, TaskAction::Cancel) => TaskStatus::Cancelled,
             (TaskStatus::Running, TaskAction::Fail) => TaskStatus::Failed,

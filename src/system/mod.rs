@@ -34,9 +34,16 @@ pub use platform::Platform;
 pub use session::Session;
 
 pub use crate::{
-    notification::{VerifyCode, VerifyScene},
+    notification::{
+        VerifyCode,
+        VerifyScene,
+    },
     setting::{
-        Setting, SettingJsonDeserializer, SettingJsonSerializer, SettingRandomizer,
-        SettingXmlAdapted, SettingXmlAdapter,
+        Setting,
+        SettingJsonDeserializer,
+        SettingJsonSerializer,
+        SettingRandomizer,
+        SettingXmlAdapted,
+        SettingXmlAdapter,
     },
 };

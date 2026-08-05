@@ -13,7 +13,10 @@ use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::contact::{Address, Location};
+use crate::contact::{
+    Address,
+    Location,
+};
 
 /// Builds an address from independently supplied administrative components.
 #[derive(Clone, Debug, Default, Model, Redact)]

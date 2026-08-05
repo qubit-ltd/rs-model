@@ -9,8 +9,16 @@
 //! Integration coverage for reusable medical reference models.
 
 use qubit_model::medical::{
-    Disease, Dosage, Drug, DrugInfo, DrugProduct, HospitalDrugstore, MedicalPayment,
-    MedicalSettlementItem, Patient, PatientInfo,
+    Disease,
+    Dosage,
+    Drug,
+    DrugInfo,
+    DrugProduct,
+    HospitalDrugstore,
+    MedicalPayment,
+    MedicalSettlementItem,
+    Patient,
+    PatientInfo,
 };
 use qubit_model_metadata::metadata_of;
 

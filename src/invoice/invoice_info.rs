@@ -11,9 +11,15 @@
 use bigdecimal::BigDecimal;
 use chrono::NaiveDate;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{commons::Currency, invoice::InvoiceStatus};
+use crate::{
+    commons::Currency,
+    invoice::InvoiceStatus,
+};
 
 /// A compact invoice snapshot used by related-invoice references.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

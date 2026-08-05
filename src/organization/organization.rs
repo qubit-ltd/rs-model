@@ -7,14 +7,30 @@
 // =============================================================================
 //! Organization aggregate roots.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
+use chrono::{
+    DateTime,
+    Utc,
+};
+use qubit_mixin::{
+    Emptyful,
+    InfoWithEntity,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
-    commons::{Category, Credential, CredentialInfo, Payload, State},
+    commons::{
+        Category,
+        Credential,
+        CredentialInfo,
+        Payload,
+        State,
+    },
     contact::Contact,
     mixin::StatefulInfo,
     person::PersonInfo,
@@ -23,8 +39,11 @@ use crate::{
 
 use super::TaxPayerType;
 
-/// A company, medical institution, school, government body, or other organization.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+/// A company, medical institution, school, government body, or other
+/// organization.
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(
     unique(name = "organization_code", fields(code), ignore_case(code)),

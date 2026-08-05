@@ -9,17 +9,25 @@
 
 use std::cmp::Ordering;
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::person::UserInfo;
 
 use super::ErrorInfo;
 
 /// A compact operation outcome ordered by its timestamp.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "log_id", fields(id)))]
 pub struct Log {

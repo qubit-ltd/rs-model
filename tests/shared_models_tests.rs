@@ -10,12 +10,25 @@
 
 use chrono::DateTime;
 use qubit_model::{
-    commons::{CredentialType, Currency, RequestStatus, State, Token, VerifyState},
-    mixin::{StatefulInfo, StatefulInfoWithToken},
-    util::{MessageFormatter, Result},
     Entity,
     Module,
     Operation,
+    commons::{
+        CredentialType,
+        Currency,
+        RequestStatus,
+        State,
+        Token,
+        VerifyState,
+    },
+    mixin::{
+        StatefulInfo,
+        StatefulInfoWithToken,
+    },
+    util::{
+        MessageFormatter,
+        Result,
+    },
 };
 use qubit_model_metadata::metadata_of;
 

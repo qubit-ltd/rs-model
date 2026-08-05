@@ -6,13 +6,35 @@
 
 use bigdecimal::BigDecimal;
 use chrono::Utc;
-use qubit_mixin::{Info, Normalizable};
+use qubit_mixin::{
+    Info,
+    Normalizable,
+};
 use qubit_model::{
-    activity::{Activity, ActivityCoupon, ActivityProductItem},
-    commons::{CredentialInfo, CredentialType, Currency, State, VerifyState},
-    contact::{Address, Contact, Phone},
+    activity::{
+        Activity,
+        ActivityCoupon,
+        ActivityProductItem,
+    },
+    commons::{
+        CredentialInfo,
+        CredentialType,
+        Currency,
+        State,
+        VerifyState,
+    },
+    contact::{
+        Address,
+        Contact,
+        Phone,
+    },
     mixin::StatefulInfo,
-    order::{Buyer, OrderInfo, OrderStatus, PayType},
+    order::{
+        Buyer,
+        OrderInfo,
+        OrderStatus,
+        PayType,
+    },
     person::Person,
     product::Seller,
 };

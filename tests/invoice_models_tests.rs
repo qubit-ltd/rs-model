@@ -9,7 +9,12 @@
 //! Integration coverage for invoice-domain model migrations.
 
 use qubit_model::invoice::{
-    Invoice, InvoiceApply, InvoiceHospitalRegiste, InvoiceInfo, InvoiceItem, InvoiceNumberSegment,
+    Invoice,
+    InvoiceApply,
+    InvoiceHospitalRegiste,
+    InvoiceInfo,
+    InvoiceItem,
+    InvoiceNumberSegment,
     InvoicePlace,
 };
 use qubit_model_metadata::metadata_of;

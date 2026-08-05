@@ -9,7 +9,13 @@
 use qubit_model::{
     commons::State,
     security::{
-        KeyFormat, KeyPair, KeyValuePair, Signature, SignatureAlgorithm, SignedData, SignedInfo,
+        KeyFormat,
+        KeyPair,
+        KeyValuePair,
+        Signature,
+        SignatureAlgorithm,
+        SignedData,
+        SignedInfo,
     },
 };
 use qubit_model_metadata::metadata_of;

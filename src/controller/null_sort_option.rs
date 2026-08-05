@@ -11,12 +11,26 @@ use std::cmp::Ordering;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use super::SortOrder;
 
 /// Policy controlling how null values compare with non-null values.
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Deserialize,
+    Eq,
+    Model,
+    PartialEq,
+    Redact,
+    Serialize,
+)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum NullSortOption {
     /// Null values always sort first.
@@ -39,7 +53,12 @@ impl NullSortOption {
     ///
     /// Panics when neither operand is null, matching the Java source error.
     #[must_use]
-    pub fn compare_none(self, lhs_none: bool, rhs_none: bool, order: SortOrder) -> Ordering {
+    pub fn compare_none(
+        self,
+        lhs_none: bool,
+        rhs_none: bool,
+        order: SortOrder,
+    ) -> Ordering {
         assert!(lhs_none || rhs_none, "either operand must be null");
         match (lhs_none, rhs_none) {
             (true, true) => Ordering::Equal,
@@ -48,11 +67,15 @@ impl NullSortOption {
                 Self::NullLast => Ordering::Greater,
                 Self::NullSmallest if order == SortOrder::Asc => Ordering::Less,
                 Self::NullSmallest => Ordering::Greater,
-                Self::NullLargest if order == SortOrder::Asc => Ordering::Greater,
+                Self::NullLargest if order == SortOrder::Asc => {
+                    Ordering::Greater
+                }
                 Self::NullLargest => Ordering::Less,
             },
             (false, true) => self.compare_none(true, false, order).reverse(),
-            (false, false) => unreachable!("assertion rejects two non-null operands"),
+            (false, false) => {
+                unreachable!("assertion rejects two non-null operands")
+            }
         }
     }
 }

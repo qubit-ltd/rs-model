@@ -5,34 +5,66 @@
 // =============================================================================
 //! Complete person records.
 
-use chrono::{DateTime, NaiveDate, NaiveTime, Utc};
-use qubit_mixin::{Info, InfoWithEntity};
+#[allow(unused_imports)]
+use super::{
+    Blood,
+    Education,
+    Ethnic,
+    Gender,
+    Incoming,
+    Industry,
+    JobTitle,
+    Marriage,
+    PersonIdentity,
+    Politics,
+    Religion,
+    SexOrientation,
+    SocialNetwork,
+};
+
+use chrono::{
+    DateTime,
+    NaiveDate,
+    NaiveTime,
+    Utc,
+};
+use qubit_mixin::{
+    Info,
+    InfoWithEntity,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::commons::{Category, Credential, CredentialInfo, Source};
-use crate::contact::{City, Contact, Country, Province};
+use crate::commons::{
+    Category,
+    Credential,
+    CredentialInfo,
+    Source,
+};
+use crate::contact::{
+    City,
+    Contact,
+    Country,
+    Province,
+};
 use crate::medical::MedicareType;
 use crate::mixin::StatefulInfo;
-use crate::order::{Buyer, Client, Consignee};
-use crate::person::{
-    Blood, Education, Ethnic, Gender, Incoming, Industry, JobTitle, Marriage, PersonInfo, Politics,
-    Religion, SexOrientation,
+use crate::order::{
+    Buyer,
+    Client,
+    Consignee,
 };
+use crate::person::PersonInfo;
 use crate::upload::Attachment;
 
-/// Supplies the identity fields used to compare people across projections.
-pub trait PersonIdentity {
-    /// Returns the persisted person identifier, if any.
-    fn person_id(&self) -> Option<i64>;
-
-    /// Returns the identity credential, if any.
-    fn person_credential(&self) -> Option<&CredentialInfo>;
-}
-
 /// A person's complete demographic, contact, and administrative record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[model(
     unique(name = "person_username", fields(username)),
     unique(name = "person_credential", fields(credential))
@@ -191,7 +223,13 @@ impl Person {
         self.gender = info.gender;
         self.birthday = info.birthday;
         self.credential = info.credential.clone();
-        self.contact = Contact::create(None, info.mobile.clone(), info.email.clone(), None, None);
+        self.contact = Contact::create(
+            None,
+            info.mobile.clone(),
+            info.email.clone(),
+            None,
+            None,
+        );
         self.test = info.test;
         self.delete_time = info.delete_time;
     }
@@ -216,7 +254,13 @@ impl Person {
         self.credential = buyer.credential.clone();
         self.gender = buyer.gender;
         self.birthday = buyer.birthday;
-        self.contact = Contact::create(None, buyer.mobile.clone(), buyer.email.clone(), None, None);
+        self.contact = Contact::create(
+            None,
+            buyer.mobile.clone(),
+            buyer.email.clone(),
+            None,
+            None,
+        );
     }
 
     /// Returns this person's compact information projection.
@@ -251,7 +295,8 @@ impl Person {
     /// Reports whether either benefit-coverage flag is explicitly true.
     #[must_use]
     pub fn has_medicare_or_social_security(&self) -> bool {
-        self.has_medicare.unwrap_or(false) || self.has_social_security.unwrap_or(false)
+        self.has_medicare.unwrap_or(false)
+            || self.has_social_security.unwrap_or(false)
     }
 
     /// Reports whether another projection identifies the same person.

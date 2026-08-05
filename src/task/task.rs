@@ -10,7 +10,11 @@
 use qubit_mixin::InfoWithEntity;
 
 use super::{
-    TaskAction, TaskExecutionError, TaskInfo, TaskStatusTransitionError, TaskStatusTransitionRule,
+    TaskAction,
+    TaskExecutionError,
+    TaskInfo,
+    TaskStatusTransitionError,
+    TaskStatusTransitionRule,
 };
 
 /// Behaviour required from an executable task.

@@ -8,16 +8,26 @@
 
 //! Prescription workflow records.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
-    medical::{PrescriptionContent, PrescriptionStatus},
+    medical::{
+        PrescriptionContent,
+        PrescriptionStatus,
+    },
     organization::EmployeeInfo,
 };
 
-/// A prescription and the clinicians, signatures, order, and lifecycle around it.
+/// A prescription and the clinicians, signatures, order, and lifecycle around
+/// it.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct Prescription {
     /// Optional persisted identifier.

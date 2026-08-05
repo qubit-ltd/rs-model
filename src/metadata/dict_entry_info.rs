@@ -7,13 +7,27 @@
 // =============================================================================
 //! Compact dictionary-entry information.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, Normalizable};
+use chrono::{
+    DateTime,
+    Utc,
+};
+use qubit_mixin::{
+    Emptyful,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize, Serializer, ser::SerializeStruct};
+use serde::{
+    Deserialize,
+    Serialize,
+    Serializer,
+    ser::SerializeStruct,
+};
 
-use super::{Dict, dict_entry::format_with_params};
+use super::{
+    Dict,
+    dict_entry::format_with_params,
+};
 
 /// Compact information for a dictionary entry.
 #[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact)]
@@ -46,7 +60,11 @@ pub struct DictEntryInfo {
 impl DictEntryInfo {
     /// Creates an info value unless every supplied identity field is absent.
     #[must_use]
-    pub fn create(id: Option<i64>, code: Option<&str>, name: Option<&str>) -> Option<Self> {
+    pub fn create(
+        id: Option<i64>,
+        code: Option<&str>,
+        name: Option<&str>,
+    ) -> Option<Self> {
         if id.is_none() && code.is_none() && name.is_none() {
             None
         } else {

@@ -8,13 +8,25 @@
 
 //! Medical settlement records.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     commons::CredentialInfo,
-    medical::{HisInfo, MedicalPayment, MedicalSettlementItem, MedicareType, PatientInfo},
+    medical::{
+        HisInfo,
+        MedicalPayment,
+        MedicalSettlementItem,
+        MedicareType,
+        PatientInfo,
+    },
     mixin::StatefulInfo,
 };
 

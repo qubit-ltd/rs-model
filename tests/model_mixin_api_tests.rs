@@ -6,12 +6,21 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_mixin::{Info, InfoWithEntity};
+use qubit_mixin::{
+    Info,
+    InfoWithEntity,
+};
 use qubit_model::{
     commons::Token,
     mixin::{
-        InfoWithAppEntity, InfoWithToken, WithAttachment, WithAttachments, WithCreator,
-        WithDeleter, WithModifier, WithStatefulInfoWithToken,
+        InfoWithAppEntity,
+        InfoWithToken,
+        WithAttachment,
+        WithAttachments,
+        WithCreator,
+        WithDeleter,
+        WithModifier,
+        WithStatefulInfoWithToken,
     },
 };
 use qubit_model_metadata::metadata_of;
@@ -36,7 +45,10 @@ fn assert_with_modifier<T: WithModifier + ?Sized>() {}
 fn assert_with_deleter<T: WithDeleter + ?Sized>() {}
 
 /// Requires the stateful-info-with-token source interface.
-fn assert_with_stateful_info_with_token<T: WithStatefulInfoWithToken + ?Sized>() {}
+fn assert_with_stateful_info_with_token<
+    T: WithStatefulInfoWithToken + ?Sized,
+>() {
+}
 
 #[test]
 fn test_model_mixin_public_types_are_exported() {
@@ -85,7 +97,8 @@ fn test_info_with_token_preserves_composed_source_shape_and_redaction() {
 
     assert!(value.is_complete());
     assert!(!format!("{:?}", value.redacted()).contains("access-secret"));
-    let serialized = serde_json::to_value(&value).expect("serialize token info");
+    let serialized =
+        serde_json::to_value(&value).expect("serialize token info");
     assert_eq!(serialized["id"], 9);
     assert_eq!(serialized["token"]["value"], "access-secret");
 }

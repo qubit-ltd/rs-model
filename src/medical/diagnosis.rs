@@ -10,7 +10,10 @@
 
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::Entity;
 

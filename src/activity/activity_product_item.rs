@@ -5,14 +5,23 @@
 // =============================================================================
 //! Products participating in marketing activities.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     activity::Activity,
-    product::{Product, ProductInfo},
+    product::{
+        Product,
+        ProductInfo,
+    },
 };
 
 /// One indexed product entry within an activity.

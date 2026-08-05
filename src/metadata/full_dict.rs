@@ -7,18 +7,35 @@
 // =============================================================================
 //! Dictionaries with embedded entries.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
+use chrono::{
+    DateTime,
+    Utc,
+};
+use qubit_mixin::{
+    Emptyful,
+    InfoWithEntity,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::commons::State;
 
-use super::{Category, Dict, DictEntry, Scope};
+use super::{
+    Category,
+    Dict,
+    DictEntry,
+    Scope,
+};
 
 /// A dictionary carrying its complete entry collection.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "dict_code", fields(code), ignore_case(code)))]
 pub struct FullDict {
@@ -99,9 +116,9 @@ impl FullDict {
                 .find(|entry| entry.code.eq_ignore_ascii_case(candidate))
                 .map(|entry| entry.name.clone())
                 .or_else(|| {
-                    entries
-                        .iter()
-                        .find_map(|entry| entry.match_code_and_format_name(candidate))
+                    entries.iter().find_map(|entry| {
+                        entry.match_code_and_format_name(candidate)
+                    })
                 })
         };
         exact(value).or_else(|| {

@@ -9,7 +9,10 @@
 //! Domain operations grouped by their owning module.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::Module;
 
@@ -47,7 +50,9 @@ impl Operation {
     #[must_use]
     pub const fn module(self) -> Module {
         match self {
-            Self::Register | Self::Login | Self::Logout => Module::BasicOperation,
+            Self::Register | Self::Login | Self::Logout => {
+                Module::BasicOperation
+            }
             Self::ListSetting => Module::SystemManagement,
             Self::ListUser => Module::UserManagement,
             Self::ListProduct => Module::ProductManagement,

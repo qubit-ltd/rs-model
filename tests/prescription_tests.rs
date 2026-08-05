@@ -9,8 +9,13 @@
 //! Integration coverage for prescription and medical-settlement models.
 
 use qubit_model::medical::{
-    Diagnosis, MedicalSettlement, Prescription, PrescriptionActionParams, PrescriptionContent,
-    PrescriptionItem, PrescriptionOrderRequest,
+    Diagnosis,
+    MedicalSettlement,
+    Prescription,
+    PrescriptionActionParams,
+    PrescriptionContent,
+    PrescriptionItem,
+    PrescriptionOrderRequest,
 };
 use qubit_model_metadata::metadata_of;
 

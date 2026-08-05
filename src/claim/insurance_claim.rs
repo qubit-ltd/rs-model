@@ -9,19 +9,35 @@
 //! Individual insurance claims.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::{
+    DateTime,
+    NaiveDate,
+    Utc,
+};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     claim::{
-        AccidentReason, InsuranceClaimAmount, InsuranceClaimEvent, InsuranceClaimInvoice,
-        InsuranceClaimMedical, InsuranceClaimStatus, InsuranceClaimStatusGroup, InsuredStatus,
+        AccidentReason,
+        InsuranceClaimAmount,
+        InsuranceClaimEvent,
+        InsuranceClaimInvoice,
+        InsuranceClaimMedical,
+        InsuranceClaimStatus,
+        InsuranceClaimStatusGroup,
+        InsuredStatus,
         QuickCompensationState,
     },
-    commons::{Currency, Kinship},
+    commons::{
+        Currency,
+        Kinship,
+    },
     contact::Address,
     order::Client,
     payment::Account,
@@ -29,7 +45,8 @@ use crate::{
     upload::Attachment,
 };
 
-/// An individual claim with insured event, payment, documents, and workflow data.
+/// An individual claim with insured event, payment, documents, and workflow
+/// data.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct InsuranceClaim {
     /// Optional persisted identifier.
@@ -132,7 +149,8 @@ impl InsuranceClaim {
     ///
     /// # Returns
     ///
-    /// `true` for an unsubmitted claim or a claim rejected by the system or insurer.
+    /// `true` for an unsubmitted claim or a claim rejected by the system or
+    /// insurer.
     #[inline(always)]
     #[must_use]
     pub const fn allow_client_operation(&self) -> bool {
@@ -148,7 +166,8 @@ impl InsuranceClaim {
     ///
     /// # Returns
     ///
-    /// `true` while the claim application is awaiting, passed, or temporarily saved for audit.
+    /// `true` while the claim application is awaiting, passed, or temporarily
+    /// saved for audit.
     #[inline(always)]
     #[must_use]
     pub const fn allow_system_reject(&self) -> bool {
@@ -170,7 +189,8 @@ impl InsuranceClaim {
     pub const fn allow_system_accept(&self) -> bool {
         matches!(
             self.status,
-            InsuranceClaimStatus::ClaimApplicationAudited | InsuranceClaimStatus::TemporarySaved
+            InsuranceClaimStatus::ClaimApplicationAudited
+                | InsuranceClaimStatus::TemporarySaved
         )
     }
 }

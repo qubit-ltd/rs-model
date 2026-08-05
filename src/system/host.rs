@@ -9,10 +9,15 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// A provider host identified by its device identifier.
-#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "host_udid", fields(udid)))]
 pub struct Host {

@@ -9,9 +9,15 @@
 //! Claim-invoice charge breakdowns.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// A named medical charge extracted from a claim invoice.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

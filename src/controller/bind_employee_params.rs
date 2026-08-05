@@ -9,12 +9,20 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{contact::Phone, mixin::StatefulInfo};
+use crate::{
+    contact::Phone,
+    mixin::StatefulInfo,
+};
 
 /// Identifying information used to bind a user to an employee record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct BindEmployeeParams {
     /// Username to bind.

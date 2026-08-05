@@ -8,12 +8,21 @@
 
 //! Department domain models.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::commons::{Payload, State};
+use crate::commons::{
+    Payload,
+    State,
+};
 use crate::contact::Contact;
 use crate::mixin::StatefulInfo;
 

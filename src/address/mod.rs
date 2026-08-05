@@ -9,9 +9,23 @@
 //! Address-domain models, builders, mixins, and errors.
 
 mod address_builder;
-mod address_error;
+mod address_error_code;
+mod mismatch_mobile_exception;
 
-pub use crate::contact::{Address, City, Contact, Country, District, Province, Region, Street};
-pub use crate::mixin::{WithAddress, WithContact};
+pub use crate::contact::{
+    Address,
+    City,
+    Contact,
+    Country,
+    District,
+    Province,
+    Region,
+    Street,
+};
+pub use crate::mixin::{
+    WithAddress,
+    WithContact,
+};
 pub use address_builder::AddressBuilder;
-pub use address_error::{AddressErrorCode, MismatchMobileException};
+pub use address_error_code::AddressErrorCode;
+pub use mismatch_mobile_exception::MismatchMobileException;

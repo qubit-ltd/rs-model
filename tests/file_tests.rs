@@ -8,9 +8,20 @@
 
 use qubit_model::{
     commons::State,
-    file::{Attachment, AttachmentType, FileInfo, MediaInfo, MediaType, Upload, UploadParams},
+    file::{
+        Attachment,
+        AttachmentType,
+        FileInfo,
+        MediaInfo,
+        MediaType,
+        Upload,
+        UploadParams,
+    },
 };
-use qubit_model_metadata::{UniqueComparison, metadata_of};
+use qubit_model_metadata::{
+    UniqueComparison,
+    metadata_of,
+};
 use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
@@ -213,7 +224,8 @@ fn file_emptiness_observes_every_source_field() {
 
 #[test]
 fn upload_create_populates_file_and_verification_metadata() {
-    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let path =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
     let params = UploadParams {
         filename: None,
         content_type: Some("application/toml".into()),
@@ -241,7 +253,8 @@ fn upload_create_populates_file_and_verification_metadata() {
 
 #[test]
 fn upload_create_rejects_the_source_invalid_missing_content_type() {
-    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let path =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
     let error = Upload::create(&path, &UploadParams::default()).unwrap_err();
 
     assert_eq!(error.kind(), std::io::ErrorKind::InvalidInput);

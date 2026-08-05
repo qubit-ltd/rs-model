@@ -30,11 +30,11 @@ doctest = true
 [dependencies]
 bigdecimal = { version = "0.4", features = ["serde"] }
 chrono = { version = "0.4", default-features = false, features = ["serde", "std"] }
-qubit-mixin = { path = "../rs-mixin" }
-qubit-model-derive = { path = "../rs-model-derive" }
-qubit-model-metadata = { path = "../rs-model-metadata", features = ["big-decimal", "chrono"] }
-qubit-redact = { path = "../../rust-common/rs-redact" }
-qubit-redact-derive = { path = "../../rust-common/rs-redact-derive" }
+qubit-mixin = { version = "0.2.4", path = "../rs-mixin" }
+qubit-model-derive = { version = "0.1.0", path = "../rs-model-derive" }
+qubit-model-metadata = { version = "0.1.0", path = "../rs-model-metadata", features = ["big-decimal", "chrono"] }
+qubit-redact = { version = "0.4.0", path = "../../rust-common/rs-redact" }
+qubit-redact-derive = { version = "0.4.0", path = "../../rust-common/rs-redact-derive" }
 regex = "1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

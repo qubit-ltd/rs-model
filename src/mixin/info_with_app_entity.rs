@@ -10,12 +10,20 @@
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::mixin::{StatefulInfo, WithApp};
+use crate::mixin::{
+    StatefulInfo,
+    WithApp,
+};
 
 /// Basic information for an entity that belongs to an application.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct InfoWithAppEntity {
     /// Basic identifying information and entity discriminator.
     #[model(opaque)]
@@ -34,7 +42,8 @@ impl InfoWithAppEntity {
         Self { info, app }
     }
 
-    /// Reports whether both the identifying information and application are present.
+    /// Reports whether both the identifying information and application are
+    /// present.
     #[must_use]
     pub fn is_complete(&self) -> bool {
         self.info.is_complete() && self.app.is_some()

@@ -9,14 +9,21 @@
 //! Persisted historical enterprise claim amounts.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::commons::DictEntryInfo;
 
-/// Historical claim totals for one insured person, product, and medical category.
+/// Historical claim totals for one insured person, product, and medical
+/// category.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct EnterpriseHistoryClaimAmount {
     /// Optional persisted identifier.

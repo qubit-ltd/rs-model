@@ -9,7 +9,10 @@
 //! Detailed enterprise claim workflow states.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::claim::enterprise::EnterpriseClaimStatusGroup;
 
@@ -46,12 +49,18 @@ impl EnterpriseClaimStatus {
     pub const fn status_group(self) -> EnterpriseClaimStatusGroup {
         match self {
             Self::NotSubmitted => EnterpriseClaimStatusGroup::NotSubmitted,
-            Self::ClaimApplicationWaitAudit => EnterpriseClaimStatusGroup::Register,
+            Self::ClaimApplicationWaitAudit => {
+                EnterpriseClaimStatusGroup::Register
+            }
             Self::SystemRejected => EnterpriseClaimStatusGroup::Reject,
             Self::ClaimApplicationAudited
             | Self::TemporarySaved
-            | Self::WaitInsuranceCompanyAudited => EnterpriseClaimStatusGroup::Audit,
-            Self::InsuranceCompanyCompleted => EnterpriseClaimStatusGroup::Complete,
+            | Self::WaitInsuranceCompanyAudited => {
+                EnterpriseClaimStatusGroup::Audit
+            }
+            Self::InsuranceCompanyCompleted => {
+                EnterpriseClaimStatusGroup::Complete
+            }
             Self::Canceled => EnterpriseClaimStatusGroup::Cancel,
         }
     }

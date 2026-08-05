@@ -10,7 +10,10 @@
 
 use bigdecimal::BigDecimal;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Historical claim base, deductible, and pooled-fund totals.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

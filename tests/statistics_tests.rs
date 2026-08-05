@@ -9,13 +9,30 @@
 use std::str::FromStr;
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate};
-use qubit_model::{
-    china::{ChinaCities, ChinaDistricts, ChinaProvinces, IdentityCardUtils},
-    person::Gender,
-    statistics::{CategoryValue, StatsDataset, StatsItem, TimeDimension},
+use chrono::{
+    DateTime,
+    NaiveDate,
 };
-use qubit_model_metadata::{TemporalNormalization, TemporalPrecision, metadata_of};
+use qubit_model::{
+    china::{
+        ChinaCities,
+        ChinaDistricts,
+        ChinaProvinces,
+        IdentityCardUtils,
+    },
+    person::Gender,
+    statistics::{
+        CategoryValue,
+        StatsDataset,
+        StatsItem,
+        TimeDimension,
+    },
+};
+use qubit_model_metadata::{
+    TemporalNormalization,
+    TemporalPrecision,
+    metadata_of,
+};
 
 /// Asserts that a type exposes model metadata.
 fn assert_model<T: qubit_model_metadata::HasTypeMetadata>() {
@@ -159,7 +176,8 @@ fn test_identity_card_extracts_and_changes_encoded_values() {
     assert_eq!(
         IdentityCardUtils::change_birthday(
             male_number,
-            NaiveDate::from_ymd_opt(2000, 2, 29).expect("the leap-day birthday should exist")
+            NaiveDate::from_ymd_opt(2000, 2, 29)
+                .expect("the leap-day birthday should exist")
         ),
         Some("321283200002291416".to_owned())
     );

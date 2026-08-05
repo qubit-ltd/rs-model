@@ -16,10 +16,20 @@ use qubit_model::{
     mixin::StatefulInfo,
     order::ReturnIssuer,
     payment::{
-        Account, AccountType, Participant, ParticipantType, PaymentRequest,
-        PaymentRequestTransformer, PaymentResponse, PaymentResponseBase64,
+        Account,
+        AccountType,
+        Participant,
+        ParticipantType,
+        PaymentRequest,
+        PaymentRequestTransformer,
+        PaymentResponse,
+        PaymentResponseBase64,
     },
-    settlement::{Transaction, TransactionStatus, TransactionType},
+    settlement::{
+        Transaction,
+        TransactionStatus,
+        TransactionType,
+    },
     system::Environment,
 };
 use qubit_model_metadata::metadata_of;

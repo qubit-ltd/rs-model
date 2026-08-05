@@ -4,8 +4,15 @@
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
 
-use chrono::{TimeZone, Utc};
-use qubit_model::setting::{DataType, Setting, SettingName};
+use chrono::{
+    TimeZone,
+    Utc,
+};
+use qubit_model::setting::{
+    DataType,
+    Setting,
+    SettingName,
+};
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 
@@ -67,7 +74,8 @@ fn setting_round_trips_non_string_values_and_validates_cardinality() {
 fn setting_uses_source_json_shape_and_case_insensitive_ordering() {
     let mut setting = Setting::new("Beta", DataType::Bool);
     setting.values.push("true".into());
-    setting.create_time = Some(Utc.with_ymd_and_hms(2025, 1, 2, 3, 4, 5).unwrap());
+    setting.create_time =
+        Some(Utc.with_ymd_and_hms(2025, 1, 2, 3, 4, 5).unwrap());
 
     let json = serde_json::to_value(&setting).unwrap();
     assert_eq!(json["type"], "BOOL");

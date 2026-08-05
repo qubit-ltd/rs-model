@@ -10,11 +10,18 @@
 
 use chrono::Utc;
 use qubit_model::{
-    commons::{AuthorizeRecord, State, VerifyState},
+    commons::{
+        AuthorizeRecord,
+        State,
+        VerifyState,
+    },
     contact::Phone,
     medical::MedicareType,
     mixin::StatefulInfo,
-    person::{Gender, User},
+    person::{
+        Gender,
+        User,
+    },
 };
 use qubit_redact::Redact as _;
 

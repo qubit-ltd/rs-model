@@ -7,18 +7,33 @@
 // =============================================================================
 //! Data-dictionary definitions.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
+use chrono::{
+    DateTime,
+    Utc,
+};
+use qubit_mixin::{
+    Emptyful,
+    InfoWithEntity,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::commons::State;
 
-use super::{Category, Scope};
+use super::{
+    Category,
+    Scope,
+};
 
 /// A data dictionary without its entry collection.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "dict_code", fields(code), ignore_case(code)))]
 pub struct Dict {

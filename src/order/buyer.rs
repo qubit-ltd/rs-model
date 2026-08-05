@@ -11,12 +11,21 @@
 use chrono::NaiveDate;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{commons::CredentialInfo, contact::Phone, person::Gender};
+use crate::{
+    commons::CredentialInfo,
+    contact::Phone,
+    person::Gender,
+};
 
 /// Identifying and contact information for the person placing an order.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct Buyer {
     /// Optional persisted identifier.
     #[model(identifier)]

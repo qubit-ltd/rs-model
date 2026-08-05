@@ -10,10 +10,15 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Distinguishes each level of the source administrative hierarchy.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Region {
     /// A country.

@@ -8,12 +8,22 @@
 
 //! Lightweight employee information used by cross-domain references.
 
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::{
+    DateTime,
+    NaiveDate,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::commons::{CredentialInfo, State};
+use crate::commons::{
+    CredentialInfo,
+    State,
+};
 use crate::contact::Phone;
 use crate::mixin::StatefulInfo;
 use crate::person::Gender;

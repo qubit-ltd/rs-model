@@ -6,43 +6,62 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Integration coverage for medical, service, invoice, and claim classifications.
+//! Integration coverage for medical, service, invoice, and claim
+//! classifications.
 
 use qubit_model::{
     claim::{
-        AccidentReason, InsuranceClaimInvoiceStatus, InsuranceClaimInvoiceType,
-        InsuranceClaimStatus, InsuranceClaimStatusGroup, InsuredStatus, QuickCompensationState,
+        AccidentReason,
+        InsuranceClaimInvoiceStatus,
+        InsuranceClaimInvoiceType,
+        InsuranceClaimStatus,
+        InsuranceClaimStatusGroup,
+        InsuredStatus,
+        QuickCompensationState,
         enterprise::{
-            EnterpriseClaimItemStatus, EnterpriseClaimStatus, EnterpriseClaimStatusGroup,
-            EnterpriseInsuredType, EnterpriseOwnership, SaveStatus,
+            EnterpriseClaimItemStatus,
+            EnterpriseClaimStatus,
+            EnterpriseClaimStatusGroup,
+            EnterpriseInsuredType,
+            EnterpriseOwnership,
+            SaveStatus,
         },
     },
     invoice::InvoiceStatus,
-    medical::{MedicalInvoiceType, MedicalType},
+    medical::{
+        MedicalInvoiceType,
+        MedicalType,
+    },
     service::UserServiceState,
 };
 
-/// Verifies classifications preserve every Java wire variant added to the graph.
+/// Verifies classifications preserve every Java wire variant added to the
+/// graph.
 #[test]
 fn test_leaf_enums_preserve_java_wire_values() {
     let values = [
-        serde_json::to_string(&MedicalType::SpecificClinic).expect("medical type should serialize"),
+        serde_json::to_string(&MedicalType::SpecificClinic)
+            .expect("medical type should serialize"),
         serde_json::to_string(&MedicalInvoiceType::Other)
             .expect("medical invoice type should serialize"),
-        serde_json::to_string(&InvoiceStatus::NoInvoice).expect("invoice status should serialize"),
+        serde_json::to_string(&InvoiceStatus::NoInvoice)
+            .expect("invoice status should serialize"),
         serde_json::to_string(&InsuranceClaimInvoiceStatus::IgnoredRepeat)
             .expect("claim invoice status should serialize"),
         serde_json::to_string(&InsuranceClaimInvoiceType::Hospitalization)
             .expect("claim invoice type should serialize"),
-        serde_json::to_string(&AccidentReason::Other).expect("accident reason should serialize"),
-        serde_json::to_string(&InsuredStatus::Other).expect("insured status should serialize"),
+        serde_json::to_string(&AccidentReason::Other)
+            .expect("accident reason should serialize"),
+        serde_json::to_string(&InsuredStatus::Other)
+            .expect("insured status should serialize"),
         serde_json::to_string(&QuickCompensationState::Failed)
             .expect("quick compensation state should serialize"),
         serde_json::to_string(&UserServiceState::AppointmentSuccess)
             .expect("user service state should serialize"),
         serde_json::to_string(&EnterpriseClaimItemStatus::Completed)
             .expect("enterprise item status should serialize"),
-        serde_json::to_string(&SaveStatus::NotSaved).expect("save status should serialize"),
+        serde_json::to_string(&SaveStatus::NotSaved)
+            .expect("save status should serialize"),
     ];
 
     assert_eq!(

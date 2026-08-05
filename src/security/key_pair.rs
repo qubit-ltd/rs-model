@@ -7,17 +7,30 @@
 // =============================================================================
 //! Persisted asymmetric key pairs.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::commons::State;
 
-use super::{KeyFormat, Signature, SignatureAlgorithm, SignedInfo};
+use super::{
+    KeyFormat,
+    Signature,
+    SignatureAlgorithm,
+    SignedInfo,
+};
 
 /// Versioned asymmetric key material owned by a domain entity.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct KeyPair {
     /// Optional persisted identifier.

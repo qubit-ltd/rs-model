@@ -10,12 +10,17 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::error::ErrorType;
 
 /// A stable notification-module error code.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum NotificationErrorCode {
     /// Sending an SMS through a third-party provider failed.
@@ -31,7 +36,8 @@ impl NotificationErrorCode {
         }
     }
 
-    /// Returns the Simplified Chinese message template from the Java resource bundle.
+    /// Returns the Simplified Chinese message template from the Java resource
+    /// bundle.
     #[must_use]
     pub const fn message_template_zh_cn(self) -> &'static str {
         match self {

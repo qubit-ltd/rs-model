@@ -8,15 +8,26 @@
 
 //! Client environment snapshots.
 
-use qubit_mixin::{Emptyful, Normalizable};
+use qubit_mixin::{
+    Emptyful,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{contact::Location, system::Platform};
+use crate::{
+    contact::Location,
+    system::Platform,
+};
 
 /// Network, location, platform, and device context captured for a request.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct Environment {
     /// Optional ASCII client IP address.

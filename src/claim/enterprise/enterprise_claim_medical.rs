@@ -8,12 +8,23 @@
 
 //! Enterprise claim medical encounters.
 
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::{
+    DateTime,
+    NaiveDate,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
-    claim::enterprise::{EnterpriseClaimInvoice, EnterpriseInsuredType, SaveStatus},
+    claim::enterprise::{
+        EnterpriseClaimInvoice,
+        EnterpriseInsuredType,
+        SaveStatus,
+    },
     commons::DictEntryInfo,
 };
 

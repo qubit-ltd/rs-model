@@ -12,7 +12,10 @@ use std::collections::BTreeMap;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 use thiserror::Error;
 
 use crate::contact::Phone;
@@ -20,7 +23,9 @@ use crate::error::ErrorType;
 use crate::notification::NotificationErrorCode;
 
 /// A failed single-recipient or batch SMS operation.
-#[derive(Clone, Debug, Deserialize, Error, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Deserialize, Error, Model, PartialEq, Redact, Serialize,
+)]
 #[error("failed to send SMS: {third_party_message}")]
 pub struct SendSmsException {
     /// Single destination, or `None` for a batch operation.
@@ -40,7 +45,11 @@ pub struct SendSmsException {
 impl SendSmsException {
     /// Creates an error for a single destination phone number.
     #[must_use]
-    pub fn for_phone(phone: Phone, third_party_code: String, third_party_message: String) -> Self {
+    pub fn for_phone(
+        phone: Phone,
+        third_party_code: String,
+        third_party_message: String,
+    ) -> Self {
         Self {
             phone: Some(phone),
             phones: None,

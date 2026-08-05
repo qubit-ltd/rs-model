@@ -7,21 +7,37 @@
 // =============================================================================
 //! Detailed HTTP operation audit logs.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     commons::App,
     mixin::StatefulInfo,
-    person::{User, UserInfo},
+    person::{
+        User,
+        UserInfo,
+    },
 };
 
-use super::{Action, ErrorInfo, LogicRelation, OperationLogInfo};
+use super::{
+    Action,
+    ErrorInfo,
+    LogicRelation,
+    OperationLogInfo,
+};
 
 /// A complete audited request, response, caller, service, and trace record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct OperationLog {
     /// Optional persisted identifier.
@@ -241,7 +257,10 @@ impl OperationLog {
             client_ip: self.client_ip.clone(),
             success: self.success,
             error_code: self.error.as_ref().map(|error| error.code.clone()),
-            error_message: self.error.as_ref().and_then(|error| error.message.clone()),
+            error_message: self
+                .error
+                .as_ref()
+                .and_then(|error| error.message.clone()),
             timestamp: self.request_time,
         }
     }

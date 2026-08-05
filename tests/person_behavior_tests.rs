@@ -5,10 +5,25 @@
 // =============================================================================
 
 use qubit_model::{
-    commons::{CredentialInfo, CredentialType, VerifyState},
-    contact::{Address, Phone},
-    order::{Buyer, Client, Consignee},
-    person::{Gender, Person, PersonInfo},
+    commons::{
+        CredentialInfo,
+        CredentialType,
+        VerifyState,
+    },
+    contact::{
+        Address,
+        Phone,
+    },
+    order::{
+        Buyer,
+        Client,
+        Consignee,
+    },
+    person::{
+        Gender,
+        Person,
+        PersonInfo,
+    },
 };
 use qubit_model_metadata::metadata_of;
 

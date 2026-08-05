@@ -7,7 +7,11 @@
 // =============================================================================
 //! XML adapter for settings.
 
-use crate::setting::{Setting, SettingAdapterError, SettingXmlAdapted};
+use crate::setting::{
+    Setting,
+    SettingAdapterError,
+    SettingXmlAdapted,
+};
 
 /// Marshals settings through their XML-oriented transfer representation.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

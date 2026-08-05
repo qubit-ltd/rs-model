@@ -9,12 +9,21 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{contact::Phone, person::SocialNetwork, system::Environment};
+use crate::{
+    contact::Phone,
+    person::SocialNetwork,
+    system::Environment,
+};
 
 /// Credentials and client environment accepted by the login operation.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct LoginParams {
     /// Optional username identity.

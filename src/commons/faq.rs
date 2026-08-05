@@ -7,18 +7,35 @@
 // =============================================================================
 //! Frequently asked questions.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, Info, InfoWithEntity, Normalizable};
+use chrono::{
+    DateTime,
+    Utc,
+};
+use qubit_mixin::{
+    Emptyful,
+    Info,
+    InfoWithEntity,
+    Normalizable,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::mixin::StatefulInfo;
 
-use super::{App, Category, State};
+use super::{
+    App,
+    Category,
+    State,
+};
 
 /// A frequently asked question associated with an application and product.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct Faq {
     /// Optional persisted identifier.

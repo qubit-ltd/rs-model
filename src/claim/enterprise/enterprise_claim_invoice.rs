@@ -9,12 +9,21 @@
 //! Enterprise claim invoices.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::claim::enterprise::{EnterpriseClaimSelfCareItem, SaveStatus};
+use crate::claim::enterprise::{
+    EnterpriseClaimSelfCareItem,
+    SaveStatus,
+};
 
 /// A medical invoice imported into an enterprise insurance claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
@@ -116,7 +125,8 @@ impl EnterpriseClaimInvoice {
         self.amount >= components
     }
 
-    /// Checks whether every Class-B self-care ratio lies in the inclusive unit interval.
+    /// Checks whether every Class-B self-care ratio lies in the inclusive unit
+    /// interval.
     ///
     /// # Returns
     ///

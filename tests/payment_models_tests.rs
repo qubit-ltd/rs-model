@@ -8,7 +8,11 @@
 
 //! Integration coverage for payment account and record migrations.
 
-use qubit_model::payment::{Account, Participant, Payment};
+use qubit_model::payment::{
+    Account,
+    Participant,
+    Payment,
+};
 use qubit_model_metadata::metadata_of;
 
 /// Verifies payment structs retain every Java source field.

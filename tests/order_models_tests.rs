@@ -9,9 +9,21 @@
 //! Integration coverage for order-domain model migrations.
 
 use qubit_model::order::{
-    Buyer, Client, ClientOrder, ClientRefundSubmitRequest, Consignee, Order, OrderDetail,
-    OrderInfo, OrderItem, OrderSubmitRequest, OrderSubmitResponse, RefererInfo, RefererOrderRecord,
-    Replacement, Return,
+    Buyer,
+    Client,
+    ClientOrder,
+    ClientRefundSubmitRequest,
+    Consignee,
+    Order,
+    OrderDetail,
+    OrderInfo,
+    OrderItem,
+    OrderSubmitRequest,
+    OrderSubmitResponse,
+    RefererInfo,
+    RefererOrderRecord,
+    Replacement,
+    Return,
 };
 use qubit_model_metadata::metadata_of;
 

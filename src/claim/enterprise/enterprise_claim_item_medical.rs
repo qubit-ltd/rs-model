@@ -8,9 +8,15 @@
 
 //! Enterprise claim-item medical links.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Links an enterprise claim calculation item to a medical encounter.
 #[derive(Clone, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

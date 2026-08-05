@@ -9,18 +9,30 @@
 //! Settlement transaction records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     commons::Currency,
     invoice::InvoiceStatus,
     mixin::StatefulInfo,
     order::ReturnIssuer,
-    payment::{Participant, Payment},
-    settlement::{TransactionStatus, TransactionType},
+    payment::{
+        Participant,
+        Payment,
+    },
+    settlement::{
+        TransactionStatus,
+        TransactionType,
+    },
     system::Environment,
 };
 
@@ -30,7 +42,8 @@ pub struct Transaction {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
-    /// Optional transaction classification, omitted in filtered gateway requests.
+    /// Optional transaction classification, omitted in filtered gateway
+    /// requests.
     pub r#type: Option<TransactionType>,
     /// Optional identifier of the originating transaction.
     pub origin_id: Option<i64>,

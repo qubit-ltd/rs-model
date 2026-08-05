@@ -9,9 +9,15 @@
 //! Drug-to-product mappings.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-use crate::{medical::DrugInfo, product::ProductInfo};
+use crate::{
+    medical::DrugInfo,
+    product::ProductInfo,
+};
 
 /// Associates a medical drug snapshot with a sellable product snapshot.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

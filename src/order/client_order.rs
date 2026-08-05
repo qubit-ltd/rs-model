@@ -9,16 +9,33 @@
 //! Client-oriented order query records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Info, InfoWithEntity};
+use chrono::{
+    DateTime,
+    Utc,
+};
+use qubit_mixin::{
+    Info,
+    InfoWithEntity,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     invoice::InvoiceStatus,
     mixin::StatefulInfo,
-    order::{Client, OrderStatus, ReturnStatus},
-    payment::{Account, PaymentChannel, PaymentMode},
+    order::{
+        Client,
+        OrderStatus,
+        ReturnStatus,
+    },
+    payment::{
+        Account,
+        PaymentChannel,
+        PaymentMode,
+    },
     product::ProductInfo,
 };
 

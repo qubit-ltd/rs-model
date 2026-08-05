@@ -7,9 +7,15 @@
 // =============================================================================
 //! String codec for geographic locations.
 
-use crate::contact::{ContactCodecError, CoordinateSystem, Location, LocationCoordinateCodec};
+use crate::contact::{
+    ContactCodecError,
+    CoordinateSystem,
+    Location,
+    LocationCoordinateCodec,
+};
 
-/// Converts locations to and from comma-separated longitude and latitude values.
+/// Converts locations to and from comma-separated longitude and latitude
+/// values.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct LocationCodec {
     /// Coordinate system assigned to decoded locations.
@@ -20,20 +26,26 @@ impl LocationCodec {
     /// Separator between longitude and latitude.
     pub const SPLITTER: char = ',';
 
-    /// Creates a codec that assigns the supplied coordinate system when decoding.
+    /// Creates a codec that assigns the supplied coordinate system when
+    /// decoding.
     #[must_use]
     pub const fn new(coordinate_system: Option<CoordinateSystem>) -> Self {
         Self { coordinate_system }
     }
 
     /// Decodes a location, treating null or empty input as absent.
-    pub fn decode(&self, source: Option<&str>) -> Result<Option<Location>, ContactCodecError> {
+    pub fn decode(
+        &self,
+        source: Option<&str>,
+    ) -> Result<Option<Location>, ContactCodecError> {
         let Some(source) = source.filter(|value| !value.is_empty()) else {
             return Ok(None);
         };
         let mut parts = source.split(Self::SPLITTER);
-        let longitude = parts.next().ok_or(ContactCodecError::InvalidLocation)?;
-        let latitude = parts.next().ok_or(ContactCodecError::InvalidLocation)?;
+        let longitude =
+            parts.next().ok_or(ContactCodecError::InvalidLocation)?;
+        let latitude =
+            parts.next().ok_or(ContactCodecError::InvalidLocation)?;
         if parts.next().is_some() {
             return Err(ContactCodecError::InvalidLocation);
         }
@@ -49,7 +61,8 @@ impl LocationCodec {
         }))
     }
 
-    /// Decodes a location and overrides the codec's coordinate system for this call.
+    /// Decodes a location and overrides the codec's coordinate system for this
+    /// call.
     pub fn decode_with_coordinate_system(
         &self,
         source: Option<&str>,
@@ -66,10 +79,12 @@ impl LocationCodec {
     #[must_use]
     pub fn encode(&self, source: Option<&Location>) -> Option<String> {
         source.map(|location| {
-            let longitude = LocationCoordinateCodec::encode(Some(&location.longitude))
-                .expect("present longitude");
-            let latitude = LocationCoordinateCodec::encode(Some(&location.latitude))
-                .expect("present latitude");
+            let longitude =
+                LocationCoordinateCodec::encode(Some(&location.longitude))
+                    .expect("present longitude");
+            let latitude =
+                LocationCoordinateCodec::encode(Some(&location.latitude))
+                    .expect("present latitude");
             format!("{longitude}{}{latitude}", Self::SPLITTER)
         })
     }

@@ -5,18 +5,28 @@
 // =============================================================================
 //! Telephone number value objects.
 
-use std::fmt::{self, Display, Formatter};
+use std::fmt::{
+    self,
+    Display,
+    Formatter,
+};
 
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
-/// A telephone number split into its source-domain country, city, and local parts.
+/// A telephone number split into its source-domain country, city, and local
+/// parts.
 ///
 /// The three components preserve the Java model's representation while the
 /// `textual` capability permits mobile-format metadata on fields that use it.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Redact, Serialize,
+)]
 #[model(textual)]
 pub struct Phone {
     /// Optional international dialing area without the `+` prefix.

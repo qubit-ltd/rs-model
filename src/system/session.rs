@@ -7,23 +7,43 @@
 // =============================================================================
 //! Persisted and thread-local application sessions.
 
-use std::{cell::RefCell, collections::HashSet};
+use std::{
+    cell::RefCell,
+    collections::HashSet,
+};
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize, Serializer, ser::SerializeStruct};
+use serde::{
+    Deserialize,
+    Serialize,
+    Serializer,
+    ser::SerializeStruct,
+};
 
 use crate::{
-    commons::{App, Token},
+    commons::{
+        App,
+        Token,
+    },
     mixin::StatefulInfo,
     organization::Organization,
-    person::{User, UserInfo},
+    person::{
+        User,
+        UserInfo,
+    },
     privilege::Role,
 };
 
-use super::{Environment, Expired};
+use super::{
+    Environment,
+    Expired,
+};
 
 thread_local! {
     static CURRENT_SESSION: RefCell<Option<Session>> = const { RefCell::new(None) };
@@ -136,7 +156,9 @@ impl Session {
     }
 
     /// Mutates this thread's current session and returns the closure result.
-    pub fn with_current_session<R>(operation: impl FnOnce(&mut Self) -> R) -> R {
+    pub fn with_current_session<R>(
+        operation: impl FnOnce(&mut Self) -> R,
+    ) -> R {
         CURRENT_SESSION.with(|session| {
             let mut session = session.borrow_mut();
             operation(session.get_or_insert_with(Self::default))
@@ -179,7 +201,8 @@ impl Session {
 
     /// Replaces role codes and effective privileges from role models.
     pub fn set_roles_and_privileges(&mut self, roles: &[Role]) {
-        let role_codes: HashSet<_> = roles.iter().map(|role| role.code.clone()).collect();
+        let role_codes: HashSet<_> =
+            roles.iter().map(|role| role.code.clone()).collect();
         let privileges: HashSet<_> = roles
             .iter()
             .flat_map(|role| role.privileges.iter().cloned())

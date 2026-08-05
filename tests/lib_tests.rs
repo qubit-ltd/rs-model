@@ -12,7 +12,10 @@ use std::{
     fs,
     path::PathBuf,
     process::Command,
-    time::{SystemTime, UNIX_EPOCH},
+    time::{
+        SystemTime,
+        UNIX_EPOCH,
+    },
 };
 
 #[test]
@@ -106,9 +109,11 @@ fn test_java_migration_dependency_scanner_validates_inventory() {
     );
 }
 
-/// Verifies scanner validation rejects both missing and stale public declarations.
+/// Verifies scanner validation rejects both missing and stale public
+/// declarations.
 #[test]
-fn test_java_migration_dependency_scanner_rejects_inventory_declaration_mismatches() {
+fn test_java_migration_dependency_scanner_rejects_inventory_declaration_mismatches()
+ {
     let unique_suffix = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .expect("the system clock should be after the Unix epoch")
@@ -159,7 +164,8 @@ fn test_java_migration_dependency_scanner_rejects_inventory_declaration_mismatch
         .arg(&inventory)
         .output()
         .expect("the Python inventory dependency scanner should start");
-    fs::remove_dir_all(&test_dir).expect("the fixture directory should be removed");
+    fs::remove_dir_all(&test_dir)
+        .expect("the fixture directory should be removed");
 
     let diagnostics = format!(
         "{}{}",

@@ -7,7 +7,10 @@
 // =============================================================================
 
 use qubit_model::{
-    organization::{Employee, Organization},
+    organization::{
+        Employee,
+        Organization,
+    },
     person::SocialNetworkAccount,
     product::Seller,
     system::Session,

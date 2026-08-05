@@ -9,10 +9,15 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Identifies a field that can appear in a model or validation message.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Field {
     /// Source field `ACTION`.
@@ -642,7 +647,9 @@ impl Field {
             Self::Guardian => "guardian",
             Self::HasChild => "has_child",
             Self::HasMedicare => "has_medicare",
-            Self::HasMedicareOrSocialSecurity => "has_medicare_or_social_security",
+            Self::HasMedicareOrSocialSecurity => {
+                "has_medicare_or_social_security"
+            }
             Self::HasSocialSecurity => "has_social_security",
             Self::Height => "height",
             Self::Host => "host",
@@ -845,7 +852,9 @@ impl Field {
             Self::SelfCareAmount => "self_care_amount",
             Self::MedicareAmount => "medicare_amount",
             Self::SeriousIllnessPaid => "serious_illness_paid",
-            Self::SeriousIllnessInsurancePaid => "serious_illness_insurance_paid",
+            Self::SeriousIllnessInsurancePaid => {
+                "serious_illness_insurance_paid"
+            }
             Self::CivilAffairSubsidyPaid => "civil_affair_subsidy_paid",
             Self::MessageKey => "message_key",
             Self::PrimaryDiagnosis => "primary_diagnosis",

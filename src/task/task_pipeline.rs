@@ -9,7 +9,10 @@
 
 use serde_json::Value;
 
-use super::{Task, TaskPipelineStatus};
+use super::{
+    Task,
+    TaskPipelineStatus,
+};
 
 /// An ordered pipeline of executable tasks.
 ///

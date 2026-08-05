@@ -11,11 +11,20 @@
 use chrono::NaiveDateTime;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     commons::DictEntryInfo,
-    medical::{Diagnosis, Dosage, MedicalType, Patient, PrescriptionItem},
+    medical::{
+        Diagnosis,
+        Dosage,
+        MedicalType,
+        Patient,
+        PrescriptionItem,
+    },
     organization::EmployeeInfo,
 };
 

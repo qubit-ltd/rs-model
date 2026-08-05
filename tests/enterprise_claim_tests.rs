@@ -9,9 +9,16 @@
 //! Integration coverage for enterprise insurance-claim models.
 
 use qubit_model::claim::enterprise::{
-    EnterpriseClaim, EnterpriseClaimEvent, EnterpriseClaimInvoice, EnterpriseClaimItem,
-    EnterpriseClaimItemMedical, EnterpriseClaimMedical, EnterpriseClaimSelfCareItem,
-    EnterpriseHistoryClaimAmount, EnterpriseInsuredInfo, HistoryClaimAmount,
+    EnterpriseClaim,
+    EnterpriseClaimEvent,
+    EnterpriseClaimInvoice,
+    EnterpriseClaimItem,
+    EnterpriseClaimItemMedical,
+    EnterpriseClaimMedical,
+    EnterpriseClaimSelfCareItem,
+    EnterpriseHistoryClaimAmount,
+    EnterpriseInsuredInfo,
+    HistoryClaimAmount,
 };
 use qubit_model_metadata::metadata_of;
 

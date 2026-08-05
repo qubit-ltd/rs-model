@@ -9,19 +9,29 @@
 //! Enterprise claim calculation items.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::{
+    DateTime,
+    NaiveDate,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     claim::enterprise::{
-        EnterpriseClaimItemStatus, EnterpriseClaimMedical, EnterpriseHistoryClaimAmount,
+        EnterpriseClaimItemStatus,
+        EnterpriseClaimMedical,
+        EnterpriseHistoryClaimAmount,
         EnterpriseInsuredType,
     },
     commons::DictEntryInfo,
 };
 
-/// A calculated enterprise claim partition for one medical category and insured type.
+/// A calculated enterprise claim partition for one medical category and insured
+/// type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct EnterpriseClaimItem {
     /// Optional persisted identifier.
@@ -106,11 +116,12 @@ pub struct EnterpriseClaimItem {
 }
 
 impl EnterpriseClaimItem {
-    /// Derives hospital and disease summaries from the attached medical encounters.
+    /// Derives hospital and disease summaries from the attached medical
+    /// encounters.
     ///
     /// A single hospital keeps its name and level. Multiple hospitals use the
-    /// source label `其他` and the greatest available level. The first available
-    /// disease supplies the disease code.
+    /// source label `其他` and the greatest available level. The first
+    /// available disease supplies the disease code.
     pub fn init_hospital_and_disease(&mut self) {
         let Some(first) = self.medicals.first() else {
             return;
@@ -134,6 +145,7 @@ impl EnterpriseClaimItem {
                 .filter_map(|item| item.hospital_level)
                 .max();
         }
-        self.disease_code = first.disease.as_ref().map(|disease| disease.code.clone());
+        self.disease_code =
+            first.disease.as_ref().map(|disease| disease.code.clone());
     }
 }

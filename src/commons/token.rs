@@ -7,13 +7,21 @@
 // =============================================================================
 //! Access-token model values.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Represents a token together with its issuance and lifetime metadata.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct Token {
     /// Current token value.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
