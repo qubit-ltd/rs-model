@@ -12,6 +12,7 @@ pub mod medical;
 pub mod organization;
 pub mod person;
 pub mod privilege;
+pub mod product;
 pub mod task;
 pub mod audit;
 pub mod claim;
