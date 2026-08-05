@@ -4,6 +4,7 @@
 //! the domain models migrated from Java.
 
 pub mod error;
+pub mod feedback;
 pub mod commons;
 pub mod contact;
 pub mod device;
