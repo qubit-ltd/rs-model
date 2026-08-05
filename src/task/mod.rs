@@ -1,18 +1,24 @@
 //! Task execution models and transition rules.
 
 mod task_info;
+#[allow(clippy::module_inception)]
+mod task;
+mod task_pipeline;
 mod task_statistics;
 mod task_status_transition_rule;
 
 use qubit_model_derive::Model;
+use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
 pub use task_info::TaskInfo;
+pub use task::Task;
+pub use task_pipeline::TaskPipeline;
 pub use task_statistics::TaskStatistics;
 pub use task_status_transition_rule::{TaskStatusTransitionError, TaskStatusTransitionRule};
 
 /// An operation applied to a task.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TaskAction {
     Submit,
@@ -24,7 +30,7 @@ pub enum TaskAction {
 }
 
 /// A task lifecycle state.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TaskStatus {
     Created,
@@ -37,7 +43,7 @@ pub enum TaskStatus {
 }
 
 /// The execution status of a task pipeline.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TaskPipelineStatus {
     Idle,
@@ -48,32 +54,47 @@ pub enum TaskPipelineStatus {
     Cancelled,
 }
 
-/// Behaviour required from an executable task.
-pub trait Task {
-    /// Returns the task metadata.
-    fn info(&self) -> &TaskInfo;
+impl TaskPipelineStatus {
+    /// Reports whether this status is idle.
+    #[must_use]
+    pub const fn is_idle(self) -> bool {
+        matches!(self, Self::Idle)
+    }
 
-    /// Mutably returns the task metadata.
-    fn info_mut(&mut self) -> &mut TaskInfo;
+    /// Reports whether this status has left idle.
+    #[must_use]
+    pub const fn is_started(self) -> bool {
+        !self.is_idle()
+    }
 
-    /// Executes the task's domain work.
-    ///
-    /// Implementations update their result before returning. Failures are represented by the
-    /// implementation-specific error value.
-    fn run(&mut self) -> Result<(), TaskExecutionError>;
+    /// Reports whether this status is running.
+    #[must_use]
+    pub const fn is_running(self) -> bool {
+        matches!(self, Self::Running)
+    }
 
-    /// Applies a lifecycle action and records its optional message.
-    ///
-    /// Returns an error when the action is invalid for the current task state.
-    fn update_status(
-        &mut self,
-        action: TaskAction,
-        message: Option<String>,
-    ) -> Result<(), TaskStatusTransitionError> {
-        let info = self.info_mut();
-        info.status = TaskStatusTransitionRule::next(info.status, action)?;
-        info.message = message;
-        Ok(())
+    /// Reports whether this status is paused.
+    #[must_use]
+    pub const fn is_paused(self) -> bool {
+        matches!(self, Self::Paused)
+    }
+
+    /// Reports whether this status is finished.
+    #[must_use]
+    pub const fn is_finished(self) -> bool {
+        matches!(self, Self::Finished)
+    }
+
+    /// Reports whether this status is failed.
+    #[must_use]
+    pub const fn is_failed(self) -> bool {
+        matches!(self, Self::Failed)
+    }
+
+    /// Reports whether this status is cancelled.
+    #[must_use]
+    pub const fn is_cancelled(self) -> bool {
+        matches!(self, Self::Cancelled)
     }
 }
 
