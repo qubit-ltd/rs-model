@@ -10,6 +10,8 @@ pub mod mixin;
 pub mod medical;
 pub mod organization;
 pub mod person;
+pub mod privilege;
+pub mod task;
 pub mod util;
 mod entity;
 mod module;
