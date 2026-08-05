@@ -18,6 +18,7 @@ pub mod person;
 pub mod privilege;
 pub mod product;
 pub mod service;
+pub mod setting;
 pub mod shipping;
 pub mod settlement;
 pub mod task;
