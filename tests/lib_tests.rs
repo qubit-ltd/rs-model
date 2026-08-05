@@ -1,5 +1,7 @@
 //! Integration tests for the crate root exports.
 
+use std::{path::PathBuf, process::Command};
+
 #[test]
 fn test_root_model_module_is_available() {
     let _: Option<qubit_model::ModelError> = None;
@@ -23,19 +25,27 @@ fn test_model_error_preserves_validation_violation_context() {
     );
 }
 
+/// Verifies the inventory dependency scanner accepts the checked-in inventory.
 #[test]
-fn test_inventory_records_direct_name_builder_dependencies_and_nested_static_import() {
-    let inventory = include_str!("../doc/java-migration-inventory.md");
+fn test_java_migration_dependency_scanner_validates_inventory() {
+    let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let java_common_dir = manifest_dir.join("../../java-common");
+    let output = Command::new("python3")
+        .current_dir(&manifest_dir)
+        .arg("scripts/synchronize_java_migration_dependencies.py")
+        .arg("--check")
+        .arg("--common-mixin-source")
+        .arg(java_common_dir.join("common-mixin/src/main/java"))
+        .arg("--common-model-source")
+        .arg(java_common_dir.join("common-model/src/main/java"))
+        .arg("--inventory")
+        .arg("doc/java-migration-inventory.md")
+        .output()
+        .expect("the Python inventory dependency scanner should start");
 
-    for expected_row in [
-        "| `ltd.qubit.commons.mixin.WithEntity` | `qubit_mixin::WithEntity` | trait (Java interface) | ltd.qubit.commons.util.NameBuilder | available in qubit-mixin |",
-        "| `ltd.qubit.model.commons.Owner` | `qubit_model::commons::Owner` | struct (Java class) | ltd.qubit.commons.mixin.Emptyful, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.Normalizable, ltd.qubit.commons.util.NameBuilder | planned |",
-        "| `ltd.qubit.model.task.TaskInfo` | `qubit_model::task::TaskInfo` | struct (Java class) | ltd.qubit.commons.mixin.Creatable, ltd.qubit.commons.mixin.Identifiable, ltd.qubit.commons.mixin.InfoWithEntity, ltd.qubit.commons.mixin.Modifiable, ltd.qubit.commons.mixin.WithStatus, ltd.qubit.commons.util.NameBuilder, ltd.qubit.model.commons.Category, ltd.qubit.model.mixin.WithCreator, ltd.qubit.model.person.User, ltd.qubit.model.person.UserInfo | planned |",
-        "| `ltd.qubit.model.system.SettingXmlAdapter` | `qubit_model::system::SettingXmlAdapter` | struct (Java class) | static ltd.qubit.model.system.SettingXmlAdapter.Adapted | planned |",
-    ] {
-        assert!(
-            inventory.contains(expected_row),
-            "missing inventory row: {expected_row}"
-        );
-    }
+    assert!(
+        output.status.success(),
+        "scanner validation failed:\n{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
 }
