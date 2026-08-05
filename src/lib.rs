@@ -14,6 +14,8 @@ pub mod person;
 pub mod privilege;
 pub mod task;
 pub mod audit;
+pub mod claim;
+pub mod invoice;
 pub mod system;
 pub mod upload;
 pub mod util;
