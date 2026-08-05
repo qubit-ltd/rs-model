@@ -1,5 +1,9 @@
 //! System-level shared values.
 
+mod environment;
+
+pub use environment::Environment;
+
 use qubit_model_derive::Model;
 use serde::{Deserialize, Serialize};
 
