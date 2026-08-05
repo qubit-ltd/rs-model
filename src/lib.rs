@@ -12,6 +12,7 @@ pub mod organization;
 pub mod person;
 pub mod privilege;
 pub mod task;
+pub mod upload;
 pub mod util;
 mod entity;
 mod module;
