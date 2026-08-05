@@ -1,6 +1,7 @@
 //! Person, user, and demographic domain models.
 
 mod enums;
+mod person_info;
 mod user;
 mod user_info;
 
@@ -10,3 +11,4 @@ pub use enums::{
 };
 pub use user::User;
 pub use user_info::UserInfo;
+pub use person_info::PersonInfo;
