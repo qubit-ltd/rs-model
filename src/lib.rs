@@ -11,6 +11,7 @@ pub mod device;
 pub mod mixin;
 pub mod medical;
 pub mod organization;
+pub mod notification;
 pub mod order;
 pub mod payment;
 pub mod person;
