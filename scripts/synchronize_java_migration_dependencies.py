@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import difflib
 import re
+import sys
 from pathlib import Path
 
 
@@ -15,6 +16,14 @@ IMPORT_PATTERN = re.compile(
 )
 PACKAGE_PATTERN = re.compile(r"^\s*package\s+(?P<package>[\w.]+)\s*;", re.MULTILINE)
 INVENTORY_ROW_PATTERN = re.compile(r"^\| `(?P<fqcn>[^`]+)` \|.*\|.*\|.*\|.*\|$")
+PUBLIC_TYPE_PATTERN = re.compile(
+    r"\bpublic\s+(?:(?:abstract|final|non-sealed|sealed|static|strictfp)\s+)*"
+    r"(?:class|enum|interface|record|@interface)\s+(?P<name>[A-Za-z_]\w*)"
+)
+JAVA_COMMENT_PATTERN = re.compile(r"/\*.*?\*/|//[^\n]*", re.DOTALL)
+JAVA_STRUCTURE_PATTERN = re.compile(
+    rf"(?P<declaration>{PUBLIC_TYPE_PATTERN.pattern})|(?P<open>\{{)|(?P<close>\}})"
+)
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -40,9 +49,12 @@ def inventory_fqcns(inventory: str) -> set[str]:
     }
 
 
-def source_files(source_roots: list[Path], known_fqcns: set[str]) -> dict[str, Path]:
-    """Map each source-inventory top-level FQCN to its Java source file."""
-    files: dict[str, Path] = {}
+def public_declarations(
+    source_roots: list[Path],
+) -> tuple[dict[str, Path], set[str]]:
+    """Extract all public top-level and nested Java declarations from the source roots."""
+    declarations: dict[str, Path] = {}
+    top_level_declarations: set[str] = set()
     for source_root in source_roots:
         if not source_root.is_dir():
             raise FileNotFoundError(f"Java source root does not exist: {source_root}")
@@ -51,34 +63,53 @@ def source_files(source_roots: list[Path], known_fqcns: set[str]) -> dict[str, P
             match = PACKAGE_PATTERN.search(contents)
             if match is None:
                 continue
-            fqcn = f"{match.group('package')}.{path.stem}"
-            if fqcn in known_fqcns:
-                files[fqcn] = path
-    return files
+            package = match.group("package")
+            nesting: list[tuple[str, int]] = []
+            pending_type: str | None = None
+            brace_depth = 0
+            for token in JAVA_STRUCTURE_PATTERN.finditer(JAVA_COMMENT_PATTERN.sub("", contents)):
+                if token.group("declaration") is not None:
+                    pending_type = token.group("name")
+                elif token.group("open") is not None:
+                    brace_depth += 1
+                    if pending_type is not None:
+                        fqcn = ".".join([package, *(name for name, _ in nesting), pending_type])
+                        if fqcn in declarations:
+                            raise ValueError(f"duplicate public declaration: {fqcn}")
+                        declarations[fqcn] = path
+                        if not nesting:
+                            top_level_declarations.add(fqcn)
+                        nesting.append((pending_type, brace_depth))
+                        pending_type = None
+                elif token.group("close") is not None:
+                    while nesting and nesting[-1][1] == brace_depth:
+                        nesting.pop()
+                    brace_depth -= 1
+    return declarations, top_level_declarations
 
 
-def owning_inventory_type(target: str, known_fqcns: set[str]) -> str | None:
-    """Resolve an ordinary or static import to its imported inventory type."""
+def owning_source_type(target: str, source_fqcns: set[str]) -> str | None:
+    """Resolve an ordinary or static import to its imported source declaration."""
     candidate = target
     while "." in candidate:
-        if candidate in known_fqcns:
+        if candidate in source_fqcns:
             return candidate
         candidate = candidate.rsplit(".", maxsplit=1)[0]
-    return candidate if candidate in known_fqcns else None
+    return candidate if candidate in source_fqcns else None
 
 
-def dependencies_for_source(path: Path, known_fqcns: set[str]) -> list[str]:
+def dependencies_for_source(path: Path, source_fqcns: set[str]) -> list[str]:
     """Return ordered, unique in-scope type dependencies imported by one Java file."""
     dependencies: list[str] = []
     for match in IMPORT_PATTERN.finditer(path.read_text(encoding="utf-8")):
-        dependency = owning_inventory_type(match.group("target"), known_fqcns)
+        dependency = owning_source_type(match.group("target"), source_fqcns)
         if dependency is not None and dependency not in dependencies:
             dependencies.append(dependency)
     return dependencies
 
 
 def replace_dependency_column(
-    inventory: str, source_by_fqcn: dict[str, Path], known_fqcns: set[str]
+    inventory: str, source_by_fqcn: dict[str, Path], source_fqcns: set[str]
 ) -> str:
     """Replace every table dependency cell with dependencies scanned from Java imports."""
     rows: list[str] = []
@@ -88,21 +119,47 @@ def replace_dependency_column(
             rows.append(line)
             continue
         cells = line.rstrip("\n").split("|")
-        dependencies = dependencies_for_source(path, known_fqcns)
+        dependencies = dependencies_for_source(path, source_fqcns)
         cells[4] = f" {', '.join(dependencies) if dependencies else '-'} "
         rows.append("|".join(cells) + ("\n" if line.endswith("\n") else ""))
     return "".join(rows)
+
+
+def declaration_drift(inventory_fqcns: set[str], source_fqcns: set[str]) -> str:
+    """Describe public source declarations absent from either side of the inventory."""
+    diagnostics: list[str] = []
+    missing_from_inventory = sorted(source_fqcns - inventory_fqcns)
+    missing_from_source = sorted(inventory_fqcns - source_fqcns)
+    if missing_from_inventory:
+        diagnostics.append(
+            "public declarations missing from inventory:\n"
+            + "".join(f"  {fqcn}\n" for fqcn in missing_from_inventory)
+        )
+    if missing_from_source:
+        diagnostics.append(
+            "inventory declarations missing from source:\n"
+            + "".join(f"  {fqcn}\n" for fqcn in missing_from_source)
+        )
+    return "".join(diagnostics)
 
 
 def main() -> int:
     """Synchronize the inventory or report the precise dependency-table diff."""
     arguments = parse_arguments()
     inventory = arguments.inventory.read_text(encoding="utf-8")
-    known_fqcns = inventory_fqcns(inventory)
-    source_by_fqcn = source_files(
-        [arguments.common_mixin_source, arguments.common_model_source], known_fqcns
+    recorded_fqcns = inventory_fqcns(inventory)
+    source_by_fqcn, top_level_fqcns = public_declarations(
+        [arguments.common_mixin_source, arguments.common_model_source]
     )
-    synchronized = replace_dependency_column(inventory, source_by_fqcn, known_fqcns)
+    source_fqcns = set(source_by_fqcn)
+    if diagnostics := declaration_drift(recorded_fqcns, source_fqcns):
+        print(diagnostics, end="", file=sys.stderr)
+        return 1
+    synchronized = replace_dependency_column(
+        inventory,
+        {fqcn: source_by_fqcn[fqcn] for fqcn in top_level_fqcns},
+        source_fqcns,
+    )
     if arguments.check:
         if synchronized == inventory:
             return 0

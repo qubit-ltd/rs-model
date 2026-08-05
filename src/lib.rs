@@ -5,4 +5,4 @@
 
 pub mod error;
 
-pub use error::ModelError;
+pub use error::{ModelError, ValidationViolation};
