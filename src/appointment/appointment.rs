@@ -3,46 +3,40 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! Marketing activity records.
+//! Appointment model.
 
 use chrono::{DateTime, Utc};
-use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
-use crate::activity::ActivityProductItem;
-use crate::commons::State;
+use crate::{audit::AuditStatus, commons::App, mixin::StatefulInfo, person::PersonInfo};
 
-/// A marketing activity and the products participating in it.
+/// A user's appointment for a service provided by another domain object.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
-#[model(unique(fields(code)))]
-pub struct Activity {
+pub struct Appointment {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
-    /// Globally unique stable code.
+    /// Application that owns the appointment.
+    #[model(reference(target = App, target_field = info))]
+    pub app: StatefulInfo,
+    /// Domain type of the appointment target.
     #[model(text(min_chars = 1, max_chars = 64))]
-    pub code: String,
-    /// Activity name.
-    #[model(text(min_chars = 1, max_chars = 256))]
-    pub name: String,
-    /// Owning application.
-    #[model(opaque)]
-    pub app: Info,
-    /// Products participating in the activity.
-    pub items: Vec<ActivityProductItem>,
-    /// Optional description.
-    pub description: Option<String>,
-    /// UTC activity start timestamp.
+    pub objective_type: String,
+    /// Persisted identifier of the appointment target.
+    pub objective_id: i64,
+    /// Person applying for the appointment.
+    #[redact(nested)]
+    pub applicant: PersonInfo,
+    /// UTC service start timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub start_time: DateTime<Utc>,
-    /// UTC activity end timestamp.
+    /// UTC service end timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub end_time: DateTime<Utc>,
-    /// Lifecycle state.
-    #[serde(default)]
-    pub state: State,
+    /// Current audit state.
+    pub audit_status: AuditStatus,
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,

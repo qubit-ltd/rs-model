@@ -1,3 +1,8 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+// =============================================================================
 //! Coupons issued by marketing activities.
 
 use chrono::{DateTime, Utc};
@@ -20,8 +25,10 @@ pub struct ActivityCoupon {
     pub activity: Info,
     /// Coupon redemption code.
     #[model(text(min_chars = 1, max_chars = 128))]
+    #[redact(level = "secret")]
     pub coupon_code: String,
     /// Person receiving the coupon.
+    #[redact(nested)]
     pub person: Person,
     /// Order in which the coupon is used.
     pub order: OrderInfo,

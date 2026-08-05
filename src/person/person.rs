@@ -1,3 +1,8 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+// =============================================================================
 //! Complete person records.
 
 use chrono::{DateTime, NaiveDate, NaiveTime, Utc};
@@ -6,71 +11,99 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
-use crate::commons::CredentialInfo;
-use crate::contact::Contact;
+use crate::commons::{Category, Credential, CredentialInfo, Source};
+use crate::contact::{City, Contact, Country, Province};
 use crate::medical::MedicareType;
 use crate::mixin::StatefulInfo;
+use crate::order::{Buyer, Client, Consignee};
 use crate::person::{
     Blood, Education, Ethnic, Gender, Incoming, Industry, JobTitle, Marriage, PersonInfo, Politics,
     Religion, SexOrientation,
 };
 use crate::upload::Attachment;
 
+/// Supplies the identity fields used to compare people across projections.
+pub trait PersonIdentity {
+    /// Returns the persisted person identifier, if any.
+    fn person_id(&self) -> Option<i64>;
+
+    /// Returns the identity credential, if any.
+    fn person_credential(&self) -> Option<&CredentialInfo>;
+}
+
 /// A person's complete demographic, contact, and administrative record.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[model(
+    unique(name = "person_username", fields(username)),
+    unique(name = "person_credential", fields(credential))
+)]
 pub struct Person {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
     /// Optional data-source information.
-    #[model(opaque)]
+    #[model(reference(target = Source, target_field = info), index, opaque)]
     pub source: Option<InfoWithEntity>,
     /// Optional classification information.
-    #[model(opaque)]
+    #[model(reference(target = Category, target_field = info), index, opaque)]
     pub category: Option<InfoWithEntity>,
     /// Real name.
-    #[model(text(min_chars = 1, max_chars = 128))]
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
     /// Optional globally unique registered user name.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub username: Option<String>,
     /// Optional gender.
+    #[model(index)]
     pub gender: Option<Gender>,
     /// Optional birth date.
+    #[model(index)]
     pub birthday: Option<NaiveDate>,
     /// Optional birth time.
+    #[model(index)]
     pub birth_time: Option<NaiveTime>,
     /// Optional birth-country information.
-    #[model(opaque)]
+    #[model(reference(target = Country, target_field = info), index, opaque)]
     pub birth_country: Option<Info>,
     /// Optional birth-province information.
-    #[model(opaque)]
+    #[model(reference(target = Province, target_field = info), index, opaque)]
     pub birth_province: Option<Info>,
     /// Optional birth-city information.
-    #[model(opaque)]
+    #[model(reference(target = City, target_field = info), index, opaque)]
     pub birth_city: Option<Info>,
     /// Optional identity credential.
+    #[model(reference(target = Credential, target_field = info, must_exist = false))]
+    #[redact(nested)]
     pub credential: Option<CredentialInfo>,
     /// Whether the person has medical insurance.
+    #[model(index)]
     pub has_medicare: Option<bool>,
     /// Optional medical-insurance classification.
+    #[model(index)]
     pub medicare_type: Option<MedicareType>,
     /// Optional medical-insurance card.
+    #[model(reference(target = Credential, target_field = info, must_exist = false))]
+    #[redact(nested)]
     pub medicare_card: Option<CredentialInfo>,
     /// Optional medical-insurance city.
-    #[model(opaque)]
+    #[model(reference(target = City, target_field = info), index, opaque)]
     pub medicare_city: Option<Info>,
     /// Whether the person has social security.
+    #[model(index)]
     pub has_social_security: Option<bool>,
     /// Optional social-security card.
+    #[model(reference(target = Credential, target_field = info, must_exist = false))]
+    #[redact(nested)]
     pub social_security_card: Option<CredentialInfo>,
     /// Optional social-security city.
-    #[model(opaque)]
+    #[model(reference(target = City, target_field = info), index, opaque)]
     pub social_security_city: Option<Info>,
     /// Optional contact details.
+    #[model(index)]
     #[redact(nested)]
     pub contact: Option<Contact>,
     /// Optional guardian information.
+    #[model(reference(target = Person, target_field = info))]
     #[redact(nested)]
     pub guardian: Option<PersonInfo>,
     /// Optional education level.
@@ -82,6 +115,7 @@ pub struct Person {
     /// Optional marital status.
     pub marriage: Option<Marriage>,
     /// Whether the person has children.
+    #[model(index)]
     pub has_child: Option<bool>,
     /// Optional sexual orientation.
     pub sex_orientation: Option<SexOrientation>,
@@ -107,18 +141,150 @@ pub struct Person {
     /// Optional allergy history.
     pub allergic_history: Option<String>,
     /// Optional portrait photograph.
+    #[model(reference(target = Attachment, target_field = id, must_exist = false))]
     pub photo: Option<Attachment>,
     /// Optional comment.
     pub comment: Option<String>,
     /// Whether this is test data.
+    #[model(index)]
     pub test: bool,
     /// UTC creation timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
     /// Optional UTC modification timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
     /// Optional UTC soft-deletion timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }
+
+impl Person {
+    /// Assigns the fields represented by an order client projection.
+    pub fn assign_client(&mut self, client: &Client) {
+        self.id = client.id;
+        self.name = client.name.clone();
+        self.gender = client.gender;
+        self.birthday = client.birthday;
+        self.credential = client.credential.clone();
+        self.has_medicare = client.has_medicare;
+        self.medicare_card = client.medicare_card.clone();
+        self.medicare_city = client.medicare_city.clone();
+        self.has_social_security = client.has_social_security;
+        self.medicare_type = client.medicare_type;
+        self.social_security_card = client.social_security_card.clone();
+        self.social_security_city = client.social_security_city.clone();
+        self.contact = Contact::create(
+            None,
+            client.mobile.clone(),
+            client.email.clone(),
+            None,
+            None,
+        );
+        self.guardian = client.guardian.clone();
+    }
+
+    /// Assigns the fields represented by compact person information.
+    pub fn assign_info(&mut self, info: &PersonInfo) {
+        self.id = info.id;
+        self.name = info.name.clone();
+        self.gender = info.gender;
+        self.birthday = info.birthday;
+        self.credential = info.credential.clone();
+        self.contact = Contact::create(None, info.mobile.clone(), info.email.clone(), None, None);
+        self.test = info.test;
+        self.delete_time = info.delete_time;
+    }
+
+    /// Assigns the fields represented by a saved consignee.
+    pub fn assign_consignee(&mut self, consignee: &Consignee) {
+        self.id = consignee.id;
+        self.name = consignee.name.clone();
+        self.credential = consignee.credential.clone();
+        self.contact = Some(Contact {
+            mobile: Some(consignee.mobile.clone()),
+            email: consignee.email.clone(),
+            address: Some(consignee.address.clone()),
+            ..Contact::default()
+        });
+    }
+
+    /// Assigns the fields represented by an order buyer.
+    pub fn assign_buyer(&mut self, buyer: &Buyer) {
+        self.id = buyer.id;
+        self.name = buyer.name.clone();
+        self.credential = buyer.credential.clone();
+        self.gender = buyer.gender;
+        self.birthday = buyer.birthday;
+        self.contact = Contact::create(None, buyer.mobile.clone(), buyer.email.clone(), None, None);
+    }
+
+    /// Returns this person's compact information projection.
+    #[must_use]
+    pub fn info(&self) -> PersonInfo {
+        PersonInfo {
+            id: self.id,
+            name: self.name.clone(),
+            username: self.username.clone(),
+            gender: self.gender,
+            birthday: self.birthday,
+            credential: self.credential.clone(),
+            mobile: self
+                .contact
+                .as_ref()
+                .and_then(|contact| contact.mobile.clone()),
+            email: self
+                .contact
+                .as_ref()
+                .and_then(|contact| contact.email.clone()),
+            photo: self.photo.clone(),
+            test: self.test,
+            delete_time: self.delete_time,
+        }
+    }
+
+    /// Applies compact person information to this record.
+    pub fn set_info(&mut self, info: &PersonInfo) {
+        self.assign_info(info);
+    }
+
+    /// Reports whether either benefit-coverage flag is explicitly true.
+    #[must_use]
+    pub fn has_medicare_or_social_security(&self) -> bool {
+        self.has_medicare.unwrap_or(false) || self.has_social_security.unwrap_or(false)
+    }
+
+    /// Reports whether another projection identifies the same person.
+    ///
+    /// Persisted identifiers take precedence whenever both sides have one;
+    /// credentials are considered only when at least one identifier is absent.
+    #[must_use]
+    pub fn is_same<T: PersonIdentity + ?Sized>(&self, other: &T) -> bool {
+        match (self.id, other.person_id()) {
+            (Some(id), Some(other_id)) => id == other_id,
+            _ => self
+                .credential
+                .as_ref()
+                .zip(other.person_credential())
+                .is_some_and(|(credential, other)| credential.is_same(other)),
+        }
+    }
+}
+
+macro_rules! impl_person_identity {
+    ($($type:ty),+ $(,)?) => {
+        $(
+            impl PersonIdentity for $type {
+                fn person_id(&self) -> Option<i64> {
+                    self.id
+                }
+
+                fn person_credential(&self) -> Option<&CredentialInfo> {
+                    self.credential.as_ref()
+                }
+            }
+        )+
+    };
+}
+
+impl_person_identity!(Person, PersonInfo, Client, Consignee, Buyer);

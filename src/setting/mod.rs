@@ -1,3 +1,8 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+// =============================================================================
 //! Typed system settings and their stable names.
 
 use std::cmp::Ordering;

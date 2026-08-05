@@ -3,6 +3,7 @@
 use chrono::{DateTime, Utc};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
+use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
 use super::{CredentialType, VerifyState};
@@ -27,7 +28,7 @@ pub struct Owners {
 }
 
 /// Lightweight credential information.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Eq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Eq, Redact, Serialize)]
 pub struct CredentialInfo {
     /// Persisted identifier.
     #[model(identifier)]
@@ -36,9 +37,18 @@ pub struct CredentialInfo {
     pub r#type: CredentialType,
     /// Credential number.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
+    #[redact(level = "secret")]
     pub number: String,
     /// Optional verification state.
     pub verified: Option<VerifyState>,
+}
+
+impl CredentialInfo {
+    /// Reports whether another credential has the same type and number.
+    #[must_use]
+    pub fn is_same(&self, other: &Self) -> bool {
+        self.r#type == other.r#type && self.number == other.number
+    }
 }
 
 /// A credential with ownership and audit fields.

@@ -1,3 +1,9 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+// =============================================================================
+
 use chrono::{TimeZone, Utc};
 use qubit_model::setting::{DataType, Setting, SettingName};
 use qubit_model_metadata::metadata_of;

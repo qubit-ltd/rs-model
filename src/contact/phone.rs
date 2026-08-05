@@ -1,7 +1,13 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+// =============================================================================
 //! Telephone number value objects.
 
 use std::fmt::{self, Display, Formatter};
 
+use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
@@ -25,6 +31,24 @@ pub struct Phone {
     pub number: String,
 }
 
+impl From<&str> for Phone {
+    fn from(number: &str) -> Self {
+        Self {
+            number: number.to_owned(),
+            ..Self::default()
+        }
+    }
+}
+
+impl From<String> for Phone {
+    fn from(number: String) -> Self {
+        Self {
+            number,
+            ..Self::default()
+        }
+    }
+}
+
 impl Display for Phone {
     fn fmt(&self, formatter: &mut Formatter<'_>) -> fmt::Result {
         if let Some(country_area) = &self.country_area {
@@ -34,5 +58,17 @@ impl Display for Phone {
             write!(formatter, "{city_area}-")?;
         }
         formatter.write_str(&self.number)
+    }
+}
+
+impl Normalizable for Phone {
+    fn normalize(&mut self) {
+        self.country_area.normalize();
+        self.city_area.normalize();
+        self.number.normalize();
+    }
+
+    fn is_normalized_empty(&self) -> bool {
+        self.number.is_empty()
     }
 }

@@ -1,3 +1,8 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+// =============================================================================
 //! Marketing activities, product items, and issued coupons.
 
 #[allow(clippy::module_inception)]
