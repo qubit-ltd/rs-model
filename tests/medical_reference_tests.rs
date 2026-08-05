@@ -9,7 +9,8 @@
 //! Integration coverage for reusable medical reference models.
 
 use qubit_model::medical::{
-    Disease, Dosage, DrugInfo, DrugProduct, HospitalDrugstore, PatientInfo,
+    Disease, Dosage, Drug, DrugInfo, DrugProduct, HospitalDrugstore, MedicalPayment,
+    MedicalSettlementItem, Patient, PatientInfo,
 };
 use qubit_model_metadata::metadata_of;
 
@@ -22,4 +23,11 @@ fn test_medical_reference_structs_expose_all_source_fields() {
     assert_eq!(metadata_of::<DrugProduct>().struct_fields().len(), 2);
     assert_eq!(metadata_of::<HospitalDrugstore>().struct_fields().len(), 6);
     assert_eq!(metadata_of::<PatientInfo>().struct_fields().len(), 8);
+    assert_eq!(metadata_of::<Drug>().struct_fields().len(), 42);
+    assert_eq!(metadata_of::<Patient>().struct_fields().len(), 21);
+    assert_eq!(metadata_of::<MedicalPayment>().struct_fields().len(), 26);
+    assert_eq!(
+        metadata_of::<MedicalSettlementItem>().struct_fields().len(),
+        17
+    );
 }
