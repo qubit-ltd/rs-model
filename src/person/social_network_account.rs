@@ -13,7 +13,7 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 use serde::{Deserialize, Serialize};
 
-use crate::{commons::Payload, security::KeyValuePair};
+use crate::{commons::Payload, controller::RegisterUserParams, security::KeyValuePair};
 
 use super::{SocialNetwork, User};
 
@@ -96,6 +96,22 @@ impl Default for SocialNetworkAccount {
             create_time: None,
             modify_time: None,
             delete_time: None,
+        }
+    }
+}
+
+impl SocialNetworkAccount {
+    /// Creates an account from the social identity in registration parameters.
+    #[must_use]
+    pub fn from_register_params(params: &RegisterUserParams) -> Self {
+        Self {
+            username: params.username.clone(),
+            social_network: params.social_network.unwrap_or(SocialNetwork::Wechat),
+            app_id: params.app_id.clone().unwrap_or_default(),
+            open_id: params.open_id.clone().unwrap_or_default(),
+            nickname: params.nickname.clone(),
+            avatar: params.avatar.clone(),
+            ..Self::default()
         }
     }
 }

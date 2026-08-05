@@ -16,6 +16,7 @@ pub mod feedback;
 pub mod file;
 pub mod commons;
 pub mod contact;
+pub mod controller;
 pub mod device;
 pub mod mixin;
 pub mod medical;
