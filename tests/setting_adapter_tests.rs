@@ -10,6 +10,12 @@ use qubit_model::setting::{
     DataType, Setting, SettingJsonDeserializer, SettingJsonSerializer, SettingRandomizer,
     SettingXmlAdapted, SettingXmlAdapter,
 };
+use qubit_model::system::{
+    SettingJsonDeserializer as SystemSettingJsonDeserializer,
+    SettingJsonSerializer as SystemSettingJsonSerializer,
+    SettingRandomizer as SystemSettingRandomizer, SettingXmlAdapted as SystemSettingXmlAdapted,
+    SettingXmlAdapter as SystemSettingXmlAdapter,
+};
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 
@@ -67,6 +73,15 @@ fn test_setting_xml_adapter_omits_defaults_and_round_trips() {
 fn test_setting_xml_adapted_is_a_model_and_redactable() {
     assert_redact::<SettingXmlAdapted>();
     assert_eq!(metadata_of::<SettingXmlAdapted>().struct_fields().len(), 10);
+}
+
+#[test]
+fn test_setting_adapters_are_exported_from_the_source_system_package() {
+    let _ = SystemSettingJsonDeserializer;
+    let _ = SystemSettingJsonSerializer;
+    let _ = SystemSettingRandomizer::with_seed(1);
+    let _ = SystemSettingXmlAdapted::default();
+    let _ = SystemSettingXmlAdapter;
 }
 
 #[test]

@@ -39,3 +39,5 @@ pub use phone_json_serializer::PhoneJsonSerializer;
 pub use phone_type_register::PhoneTypeRegister;
 pub use phone_xml_adapter::PhoneXmlAdapter;
 pub use region::Region;
+
+pub use crate::address::AddressBuilder;
