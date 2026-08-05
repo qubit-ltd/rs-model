@@ -8,8 +8,13 @@
 
 //! Settlement and transaction records.
 
+#[allow(clippy::module_inception)]
+mod settlement;
+mod transaction;
 mod transaction_status;
 mod transaction_type;
 
 pub use transaction_status::TransactionStatus;
 pub use transaction_type::TransactionType;
+pub use settlement::Settlement;
+pub use transaction::Transaction;
