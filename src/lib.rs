@@ -10,6 +10,7 @@ pub mod contact;
 pub mod device;
 pub mod mixin;
 pub mod medical;
+pub mod metadata;
 pub mod organization;
 pub mod notification;
 pub mod order;
