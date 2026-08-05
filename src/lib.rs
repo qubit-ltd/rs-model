@@ -6,12 +6,15 @@
 pub mod error;
 pub mod commons;
 pub mod contact;
+pub mod device;
 pub mod mixin;
 pub mod medical;
 pub mod organization;
 pub mod person;
 pub mod privilege;
 pub mod task;
+pub mod audit;
+pub mod system;
 pub mod upload;
 pub mod util;
 mod entity;
