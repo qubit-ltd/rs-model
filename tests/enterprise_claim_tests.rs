@@ -9,7 +9,8 @@
 //! Integration coverage for enterprise insurance-claim models.
 
 use qubit_model::claim::enterprise::{
-    EnterpriseClaimEvent, EnterpriseClaimItemMedical, EnterpriseClaimSelfCareItem,
+    EnterpriseClaim, EnterpriseClaimEvent, EnterpriseClaimInvoice, EnterpriseClaimItem,
+    EnterpriseClaimItemMedical, EnterpriseClaimMedical, EnterpriseClaimSelfCareItem,
     EnterpriseHistoryClaimAmount, EnterpriseInsuredInfo, HistoryClaimAmount,
 };
 use qubit_model_metadata::metadata_of;
@@ -43,5 +44,22 @@ fn test_enterprise_claim_reference_structs_expose_all_source_fields() {
             .struct_fields()
             .len(),
         8
+    );
+    assert_eq!(metadata_of::<EnterpriseClaim>().struct_fields().len(), 18);
+    assert_eq!(
+        metadata_of::<EnterpriseClaimInvoice>()
+            .struct_fields()
+            .len(),
+        29
+    );
+    assert_eq!(
+        metadata_of::<EnterpriseClaimItem>().struct_fields().len(),
+        31
+    );
+    assert_eq!(
+        metadata_of::<EnterpriseClaimMedical>()
+            .struct_fields()
+            .len(),
+        17
     );
 }
