@@ -15,6 +15,7 @@ pub mod payment;
 pub mod person;
 pub mod privilege;
 pub mod product;
+pub mod service;
 pub mod shipping;
 pub mod settlement;
 pub mod task;

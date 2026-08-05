@@ -1,85 +1,23 @@
-//! Medical-domain values required by person models.
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0.
+// =============================================================================
 
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+//! Medical records, prescriptions, settlements, and classifications.
 
-/// The source-domain medical-insurance classification.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum MedicareType {
-    /// Urban employee basic medical insurance.
-    Employee,
-    /// Urban resident basic medical insurance.
-    Resident,
-    /// New rural cooperative medical insurance.
-    NewRuralCooperative,
-    /// Another medical-insurance classification.
-    Other,
-}
+mod medical_invoice_type;
+mod medical_type;
+mod medicare_item_type;
+mod medicare_type;
+mod prescription_action;
+mod prescription_status;
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum MedicalInvoiceType {
-    ClinicSeriousIllness,
-    ClinicSpecial,
-    Hospital,
-}
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum MedicalType {
-    Registration,
-    Clinic,
-    SpecificClinic,
-    EmergentClinic,
-    Hospitalization,
-    Admission,
-    Discharge,
-    Examination,
-    Internet,
-    Unknown,
-}
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum MedicareItemType {
-    Drug,
-    Item,
-    Material,
-    Service,
-}
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum PrescriptionAction {
-    Create,
-    AuditorAccept,
-    AuditorReject,
-    InspectorAccept,
-    InspectorReject,
-    PatientAccept,
-    PatientReject,
-    Transfer,
-    Prepare,
-    ReviewerAccept,
-    ReviewerReject,
-    Dispatch,
-    Receive,
-    Cancel,
-}
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum PrescriptionStatus {
-    Created,
-    AuditorAccepted,
-    AuditorRejected,
-    InspectorAccepted,
-    InspectorRejected,
-    PatientAccepted,
-    PatientRejected,
-    Transferred,
-    Prepared,
-    ReviewerAccepted,
-    ReviewerRejected,
-    Dispatched,
-    Received,
-    Expired,
-    Cancelled,
-}
+pub use medical_invoice_type::MedicalInvoiceType;
+pub use medical_type::MedicalType;
+pub use medicare_item_type::MedicareItemType;
+pub use medicare_type::MedicareType;
+pub use prescription_action::PrescriptionAction;
+pub use prescription_status::PrescriptionStatus;
