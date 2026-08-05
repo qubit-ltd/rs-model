@@ -5,6 +5,7 @@
 
 pub mod error;
 pub mod feedback;
+pub mod file;
 pub mod commons;
 pub mod contact;
 pub mod device;
