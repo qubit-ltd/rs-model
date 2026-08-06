@@ -60,9 +60,13 @@ impl NullSortOption {
         order: SortOrder,
     ) -> Ordering {
         assert!(lhs_none || rhs_none, "either operand must be null");
-        match (lhs_none, rhs_none) {
-            (true, true) => Ordering::Equal,
-            (true, false) => match self {
+        if !lhs_none {
+            return self.compare_none(true, false, order).reverse();
+        }
+        if rhs_none {
+            return Ordering::Equal;
+        }
+        match self {
                 Self::NullFirst => Ordering::Less,
                 Self::NullLast => Ordering::Greater,
                 Self::NullSmallest if order == SortOrder::Asc => Ordering::Less,
@@ -71,11 +75,6 @@ impl NullSortOption {
                     Ordering::Greater
                 }
                 Self::NullLargest => Ordering::Less,
-            },
-            (false, true) => self.compare_none(true, false, order).reverse(),
-            (false, false) => {
-                unreachable!("assertion rejects two non-null operands")
-            }
         }
     }
 }
