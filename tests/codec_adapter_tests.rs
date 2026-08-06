@@ -89,8 +89,11 @@ fn test_location_codec_round_trips_coordinates_and_coordinate_system() {
         Some("116.482086,39.990496".into())
     );
     assert!(codec.decode(Some("116.482086")).is_err());
+    assert!(codec.decode(Some(",39.9")).is_err());
+    assert!(codec.decode(Some("116.4,")).is_err());
     assert_eq!(codec.decode(None).unwrap(), None);
     assert_eq!(codec.decode(Some("")).unwrap(), None);
+    assert_eq!(codec.encode(None), None);
     assert!(codec.decode(Some("1,2,3")).is_err());
     let overridden = codec
         .decode_with_coordinate_system(Some("1,2"), Some(CoordinateSystem::Bd09))
@@ -134,6 +137,11 @@ fn test_phone_codec_and_wire_adapters_preserve_string_shape() {
     assert_eq!(PhoneJsonDeserializer::deserialize("null").unwrap(), None);
     assert!(PhoneJsonDeserializer::deserialize("invalid").is_err());
     assert!(PhoneJsonKeyDeserializer::deserialize_key("").is_err());
+    assert_eq!(PhoneJsonDeserializer::default(), PhoneJsonDeserializer);
+    assert_eq!(
+        PhoneJsonKeyDeserializer::default(),
+        PhoneJsonKeyDeserializer
+    );
 }
 
 #[test]
