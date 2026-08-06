@@ -9,6 +9,9 @@
 //! Integration coverage for medical, service, invoice, and claim
 //! classifications.
 
+#[path = "claim_behavior_tests.rs"]
+mod claim_behavior_tests;
+
 use qubit_model::{
     claim::{
         AccidentReason,
