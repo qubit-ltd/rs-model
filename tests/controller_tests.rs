@@ -8,24 +8,11 @@
 
 use qubit_model::{
     controller::{
-        AppAuthenticateParams,
-        AuditableQueryParams,
-        BindDeviceParams,
-        BindEmployeeParams,
-        BindPersonParams,
-        LoginParams,
-        LoginResponse,
-        NullSortOption,
-        RegisterUserParams,
-        SortOrder,
-        UnupdatableQueryParams,
-        UpdatePasswordParams,
+        AppAuthenticateParams, AuditableQueryParams, BindDeviceParams, BindEmployeeParams,
+        BindPersonParams, LoginParams, LoginResponse, NullSortOption, RegisterUserParams,
+        SortOrder, UnupdatableQueryParams, UpdatePasswordParams,
     },
-    person::{
-        SocialNetwork,
-        SocialNetworkAccount,
-        UserInfo,
-    },
+    person::{SocialNetwork, SocialNetworkAccount, User, UserInfo},
     system::Session,
 };
 use qubit_model_metadata::metadata_of;
@@ -113,8 +100,7 @@ fn test_controller_authentication_material_is_redacted() {
 }
 
 #[test]
-fn test_register_login_response_and_social_account_preserve_source_projections()
-{
+fn test_register_login_response_and_social_account_preserve_source_projections() {
     let register = RegisterUserParams {
         username: "alice".into(),
         social_network: Some(SocialNetwork::Wechat),
@@ -140,4 +126,46 @@ fn test_register_login_response_and_social_account_preserve_source_projections()
         Some("alice")
     );
     assert_eq!(response.roles, vec!["ADMIN"]);
+}
+
+#[test]
+fn test_register_user_params_projects_users_and_desensitizes_credentials() {
+    let user = User {
+        id: None,
+        username: "alice".into(),
+        password: "secret".into(),
+        name: Some("Alice".into()),
+        nickname: Some("ali".into()),
+        gender: None,
+        mobile: None,
+        mobile_verified: None,
+        email: None,
+        email_verified: None,
+        avatar: None,
+        url: None,
+        description: None,
+        organization: None,
+        state: qubit_model::commons::State::Normal,
+        last_login: qubit_model::commons::AuthorizeRecord::default(),
+        change_password: false,
+        valid_time: None,
+        expired_time: None,
+        comment: None,
+        predefined: false,
+        test: false,
+        create_time: chrono::Utc::now(),
+        modify_time: None,
+        delete_time: None,
+    };
+    let mut params = RegisterUserParams::from_user(&user);
+    assert_eq!(params.username, "alice");
+    assert_eq!(params.password, "secret");
+    let info = UserInfo {
+        username: "bob".into(),
+        ..UserInfo::default()
+    };
+    assert_eq!(RegisterUserParams::from_user_info(&info).username, "bob");
+    params.desensitize();
+    assert_eq!(params.password, "--------");
+    assert_eq!(params.open_id.as_deref(), Some("--------"));
 }

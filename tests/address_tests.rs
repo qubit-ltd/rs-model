@@ -9,16 +9,11 @@
 use std::str::FromStr;
 
 use bigdecimal::BigDecimal;
-use qubit_mixin::Info;
+use qubit_mixin::{Info, Normalizable};
 use qubit_model::{
-    address::{
-        Address,
-        AddressBuilder,
-        AddressErrorCode,
-        MismatchMobileException,
-        Region,
-    },
-    contact::Phone,
+    address::{Address, AddressBuilder, AddressErrorCode, MismatchMobileException, Region},
+    commons::VerifyState,
+    contact::{Contact, Phone},
     error::ErrorType,
 };
 use qubit_redact::Redact;
@@ -54,12 +49,8 @@ fn test_address_builder_preserves_hierarchy_and_coordinates() {
         .street_name("Street")
         .detail("No. 1")
         .postalcode("210000")
-        .longitude(
-            BigDecimal::from_str("118.796877").expect("longitude should parse"),
-        )
-        .latitude(
-            BigDecimal::from_str("32.060255").expect("latitude should parse"),
-        )
+        .longitude(BigDecimal::from_str("118.796877").expect("longitude should parse"))
+        .latitude(BigDecimal::from_str("32.060255").expect("latitude should parse"))
         .build();
 
     assert_eq!(address.country.id, Some(1));
@@ -68,10 +59,7 @@ fn test_address_builder_preserves_hierarchy_and_coordinates() {
     assert_eq!(address.detail, "No. 1");
     assert_eq!(
         address.location.as_ref().map(|value| &value.longitude),
-        Some(
-            &BigDecimal::from_str("118.796877")
-                .expect("longitude should parse")
-        )
+        Some(&BigDecimal::from_str("118.796877").expect("longitude should parse"))
     );
 }
 
@@ -111,4 +99,51 @@ fn test_address_error_preserves_logic_type_and_parameters() {
     assert_eq!(error.parameters()["name"], "applicant");
     assert_eq!(error.parameters()["expected"], "13800138000");
     assert_eq!(error.parameters()["actual"], "13900139000");
+}
+
+#[test]
+fn test_contact_address_normalization_and_changed_address_verification() {
+    let mut address = Address {
+        country: Info {
+            code: " CN ".into(),
+            ..Info::default()
+        },
+        province: Info {
+            code: " JS ".into(),
+            ..Info::default()
+        },
+        city: Info {
+            code: " NJ ".into(),
+            ..Info::default()
+        },
+        district: Info {
+            code: " XW ".into(),
+            ..Info::default()
+        },
+        street: Info {
+            code: " ST ".into(),
+            ..Info::default()
+        },
+        detail: "  No. 1  ".into(),
+        postalcode: Some(" 210000 ".into()),
+        location: None,
+    };
+    address.normalize();
+    assert_eq!(address.detail, "No. 1");
+    assert_eq!(address.postalcode.as_deref(), Some("210000"));
+    assert!(Address::default().is_normalized_empty());
+    assert!(!address.is_normalized_empty());
+
+    let other = Contact {
+        address: Some(Address::default()),
+        address_verified: Some(VerifyState::Valid),
+        ..Contact::default()
+    };
+    let mut current = Contact {
+        address: Some(address),
+        ..Contact::default()
+    };
+    current.copy_verify_state(&other);
+    assert_eq!(current.address_verified, Some(VerifyState::None));
+    assert!(Contact::default().is_normalized_empty());
 }
