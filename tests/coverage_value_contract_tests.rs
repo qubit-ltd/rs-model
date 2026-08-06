@@ -35,6 +35,15 @@ use qubit_model::{
         NotificationErrorCode,
         VerifyScene,
     },
+    privilege::{
+        Privileges,
+        PrivilegesCodec,
+    },
+    security::{
+        KeyFormat,
+        Signature,
+        SignatureAlgorithm,
+    },
     Entity,
     Module,
     Operation,
@@ -371,4 +380,65 @@ fn test_result_value_owns_and_returns_the_response_value() {
     assert_eq!(value.clone().into_inner(), "result");
     let alias: qubit_model::util::Result<i32> = ResultValue::new(7);
     assert_eq!(alias.value, 7);
+}
+
+/// Exercises every signature algorithm and key-format parser branch.
+#[test]
+fn test_security_value_codes_and_payload_updates_are_stable() {
+    let algorithms = [
+        (SignatureAlgorithm::Md2WithRsa, "MD2withRSA"),
+        (SignatureAlgorithm::Md5WithRsa, "MD5withRSA"),
+        (SignatureAlgorithm::Sha1WithRsa, "SHA1withRSA"),
+        (SignatureAlgorithm::Sha224WithRsa, "SHA224withRSA"),
+        (SignatureAlgorithm::Sha256WithRsa, "SHA256withRSA"),
+        (SignatureAlgorithm::Sha384WithRsa, "SHA384withRSA"),
+        (SignatureAlgorithm::Sha512WithRsa, "SHA512withRSA"),
+        (SignatureAlgorithm::Sha1WithDsa, "SHA1withDSA"),
+        (SignatureAlgorithm::Sha224WithDsa, "SHA224withDSA"),
+        (SignatureAlgorithm::Sha256WithDsa, "SHA256withDSA"),
+        (SignatureAlgorithm::Sha1WithEcdsa, "SHA1withECDSA"),
+        (SignatureAlgorithm::Sha224WithEcdsa, "SHA224withECDSA"),
+        (SignatureAlgorithm::Sha256WithEcdsa, "SHA256withECDSA"),
+        (SignatureAlgorithm::Sha384WithEcdsa, "SHA384withECDSA"),
+        (SignatureAlgorithm::Sha512WithEcdsa, "SHA512withECDSA"),
+    ];
+    for (algorithm, code) in algorithms {
+        assert_eq!(algorithm.code(), code);
+    }
+    assert_eq!(KeyFormat::Pkcs8.code(), "PKCS#8");
+    assert_eq!(KeyFormat::X509.code(), "X.509");
+    for name in ["pkcs8", "PKCS#8"] {
+        assert_eq!(KeyFormat::for_name(name), Some(KeyFormat::Pkcs8));
+    }
+    for name in ["x509", "X.509"] {
+        assert_eq!(KeyFormat::for_name(name), Some(KeyFormat::X509));
+    }
+    assert_eq!(KeyFormat::for_name("pem"), None);
+
+    let mut signature = Signature::default();
+    signature.set_payload("id", "one").set_payload("id", "two");
+    signature.set_message("message");
+    assert_eq!(signature.signed_info.message, "message");
+    assert_eq!(signature.signed_info.payload.len(), 1);
+    assert_eq!(signature.signed_info.payload[0].value.as_deref(), Some("two"));
+}
+
+/// Exercises valid and invalid privilege codec branches without losing values.
+#[test]
+fn test_privilege_codecs_validate_and_preserve_delimited_values() {
+    assert_eq!(Privileges::decode(None).expect("none is valid"), None);
+    assert_eq!(
+        Privileges::decode(Some("")).expect("empty is valid"),
+        Some(Privileges::default())
+    );
+    let privileges = Privileges::decode(Some("  read, , write  "))
+        .expect("valid values must decode")
+        .expect("present input must produce a value");
+    assert_eq!(privileges.0, ["read", "write"]);
+    assert_eq!(privileges.encode().expect("valid values encode"), "read,write");
+    assert!(Privileges(vec![String::new()]).encode().is_err());
+    assert!(Privileges(vec!["read,write".into()]).encode().is_err());
+    assert_eq!(PrivilegesCodec::decode(None), None);
+    assert_eq!(PrivilegesCodec::decode(Some("")), Some(Privileges::default()));
+    assert_eq!(PrivilegesCodec::encode(Some(&privileges)).as_deref(), Some("read,write"));
 }
