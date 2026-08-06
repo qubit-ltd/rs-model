@@ -188,6 +188,27 @@ fn test_code_models_and_phone_codec_preserve_source_forms() {
     assert_eq!(code.code, "A1");
     assert!(!code.is_empty());
     assert!(Code::default().is_empty());
+    assert!(
+        !Code {
+            app: Some(Default::default()),
+            ..Code::default()
+        }
+        .is_empty()
+    );
+    assert!(
+        !Code {
+            standard: Some("standard".into()),
+            ..Code::default()
+        }
+        .is_empty()
+    );
+    assert!(
+        !Code {
+            code: "code".into(),
+            ..Code::default()
+        }
+        .is_empty()
+    );
 
     let mut code_map = CodeMap {
         entity: "  patient  ".into(),
@@ -200,6 +221,37 @@ fn test_code_models_and_phone_codec_preserve_source_forms() {
     assert_eq!(code_map.platform_code, "P1");
     assert!(!code_map.is_empty());
     assert!(CodeMap::default().is_empty());
+    assert!(
+        !CodeMap {
+            id: Some(1),
+            ..CodeMap::default()
+        }
+        .is_empty()
+    );
+    assert!(
+        !CodeMap {
+            entity: "patient".into(),
+            ..CodeMap::default()
+        }
+        .is_empty()
+    );
+    assert!(
+        !CodeMap {
+            source: Some(Code {
+                code: "source".into(),
+                ..Code::default()
+            }),
+            ..CodeMap::default()
+        }
+        .is_empty()
+    );
+    assert!(
+        !CodeMap {
+            platform_code: "target".into(),
+            ..CodeMap::default()
+        }
+        .is_empty()
+    );
 
     let decoded = [
         ("123456", Phone::from("123456")),
@@ -238,4 +290,13 @@ fn test_code_models_and_phone_codec_preserve_source_forms() {
     assert_eq!(PhoneCodec::decode(None).expect("none must decode"), None);
     assert!(PhoneCodec::decode(Some("+86-010-1-2")).is_err());
     assert_eq!(PhoneCodec::decode_without_error(Some("bad-1-2-3")), None);
+
+    let mut phone = Phone {
+        country_area: Some(" 86 ".into()),
+        city_area: Some(" 010 ".into()),
+        number: " 123456 ".into(),
+    };
+    phone.normalize();
+    assert_eq!(phone.to_string(), "+86-010-123456");
+    assert_eq!(Phone::from(String::from("123456")), Phone::from("123456"));
 }
