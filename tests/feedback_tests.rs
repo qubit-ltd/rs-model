@@ -69,6 +69,9 @@ fn test_feedback_processing_rule_preserves_complete_lifecycle() {
     assert!(FeedbackProcessingRule::is_final_state(
         FeedbackStatus::Withdrawn
     ));
+    assert!(!FeedbackProcessingRule::is_final_state(
+        FeedbackStatus::Processing
+    ));
     assert_eq!(
         FeedbackProcessingRule::next(
             FeedbackStatus::Submitted,
