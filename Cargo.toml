@@ -5,6 +5,7 @@ edition = "2024"
 rust-version = "1.94"
 authors = ["Haixing Hu <starfish.hu@gmail.com>"]
 license = "Apache-2.0"
+publish = false
 repository = "https://github.com/qubit-ltd/rs-model"
 description = "Migrated domain objects for the Qubit Rust platform"
 homepage = "https://github.com/qubit-ltd/rs-model"
