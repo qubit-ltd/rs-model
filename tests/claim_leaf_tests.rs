@@ -122,11 +122,19 @@ fn test_claim_statuses_preserve_source_groups() {
 /// Verifies enterprise code-bearing classifications retain source codes.
 #[test]
 fn test_enterprise_classifications_preserve_source_codes() {
-    assert_eq!(EnterpriseInsuredType::OverSeventy.code(), "13");
-    assert_eq!(
-        EnterpriseInsuredType::OnlyChild.description(),
-        "独生子女<=16"
-    );
+    let insured_types = [
+        (EnterpriseInsuredType::InService, "10", "在职"),
+        (EnterpriseInsuredType::Retired, "11", "退休"),
+        (EnterpriseInsuredType::Resigned, "12", "退职"),
+        (EnterpriseInsuredType::OverSeventy, "13", "70岁以上"),
+        (EnterpriseInsuredType::OnlyChild, "31", "独生子女<=16"),
+        (EnterpriseInsuredType::ChildDonorGenus, "32", "子女供属"),
+        (EnterpriseInsuredType::DonorGenus, "41", "供属"),
+    ];
+    for (insured_type, code, description) in insured_types {
+        assert_eq!(insured_type.code(), code);
+        assert_eq!(insured_type.description(), description);
+    }
     assert_eq!(EnterpriseOwnership::Yangtze.code(), "1");
     assert_eq!(EnterpriseOwnership::Test.description(), "测试");
 }

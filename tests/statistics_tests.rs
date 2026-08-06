@@ -154,6 +154,38 @@ fn test_identity_card_validate_matches_source_behavior() {
     }
 }
 
+/// Verifies malformed identity-card components fail at each source boundary.
+#[test]
+fn test_identity_card_rejects_malformed_component_ranges() {
+    let invalid_checksum_input = "A1010519491231002X";
+    assert!(!IdentityCardUtils::validate(invalid_checksum_input));
+    assert_eq!(IdentityCardUtils::get_last_char("short"), None);
+    assert_eq!(
+        IdentityCardUtils::get_last_char(invalid_checksum_input),
+        None
+    );
+
+    for number in [
+        "110105A9491231002X",
+        "1101051949A231002X",
+        "110105194912A1002X",
+    ] {
+        assert_eq!(IdentityCardUtils::get_birthday(number), None);
+    }
+    assert_eq!(IdentityCardUtils::get_birthday("short"), None);
+    assert_eq!(IdentityCardUtils::get_gender("short"), None);
+    assert_eq!(IdentityCardUtils::get_gender("1101051949123100AX"), None);
+    assert_eq!(IdentityCardUtils::get_district("short"), None);
+    assert!(!IdentityCardUtils::is_area_valid("short"));
+    assert_eq!(
+        IdentityCardUtils::change_birthday(
+            invalid_checksum_input,
+            NaiveDate::from_ymd_opt(2000, 2, 29).expect("the leap-day birthday should exist")
+        ),
+        None
+    );
+}
+
 /// Verifies extraction and birthday replacement behavior.
 #[test]
 fn test_identity_card_extracts_and_changes_encoded_values() {
