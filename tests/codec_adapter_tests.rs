@@ -56,6 +56,24 @@ fn test_location_coordinate_codec_normalizes_and_adapters_delegate() {
         LocationCoordinateXmlAdapter::marshal(Some(&normalized)),
         Some(serialized)
     );
+    assert_eq!(LocationCoordinateCodec::normalize(None), None);
+    assert_eq!(
+        LocationCoordinateCodec::normalize(Some(BigDecimal::from_str("-540.1").expect("decimal"),))
+            .expect("coordinate")
+            .to_string(),
+        "179.900000"
+    );
+    assert_eq!(
+        LocationCoordinateCodec::normalize_with_precision(
+            Some(BigDecimal::from_str("180.1").expect("decimal")),
+            2,
+        )
+        .expect("coordinate")
+        .to_string(),
+        "-179.90"
+    );
+    assert_eq!(LocationCoordinateCodec::decode(None).unwrap(), None);
+    assert!(LocationCoordinateCodec::decode(Some("bad")).is_err());
 }
 
 #[test]

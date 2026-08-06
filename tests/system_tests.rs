@@ -130,6 +130,12 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
         ..Token::default()
     };
     Session::set_current_session(Session::default());
+    Session::set_current_app(None);
+    Session::set_current_user(None);
+    Session::set_current_user_token(None);
+    assert_eq!(Session::current_app(), None);
+    assert_eq!(Session::current_user(), None);
+    assert_eq!(Session::current_user_token(), None);
     Session::set_current_app(Some(app.clone()));
     Session::set_current_user(Some(user.clone()));
     Session::set_current_user_token(Some(token.clone()));
