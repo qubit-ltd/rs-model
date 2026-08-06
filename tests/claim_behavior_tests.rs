@@ -17,7 +17,7 @@ use qubit_model::{
             EnterpriseClaim, EnterpriseClaimInvoice, EnterpriseClaimItem,
             EnterpriseClaimItemStatus, EnterpriseClaimMedical, EnterpriseClaimSelfCareItem,
             EnterpriseClaimStatus, EnterpriseClaimStatusGroup, EnterpriseHistoryClaimAmount,
-            EnterpriseInsuredType, SaveStatus,
+            EnterpriseInsuredType, EnterpriseOwnership, SaveStatus,
         },
         AccidentReason, InsuranceClaim, InsuranceClaimAmount, InsuranceClaimInvoice,
         InsuranceClaimInvoiceStatus, InsuranceClaimInvoiceType, InsuranceClaimStatus,
@@ -258,6 +258,7 @@ fn test_individual_claim_statuses_drive_operation_permissions() {
         (InsuranceClaimStatus::Canceled, false, false, false),
     ];
     for (status, client_allowed, reject_allowed, accept_allowed) in cases {
+        let status = std::hint::black_box(status);
         let claim = individual_claim(status);
         assert_eq!(claim.status_group, status.status_group());
         assert_eq!(claim.allow_client_operation(), client_allowed);
@@ -304,6 +305,7 @@ fn test_enterprise_claim_statuses_drive_operation_permissions() {
         (EnterpriseClaimStatus::Canceled, false, false, false),
     ];
     for (status, client_allowed, reject_allowed, admin_allowed) in cases {
+        let status = std::hint::black_box(status);
         let claim = enterprise_claim(status);
         assert_eq!(claim.status_group, status.status_group());
         assert_eq!(claim.allow_client_operation(), client_allowed);
@@ -533,4 +535,31 @@ fn test_claim_leaf_enumerations_round_trip_through_json() {
             serde_json::Value::String("NOT_SAVED".into()),
         ]
     );
+
+    let insured_type_cases = [
+        (EnterpriseInsuredType::InService, "10", "在职"),
+        (EnterpriseInsuredType::Retired, "11", "退休"),
+        (EnterpriseInsuredType::Resigned, "12", "退职"),
+        (EnterpriseInsuredType::OverSeventy, "13", "70岁以上"),
+        (EnterpriseInsuredType::OnlyChild, "31", "独生子女<=16"),
+        (EnterpriseInsuredType::ChildDonorGenus, "32", "子女供属"),
+        (EnterpriseInsuredType::DonorGenus, "41", "供属"),
+    ];
+    for (insured_type, code, description) in insured_type_cases {
+        let insured_type = std::hint::black_box(insured_type);
+        assert_eq!(insured_type.code(), code);
+        assert_eq!(insured_type.description(), description);
+    }
+
+    let ownership_cases = [
+        (EnterpriseOwnership::Yangtze, "1", "扬子"),
+        (EnterpriseOwnership::Reform, "0", "改制"),
+        (EnterpriseOwnership::CoSolution, "2", "协解"),
+        (EnterpriseOwnership::Test, "z", "测试"),
+    ];
+    for (ownership, code, description) in ownership_cases {
+        let ownership = std::hint::black_box(ownership);
+        assert_eq!(ownership.code(), code);
+        assert_eq!(ownership.description(), description);
+    }
 }

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_mixin::Normalizable;
+use qubit_mixin::{Emptyful, Normalizable};
 use qubit_model::{
     commons::State,
     metadata::{
@@ -18,6 +18,14 @@ use qubit_model_metadata::{metadata_of, UniqueComparison};
 use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
+
+/// Exercises the public empty and normalization trait dispatch for one
+/// metadata value.
+fn exercise_metadata_traits<T: Emptyful + Normalizable>(value: &mut T) {
+    let _ = Emptyful::is_empty(&*value);
+    let _ = Normalizable::is_normalized_empty(&*value);
+    value.normalize();
+}
 
 #[test]
 fn metadata_public_types_preserve_source_fields_and_traits() {
@@ -174,6 +182,7 @@ fn metadata_models_normalize_strings_and_use_all_fields_for_emptiness() {
 fn metadata_aggregates_preserve_default_and_normalization_contracts() {
     let mut category = Category::default();
     assert!(category.is_empty());
+    exercise_metadata_traits(&mut category);
     category.code = "  MEDICAL  ".into();
     category.name = "  Medical  ".into();
     category.normalize();
@@ -188,6 +197,7 @@ fn metadata_aggregates_preserve_default_and_normalization_contracts() {
 
     let mut source = Source::default();
     assert!(source.is_empty());
+    exercise_metadata_traits(&mut source);
     source.code = "  API  ".into();
     source.name = "  Partner API  ".into();
     source.entity = "  CLAIM  ".into();
@@ -203,6 +213,7 @@ fn metadata_aggregates_preserve_default_and_normalization_contracts() {
     assert_eq!(restored_source, source);
 
     let mut dict = Dict::default();
+    exercise_metadata_traits(&mut dict);
     dict.code = "  BENEFIT  ".into();
     dict.name = "  Benefit  ".into();
     dict.description = Some("  Catalog  ".into());
@@ -218,6 +229,10 @@ fn metadata_aggregates_preserve_default_and_normalization_contracts() {
     let restored_dict: Dict =
         serde_json::from_value(dict_json).expect("a dictionary JSON value should deserialize");
     assert_eq!(restored_dict, dict);
+
+    let mut full_dict = FullDict::default();
+    exercise_metadata_traits(&mut full_dict);
+    assert!(full_dict.is_empty());
 }
 
 #[test]
@@ -256,6 +271,7 @@ fn dict_entry_formats_and_matches_parameterized_codes() {
     assert!(!assigned.is_empty());
     assert_eq!(assigned.info().dict_id, Some(3));
     assert_eq!(assigned.info().params, None);
+    exercise_metadata_traits(&mut assigned);
 }
 
 #[test]
@@ -346,4 +362,9 @@ fn dict_entry_info_and_payload_preserve_computed_behaviors() {
     let restored_scope: Scope =
         serde_json::from_value(scope_json).expect("a scope JSON value should deserialize");
     assert_eq!(restored_scope, scope);
+
+    let mut aggregate_for_traits = AggregateRef::default();
+    exercise_metadata_traits(&mut aggregate_for_traits);
+    let mut payload_for_traits = Payload::default();
+    exercise_metadata_traits(&mut payload_for_traits);
 }
