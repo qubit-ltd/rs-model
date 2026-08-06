@@ -315,6 +315,10 @@ fn test_code_models_and_phone_codec_preserve_source_forms() {
     phone.normalize();
     assert_eq!(phone.to_string(), "+86-010-123456");
     assert_eq!(Phone::from(String::from("123456")), Phone::from("123456"));
+
+    let mut blank_phone = Phone::default();
+    blank_phone.normalize();
+    assert!(blank_phone.is_normalized_empty());
 }
 
 /// Exercises attachment classification identifiers and all MIME-type branches.
