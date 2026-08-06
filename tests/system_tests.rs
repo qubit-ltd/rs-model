@@ -6,27 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use chrono::{
-    TimeZone,
-    Utc,
-};
+use chrono::{TimeZone, Utc};
 use qubit_mixin::Normalizable;
 use qubit_model::{
+    commons::Token,
+    mixin::StatefulInfo,
     person::UserInfo,
     system::{
-        Action,
-        Environment,
-        Expired,
-        ExpiredReason,
-        Host,
-        Log,
-        OperationLog,
-        OperationLogInfo,
-        Platform,
-        Session,
-        Setting,
-        VerifyCode,
-        VerifyScene,
+        Action, Environment, ErrorInfo, Expired, ExpiredReason, Host, Log, LogicRelation,
+        OperationLog, OperationLogInfo, Platform, Session, Setting, VerifyCode, VerifyScene,
     },
 };
 use qubit_model_metadata::metadata_of;
@@ -122,6 +110,77 @@ fn system_enums_and_session_helpers_preserve_source_behavior() {
 }
 
 #[test]
+fn session_thread_local_accessors_normalize_values_and_serialize_present_fields() {
+    Session::reset();
+    let app = StatefulInfo {
+        id: Some(1),
+        code: "APP".into(),
+        name: "Application".into(),
+        ..StatefulInfo::default()
+    };
+    let user = UserInfo {
+        username: "alice".into(),
+        ..UserInfo::default()
+    };
+    let token = Token {
+        value: "token".into(),
+        ..Token::default()
+    };
+    Session::set_current_session(Session::default());
+    Session::set_current_app(Some(app.clone()));
+    Session::set_current_user(Some(user.clone()));
+    Session::set_current_user_token(Some(token.clone()));
+    assert_eq!(Session::current_app(), Some(app.clone()));
+    assert_eq!(Session::current_user(), Some(user.clone()));
+    assert_eq!(Session::current_user_token(), Some(token.clone()));
+    let count = Session::with_current_session(|session| {
+        session.roles = vec![" ADMIN ".into(), "USER".into()];
+        session.privileges = vec![" READ ".into()];
+        session.set_roles_and_privileges(&[]);
+        session.roles.len()
+    });
+    assert_eq!(count, 0);
+
+    let session = Session {
+        id: Some(1),
+        app: Some(app),
+        user: Some(user),
+        organization: Some(StatefulInfo::default()),
+        token: Some(token),
+        roles: vec!["ADMIN".into()],
+        privileges: vec!["READ".into()],
+        environment: Some(Environment::default()),
+        last_active_time: Some(Utc::now()),
+        expired: Some(Expired::default()),
+        create_time: Some(Utc::now()),
+    };
+    let json = serde_json::to_value(&session).expect("session serializes");
+    for field in [
+        "id",
+        "app",
+        "user",
+        "organization",
+        "token",
+        "roles",
+        "privileges",
+        "environment",
+        "last_active_time",
+        "expired",
+        "create_time",
+        "username",
+    ] {
+        assert!(json.get(field).is_some(), "{field} must be serialized");
+    }
+
+    Session::set_super_admin_session(Some(session));
+    assert!(Session::is_super_admin_mode());
+    assert!(Session::super_admin_session().is_some());
+    Session::clear_super_admin_session();
+    assert!(!Session::is_super_admin_mode());
+    Session::reset();
+}
+
+#[test]
 fn system_normalization_preserves_source_empty_and_text_behavior() {
     let mut environment = Environment {
         ip: Some("  ".into()),
@@ -141,17 +200,31 @@ fn operation_log_projects_and_assigns_compact_info() {
         id: Some(5),
         action: Action::Update,
         resource: Some("USER".into()),
+        property: Some("status".into()),
         user: Some(UserInfo {
             username: "alice".into(),
             ..UserInfo::default()
         }),
+        app: Some(StatefulInfo {
+            name: "portal".into(),
+            ..StatefulInfo::default()
+        }),
         client_ip: "127.0.0.1".into(),
         success: Some(false),
+        error: Some(ErrorInfo {
+            code: "DENIED".into(),
+            message: Some("denied".into()),
+            ..ErrorInfo::default()
+        }),
         request_time: Some(request_time),
         ..OperationLog::default()
     };
     let info = log.info();
     assert_eq!(info.username.as_deref(), Some("alice"));
+    assert_eq!(info.property.as_deref(), Some("status"));
+    assert_eq!(info.app.as_deref(), Some("portal"));
+    assert_eq!(info.error_code.as_deref(), Some("DENIED"));
+    assert_eq!(info.error_message.as_deref(), Some("denied"));
     assert_eq!(info.timestamp, Some(request_time));
 
     let replacement = OperationLogInfo {
@@ -212,4 +285,66 @@ fn logs_order_by_source_timestamp() {
         reason: ExpiredReason::Timeout,
     };
     assert_eq!(expired.reason, ExpiredReason::Timeout);
+}
+
+#[test]
+fn system_enum_mappings_cover_all_action_expiration_and_logic_variants() {
+    for action in [
+        Action::Login,
+        Action::Logout,
+        Action::List,
+        Action::Get,
+        Action::Add,
+        Action::Update,
+        Action::Delete,
+        Action::Restore,
+        Action::Purge,
+        Action::PurgeAll,
+        Action::Erase,
+        Action::BatchAdd,
+        Action::BatchUpdate,
+        Action::BatchDelete,
+        Action::BatchRestore,
+        Action::BatchPurge,
+        Action::BatchErase,
+        Action::Clear,
+        Action::Import,
+        Action::Export,
+        Action::TestExistence,
+        Action::Bind,
+        Action::Register,
+        Action::Reset,
+        Action::Check,
+        Action::Unregister,
+        Action::Unbound,
+        Action::Send,
+        Action::Authenticate,
+        Action::Refresh,
+        Action::Count,
+        Action::ListAll,
+        Action::ListFirst,
+        Action::ForEach,
+        Action::AddOrUpdate,
+        Action::PerformAction,
+    ] {
+        assert!(!action.display_name().is_empty());
+        let name = serde_json::to_value(action)
+            .expect("actions are serializable")
+            .as_str()
+            .expect("action wire value is textual")
+            .to_owned();
+        assert_eq!(Action::from_name(&name), Some(action));
+    }
+    assert_eq!(Action::default(), Action::Get);
+    assert_eq!(Action::from_name("unknown"), None);
+    assert_eq!(ExpiredReason::Logout.id(), "logout");
+    assert_eq!(ExpiredReason::Timeout.id(), "timeout");
+    assert_eq!(ExpiredReason::SingleSession.id(), "single_session");
+    assert_eq!(ExpiredReason::Maintenance.id(), "maintenance");
+    assert_eq!(ExpiredReason::None.id(), "none");
+    assert_eq!(ExpiredReason::default(), ExpiredReason::None);
+    assert_eq!(LogicRelation::And.symbol(), "AND");
+    assert_eq!(LogicRelation::Or.symbol(), "OR");
+    assert_eq!(LogicRelation::Not.symbol(), "NOT");
+    assert_eq!(LogicRelation::default(), LogicRelation::And);
 }

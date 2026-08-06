@@ -7,10 +7,8 @@
 // =============================================================================
 
 use qubit_model::{
-    organization::{
-        Employee,
-        Organization,
-    },
+    contact::Phone,
+    organization::{Employee, Organization},
     person::SocialNetworkAccount,
     product::Seller,
     system::Session,
@@ -86,6 +84,31 @@ fn test_employee_projects_and_assigns_source_info() {
     employee.assign_info(&replacement);
     assert_eq!(employee.id, Some(8));
     assert_eq!(employee.name, "Grace");
+}
+
+#[test]
+fn test_employee_and_organization_empty_checks_and_normalization() {
+    use qubit_mixin::{Emptyful, Normalizable};
+
+    let mut employee = Employee::default();
+    assert!(employee.is_empty());
+    assert!(Emptyful::is_empty(&employee));
+    employee.code = "  EMP-1  ".into();
+    employee.name = "  Alice  ".into();
+    employee.mobile = Phone::from(" 13800138000 ");
+    employee.email = Some("  alice@example.test  ".into());
+    employee.normalize();
+    assert_eq!(employee.code, "EMP-1");
+    assert_eq!(employee.mobile.number, "13800138000");
+
+    let mut organization = Organization::default();
+    assert!(organization.is_empty());
+    assert!(Emptyful::is_empty(&organization));
+    organization.code = "  seller  ".into();
+    organization.name = "  Seller name  ".into();
+    organization.normalize();
+    assert_eq!(organization.code, "seller");
+    assert_eq!(organization.name, "Seller name");
 }
 
 #[test]

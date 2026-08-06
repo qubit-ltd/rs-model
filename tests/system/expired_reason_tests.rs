@@ -6,11 +6,17 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Integration-test mirror for the corresponding public model module.
+//! Behavioral coverage for session-expiration reasons.
 
-/// Keeps the source-to-test mapping explicit while shared model contract tests
-/// exercise serialization, metadata, and redaction behavior.
+use qubit_model::system::ExpiredReason;
+
+/// Maps every reason to its stable source identifier.
 #[test]
-fn test_expired_reason_tests_mirror() {
-    assert!(!module_path!().is_empty(), "the test module path must be available");
+fn test_expired_reason_ids_cover_all_variants() {
+    assert_eq!(ExpiredReason::Logout.id(), "logout");
+    assert_eq!(ExpiredReason::Timeout.id(), "timeout");
+    assert_eq!(ExpiredReason::SingleSession.id(), "single_session");
+    assert_eq!(ExpiredReason::Maintenance.id(), "maintenance");
+    assert_eq!(ExpiredReason::None.id(), "none");
+    assert_eq!(ExpiredReason::default(), ExpiredReason::None);
 }

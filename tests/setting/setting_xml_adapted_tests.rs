@@ -6,11 +6,37 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Integration-test mirror for the corresponding public model module.
+//! Behavioral coverage for XML-oriented setting values.
 
-/// Keeps the source-to-test mapping explicit while shared model contract tests
-/// exercise serialization, metadata, and redaction behavior.
+use qubit_model::setting::{DataType, Setting, SettingAdapterError, SettingXmlAdapted};
+
+/// Omits source defaults and reconstructs a complete setting.
 #[test]
-fn test_setting_xml_adapted_tests_mirror() {
-    assert!(!module_path!().is_empty(), "the test module path must be available");
+fn test_xml_adapted_round_trips_defaults_and_overrides() {
+    let mut setting = Setting::new("demo", DataType::Int);
+    setting.readonly = true;
+    setting.multiple = false;
+    setting.values = vec!["4".into()];
+
+    let adapted = SettingXmlAdapted::from_setting(&setting);
+    assert_eq!(adapted.type_name.as_deref(), Some("int"));
+    assert_eq!(adapted.readonly, Some(true));
+    assert_eq!(adapted.nullable, None);
+    assert_eq!(
+        adapted.to_setting().expect("adapted setting is valid"),
+        setting
+    );
+}
+
+/// Rejects an unsupported XML data type without discarding the source value.
+#[test]
+fn test_xml_adapted_rejects_unsupported_type() {
+    let adapted = SettingXmlAdapted {
+        type_name: Some("unknown".into()),
+        ..SettingXmlAdapted::default()
+    };
+    assert!(matches!(
+        adapted.to_setting(),
+        Err(SettingAdapterError::InvalidDataType(value)) if value == "unknown"
+    ));
 }

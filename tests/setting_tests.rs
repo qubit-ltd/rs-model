@@ -4,14 +4,10 @@
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
 
-use chrono::{
-    TimeZone,
-    Utc,
-};
+use chrono::{TimeZone, Utc};
 use qubit_model::setting::{
-    DataType,
-    Setting,
-    SettingName,
+    DataType, Setting, SettingAdapterError, SettingJsonDeserializer, SettingName,
+    SettingRandomizer, SettingXmlAdapted,
 };
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
@@ -74,8 +70,7 @@ fn setting_round_trips_non_string_values_and_validates_cardinality() {
 fn setting_uses_source_json_shape_and_case_insensitive_ordering() {
     let mut setting = Setting::new("Beta", DataType::Bool);
     setting.values.push("true".into());
-    setting.create_time =
-        Some(Utc.with_ymd_and_hms(2025, 1, 2, 3, 4, 5).unwrap());
+    setting.create_time = Some(Utc.with_ymd_and_hms(2025, 1, 2, 3, 4, 5).unwrap());
 
     let json = serde_json::to_value(&setting).unwrap();
     assert_eq!(json["type"], "BOOL");
@@ -98,5 +93,83 @@ fn setting_names_match_the_java_contract() {
     assert_eq!(
         SettingName::USER_MOBILE_NUMBER_REGEX,
         "user.mobile.number.regex"
+    );
+}
+
+#[test]
+fn setting_json_deserialization_applies_defaults_and_reports_invalid_inputs() {
+    let setting =
+        SettingJsonDeserializer::deserialize(r#"{"name":"limit","values":[1,true,null,"three"]}"#)
+            .expect("a JSON object with omitted optional fields is valid");
+    assert_eq!(setting.name, "limit");
+    assert_eq!(setting.data_type, DataType::String);
+    assert_eq!(setting.values, ["1", "true", "three"]);
+    assert!(setting.nullable);
+    assert!(setting.multiple);
+
+    assert!(matches!(
+        SettingJsonDeserializer::deserialize("not JSON"),
+        Err(SettingAdapterError::InvalidJson(_))
+    ));
+    assert!(matches!(
+        SettingJsonDeserializer::deserialize("[]"),
+        Err(SettingAdapterError::InvalidJsonRoot)
+    ));
+    assert!(matches!(
+        SettingJsonDeserializer::deserialize(r#"{"type":"NOPE"}"#),
+        Err(SettingAdapterError::InvalidDataType(value)) if value == "NOPE"
+    ));
+    assert!(matches!(
+        SettingJsonDeserializer::deserialize(r#"{"createTime":"not-a-time"}"#),
+        Err(SettingAdapterError::InvalidTimestamp(_))
+    ));
+}
+
+#[test]
+fn setting_xml_transfer_and_seeded_randomizer_preserve_valid_contracts() {
+    let mut setting = Setting::new("demo", DataType::Int);
+    setting.readonly = true;
+    setting.multiple = false;
+    setting.values = vec!["4".into()];
+    let adapted = SettingXmlAdapted::from_setting(&setting);
+    assert_eq!(adapted.type_name.as_deref(), Some("int"));
+    assert_eq!(adapted.readonly, Some(true));
+    assert_eq!(adapted.nullable, None);
+    assert_eq!(
+        adapted.to_setting().expect("adapted setting is valid"),
+        setting
+    );
+    assert!(matches!(
+        SettingXmlAdapted { type_name: Some("unknown".into()), ..SettingXmlAdapted::default() }.to_setting(),
+        Err(SettingAdapterError::InvalidDataType(value)) if value == "unknown"
+    ));
+
+    let mut first = SettingRandomizer::with_seed(42);
+    let mut second = SettingRandomizer::with_seed(42);
+    first.set_collection_size_range(2, 2);
+    second.set_collection_size_range(2, 2);
+    first.set_string_length_range(3, 3);
+    second.set_string_length_range(3, 3);
+    let generated = first.get();
+    assert_eq!(generated, second.get());
+    assert!(generated.is_valid());
+    assert_eq!(generated.values.len(), 2);
+    assert!(SettingRandomizer::SUPPORTED_TYPES.contains(&generated.data_type));
+}
+
+#[test]
+fn setting_randomizer_rejects_invalid_ranges() {
+    let mut randomizer = SettingRandomizer::default();
+    assert!(
+        std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            randomizer.set_collection_size_range(2, 1);
+        }))
+        .is_err()
+    );
+    assert!(
+        std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            randomizer.set_string_length_range(0, 1);
+        }))
+        .is_err()
     );
 }
