@@ -272,6 +272,38 @@ fn dict_entry_formats_and_matches_parameterized_codes() {
     assert_eq!(assigned.info().dict_id, Some(3));
     assert_eq!(assigned.info().params, None);
     exercise_metadata_traits(&mut assigned);
+
+    let invalid_placeholder = DictEntry::new("{x}", "Literal");
+    assert!(!invalid_placeholder.has_parameter());
+    assert_eq!(
+        invalid_placeholder
+            .match_code_and_format_name("{X}")
+            .as_deref(),
+        Some("Literal")
+    );
+    assert_eq!(
+        DictEntry::new("{0", "Broken").match_code_and_format_name("{0"),
+        Some("Broken".into())
+    );
+    assert_eq!(DictEntry::new("{1}", "{1}").display_name(&[]), "{1}");
+
+    let mut normalized = DictEntry {
+        code: "  CODE  ".into(),
+        name: "  Entry  ".into(),
+        description: Some("  Description  ".into()),
+        comment: Some("  Comment  ".into()),
+        parent: Some(DictEntryInfo {
+            code: "  PARENT  ".into(),
+            name: "  Parent  ".into(),
+            ..DictEntryInfo::default()
+        }),
+        ..DictEntry::default()
+    };
+    normalized.normalize();
+    assert_eq!(normalized.description.as_deref(), Some("Description"));
+    assert_eq!(normalized.comment.as_deref(), Some("Comment"));
+    assert_eq!(normalized.parent.as_ref().unwrap().code, "PARENT");
+    assert!(!normalized.is_empty());
 }
 
 #[test]
@@ -332,6 +364,35 @@ fn dict_entry_info_and_payload_preserve_computed_behaviors() {
         .unwrap()
         .get("params")
         .is_none());
+
+    let now = chrono::Utc::now();
+    let mut complete_info = DictEntryInfo {
+        id: Some(7),
+        code: "  {0}  ".into(),
+        name: "  Name {0}  ".into(),
+        dict_id: Some(3),
+        params: Some(vec!["  X  ".into()]),
+        delete_time: Some(now),
+    };
+    exercise_metadata_traits(&mut complete_info);
+    assert_eq!(complete_info.code, "{0}");
+    assert_eq!(complete_info.name, "Name {0}");
+    assert_eq!(
+        complete_info
+            .params
+            .as_deref()
+            .map(|params| params[0].as_str()),
+        Some("X")
+    );
+    let complete_json = serde_json::to_value(&complete_info)
+        .expect("complete dictionary entry info should serialize");
+    for field in ["id", "dict_id", "params", "delete_time"] {
+        assert!(complete_json.get(field).is_some(), "{field} must serialize");
+    }
+    assert_eq!(complete_json["display_code"], "X");
+    assert_eq!(complete_json["display_name"], "Name X");
+    assert!(DictEntryInfo::create(None, Some("CODE"), None).is_some());
+    assert!(DictEntryInfo::create(None, None, Some("Name")).is_some());
 
     let payload = Payload::default();
     assert!(payload.is_empty());

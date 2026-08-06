@@ -208,6 +208,15 @@ fn enterprise_claim(status: EnterpriseClaimStatus) -> EnterpriseClaim {
 /// source workflow branch.
 #[test]
 fn test_individual_claim_statuses_drive_operation_permissions() {
+    let status_group = std::hint::black_box(
+        InsuranceClaimStatus::status_group as fn(InsuranceClaimStatus) -> InsuranceClaimStatusGroup,
+    );
+    let allow_client =
+        std::hint::black_box(InsuranceClaim::allow_client_operation as fn(&InsuranceClaim) -> bool);
+    let allow_reject =
+        std::hint::black_box(InsuranceClaim::allow_system_reject as fn(&InsuranceClaim) -> bool);
+    let allow_accept =
+        std::hint::black_box(InsuranceClaim::allow_system_accept as fn(&InsuranceClaim) -> bool);
     let cases = [
         (InsuranceClaimStatus::NotSubmitted, true, false, false),
         (
@@ -260,20 +269,35 @@ fn test_individual_claim_statuses_drive_operation_permissions() {
     for (status, client_allowed, reject_allowed, accept_allowed) in cases {
         let status = std::hint::black_box(status);
         let claim = individual_claim(status);
-        assert_eq!(claim.status_group, status.status_group());
-        assert_eq!(claim.allow_client_operation(), client_allowed);
-        assert_eq!(claim.allow_system_reject(), reject_allowed);
-        assert_eq!(claim.allow_system_accept(), accept_allowed);
+        assert_eq!(claim.status_group, status_group(status));
+        assert_eq!(allow_client(&claim), client_allowed);
+        assert_eq!(allow_reject(&claim), reject_allowed);
+        assert_eq!(allow_accept(&claim), accept_allowed);
         let json = serde_json::to_value(&claim).expect("an individual claim should serialize");
         assert_eq!(json["status"], serde_json::to_value(status).unwrap());
     }
-    assert_eq!(InsuranceClaimStatus::list_not_finished_status().len(), 8);
+    let unfinished = std::hint::black_box(
+        InsuranceClaimStatus::list_not_finished_status as fn() -> &'static [InsuranceClaimStatus],
+    );
+    assert_eq!(unfinished().len(), 8);
 }
 
 /// Verifies enterprise status grouping and permissions for every workflow
 /// branch in the public model.
 #[test]
 fn test_enterprise_claim_statuses_drive_operation_permissions() {
+    let status_group = std::hint::black_box(
+        EnterpriseClaimStatus::status_group
+            as fn(EnterpriseClaimStatus) -> EnterpriseClaimStatusGroup,
+    );
+    let allow_client = std::hint::black_box(
+        EnterpriseClaim::allow_client_operation as fn(&EnterpriseClaim) -> bool,
+    );
+    let allow_reject =
+        std::hint::black_box(EnterpriseClaim::allow_reject as fn(&EnterpriseClaim) -> bool);
+    let allow_admin = std::hint::black_box(
+        EnterpriseClaim::allow_admin_operation as fn(&EnterpriseClaim) -> bool,
+    );
     let cases = [
         (EnterpriseClaimStatus::NotSubmitted, true, false, false),
         (
@@ -307,14 +331,17 @@ fn test_enterprise_claim_statuses_drive_operation_permissions() {
     for (status, client_allowed, reject_allowed, admin_allowed) in cases {
         let status = std::hint::black_box(status);
         let claim = enterprise_claim(status);
-        assert_eq!(claim.status_group, status.status_group());
-        assert_eq!(claim.allow_client_operation(), client_allowed);
-        assert_eq!(claim.allow_reject(), reject_allowed);
-        assert_eq!(claim.allow_admin_operation(), admin_allowed);
+        assert_eq!(claim.status_group, status_group(status));
+        assert_eq!(allow_client(&claim), client_allowed);
+        assert_eq!(allow_reject(&claim), reject_allowed);
+        assert_eq!(allow_admin(&claim), admin_allowed);
         let json = serde_json::to_value(&claim).expect("an enterprise claim should serialize");
         assert_eq!(json["status"], serde_json::to_value(status).unwrap());
     }
-    assert_eq!(EnterpriseClaimStatus::list_not_finished_status().len(), 6);
+    let unfinished = std::hint::black_box(
+        EnterpriseClaimStatus::list_not_finished_status as fn() -> &'static [EnterpriseClaimStatus],
+    );
+    assert_eq!(unfinished().len(), 6);
 }
 
 /// Verifies invoice amount and self-care validation accepts and rejects the
@@ -545,10 +572,16 @@ fn test_claim_leaf_enumerations_round_trip_through_json() {
         (EnterpriseInsuredType::ChildDonorGenus, "32", "子女供属"),
         (EnterpriseInsuredType::DonorGenus, "41", "供属"),
     ];
+    let insured_type_code = std::hint::black_box(
+        EnterpriseInsuredType::code as fn(EnterpriseInsuredType) -> &'static str,
+    );
+    let insured_type_description = std::hint::black_box(
+        EnterpriseInsuredType::description as fn(EnterpriseInsuredType) -> &'static str,
+    );
     for (insured_type, code, description) in insured_type_cases {
         let insured_type = std::hint::black_box(insured_type);
-        assert_eq!(insured_type.code(), code);
-        assert_eq!(insured_type.description(), description);
+        assert_eq!(insured_type_code(insured_type), code);
+        assert_eq!(insured_type_description(insured_type), description);
     }
 
     let ownership_cases = [
@@ -557,9 +590,14 @@ fn test_claim_leaf_enumerations_round_trip_through_json() {
         (EnterpriseOwnership::CoSolution, "2", "协解"),
         (EnterpriseOwnership::Test, "z", "测试"),
     ];
+    let ownership_code =
+        std::hint::black_box(EnterpriseOwnership::code as fn(EnterpriseOwnership) -> &'static str);
+    let ownership_description = std::hint::black_box(
+        EnterpriseOwnership::description as fn(EnterpriseOwnership) -> &'static str,
+    );
     for (ownership, code, description) in ownership_cases {
         let ownership = std::hint::black_box(ownership);
-        assert_eq!(ownership.code(), code);
-        assert_eq!(ownership.description(), description);
+        assert_eq!(ownership_code(ownership), code);
+        assert_eq!(ownership_description(ownership), description);
     }
 }
