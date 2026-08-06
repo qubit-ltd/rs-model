@@ -362,3 +362,20 @@ fn file_emptyful_trait_and_attachment_deserialization_preserve_defaults() {
     .expect("attachment defaults must deserialize from source JSON");
     assert!(attachment.visible);
 }
+
+#[test]
+fn upload_file_info_resolves_relative_paths_and_preserves_missing_sizes() {
+    let mut upload = Upload::default();
+    let relative = std::path::Path::new("Cargo.toml");
+    let file = upload
+        .set_file_info(relative, "application/toml")
+        .expect("relative project paths must resolve");
+    assert!(std::path::Path::new(&file.path).is_absolute());
+    assert!(file.size > 0);
+
+    let missing = std::path::Path::new("missing-upload-coverage-file");
+    let file = upload
+        .set_file_info(missing, "application/octet-stream")
+        .expect("missing source files retain the source zero-size behavior");
+    assert_eq!(file.size, 0);
+}
