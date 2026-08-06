@@ -1,0 +1,536 @@
+// =============================================================================
+//    Copyright (c) 2025 - 2026 Haixing Hu.
+//
+//    SPDX-License-Identifier: Apache-2.0
+//
+//    Licensed under the Apache License, Version 2.0.
+// =============================================================================
+
+//! Behavioural integration tests for individual and enterprise claim models.
+
+use bigdecimal::BigDecimal;
+use chrono::Utc;
+use qubit_mixin::Info;
+use qubit_model::{
+    claim::{
+        enterprise::{
+            EnterpriseClaim, EnterpriseClaimInvoice, EnterpriseClaimItem,
+            EnterpriseClaimItemStatus, EnterpriseClaimMedical, EnterpriseClaimSelfCareItem,
+            EnterpriseClaimStatus, EnterpriseClaimStatusGroup, EnterpriseHistoryClaimAmount,
+            EnterpriseInsuredType, SaveStatus,
+        },
+        AccidentReason, InsuranceClaim, InsuranceClaimAmount, InsuranceClaimInvoice,
+        InsuranceClaimInvoiceStatus, InsuranceClaimInvoiceType, InsuranceClaimStatus,
+        InsuranceClaimStatusGroup, InsuredStatus, QuickCompensationState,
+    },
+    commons::{Currency, DictEntryInfo, Kinship, State},
+    mixin::StatefulInfo,
+    order::Client,
+    payment::{Account, AccountType},
+    product::{Product, Quality},
+};
+
+/// Builds a minimal client accepted by the public claim API.
+fn client(name: &str) -> Client {
+    Client {
+        id: None,
+        name: name.to_owned(),
+        credential: None,
+        gender: None,
+        birthday: None,
+        mobile: None,
+        email: None,
+        has_medicare: None,
+        medicare_type: None,
+        medicare_card: None,
+        medicare_city: None,
+        has_social_security: None,
+        social_security_card: None,
+        social_security_city: None,
+        guardian: None,
+        return_status: None,
+        kinship: None,
+        payload: None,
+    }
+}
+
+/// Builds a minimal product accepted by the public claim API.
+fn product() -> Product {
+    let now = Utc::now();
+    Product {
+        id: None,
+        code: "CLAIM_PRODUCT".into(),
+        name: "Claim product".into(),
+        app: StatefulInfo::default(),
+        category: None,
+        quality: Quality::BrandNew,
+        currency: Currency::Cny,
+        image: None,
+        description: None,
+        valid_from: None,
+        valid_until: None,
+        brand: None,
+        origin: None,
+        manufacturer: None,
+        seller: Info::default(),
+        sale_from: now.naive_utc(),
+        sale_until: None,
+        need_delivery: false,
+        allow_return: false,
+        allow_change: false,
+        need_client: false,
+        constraint: None,
+        items: Vec::new(),
+        state: State::Normal,
+        create_time: now,
+        modify_time: None,
+        delete_time: None,
+    }
+}
+
+/// Builds the account embedded in an individual claim.
+fn account() -> Account {
+    let now = Utc::now();
+    Account {
+        id: None,
+        app: StatefulInfo::default(),
+        owner_type: "PERSON".into(),
+        owner_id: 1,
+        r#type: AccountType::BankCard,
+        name: "Claim account".into(),
+        number: None,
+        provider: None,
+        create_time: now,
+        modify_time: None,
+        delete_time: None,
+    }
+}
+
+/// Builds the amount aggregate embedded in an individual claim.
+fn claim_amount() -> InsuranceClaimAmount {
+    InsuranceClaimAmount {
+        id: None,
+        claim_id: 1,
+        total_amount: None,
+        medicare_amount: None,
+        self_paid_amount: None,
+        self_care_amount: None,
+        fund_paid_amount: None,
+        serious_illness_paid: None,
+        serious_illness_insurance_paid: None,
+        civil_affair_subsidy_paid: None,
+        self_paid_claim_amount: None,
+        self_care_claim_amount: None,
+        total_claim_amount: None,
+        actual_self_paid_amount: None,
+        actual_self_care_amount: None,
+        actual_paid_amount: None,
+        paid_amount_calibration: false,
+        pay_time: None,
+        endcase_date: None,
+        payload: None,
+        create_time: Utc::now(),
+        modify_time: None,
+    }
+}
+
+/// Builds an individual claim with a selectable workflow state.
+fn individual_claim(status: InsuranceClaimStatus) -> InsuranceClaim {
+    let now = Utc::now();
+    InsuranceClaim {
+        id: None,
+        product: product(),
+        company: Info::default(),
+        source: Info::default(),
+        reason: AccidentReason::Disease,
+        policy_number: "policy".into(),
+        insured: client("Insured"),
+        insured_address: None,
+        insured_status: None,
+        claimant_relation: Kinship::Self_,
+        claimant: client("Claimant"),
+        claimant_address: None,
+        accident_date: now.date_naive(),
+        accident_place: "Shanghai".into(),
+        accident_description: "description".into(),
+        hospital: None,
+        treatment_start_date: None,
+        treatment_end_date: None,
+        quick_compensation_state: QuickCompensationState::Success,
+        currency: Some(Currency::Cny),
+        total_paid_amount: None,
+        payee_name: "Payee".into(),
+        account: account(),
+        number: "CLAIM-1".into(),
+        issue_time: None,
+        cancel_time: None,
+        complete_time: None,
+        status,
+        status_group: status.status_group(),
+        notes: String::new(),
+        payload: None,
+        attachment_list: Vec::new(),
+        events: Vec::new(),
+        medical_list: Vec::new(),
+        saved_invoices: Vec::new(),
+        amount: claim_amount(),
+        create_time: now,
+        modify_time: None,
+        delete_time: None,
+    }
+}
+
+/// Builds an enterprise claim with a selectable workflow state.
+fn enterprise_claim(status: EnterpriseClaimStatus) -> EnterpriseClaim {
+    EnterpriseClaim {
+        id: None,
+        product: product(),
+        reason: AccidentReason::Disease,
+        insured_status: InsuredStatus::Recovery,
+        insured: client("Insured"),
+        claimant_relation: Kinship::Self_,
+        claimant: client("Claimant"),
+        issue_time: None,
+        cancel_time: None,
+        complete_time: None,
+        status,
+        status_group: status.status_group(),
+        notes: String::new(),
+        quick_compensation_state: QuickCompensationState::Success,
+        events: Vec::new(),
+        attachment_list: Vec::new(),
+        create_time: Utc::now(),
+        modify_time: None,
+    }
+}
+
+/// Verifies individual status grouping and operation permissions for every
+/// source workflow branch.
+#[test]
+fn test_individual_claim_statuses_drive_operation_permissions() {
+    let cases = [
+        (InsuranceClaimStatus::NotSubmitted, true, false, false),
+        (
+            InsuranceClaimStatus::ClaimApplicationWaitAudit,
+            false,
+            true,
+            false,
+        ),
+        (
+            InsuranceClaimStatus::ClaimApplicationAudited,
+            false,
+            true,
+            true,
+        ),
+        (InsuranceClaimStatus::TemporarySaved, false, true, true),
+        (InsuranceClaimStatus::SystemAudited, false, false, false),
+        (InsuranceClaimStatus::SystemRejected, true, false, false),
+        (
+            InsuranceClaimStatus::WaitInsuranceCompanyAudited,
+            false,
+            false,
+            false,
+        ),
+        (
+            InsuranceClaimStatus::InsuranceCompanyAccepted,
+            false,
+            false,
+            false,
+        ),
+        (
+            InsuranceClaimStatus::InsuranceCompanyRejected,
+            true,
+            false,
+            false,
+        ),
+        (
+            InsuranceClaimStatus::InsuranceCompanyCompleted,
+            false,
+            false,
+            false,
+        ),
+        (
+            InsuranceClaimStatus::InsuranceCompanyAnnulOrRefused,
+            false,
+            false,
+            false,
+        ),
+        (InsuranceClaimStatus::Canceled, false, false, false),
+    ];
+    for (status, client_allowed, reject_allowed, accept_allowed) in cases {
+        let claim = individual_claim(status);
+        assert_eq!(claim.status_group, status.status_group());
+        assert_eq!(claim.allow_client_operation(), client_allowed);
+        assert_eq!(claim.allow_system_reject(), reject_allowed);
+        assert_eq!(claim.allow_system_accept(), accept_allowed);
+        let json = serde_json::to_value(&claim).expect("an individual claim should serialize");
+        assert_eq!(json["status"], serde_json::to_value(status).unwrap());
+    }
+    assert_eq!(InsuranceClaimStatus::list_not_finished_status().len(), 8);
+}
+
+/// Verifies enterprise status grouping and permissions for every workflow
+/// branch in the public model.
+#[test]
+fn test_enterprise_claim_statuses_drive_operation_permissions() {
+    let cases = [
+        (EnterpriseClaimStatus::NotSubmitted, true, false, false),
+        (
+            EnterpriseClaimStatus::ClaimApplicationWaitAudit,
+            false,
+            true,
+            false,
+        ),
+        (EnterpriseClaimStatus::SystemRejected, true, false, false),
+        (
+            EnterpriseClaimStatus::ClaimApplicationAudited,
+            false,
+            true,
+            true,
+        ),
+        (EnterpriseClaimStatus::TemporarySaved, false, true, true),
+        (
+            EnterpriseClaimStatus::WaitInsuranceCompanyAudited,
+            false,
+            false,
+            false,
+        ),
+        (
+            EnterpriseClaimStatus::InsuranceCompanyCompleted,
+            false,
+            false,
+            false,
+        ),
+        (EnterpriseClaimStatus::Canceled, false, false, false),
+    ];
+    for (status, client_allowed, reject_allowed, admin_allowed) in cases {
+        let claim = enterprise_claim(status);
+        assert_eq!(claim.status_group, status.status_group());
+        assert_eq!(claim.allow_client_operation(), client_allowed);
+        assert_eq!(claim.allow_reject(), reject_allowed);
+        assert_eq!(claim.allow_admin_operation(), admin_allowed);
+        let json = serde_json::to_value(&claim).expect("an enterprise claim should serialize");
+        assert_eq!(json["status"], serde_json::to_value(status).unwrap());
+    }
+    assert_eq!(EnterpriseClaimStatus::list_not_finished_status().len(), 6);
+}
+
+/// Verifies invoice amount and self-care validation accepts and rejects the
+/// source-domain boundary cases.
+#[test]
+fn test_claim_invoice_validations_check_component_boundaries() {
+    let now = Utc::now();
+    let self_care_item = EnterpriseClaimSelfCareItem {
+        id: None,
+        claim_invoice_id: 1,
+        name: "Class B medicine".into(),
+        medicare_charge_code: "B001".into(),
+        amount: BigDecimal::from(10),
+        ratio: 1.0,
+        create_time: now,
+        delete_time: None,
+    };
+    let mut enterprise = EnterpriseClaimInvoice {
+        id: None,
+        claim_id: 1,
+        claim_medical_id: 1,
+        attachment_id: 1,
+        number: "E-1".into(),
+        deductible: BigDecimal::from(0),
+        amount: BigDecimal::from(60),
+        self_paid_amount: BigDecimal::from(10),
+        self_care_amount: BigDecimal::from(10),
+        fund_paid_amount: BigDecimal::from(10),
+        serious_illness_amount: BigDecimal::from(10),
+        serious_illness_insurance_amount: BigDecimal::from(10),
+        no_reimbursement_amount: BigDecimal::from(0),
+        invalid_amount: BigDecimal::from(0),
+        class_b_self_care_amount: BigDecimal::from(0),
+        self_amount: BigDecimal::from(0),
+        civil_affair_subsidy_amount: BigDecimal::from(10),
+        medicare_amount: BigDecimal::from(0),
+        source: Default::default(),
+        operator_name: None,
+        status: SaveStatus::Saved,
+        accuracy: true,
+        inaccurate_reason: String::new(),
+        self_care_items: vec![self_care_item],
+        claim_base: BigDecimal::from(0),
+        claim_amount: BigDecimal::from(0),
+        create_time: now,
+        modify_time: None,
+        delete_time: None,
+    };
+    assert!(enterprise.check_amount());
+    assert!(enterprise.check_self_care_items());
+    enterprise.amount = BigDecimal::from(59);
+    assert!(!enterprise.check_amount());
+    enterprise.self_care_items[0].ratio = 1.1;
+    assert!(!enterprise.check_self_care_items());
+
+    let mut individual = InsuranceClaimInvoice {
+        id: None,
+        claim_id: 1,
+        claim_medical_id: 1,
+        attachment_id: 1,
+        number: "I-1".into(),
+        amount: BigDecimal::from(30),
+        fund_paid_amount: BigDecimal::from(10),
+        self_paid_amount: BigDecimal::from(10),
+        self_care_amount: BigDecimal::from(10),
+        medicare_amount: BigDecimal::from(0),
+        serious_illness_paid: None,
+        serious_illness_insurance_paid: None,
+        civil_affair_subsidy_paid: None,
+        self_amount: None,
+        past_symptom: false,
+        r#type: InsuranceClaimInvoiceType::Hospitalization,
+        status: InsuranceClaimInvoiceStatus::Saved,
+        accuracy: true,
+        inaccurate_reason: String::new(),
+        self_amount_supply: None,
+        create_time: now,
+        modify_time: None,
+        delete_time: None,
+        costs: Vec::new(),
+    };
+    assert!(individual.check_amount());
+    individual.amount = BigDecimal::from(29);
+    assert!(!individual.check_amount());
+}
+
+/// Verifies an enterprise calculation item derives its hospital and disease
+/// summaries for empty, uniform, and mixed medical encounter collections.
+#[test]
+fn test_enterprise_claim_item_initializes_hospital_and_disease_summaries() {
+    let now = Utc::now();
+    let medical =
+        |hospital_name: &str, hospital_level: i32, disease_code: &str| EnterpriseClaimMedical {
+            id: None,
+            claim_id: 1,
+            treatment_start_date: now.date_naive(),
+            treatment_end_date: now.date_naive(),
+            number: None,
+            claim_apply_id: None,
+            medical_category: None,
+            disease: Some(DictEntryInfo {
+                id: None,
+                code: disease_code.into(),
+                name: String::new(),
+                dict_id: None,
+                params: Vec::new(),
+                delete_time: None,
+            }),
+            hospital: Some(DictEntryInfo {
+                id: None,
+                code: String::new(),
+                name: hospital_name.into(),
+                dict_id: None,
+                params: Vec::new(),
+                delete_time: None,
+            }),
+            hospital_level: Some(hospital_level),
+            operator_name: None,
+            insured_type: EnterpriseInsuredType::InService,
+            status: SaveStatus::Saved,
+            invoices: Vec::new(),
+            create_time: now,
+            modify_time: None,
+            delete_time: None,
+        };
+    let history = EnterpriseHistoryClaimAmount {
+        id: None,
+        product_id: 1,
+        name: "Insured".into(),
+        credential_number: "credential".into(),
+        medical_category: DictEntryInfo {
+            id: None,
+            code: "GENERAL".into(),
+            name: "General".into(),
+            dict_id: None,
+            params: Vec::new(),
+            delete_time: None,
+        },
+        claim_base: BigDecimal::from(0),
+        deductible: BigDecimal::from(0),
+        overall_fund_amount: BigDecimal::from(0),
+        create_time: now,
+        modify_time: None,
+    };
+    let mut item = EnterpriseClaimItem {
+        id: None,
+        claim_id: 1,
+        medical_category: history.medical_category.clone(),
+        insured_type: None,
+        amount: BigDecimal::from(0),
+        overall_fund_amount: BigDecimal::from(0),
+        invalid_amount: BigDecimal::from(0),
+        deductible: BigDecimal::from(0),
+        self_amount: BigDecimal::from(0),
+        claim_base: BigDecimal::from(0),
+        claim_amount: BigDecimal::from(0),
+        actual_claim_amount: BigDecimal::from(0),
+        over_upper_limit: BigDecimal::from(0),
+        serious_illness_amount: BigDecimal::from(0),
+        serious_illness_insurance_amount: BigDecimal::from(0),
+        yangzi_supply: BigDecimal::from(0),
+        hospital_name: None,
+        hospital_level: None,
+        disease_code: None,
+        actual_paid_amount: BigDecimal::from(0),
+        paid_date: None,
+        endcase_date: None,
+        operator_name: None,
+        description: None,
+        status: EnterpriseClaimItemStatus::Created,
+        medicals: Vec::new(),
+        history_claim_amount: history,
+        deduct_deductible: false,
+        create_time: now,
+        modify_time: None,
+        delete_time: None,
+    };
+    item.init_hospital_and_disease();
+    assert_eq!(item.hospital_name, None);
+    assert_eq!(item.disease_code, None);
+
+    item.medicals = vec![medical("Central Hospital", 2, "A01")];
+    item.init_hospital_and_disease();
+    assert_eq!(item.hospital_name.as_deref(), Some("Central Hospital"));
+    assert_eq!(item.hospital_level, Some(2));
+    assert_eq!(item.disease_code.as_deref(), Some("A01"));
+
+    item.medicals.push(medical("East Hospital", 3, "B02"));
+    item.init_hospital_and_disease();
+    assert_eq!(item.hospital_name.as_deref(), Some("其他"));
+    assert_eq!(item.hospital_level, Some(3));
+    assert_eq!(item.disease_code.as_deref(), Some("A01"));
+}
+
+/// Verifies every claim leaf enumeration keeps its explicit wire spelling.
+#[test]
+fn test_claim_leaf_enumerations_round_trip_through_json() {
+    let values = [
+        serde_json::to_value(AccidentReason::Birth).unwrap(),
+        serde_json::to_value(InsuredStatus::UnderTreatment).unwrap(),
+        serde_json::to_value(QuickCompensationState::Fetching).unwrap(),
+        serde_json::to_value(InsuranceClaimInvoiceStatus::IgnoredGt).unwrap(),
+        serde_json::to_value(InsuranceClaimInvoiceType::ClinicSpecial).unwrap(),
+        serde_json::to_value(InsuranceClaimStatusGroup::AuditRejection).unwrap(),
+        serde_json::to_value(EnterpriseClaimStatusGroup::Register).unwrap(),
+        serde_json::to_value(SaveStatus::NotSaved).unwrap(),
+    ];
+    assert_eq!(
+        values,
+        [
+            serde_json::Value::String("BIRTH".into()),
+            serde_json::Value::String("UNDER_TREATMENT".into()),
+            serde_json::Value::String("FETCHING".into()),
+            serde_json::Value::String("IGNORED_GT".into()),
+            serde_json::Value::String("CLINIC_SPECIAL".into()),
+            serde_json::Value::String("AUDIT_REJECTION".into()),
+            serde_json::Value::String("REGISTER".into()),
+            serde_json::Value::String("NOT_SAVED".into()),
+        ]
+    );
+}

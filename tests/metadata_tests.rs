@@ -10,22 +10,11 @@ use qubit_mixin::Normalizable;
 use qubit_model::{
     commons::State,
     metadata::{
-        AggregateRef,
-        Category,
-        Dict,
-        DictEntry,
-        DictEntryInfo,
-        FullDict,
-        Payload,
-        Scope,
-        ScopeType,
-        Source,
+        AggregateRef, Category, Dict, DictEntry, DictEntryInfo, FullDict, Payload, Scope,
+        ScopeType, Source,
     },
 };
-use qubit_model_metadata::{
-    UniqueComparison,
-    metadata_of,
-};
+use qubit_model_metadata::{metadata_of, UniqueComparison};
 use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
@@ -56,11 +45,9 @@ fn metadata_public_types_preserve_source_fields_and_traits() {
 fn metadata_model_constraints_preserve_source_annotations() {
     let category = metadata_of::<Category>();
     assert_eq!(category.primary_key().unwrap().fields()[0].name(), "id");
-    assert!(
-        category
-            .unique_constraints()
-            .any(|unique| unique.contains("code"))
-    );
+    assert!(category
+        .unique_constraints()
+        .any(|unique| unique.contains("code")));
     assert!(category.indexes().any(|index| index.contains("scope")));
     assert!(category.field("parent").unwrap().reference().is_some());
     assert_eq!(
@@ -93,9 +80,9 @@ fn metadata_model_constraints_preserve_source_annotations() {
     );
 
     let payload = metadata_of::<Payload>();
-    assert!(payload.unique_constraints().any(
-        |unique| unique.contains("key") && unique.contains("aggregate_ref")
-    ));
+    assert!(payload
+        .unique_constraints()
+        .any(|unique| unique.contains("key") && unique.contains("aggregate_ref")));
     assert_eq!(
         payload
             .unique_constraints()
@@ -181,6 +168,58 @@ fn metadata_models_normalize_strings_and_use_all_fields_for_emptiness() {
     assert!(!dict.is_empty());
 }
 
+/// Verifies every metadata aggregate exposes its source-compatible default,
+/// normalization, emptiness, and JSON contracts.
+#[test]
+fn metadata_aggregates_preserve_default_and_normalization_contracts() {
+    let mut category = Category::default();
+    assert!(category.is_empty());
+    category.code = "  MEDICAL  ".into();
+    category.name = "  Medical  ".into();
+    category.normalize();
+    assert_eq!(category.code, "MEDICAL");
+    assert_eq!(category.name, "Medical");
+    assert!(!category.is_empty());
+    let category_json = serde_json::to_value(&category)
+        .expect("a category should serialize to its public JSON contract");
+    let restored_category: Category =
+        serde_json::from_value(category_json).expect("a category JSON value should deserialize");
+    assert_eq!(restored_category, category);
+
+    let mut source = Source::default();
+    assert!(source.is_empty());
+    source.code = "  API  ".into();
+    source.name = "  Partner API  ".into();
+    source.entity = "  CLAIM  ".into();
+    source.normalize();
+    assert_eq!(source.code, "API");
+    assert_eq!(source.name, "Partner API");
+    assert_eq!(source.entity, "CLAIM");
+    assert!(!source.is_empty());
+    let source_json = serde_json::to_value(&source)
+        .expect("a source should serialize to its public JSON contract");
+    let restored_source: Source =
+        serde_json::from_value(source_json).expect("a source JSON value should deserialize");
+    assert_eq!(restored_source, source);
+
+    let mut dict = Dict::default();
+    dict.code = "  BENEFIT  ".into();
+    dict.name = "  Benefit  ".into();
+    dict.description = Some("  Catalog  ".into());
+    dict.normalize();
+    assert_eq!(dict.code, "BENEFIT");
+    assert_eq!(dict.name, "Benefit");
+    assert_eq!(dict.description.as_deref(), Some("Catalog"));
+    let full_dict = FullDict::from(dict.clone());
+    assert_eq!(full_dict.code, dict.code);
+    assert_eq!(full_dict.entries, None);
+    let dict_json = serde_json::to_value(&dict)
+        .expect("a dictionary should serialize to its public JSON contract");
+    let restored_dict: Dict =
+        serde_json::from_value(dict_json).expect("a dictionary JSON value should deserialize");
+    assert_eq!(restored_dict, dict);
+}
+
 #[test]
 fn dict_entry_formats_and_matches_parameterized_codes() {
     let entry = DictEntry::new("{0}W{1}D", "每{0}星期使用{1}天");
@@ -199,6 +238,24 @@ fn dict_entry_formats_and_matches_parameterized_codes() {
         plain.match_code_and_format_name("ready").as_deref(),
         Some("Ready")
     );
+
+    let mut assigned = DictEntry::default();
+    assigned.assign_info(&DictEntryInfo {
+        id: Some(7),
+        code: "  {0}D  ".into(),
+        name: "  Every {0} days  ".into(),
+        dict_id: Some(3),
+        params: Some(vec!["2".into()]),
+        delete_time: None,
+    });
+    assert_eq!(assigned.id, Some(7));
+    assert_eq!(assigned.display_code(&["5"]), "  5D  ");
+    assert_eq!(assigned.display_name(&["5"]), "  Every 5 days  ");
+    assigned.normalize();
+    assert_eq!(assigned.code, "{0}D");
+    assert!(!assigned.is_empty());
+    assert_eq!(assigned.info().dict_id, Some(3));
+    assert_eq!(assigned.info().params, None);
 }
 
 #[test]
@@ -255,15 +312,38 @@ fn dict_entry_info_and_payload_preserve_computed_behaviors() {
         ..info.clone()
     };
     assert_eq!(no_params.display_code(), "{0}W{1}D");
-    assert!(
-        serde_json::to_value(&no_params)
-            .unwrap()
-            .get("params")
-            .is_none()
-    );
+    assert!(serde_json::to_value(&no_params)
+        .unwrap()
+        .get("params")
+        .is_none());
 
     let payload = Payload::default();
     assert!(payload.is_empty());
     let sensitive = Payload::new("token", Some("raw-secret".into()));
     assert!(!format!("{:?}", sensitive.redacted()).contains("raw-secret"));
+
+    let empty_info = DictEntryInfo::default();
+    assert!(empty_info.is_empty());
+    let created = DictEntryInfo::create(Some(5), None, None)
+        .expect("an identifier should create dictionary entry info");
+    assert_eq!(created.id, Some(5));
+    assert_eq!(created.code, "");
+    assert_eq!(created.name, "");
+
+    let aggregate = AggregateRef::default();
+    assert!(aggregate.is_empty());
+    let aggregate_json =
+        serde_json::to_value(&aggregate).expect("an aggregate reference should serialize");
+    let restored_aggregate: AggregateRef = serde_json::from_value(aggregate_json)
+        .expect("an aggregate reference JSON value should deserialize");
+    assert_eq!(restored_aggregate, aggregate);
+
+    let scope = Scope {
+        r#type: ScopeType::Tenant,
+        id: Some(42),
+    };
+    let scope_json = serde_json::to_value(&scope).expect("a scope should serialize");
+    let restored_scope: Scope =
+        serde_json::from_value(scope_json).expect("a scope JSON value should deserialize");
+    assert_eq!(restored_scope, scope);
 }
