@@ -174,6 +174,31 @@ fn test_common_values_normalize_and_serialize_complete_data() {
     assert!(!faq.is_empty());
     assert!(serde_json::to_value(&faq).unwrap().get("product").is_some());
 
+    macro_rules! assert_faq_field_makes_value_nonempty {
+        ($update:expr) => {{
+            let mut value = Faq::default();
+            $update(&mut value);
+            assert!(!value.is_empty());
+        }};
+    }
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.id = Some(1));
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| {
+        value.app = Some(StatefulInfo::default())
+    });
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| {
+        value.category = Some(InfoWithEntity::default())
+    });
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| {
+        value.product = Some(Info::default())
+    });
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.question = "Q".into());
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.answer = "A".into());
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.frequency = 1);
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.state = State::Disabled);
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.create_time = Some(now));
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.modify_time = Some(now));
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.delete_time = Some(now));
+
     let mut schedule = Schedule {
         start_time: Some(now),
         end_time: Some(now),

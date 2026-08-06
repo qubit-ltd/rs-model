@@ -304,6 +304,44 @@ fn dict_entry_formats_and_matches_parameterized_codes() {
     assert_eq!(normalized.comment.as_deref(), Some("Comment"));
     assert_eq!(normalized.parent.as_ref().unwrap().code, "PARENT");
     assert!(!normalized.is_empty());
+
+    macro_rules! assert_entry_field_makes_value_nonempty {
+        ($update:expr) => {{
+            let mut value = DictEntry::default();
+            $update(&mut value);
+            assert!(!value.is_empty());
+        }};
+    }
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| value.id = Some(1));
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
+        value.dict = Some(qubit_model::mixin::StatefulInfo {
+            code: "DICT".into(),
+            ..Default::default()
+        })
+    });
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| value.code = "CODE".into());
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| value.name = "Name".into());
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
+        value.description = Some("Description".into())
+    });
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
+        value.comment = Some("Comment".into())
+    });
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
+        value.parent = Some(DictEntryInfo {
+            code: "PARENT".into(),
+            ..DictEntryInfo::default()
+        })
+    });
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
+        value.create_time = Some(chrono::Utc::now())
+    });
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
+        value.modify_time = Some(chrono::Utc::now())
+    });
+    assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
+        value.delete_time = Some(chrono::Utc::now())
+    });
 }
 
 #[test]
@@ -393,6 +431,30 @@ fn dict_entry_info_and_payload_preserve_computed_behaviors() {
     assert_eq!(complete_json["display_name"], "Name X");
     assert!(DictEntryInfo::create(None, Some("CODE"), None).is_some());
     assert!(DictEntryInfo::create(None, None, Some("Name")).is_some());
+
+    macro_rules! assert_entry_info_field_makes_value_nonempty {
+        ($update:expr) => {{
+            let mut value = DictEntryInfo::default();
+            $update(&mut value);
+            assert!(!value.is_empty());
+        }};
+    }
+    assert_entry_info_field_makes_value_nonempty!(|value: &mut DictEntryInfo| value.id = Some(1));
+    assert_entry_info_field_makes_value_nonempty!(|value: &mut DictEntryInfo| {
+        value.code = "CODE".into()
+    });
+    assert_entry_info_field_makes_value_nonempty!(|value: &mut DictEntryInfo| {
+        value.name = "Name".into()
+    });
+    assert_entry_info_field_makes_value_nonempty!(|value: &mut DictEntryInfo| {
+        value.dict_id = Some(1)
+    });
+    assert_entry_info_field_makes_value_nonempty!(|value: &mut DictEntryInfo| {
+        value.params = Some(vec!["parameter".into()])
+    });
+    assert_entry_info_field_makes_value_nonempty!(|value: &mut DictEntryInfo| {
+        value.delete_time = Some(now)
+    });
 
     let payload = Payload::default();
     assert!(payload.is_empty());
