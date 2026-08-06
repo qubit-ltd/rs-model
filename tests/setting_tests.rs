@@ -24,6 +24,19 @@ fn setting_preserves_source_defaults_and_model_metadata() {
     assert!(!setting.readonly);
     assert!(setting.nullable);
     assert!(setting.multiple);
+
+    let explicit = SettingJsonDeserializer::deserialize(
+        r#"{"name":"explicit","type":"int","readonly":true,"nullable":false,"multiple":false,"encrypted":true,"description":"configured","createTime":"2025-01-02T03:04:05Z","modifyTime":"2025-01-03T03:04:05Z"}"#,
+    )
+    .expect("complete setting JSON is valid");
+    assert_eq!(explicit.data_type, DataType::Int);
+    assert!(explicit.readonly);
+    assert!(!explicit.nullable);
+    assert!(!explicit.multiple);
+    assert!(explicit.encrypted);
+    assert_eq!(explicit.description.as_deref(), Some("configured"));
+    assert!(explicit.create_time.is_some());
+    assert!(explicit.modify_time.is_some());
     assert!(!setting.encrypted);
     assert!(setting.is_valid());
     assert_eq!(metadata_of::<Setting>().fields().count(), 10);
