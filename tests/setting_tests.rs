@@ -173,3 +173,56 @@ fn setting_randomizer_rejects_invalid_ranges() {
         .is_err()
     );
 }
+
+#[test]
+fn setting_value_conversion_covers_all_source_data_types() {
+    let data_types = [
+        DataType::Bool,
+        DataType::Char,
+        DataType::Byte,
+        DataType::Short,
+        DataType::Int,
+        DataType::Long,
+        DataType::Float,
+        DataType::Double,
+        DataType::String,
+        DataType::Date,
+        DataType::Time,
+        DataType::Datetime,
+        DataType::Instant,
+        DataType::Timestamp,
+        DataType::ByteArray,
+        DataType::Class,
+        DataType::BigInteger,
+        DataType::BigDecimal,
+        DataType::StringArray,
+        DataType::Enum,
+        DataType::EnumArray,
+    ];
+    for data_type in data_types {
+        let mut setting = Setting::new("typed", data_type);
+        setting.values = vec!["one".into(), "two".into()];
+        let adapted = SettingXmlAdapted::from_setting(&setting);
+        assert_eq!(
+            adapted.to_setting().expect("known type round trips"),
+            setting
+        );
+    }
+
+    let mut setting = Setting::default();
+    assert_eq!(setting.persistent_value(), None);
+    setting.set_persistent_value(Some("one"));
+    assert_eq!(setting.persistent_value().as_deref(), Some("one"));
+    setting.set_persistent_value(None);
+    assert!(setting.values.is_empty());
+    assert_eq!(
+        setting.partial_cmp(&Setting::new("other", DataType::String)),
+        Some(std::cmp::Ordering::Less)
+    );
+
+    let mut randomizer = SettingRandomizer::with_seed(0);
+    for _ in 0..512 {
+        let setting = randomizer.get();
+        assert!(setting.is_valid());
+    }
+}

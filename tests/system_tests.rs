@@ -7,9 +7,10 @@
 // =============================================================================
 
 use chrono::{TimeZone, Utc};
-use qubit_mixin::Normalizable;
+use qubit_mixin::{Emptyful, Normalizable};
 use qubit_model::{
     commons::Token,
+    contact::Location,
     mixin::StatefulInfo,
     person::UserInfo,
     system::{
@@ -137,6 +138,7 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
         session.roles = vec![" ADMIN ".into(), "USER".into()];
         session.privileges = vec![" READ ".into()];
         session.set_roles_and_privileges(&[]);
+        session.normalize();
         session.roles.len()
     });
     assert_eq!(count, 0);
@@ -171,6 +173,10 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
     ] {
         assert!(json.get(field).is_some(), "{field} must be serialized");
     }
+    assert_eq!(
+        serde_json::to_value(Session::default()).expect("empty session serializes"),
+        serde_json::json!({})
+    );
 
     Session::set_super_admin_session(Some(session));
     assert!(Session::is_super_admin_mode());
@@ -191,6 +197,32 @@ fn system_normalization_preserves_source_empty_and_text_behavior() {
     assert_eq!(environment.ip, None);
     assert_eq!(environment.udid.as_deref(), Some("device"));
     assert!(!environment.is_empty());
+
+    let locations = [
+        Environment {
+            location: Some(Location {
+                longitude: 0.into(),
+                latitude: 0.into(),
+                altitude: None,
+                coordinate_system: None,
+            }),
+            ..Environment::default()
+        },
+        Environment {
+            platform: Some(Platform::Android),
+            ..Environment::default()
+        },
+        Environment {
+            push_token: Some("push".into()),
+            ..Environment::default()
+        },
+    ];
+    assert!(Environment::default().is_empty());
+    assert!(Emptyful::is_empty(&Environment::default()));
+    for environment in locations {
+        assert!(!environment.is_empty());
+        assert!(!environment.is_normalized_empty());
+    }
 }
 
 #[test]
@@ -230,6 +262,7 @@ fn operation_log_projects_and_assigns_compact_info() {
     let replacement = OperationLogInfo {
         action: Action::Get,
         username: Some("bob".into()),
+        app: Some("admin".into()),
         error_code: Some("DENIED".into()),
         ..OperationLogInfo::default()
     };
@@ -243,6 +276,7 @@ fn operation_log_projects_and_assigns_compact_info() {
         log.error.as_ref().map(|error| error.code.as_str()),
         Some("DENIED")
     );
+    assert_eq!(log.app.as_ref().map(|app| app.name.as_str()), Some("admin"));
 }
 
 #[test]

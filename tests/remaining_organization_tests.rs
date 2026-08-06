@@ -100,6 +100,7 @@ fn test_employee_and_organization_empty_checks_and_normalization() {
     employee.normalize();
     assert_eq!(employee.code, "EMP-1");
     assert_eq!(employee.mobile.number, "13800138000");
+    assert!(!employee.is_normalized_empty());
 
     let mut organization = Organization::default();
     assert!(organization.is_empty());
@@ -109,6 +110,8 @@ fn test_employee_and_organization_empty_checks_and_normalization() {
     organization.normalize();
     assert_eq!(organization.code, "seller");
     assert_eq!(organization.name, "Seller name");
+    assert_eq!(organization.info().code, "seller");
+    assert!(!organization.is_normalized_empty());
 }
 
 #[test]
@@ -117,10 +120,10 @@ fn test_organization_assigns_seller_source_view() {
         id: Some(3),
         code: "SELLER".into(),
         name: "Seller Name".into(),
-        phone: None,
-        mobile: None,
+        phone: Some(Phone::from("010-123")),
+        mobile: Some(Phone::from("13800138000")),
         email: Some("seller@example.test".into()),
-        url: None,
+        url: Some("https://seller.example.test".into()),
         credential: None,
         address: None,
     };

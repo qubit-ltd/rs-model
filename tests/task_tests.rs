@@ -203,6 +203,12 @@ fn test_task_pipeline_status_helpers_and_hooks() {
         TaskPipelineStatus::Finished,
         TaskPipelineStatus::Cancelled,
     ] {
+        pipeline.status = status;
+        assert_eq!(
+            pipeline.is_finished(),
+            status == TaskPipelineStatus::Finished
+        );
+        assert_eq!(pipeline.is_failed(), status == TaskPipelineStatus::Failed);
         assert_eq!(status.is_idle(), status == TaskPipelineStatus::Idle);
         assert_eq!(status.is_started(), status != TaskPipelineStatus::Idle);
         assert_eq!(status.is_running(), status == TaskPipelineStatus::Running);
