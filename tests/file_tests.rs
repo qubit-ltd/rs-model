@@ -19,7 +19,10 @@ use qubit_model::{
     },
 };
 use chrono::Utc;
-use qubit_mixin::InfoWithEntity;
+use qubit_mixin::{
+    Emptyful,
+    InfoWithEntity,
+};
 use qubit_model::metadata::AggregateRef;
 use qubit_model_metadata::{
     UniqueComparison,
@@ -342,4 +345,20 @@ fn attachment_serialization_preserves_every_present_optional_property() {
     ] {
         assert!(serialized.get(field).is_some(), "missing serialized {field}");
     }
+}
+
+#[test]
+fn file_emptyful_trait_and_attachment_deserialization_preserve_defaults() {
+    let file = FileInfo::default();
+    assert!(<FileInfo as Emptyful>::is_empty(&file));
+    let upload = Upload::default();
+    assert!(<Upload as Emptyful>::is_empty(&upload));
+
+    let attachment: Attachment = serde_json::from_value(serde_json::json!({
+        "type": "DOCUMENT",
+        "upload": {},
+        "state": "NORMAL"
+    }))
+    .expect("attachment defaults must deserialize from source JSON");
+    assert!(attachment.visible);
 }
