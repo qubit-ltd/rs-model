@@ -6,28 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+use chrono::Utc;
+use qubit_mixin::{Emptyful, InfoWithEntity};
+use qubit_model::metadata::AggregateRef;
 use qubit_model::{
     commons::State,
-    file::{
-        Attachment,
-        AttachmentType,
-        FileInfo,
-        MediaInfo,
-        MediaType,
-        Upload,
-        UploadParams,
-    },
+    file::{Attachment, AttachmentType, FileInfo, MediaInfo, MediaType, Upload, UploadParams},
 };
-use chrono::Utc;
-use qubit_mixin::{
-    Emptyful,
-    InfoWithEntity,
-};
-use qubit_model::metadata::AggregateRef;
-use qubit_model_metadata::{
-    UniqueComparison,
-    metadata_of,
-};
+use qubit_model_metadata::{UniqueComparison, metadata_of};
 use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
@@ -230,8 +216,7 @@ fn file_emptiness_observes_every_source_field() {
 
 #[test]
 fn upload_create_populates_file_and_verification_metadata() {
-    let path =
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
     let params = UploadParams {
         filename: None,
         content_type: Some("application/toml".into()),
@@ -259,11 +244,21 @@ fn upload_create_populates_file_and_verification_metadata() {
 
 #[test]
 fn upload_create_rejects_the_source_invalid_missing_content_type() {
-    let path =
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
     let error = Upload::create(&path, &UploadParams::default()).unwrap_err();
 
     assert_eq!(error.kind(), std::io::ErrorKind::InvalidInput);
+}
+
+#[test]
+fn upload_file_info_supports_relative_paths_and_missing_files() {
+    let mut upload = Upload::default();
+    let file = upload
+        .set_file_info(std::path::Path::new("missing-upload-file"), "text/plain")
+        .expect("relative paths are resolved against the working directory");
+    assert!(file.path.ends_with("missing-upload-file"));
+    assert_eq!(file.size, 0);
+    assert_eq!(file.content_type, "text/plain");
 }
 
 #[test]
@@ -343,7 +338,10 @@ fn attachment_serialization_preserves_every_present_optional_property() {
         "small_thumbnail_path",
         "large_thumbnail_path",
     ] {
-        assert!(serialized.get(field).is_some(), "missing serialized {field}");
+        assert!(
+            serialized.get(field).is_some(),
+            "missing serialized {field}"
+        );
     }
 }
 
