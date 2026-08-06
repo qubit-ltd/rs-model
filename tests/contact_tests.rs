@@ -12,8 +12,12 @@ use std::fmt;
 
 use qubit_mixin::Normalizable;
 use qubit_model::contact::{
-    ContactCodecError, CoordinateSystem, LocationCodec,
-    LocationCoordinateDeserializer, Phone, PhoneJsonKeyDeserializer,
+    ContactCodecError,
+    CoordinateSystem,
+    LocationCodec,
+    LocationCoordinateDeserializer,
+    Phone,
+    PhoneJsonKeyDeserializer,
 };
 
 /// A formatter that returns an error for every write attempt.
@@ -102,10 +106,7 @@ fn test_phone_conversion_normalization_and_json_key_decoding() {
         PhoneJsonKeyDeserializer::deserialize_key("+86-025-84507781-extra"),
         Err(ContactCodecError::InvalidPhone)
     ));
-    assert_eq!(
-        PhoneJsonKeyDeserializer::default(),
-        PhoneJsonKeyDeserializer
-    );
+    assert_eq!(PhoneJsonKeyDeserializer, PhoneJsonKeyDeserializer);
 }
 
 /// Verifies display formatting propagates errors from each optional prefix.

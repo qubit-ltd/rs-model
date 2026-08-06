@@ -7,18 +7,31 @@
 // =============================================================================
 //! Persisted attachment metadata.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize, Serializer};
+use serde::{
+    Deserialize,
+    Serialize,
+    Serializer,
+};
 
 use crate::{
     commons::State,
-    metadata::{AggregateRef, Category},
+    metadata::{
+        AggregateRef,
+        Category,
+    },
 };
 
-use super::{AttachmentType, Upload};
+use super::{
+    AttachmentType,
+    Upload,
+};
 
 /// A categorized attachment belonging to an aggregate root.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact)]

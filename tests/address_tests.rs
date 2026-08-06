@@ -9,11 +9,23 @@
 use std::str::FromStr;
 
 use bigdecimal::BigDecimal;
-use qubit_mixin::{Info, Normalizable};
+use qubit_mixin::{
+    Info,
+    Normalizable,
+};
 use qubit_model::{
-    address::{Address, AddressBuilder, AddressErrorCode, MismatchMobileException, Region},
+    address::{
+        Address,
+        AddressBuilder,
+        AddressErrorCode,
+        MismatchMobileException,
+        Region,
+    },
     commons::VerifyState,
-    contact::{Contact, Phone},
+    contact::{
+        Contact,
+        Phone,
+    },
     error::ErrorType,
 };
 use qubit_redact::Redact;
@@ -49,8 +61,12 @@ fn test_address_builder_preserves_hierarchy_and_coordinates() {
         .street_name("Street")
         .detail("No. 1")
         .postalcode("210000")
-        .longitude(BigDecimal::from_str("118.796877").expect("longitude should parse"))
-        .latitude(BigDecimal::from_str("32.060255").expect("latitude should parse"))
+        .longitude(
+            BigDecimal::from_str("118.796877").expect("longitude should parse"),
+        )
+        .latitude(
+            BigDecimal::from_str("32.060255").expect("latitude should parse"),
+        )
         .build();
 
     assert_eq!(address.country.id, Some(1));
@@ -59,7 +75,10 @@ fn test_address_builder_preserves_hierarchy_and_coordinates() {
     assert_eq!(address.detail, "No. 1");
     assert_eq!(
         address.location.as_ref().map(|value| &value.longitude),
-        Some(&BigDecimal::from_str("118.796877").expect("longitude should parse"))
+        Some(
+            &BigDecimal::from_str("118.796877")
+                .expect("longitude should parse")
+        )
     );
 }
 

@@ -9,15 +9,33 @@
 //! Behavioural coverage for common values and composed model mixins.
 
 use chrono::Utc;
-use qubit_mixin::{Emptyful, Info, InfoWithEntity, Normalizable};
+use qubit_mixin::{
+    Emptyful,
+    Info,
+    InfoWithEntity,
+    Normalizable,
+};
 use qubit_model::{
     commons::{
-        Code, CodeMap, CredentialInfo, CredentialInfoCodec, CredentialInfoCodecError,
-        CredentialType, Faq, Schedule, State,
+        Code,
+        CodeMap,
+        CredentialInfo,
+        CredentialInfoCodec,
+        CredentialInfoCodecError,
+        CredentialType,
+        Faq,
+        Schedule,
+        State,
     },
     mixin::{
-        HasStatefulInfo, InfoWithAppEntity, InfoWithToken, Stateful, StatefulInfo, WithApp,
-        WithStatefulInfoWithToken, WithToken,
+        HasStatefulInfo,
+        InfoWithAppEntity,
+        InfoWithToken,
+        Stateful,
+        StatefulInfo,
+        WithApp,
+        WithStatefulInfoWithToken,
+        WithToken,
     },
 };
 
@@ -99,8 +117,8 @@ fn test_credential_info_codec_round_trips_every_credential_type() {
             number: "NUMBER".into(),
             verified: None,
         };
-        let encoded =
-            CredentialInfoCodec::encode(Some(&credential)).expect("a credential should encode");
+        let encoded = CredentialInfoCodec::encode(Some(&credential))
+            .expect("a credential should encode");
         let decoded = CredentialInfoCodec::decode(Some(&encoded))
             .expect("a supported credential should decode")
             .expect("nonblank input should produce a credential");
@@ -150,7 +168,8 @@ fn test_common_values_normalize_and_serialize_complete_data() {
     assert_eq!(map.entity, "DIAGNOSIS");
     assert_eq!(map.platform_code, "PLATFORM-A01");
     assert!(!map.is_empty());
-    let map_json = serde_json::to_value(&map).expect("a code map should serialize");
+    let map_json =
+        serde_json::to_value(&map).expect("a code map should serialize");
     for field in ["id", "source", "create_time", "modify_time", "delete_time"] {
         assert!(map_json.get(field).is_some(), "{field} must serialize");
     }
@@ -191,13 +210,27 @@ fn test_common_values_normalize_and_serialize_complete_data() {
     assert_faq_field_makes_value_nonempty!(|value: &mut Faq| {
         value.product = Some(Info::default())
     });
-    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.question = "Q".into());
-    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.answer = "A".into());
-    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.frequency = 1);
-    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.state = State::Disabled);
-    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.create_time = Some(now));
-    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.modify_time = Some(now));
-    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value.delete_time = Some(now));
+    assert_faq_field_makes_value_nonempty!(
+        |value: &mut Faq| value.question = "Q".into()
+    );
+    assert_faq_field_makes_value_nonempty!(
+        |value: &mut Faq| value.answer = "A".into()
+    );
+    assert_faq_field_makes_value_nonempty!(
+        |value: &mut Faq| value.frequency = 1
+    );
+    assert_faq_field_makes_value_nonempty!(
+        |value: &mut Faq| value.state = State::Disabled
+    );
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value
+        .create_time =
+        Some(now));
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value
+        .modify_time =
+        Some(now));
+    assert_faq_field_makes_value_nonempty!(|value: &mut Faq| value
+        .delete_time =
+        Some(now));
 
     let mut schedule = Schedule {
         start_time: Some(now),
@@ -210,8 +243,8 @@ fn test_common_values_normalize_and_serialize_complete_data() {
         Some(vec!["0 0 * * *".into(), String::new()])
     );
     assert!(!schedule.is_empty());
-    let schedule_json =
-        serde_json::to_value(&schedule).expect("a schedule should serialize complete fields");
+    let schedule_json = serde_json::to_value(&schedule)
+        .expect("a schedule should serialize complete fields");
     for field in ["start_time", "end_time", "crontabs"] {
         assert!(schedule_json.get(field).is_some(), "{field} must serialize");
     }
@@ -249,8 +282,10 @@ fn test_composed_information_mixins_mutate_and_project_public_values() {
         value: "secret".into(),
         ..Default::default()
     };
-    let mut info_with_token =
-        InfoWithToken::new(Info::new(Some(3), "USER".into(), "User".into(), None), None);
+    let mut info_with_token = InfoWithToken::new(
+        Info::new(Some(3), "USER".into(), "User".into(), None),
+        None,
+    );
     assert!(!info_with_token.is_complete());
     info_with_token.set_token(Some(token.clone()));
     assert_eq!(info_with_token.token(), Some(&token));

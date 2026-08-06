@@ -6,15 +6,29 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_mixin::{Emptyful, Normalizable};
+use qubit_mixin::{
+    Emptyful,
+    Normalizable,
+};
 use qubit_model::{
     commons::State,
     metadata::{
-        AggregateRef, Category, Dict, DictEntry, DictEntryInfo, FullDict,
-        Payload, Scope, ScopeType, Source,
+        AggregateRef,
+        Category,
+        Dict,
+        DictEntry,
+        DictEntryInfo,
+        FullDict,
+        Payload,
+        Scope,
+        ScopeType,
+        Source,
     },
 };
-use qubit_model_metadata::{UniqueComparison, metadata_of};
+use qubit_model_metadata::{
+    UniqueComparison,
+    metadata_of,
+};
 use qubit_redact::Redact;
 use serde::Serialize;
 use std::io;

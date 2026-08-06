@@ -8,15 +8,27 @@
 
 //! Enterprise insurance claims.
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::{
     claim::enterprise::{
-        EnterpriseClaimEvent, EnterpriseClaimStatus, EnterpriseClaimStatusGroup,
+        EnterpriseClaimEvent,
+        EnterpriseClaimStatus,
+        EnterpriseClaimStatusGroup,
     },
-    claim::{AccidentReason, InsuredStatus, QuickCompensationState},
+    claim::{
+        AccidentReason,
+        InsuredStatus,
+        QuickCompensationState,
+    },
     commons::Kinship,
     order::Client,
     product::Product,
@@ -141,14 +153,27 @@ mod tests {
     use qubit_mixin::Info;
 
     use super::{
-        EnterpriseClaim, EnterpriseClaimStatus, EnterpriseClaimStatusGroup,
+        EnterpriseClaim,
+        EnterpriseClaimStatus,
+        EnterpriseClaimStatusGroup,
     };
     use crate::{
-        claim::{AccidentReason, InsuredStatus, QuickCompensationState},
-        commons::{Currency, Kinship, State},
+        claim::{
+            AccidentReason,
+            InsuredStatus,
+            QuickCompensationState,
+        },
+        commons::{
+            Currency,
+            Kinship,
+            State,
+        },
         mixin::StatefulInfo,
         order::Client,
-        product::{Product, Quality},
+        product::{
+            Product,
+            Quality,
+        },
     };
 
     /// Builds the client required by an enterprise claim test fixture.

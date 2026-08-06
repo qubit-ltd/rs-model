@@ -11,17 +11,27 @@
 
 use qubit_model::{
     claim::{
-        AccidentReason, InsuranceClaimInvoiceStatus, InsuranceClaimInvoiceType,
-        InsuranceClaimStatus, InsuranceClaimStatusGroup, InsuredStatus,
+        AccidentReason,
+        InsuranceClaimInvoiceStatus,
+        InsuranceClaimInvoiceType,
+        InsuranceClaimStatus,
+        InsuranceClaimStatusGroup,
+        InsuredStatus,
         QuickCompensationState,
         enterprise::{
-            EnterpriseClaimItemStatus, EnterpriseClaimStatus,
-            EnterpriseClaimStatusGroup, EnterpriseInsuredType,
-            EnterpriseOwnership, SaveStatus,
+            EnterpriseClaimItemStatus,
+            EnterpriseClaimStatus,
+            EnterpriseClaimStatusGroup,
+            EnterpriseInsuredType,
+            EnterpriseOwnership,
+            SaveStatus,
         },
     },
     invoice::InvoiceStatus,
-    medical::{MedicalInvoiceType, MedicalType},
+    medical::{
+        MedicalInvoiceType,
+        MedicalType,
+    },
     service::UserServiceState,
 };
 

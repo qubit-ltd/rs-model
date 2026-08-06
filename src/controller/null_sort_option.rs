@@ -67,14 +67,12 @@ impl NullSortOption {
             return Ordering::Equal;
         }
         match self {
-                Self::NullFirst => Ordering::Less,
-                Self::NullLast => Ordering::Greater,
-                Self::NullSmallest if order == SortOrder::Asc => Ordering::Less,
-                Self::NullSmallest => Ordering::Greater,
-                Self::NullLargest if order == SortOrder::Asc => {
-                    Ordering::Greater
-                }
-                Self::NullLargest => Ordering::Less,
+            Self::NullFirst => Ordering::Less,
+            Self::NullLast => Ordering::Greater,
+            Self::NullSmallest if order == SortOrder::Asc => Ordering::Less,
+            Self::NullSmallest => Ordering::Greater,
+            Self::NullLargest if order == SortOrder::Asc => Ordering::Greater,
+            Self::NullLargest => Ordering::Less,
         }
     }
 }

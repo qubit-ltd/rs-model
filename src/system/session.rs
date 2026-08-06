@@ -7,23 +7,42 @@
 // =============================================================================
 //! Persisted and thread-local application sessions.
 
-use std::{cell::RefCell, collections::HashSet};
+use std::{
+    cell::RefCell,
+    collections::HashSet,
+};
 
-use chrono::{DateTime, Utc};
+use chrono::{
+    DateTime,
+    Utc,
+};
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize, Serializer};
+use serde::{
+    Deserialize,
+    Serialize,
+    Serializer,
+};
 
 use crate::{
-    commons::{App, Token},
+    commons::{
+        App,
+        Token,
+    },
     mixin::StatefulInfo,
     organization::Organization,
-    person::{User, UserInfo},
+    person::{
+        User,
+        UserInfo,
+    },
     privilege::Role,
 };
 
-use super::{Environment, Expired};
+use super::{
+    Environment,
+    Expired,
+};
 
 thread_local! {
     static CURRENT_SESSION: RefCell<Option<Session>> = const { RefCell::new(None) };

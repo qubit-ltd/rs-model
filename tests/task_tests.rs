@@ -9,10 +9,19 @@
 use chrono::Utc;
 use qubit_mixin::InfoWithEntity;
 use qubit_model::task::{
-    Task, TaskAction, TaskExecutionError, TaskInfo, TaskPipeline, TaskPipelineStatus, TaskStatus,
+    Task,
+    TaskAction,
+    TaskExecutionError,
+    TaskInfo,
+    TaskPipeline,
+    TaskPipelineStatus,
+    TaskStatus,
     TaskStatusTransitionRule,
 };
-use serde_json::{Value, json};
+use serde_json::{
+    Value,
+    json,
+};
 
 struct TestTask {
     info: TaskInfo,
@@ -55,26 +64,36 @@ fn task_info() -> TaskInfo {
 
 #[test]
 fn test_next_accepts_complete_success_path() {
-    let submitted = TaskStatusTransitionRule::next(TaskStatus::Created, TaskAction::Submit)
-        .expect("a created task can be submitted");
-    let initializing = TaskStatusTransitionRule::next(submitted, TaskAction::Init)
-        .expect("a submitted task can initialize");
-    let running = TaskStatusTransitionRule::next(initializing, TaskAction::Start)
-        .expect("an initializing task can start");
-    let completed = TaskStatusTransitionRule::next(running, TaskAction::Success)
-        .expect("a running task can complete");
+    let submitted =
+        TaskStatusTransitionRule::next(TaskStatus::Created, TaskAction::Submit)
+            .expect("a created task can be submitted");
+    let initializing =
+        TaskStatusTransitionRule::next(submitted, TaskAction::Init)
+            .expect("a submitted task can initialize");
+    let running =
+        TaskStatusTransitionRule::next(initializing, TaskAction::Start)
+            .expect("an initializing task can start");
+    let completed =
+        TaskStatusTransitionRule::next(running, TaskAction::Success)
+            .expect("a running task can complete");
 
     assert_eq!(completed, TaskStatus::Completed);
 }
 
 #[test]
 fn test_next_rejects_invalid_and_terminal_transition() {
-    let invalid = TaskStatusTransitionRule::next(TaskStatus::Created, TaskAction::Success)
-        .expect_err("a created task cannot complete directly");
+    let invalid = TaskStatusTransitionRule::next(
+        TaskStatus::Created,
+        TaskAction::Success,
+    )
+    .expect_err("a created task cannot complete directly");
     assert_eq!(invalid.status, TaskStatus::Created);
     assert_eq!(invalid.action, TaskAction::Success);
 
-    assert!(TaskStatusTransitionRule::next(TaskStatus::Completed, TaskAction::Fail).is_err());
+    assert!(
+        TaskStatusTransitionRule::next(TaskStatus::Completed, TaskAction::Fail)
+            .is_err()
+    );
 }
 
 #[test]
@@ -214,7 +233,10 @@ fn test_task_pipeline_status_helpers_and_hooks() {
         assert_eq!(status.is_running(), status == TaskPipelineStatus::Running);
         assert_eq!(status.is_paused(), status == TaskPipelineStatus::Paused);
         assert_eq!(status.is_failed(), status == TaskPipelineStatus::Failed);
-        assert_eq!(status.is_finished(), status == TaskPipelineStatus::Finished);
+        assert_eq!(
+            status.is_finished(),
+            status == TaskPipelineStatus::Finished
+        );
         assert_eq!(
             status.is_cancelled(),
             status == TaskPipelineStatus::Cancelled

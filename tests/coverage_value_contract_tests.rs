@@ -12,6 +12,9 @@ use std::cmp::Ordering;
 
 use qubit_mixin::Normalizable;
 use qubit_model::{
+    Entity,
+    Module,
+    Operation,
     commons::{
         Code,
         CodeMap,
@@ -44,9 +47,6 @@ use qubit_model::{
         Signature,
         SignatureAlgorithm,
     },
-    Entity,
-    Module,
-    Operation,
     util::ResultValue,
 };
 
@@ -109,7 +109,11 @@ fn test_shared_value_codes_and_wire_names_are_stable() {
 #[test]
 fn test_geographic_values_report_source_contracts() {
     let systems = [
-        (CoordinateSystem::Wgs84, "WGS-84", "World Geodetic System 1984"),
+        (
+            CoordinateSystem::Wgs84,
+            "WGS-84",
+            "World Geodetic System 1984",
+        ),
         (CoordinateSystem::Gcj02, "GCJ-02", "Mars Coordinate System"),
         (CoordinateSystem::Bd09, "BD-09", "Baidu Coordinate System"),
     ];
@@ -188,7 +192,8 @@ fn test_null_sort_options_cover_all_null_comparisons() {
 #[test]
 #[should_panic(expected = "either operand must be null")]
 fn test_null_sort_options_reject_two_present_operands() {
-    let _ = NullSortOption::NullFirst.compare_none(false, false, SortOrder::Asc);
+    let _ =
+        NullSortOption::NullFirst.compare_none(false, false, SortOrder::Asc);
 }
 
 /// Exercises code normalization, emptiness, and every supported telephone form.
@@ -338,11 +343,26 @@ fn test_attachment_types_preserve_ids_and_classify_content_types() {
     for (value, identifier) in types {
         assert_eq!(value.id(), identifier);
     }
-    assert_eq!(AttachmentType::for_content_type("image/png"), AttachmentType::Image);
-    assert_eq!(AttachmentType::for_content_type("audio/mpeg"), AttachmentType::Audio);
-    assert_eq!(AttachmentType::for_content_type("video/mp4"), AttachmentType::Video);
-    assert_eq!(AttachmentType::for_content_type("text/x-vcard"), AttachmentType::Vcard);
-    assert_eq!(AttachmentType::for_content_type("application/pdf"), AttachmentType::Document);
+    assert_eq!(
+        AttachmentType::for_content_type("image/png"),
+        AttachmentType::Image
+    );
+    assert_eq!(
+        AttachmentType::for_content_type("audio/mpeg"),
+        AttachmentType::Audio
+    );
+    assert_eq!(
+        AttachmentType::for_content_type("video/mp4"),
+        AttachmentType::Video
+    );
+    assert_eq!(
+        AttachmentType::for_content_type("text/x-vcard"),
+        AttachmentType::Vcard
+    );
+    assert_eq!(
+        AttachmentType::for_content_type("application/pdf"),
+        AttachmentType::Document
+    );
 }
 
 /// Exercises all notification scene parsing branches and the stable SMS error.
@@ -424,7 +444,10 @@ fn test_security_value_codes_and_payload_updates_are_stable() {
     signature.set_message("message");
     assert_eq!(signature.signed_info.message, "message");
     assert_eq!(signature.signed_info.payload.len(), 1);
-    assert_eq!(signature.signed_info.payload[0].value.as_deref(), Some("two"));
+    assert_eq!(
+        signature.signed_info.payload[0].value.as_deref(),
+        Some("two")
+    );
 }
 
 /// Exercises valid and invalid privilege codec branches without losing values.
@@ -439,10 +462,19 @@ fn test_privilege_codecs_validate_and_preserve_delimited_values() {
         .expect("valid values must decode")
         .expect("present input must produce a value");
     assert_eq!(privileges.0, ["read", "write"]);
-    assert_eq!(privileges.encode().expect("valid values encode"), "read,write");
+    assert_eq!(
+        privileges.encode().expect("valid values encode"),
+        "read,write"
+    );
     assert!(Privileges(vec![String::new()]).encode().is_err());
     assert!(Privileges(vec!["read,write".into()]).encode().is_err());
     assert_eq!(PrivilegesCodec::decode(None), None);
-    assert_eq!(PrivilegesCodec::decode(Some("")), Some(Privileges::default()));
-    assert_eq!(PrivilegesCodec::encode(Some(&privileges)).as_deref(), Some("read,write"));
+    assert_eq!(
+        PrivilegesCodec::decode(Some("")),
+        Some(Privileges::default())
+    );
+    assert_eq!(
+        PrivilegesCodec::encode(Some(&privileges)).as_deref(),
+        Some("read,write")
+    );
 }

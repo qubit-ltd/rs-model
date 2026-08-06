@@ -9,7 +9,10 @@
 //! Detailed individual claim workflow states.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::claim::InsuranceClaimStatusGroup;
 
@@ -119,7 +122,10 @@ const fn not_finished_statuses() -> &'static [InsuranceClaimStatus] {
 
 #[cfg(test)]
 mod tests {
-    use super::{InsuranceClaimStatus, InsuranceClaimStatusGroup};
+    use super::{
+        InsuranceClaimStatus,
+        InsuranceClaimStatusGroup,
+    };
 
     /// Exercises the public forwarding API in the library test binary.
     #[test]

@@ -7,7 +7,10 @@
 //! Behavioral coverage for Chinese resident identity-card utilities.
 
 use chrono::NaiveDate;
-use qubit_model::{china::IdentityCardUtils, person::Gender};
+use qubit_model::{
+    china::IdentityCardUtils,
+    person::Gender,
+};
 
 /// Exercises valid, malformed, and transformed resident identity numbers.
 #[test]

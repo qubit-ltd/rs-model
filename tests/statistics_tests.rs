@@ -180,7 +180,8 @@ fn test_identity_card_rejects_malformed_component_ranges() {
     assert_eq!(
         IdentityCardUtils::change_birthday(
             invalid_checksum_input,
-            NaiveDate::from_ymd_opt(2000, 2, 29).expect("the leap-day birthday should exist")
+            NaiveDate::from_ymd_opt(2000, 2, 29)
+                .expect("the leap-day birthday should exist")
         ),
         None
     );

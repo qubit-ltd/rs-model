@@ -8,11 +8,25 @@
 
 use qubit_model::{
     controller::{
-        AppAuthenticateParams, AuditableQueryParams, BindDeviceParams, BindEmployeeParams,
-        BindPersonParams, LoginParams, LoginResponse, NullSortOption, RegisterUserParams,
-        SortOrder, UnupdatableQueryParams, UpdatePasswordParams,
+        AppAuthenticateParams,
+        AuditableQueryParams,
+        BindDeviceParams,
+        BindEmployeeParams,
+        BindPersonParams,
+        LoginParams,
+        LoginResponse,
+        NullSortOption,
+        RegisterUserParams,
+        SortOrder,
+        UnupdatableQueryParams,
+        UpdatePasswordParams,
     },
-    person::{SocialNetwork, SocialNetworkAccount, User, UserInfo},
+    person::{
+        SocialNetwork,
+        SocialNetworkAccount,
+        User,
+        UserInfo,
+    },
     system::Session,
 };
 use qubit_model_metadata::metadata_of;
@@ -100,7 +114,8 @@ fn test_controller_authentication_material_is_redacted() {
 }
 
 #[test]
-fn test_register_login_response_and_social_account_preserve_source_projections() {
+fn test_register_login_response_and_social_account_preserve_source_projections()
+{
     let register = RegisterUserParams {
         username: "alice".into(),
         social_network: Some(SocialNetwork::Wechat),

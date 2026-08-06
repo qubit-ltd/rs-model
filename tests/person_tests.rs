@@ -11,12 +11,23 @@
 use chrono::Utc;
 use qubit_mixin::Normalizable;
 use qubit_model::{
-    commons::{AuthorizeRecord, State, VerifyState},
+    commons::{
+        AuthorizeRecord,
+        State,
+        VerifyState,
+    },
     contact::Phone,
     controller::RegisterUserParams,
     medical::MedicareType,
     mixin::StatefulInfo,
-    person::{Gender, Person, PersonInfo, SocialNetwork, SocialNetworkAccount, User},
+    person::{
+        Gender,
+        Person,
+        PersonInfo,
+        SocialNetwork,
+        SocialNetworkAccount,
+        User,
+    },
 };
 use qubit_redact::Redact as _;
 
@@ -93,9 +104,11 @@ fn test_person_compact_info_updates_and_checks_benefit_coverage() {
 }
 
 #[test]
-fn test_social_network_account_uses_registration_defaults_and_normalizes_text() {
-    let default_account =
-        SocialNetworkAccount::from_register_params(&RegisterUserParams::default());
+fn test_social_network_account_uses_registration_defaults_and_normalizes_text()
+{
+    let default_account = SocialNetworkAccount::from_register_params(
+        &RegisterUserParams::default(),
+    );
     assert_eq!(default_account.social_network, SocialNetwork::Wechat);
     assert_eq!(default_account.app_id, "");
     assert_eq!(default_account.open_id, "");

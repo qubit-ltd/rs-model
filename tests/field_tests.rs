@@ -74,7 +74,10 @@ fn test_field_wire_values_round_trip_for_every_declared_field() {
         (Field::ErrorType, "ERROR_TYPE"),
         (Field::Ethnic, "ETHNIC"),
         (Field::Expected, "EXPECTED"),
-        (Field::ExpectedCredentialNumber, "EXPECTED_CREDENTIAL_NUMBER"),
+        (
+            Field::ExpectedCredentialNumber,
+            "EXPECTED_CREDENTIAL_NUMBER",
+        ),
         (Field::ExpectedCredentialType, "EXPECTED_CREDENTIAL_TYPE"),
         (Field::ExpiredReason, "EXPIRED_REASON"),
         (Field::ExpiredTime, "EXPIRED_TIME"),
@@ -83,7 +86,10 @@ fn test_field_wire_values_round_trip_for_every_declared_field() {
         (Field::Guardian, "GUARDIAN"),
         (Field::HasChild, "HAS_CHILD"),
         (Field::HasMedicare, "HAS_MEDICARE"),
-        (Field::HasMedicareOrSocialSecurity, "HAS_MEDICARE_OR_SOCIAL_SECURITY"),
+        (
+            Field::HasMedicareOrSocialSecurity,
+            "HAS_MEDICARE_OR_SOCIAL_SECURITY",
+        ),
         (Field::HasSocialSecurity, "HAS_SOCIAL_SECURITY"),
         (Field::Height, "HEIGHT"),
         (Field::Host, "HOST"),
@@ -286,7 +292,10 @@ fn test_field_wire_values_round_trip_for_every_declared_field() {
         (Field::SelfCareAmount, "SELF_CARE_AMOUNT"),
         (Field::MedicareAmount, "MEDICARE_AMOUNT"),
         (Field::SeriousIllnessPaid, "SERIOUS_ILLNESS_PAID"),
-        (Field::SeriousIllnessInsurancePaid, "SERIOUS_ILLNESS_INSURANCE_PAID"),
+        (
+            Field::SeriousIllnessInsurancePaid,
+            "SERIOUS_ILLNESS_INSURANCE_PAID",
+        ),
         (Field::CivilAffairSubsidyPaid, "CIVIL_AFFAIR_SUBSIDY_PAID"),
         (Field::MessageKey, "MESSAGE_KEY"),
         (Field::PrimaryDiagnosis, "PRIMARY_DIAGNOSIS"),
@@ -310,4 +319,3 @@ fn test_field_wire_values_round_trip_for_every_declared_field() {
         );
     }
 }
-

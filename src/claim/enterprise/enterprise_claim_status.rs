@@ -9,7 +9,10 @@
 //! Detailed enterprise claim workflow states.
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::claim::enterprise::EnterpriseClaimStatusGroup;
 
@@ -99,7 +102,10 @@ const fn not_finished_statuses() -> &'static [EnterpriseClaimStatus] {
 
 #[cfg(test)]
 mod tests {
-    use super::{EnterpriseClaimStatus, EnterpriseClaimStatusGroup};
+    use super::{
+        EnterpriseClaimStatus,
+        EnterpriseClaimStatusGroup,
+    };
 
     /// Exercises the public forwarding API in the library test binary.
     #[test]

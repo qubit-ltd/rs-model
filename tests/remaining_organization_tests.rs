@@ -8,7 +8,10 @@
 
 use qubit_model::{
     contact::Phone,
-    organization::{Employee, Organization},
+    organization::{
+        Employee,
+        Organization,
+    },
     person::SocialNetworkAccount,
     product::Seller,
     system::Session,
@@ -88,7 +91,10 @@ fn test_employee_projects_and_assigns_source_info() {
 
 #[test]
 fn test_employee_and_organization_empty_checks_and_normalization() {
-    use qubit_mixin::{Emptyful, Normalizable};
+    use qubit_mixin::{
+        Emptyful,
+        Normalizable,
+    };
 
     let mut employee = Employee::default();
     assert!(employee.is_empty());

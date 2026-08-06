@@ -7,16 +7,27 @@
 // =============================================================================
 
 use chrono::Utc;
-use qubit_mixin::{Emptyful, InfoWithEntity};
+use qubit_mixin::{
+    Emptyful,
+    InfoWithEntity,
+};
 use qubit_model::metadata::AggregateRef;
 use qubit_model::{
     commons::State,
     file::{
-        Attachment, AttachmentType, FileInfo, MediaInfo, MediaType, Upload,
+        Attachment,
+        AttachmentType,
+        FileInfo,
+        MediaInfo,
+        MediaType,
+        Upload,
         UploadParams,
     },
 };
-use qubit_model_metadata::{UniqueComparison, metadata_of};
+use qubit_model_metadata::{
+    UniqueComparison,
+    metadata_of,
+};
 use qubit_redact::Redact;
 use serde::Serialize;
 use std::io;
