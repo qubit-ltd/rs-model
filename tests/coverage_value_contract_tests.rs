@@ -29,9 +29,16 @@ use qubit_model::{
         NullSortOption,
         SortOrder,
     },
+    error::ErrorType,
+    file::AttachmentType,
+    notification::{
+        NotificationErrorCode,
+        VerifyScene,
+    },
     Entity,
     Module,
     Operation,
+    util::ResultValue,
 };
 
 /// Exercises every stable code that is exposed by shared enumeration values.
@@ -299,4 +306,69 @@ fn test_code_models_and_phone_codec_preserve_source_forms() {
     phone.normalize();
     assert_eq!(phone.to_string(), "+86-010-123456");
     assert_eq!(Phone::from(String::from("123456")), Phone::from("123456"));
+}
+
+/// Exercises attachment classification identifiers and all MIME-type branches.
+#[test]
+fn test_attachment_types_preserve_ids_and_classify_content_types() {
+    let types = [
+        (AttachmentType::Image, "image"),
+        (AttachmentType::Document, "document"),
+        (AttachmentType::Audio, "audio"),
+        (AttachmentType::Video, "video"),
+        (AttachmentType::Vcard, "vcard"),
+        (AttachmentType::Location, "location"),
+        (AttachmentType::ExternalImage, "external_image"),
+        (AttachmentType::ExternalAudio, "external_audio"),
+        (AttachmentType::ExternalVideo, "external_video"),
+    ];
+    for (value, identifier) in types {
+        assert_eq!(value.id(), identifier);
+    }
+    assert_eq!(AttachmentType::for_content_type("image/png"), AttachmentType::Image);
+    assert_eq!(AttachmentType::for_content_type("audio/mpeg"), AttachmentType::Audio);
+    assert_eq!(AttachmentType::for_content_type("video/mp4"), AttachmentType::Video);
+    assert_eq!(AttachmentType::for_content_type("text/x-vcard"), AttachmentType::Vcard);
+    assert_eq!(AttachmentType::for_content_type("application/pdf"), AttachmentType::Document);
+}
+
+/// Exercises all notification scene parsing branches and the stable SMS error.
+#[test]
+fn test_notification_values_preserve_source_contracts() {
+    let scenes = [
+        ("REGISTER", VerifyScene::Register),
+        ("RESET_PASSWORD", VerifyScene::ResetPassword),
+        ("PAY", VerifyScene::Pay),
+        ("REFUND", VerifyScene::Refund),
+        ("VERIFY_MOBILE", VerifyScene::VerifyMobile),
+        ("VERIFY_EMAIL", VerifyScene::VerifyEmail),
+        ("VERIFY_REALNAME", VerifyScene::VerifyRealname),
+        ("RECEIVE_DRUG", VerifyScene::ReceiveDrug),
+        ("MODIFY", VerifyScene::Modify),
+        ("LOGIN", VerifyScene::Login),
+        ("BIND_EMPLOYEE", VerifyScene::BindEmployee),
+        ("BIND_PERSON", VerifyScene::BindPerson),
+        ("OTHER", VerifyScene::Other),
+    ];
+    for (wire_value, expected) in scenes {
+        assert_eq!(VerifyScene::from_wire_name(wire_value), Some(expected));
+    }
+    assert_eq!(VerifyScene::from_wire_name("register"), None);
+    assert_eq!(
+        NotificationErrorCode::SendSmsFailed.message_template_zh_cn(),
+        "发送短信失败：{reason}"
+    );
+    assert_eq!(
+        NotificationErrorCode::SendSmsFailed.error_type(),
+        ErrorType::ThirdPartyError
+    );
+}
+
+/// Exercises construction, alias compatibility, and consumption of responses.
+#[test]
+fn test_result_value_owns_and_returns_the_response_value() {
+    let value = ResultValue::new(String::from("result"));
+    assert_eq!(value.clone().into_inner(), "result");
+    let alias: qubit_model::util::Result<i32> = ResultValue::new(7);
+    assert_eq!(alias.value, 7);
 }
