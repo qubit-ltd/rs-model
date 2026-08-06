@@ -52,10 +52,30 @@ impl InsuranceClaimStatus {
     /// # Returns
     ///
     /// The source-domain reporting group for this state.
-    #[inline(always)]
     #[must_use]
     pub const fn status_group(self) -> InsuranceClaimStatusGroup {
-        status_group_for(self)
+        match self {
+            Self::NotSubmitted => InsuranceClaimStatusGroup::NotSubmitted,
+            Self::ClaimApplicationWaitAudit
+            | Self::ClaimApplicationAudited
+            | Self::TemporarySaved => InsuranceClaimStatusGroup::PendingCase,
+            Self::SystemAudited => InsuranceClaimStatusGroup::Unreached,
+            Self::SystemRejected => InsuranceClaimStatusGroup::Rejected,
+            Self::WaitInsuranceCompanyAudited => {
+                InsuranceClaimStatusGroup::Registed
+            }
+            Self::InsuranceCompanyAccepted => {
+                InsuranceClaimStatusGroup::UnderReview
+            }
+            Self::InsuranceCompanyRejected
+            | Self::InsuranceCompanyAnnulOrRefused => {
+                InsuranceClaimStatusGroup::AuditRejection
+            }
+            Self::InsuranceCompanyCompleted => {
+                InsuranceClaimStatusGroup::Completed
+            }
+            Self::Canceled => InsuranceClaimStatusGroup::Canceld,
+        }
     }
 
     /// Returns the detailed states treated as unfinished by the Java model.
@@ -63,83 +83,17 @@ impl InsuranceClaimStatus {
     /// # Returns
     ///
     /// A stable slice containing every unfinished claim state in source order.
-    #[inline(always)]
     #[must_use]
     pub const fn list_not_finished_status() -> &'static [Self] {
-        not_finished_statuses()
-    }
-}
-
-/// Maps a detailed individual claim status to its source reporting group.
-const fn status_group_for(
-    status: InsuranceClaimStatus,
-) -> InsuranceClaimStatusGroup {
-    match status {
-        InsuranceClaimStatus::NotSubmitted => {
-            InsuranceClaimStatusGroup::NotSubmitted
-        }
-        InsuranceClaimStatus::ClaimApplicationWaitAudit
-        | InsuranceClaimStatus::ClaimApplicationAudited
-        | InsuranceClaimStatus::TemporarySaved => {
-            InsuranceClaimStatusGroup::PendingCase
-        }
-        InsuranceClaimStatus::SystemAudited => {
-            InsuranceClaimStatusGroup::Unreached
-        }
-        InsuranceClaimStatus::SystemRejected => {
-            InsuranceClaimStatusGroup::Rejected
-        }
-        InsuranceClaimStatus::WaitInsuranceCompanyAudited => {
-            InsuranceClaimStatusGroup::Registed
-        }
-        InsuranceClaimStatus::InsuranceCompanyAccepted => {
-            InsuranceClaimStatusGroup::UnderReview
-        }
-        InsuranceClaimStatus::InsuranceCompanyRejected
-        | InsuranceClaimStatus::InsuranceCompanyAnnulOrRefused => {
-            InsuranceClaimStatusGroup::AuditRejection
-        }
-        InsuranceClaimStatus::InsuranceCompanyCompleted => {
-            InsuranceClaimStatusGroup::Completed
-        }
-        InsuranceClaimStatus::Canceled => InsuranceClaimStatusGroup::Canceld,
-    }
-}
-
-/// Returns the stable source-order list of unfinished individual claim states.
-const fn not_finished_statuses() -> &'static [InsuranceClaimStatus] {
-    &[
-        InsuranceClaimStatus::NotSubmitted,
-        InsuranceClaimStatus::ClaimApplicationWaitAudit,
-        InsuranceClaimStatus::ClaimApplicationAudited,
-        InsuranceClaimStatus::TemporarySaved,
-        InsuranceClaimStatus::SystemRejected,
-        InsuranceClaimStatus::WaitInsuranceCompanyAudited,
-        InsuranceClaimStatus::InsuranceCompanyAccepted,
-        InsuranceClaimStatus::InsuranceCompanyRejected,
-    ]
-}
-
-#[cfg(test)]
-mod tests {
-    use super::{
-        InsuranceClaimStatus,
-        InsuranceClaimStatusGroup,
-    };
-
-    /// Exercises the public forwarding API in the library test binary.
-    #[test]
-    fn public_status_apis_delegate_to_the_source_mappings() {
-        let status_group: fn(
-            InsuranceClaimStatus,
-        ) -> InsuranceClaimStatusGroup = InsuranceClaimStatus::status_group;
-        let unfinished: fn() -> &'static [InsuranceClaimStatus] =
-            InsuranceClaimStatus::list_not_finished_status;
-
-        assert_eq!(
-            status_group(InsuranceClaimStatus::InsuranceCompanyCompleted),
-            InsuranceClaimStatusGroup::Completed
-        );
-        assert_eq!(unfinished().len(), 8);
+        &[
+            Self::NotSubmitted,
+            Self::ClaimApplicationWaitAudit,
+            Self::ClaimApplicationAudited,
+            Self::TemporarySaved,
+            Self::SystemRejected,
+            Self::WaitInsuranceCompanyAudited,
+            Self::InsuranceCompanyAccepted,
+            Self::InsuranceCompanyRejected,
+        ]
     }
 }
