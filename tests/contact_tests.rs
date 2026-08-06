@@ -8,11 +8,22 @@
 
 //! Integration tests for migrated contact domain models.
 
+use std::fmt;
+
 use qubit_mixin::Normalizable;
 use qubit_model::contact::{
-    ContactCodecError, CoordinateSystem, LocationCodec, LocationCoordinateDeserializer, Phone,
-    PhoneJsonKeyDeserializer,
+    ContactCodecError, CoordinateSystem, LocationCodec,
+    LocationCoordinateDeserializer, Phone, PhoneJsonKeyDeserializer,
 };
+
+/// A formatter that returns an error for every write attempt.
+struct FailingFormatter;
+
+impl fmt::Write for FailingFormatter {
+    fn write_str(&mut self, _: &str) -> fmt::Result {
+        Err(fmt::Error)
+    }
+}
 
 #[test]
 fn test_phone_preserves_all_source_number_components() {
@@ -87,9 +98,49 @@ fn test_phone_conversion_normalization_and_json_key_decoding() {
         PhoneJsonKeyDeserializer::deserialize_key(""),
         Err(ContactCodecError::InvalidPhone)
     ));
+    assert!(matches!(
+        PhoneJsonKeyDeserializer::deserialize_key("+86-025-84507781-extra"),
+        Err(ContactCodecError::InvalidPhone)
+    ));
     assert_eq!(
         PhoneJsonKeyDeserializer::default(),
         PhoneJsonKeyDeserializer
+    );
+}
+
+/// Verifies display formatting propagates errors from each optional prefix.
+#[test]
+fn test_phone_display_propagates_formatter_errors() {
+    let mut formatter = FailingFormatter;
+    assert!(
+        fmt::Write::write_fmt(
+            &mut formatter,
+            format_args!(
+                "{}",
+                Phone {
+                    country_area: Some("86".to_owned()),
+                    city_area: None,
+                    number: "1".to_owned(),
+                }
+            ),
+        )
+        .is_err()
+    );
+
+    let mut formatter = FailingFormatter;
+    assert!(
+        fmt::Write::write_fmt(
+            &mut formatter,
+            format_args!(
+                "{}",
+                Phone {
+                    country_area: None,
+                    city_area: Some("025".to_owned()),
+                    number: "1".to_owned(),
+                }
+            ),
+        )
+        .is_err()
     );
 }
 
@@ -108,7 +159,10 @@ fn test_location_codecs_preserve_wire_contracts() {
     );
 
     let overridden = codec
-        .decode_with_coordinate_system(Some("1,2"), Some(CoordinateSystem::Bd09))
+        .decode_with_coordinate_system(
+            Some("1,2"),
+            Some(CoordinateSystem::Bd09),
+        )
         .expect("the coordinate pair should decode")
         .expect("a nonempty coordinate pair should produce a location");
     assert_eq!(overridden.coordinate_system, Some(CoordinateSystem::Bd09));

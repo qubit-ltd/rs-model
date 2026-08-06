@@ -9,32 +9,19 @@
 //! Integration coverage for medical, service, invoice, and claim
 //! classifications.
 
-#[path = "claim_behavior_tests.rs"]
-mod claim_behavior_tests;
-
 use qubit_model::{
     claim::{
-        AccidentReason,
-        InsuranceClaimInvoiceStatus,
-        InsuranceClaimInvoiceType,
-        InsuranceClaimStatus,
-        InsuranceClaimStatusGroup,
-        InsuredStatus,
+        AccidentReason, InsuranceClaimInvoiceStatus, InsuranceClaimInvoiceType,
+        InsuranceClaimStatus, InsuranceClaimStatusGroup, InsuredStatus,
         QuickCompensationState,
         enterprise::{
-            EnterpriseClaimItemStatus,
-            EnterpriseClaimStatus,
-            EnterpriseClaimStatusGroup,
-            EnterpriseInsuredType,
-            EnterpriseOwnership,
-            SaveStatus,
+            EnterpriseClaimItemStatus, EnterpriseClaimStatus,
+            EnterpriseClaimStatusGroup, EnterpriseInsuredType,
+            EnterpriseOwnership, SaveStatus,
         },
     },
     invoice::InvoiceStatus,
-    medical::{
-        MedicalInvoiceType,
-        MedicalType,
-    },
+    medical::{MedicalInvoiceType, MedicalType},
     service::UserServiceState,
 };
 
@@ -88,12 +75,22 @@ fn test_leaf_enums_preserve_java_wire_values() {
 /// Verifies claim states preserve their Java status-group relationships.
 #[test]
 fn test_claim_statuses_preserve_source_groups() {
+    let individual_status_group: Box<
+        dyn Fn(InsuranceClaimStatus) -> InsuranceClaimStatusGroup,
+    > = Box::new(InsuranceClaimStatus::status_group);
+    let enterprise_status_group: Box<
+        dyn Fn(EnterpriseClaimStatus) -> EnterpriseClaimStatusGroup,
+    > = Box::new(EnterpriseClaimStatus::status_group);
     assert_eq!(
-        InsuranceClaimStatus::ClaimApplicationWaitAudit.status_group(),
+        individual_status_group(
+            InsuranceClaimStatus::ClaimApplicationWaitAudit
+        ),
         InsuranceClaimStatusGroup::PendingCase
     );
     assert_eq!(
-        InsuranceClaimStatus::InsuranceCompanyCompleted.status_group(),
+        individual_status_group(
+            InsuranceClaimStatus::InsuranceCompanyCompleted
+        ),
         InsuranceClaimStatusGroup::Completed
     );
     assert!(
@@ -106,11 +103,15 @@ fn test_claim_statuses_preserve_source_groups() {
     );
 
     assert_eq!(
-        EnterpriseClaimStatus::ClaimApplicationWaitAudit.status_group(),
+        enterprise_status_group(
+            EnterpriseClaimStatus::ClaimApplicationWaitAudit
+        ),
         EnterpriseClaimStatusGroup::Register
     );
     assert_eq!(
-        EnterpriseClaimStatus::InsuranceCompanyCompleted.status_group(),
+        enterprise_status_group(
+            EnterpriseClaimStatus::InsuranceCompanyCompleted
+        ),
         EnterpriseClaimStatusGroup::Complete
     );
     assert!(
@@ -122,6 +123,11 @@ fn test_claim_statuses_preserve_source_groups() {
 /// Verifies enterprise code-bearing classifications retain source codes.
 #[test]
 fn test_enterprise_classifications_preserve_source_codes() {
+    let insured_type_code: Box<dyn Fn(EnterpriseInsuredType) -> &'static str> =
+        Box::new(EnterpriseInsuredType::code);
+    let insured_type_description: Box<
+        dyn Fn(EnterpriseInsuredType) -> &'static str,
+    > = Box::new(EnterpriseInsuredType::description);
     let insured_types = [
         (EnterpriseInsuredType::InService, "10", "在职"),
         (EnterpriseInsuredType::Retired, "11", "退休"),
@@ -132,8 +138,8 @@ fn test_enterprise_classifications_preserve_source_codes() {
         (EnterpriseInsuredType::DonorGenus, "41", "供属"),
     ];
     for (insured_type, code, description) in insured_types {
-        assert_eq!(insured_type.code(), code);
-        assert_eq!(insured_type.description(), description);
+        assert_eq!(insured_type_code(insured_type), code);
+        assert_eq!(insured_type_description(insured_type), description);
     }
     assert_eq!(EnterpriseOwnership::Yangtze.code(), "1");
     assert_eq!(EnterpriseOwnership::Test.description(), "测试");

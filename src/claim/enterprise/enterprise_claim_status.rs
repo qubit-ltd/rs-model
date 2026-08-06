@@ -9,10 +9,7 @@
 //! Detailed enterprise claim workflow states.
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::claim::enterprise::EnterpriseClaimStatusGroup;
 
@@ -47,22 +44,7 @@ impl EnterpriseClaimStatus {
     #[inline(always)]
     #[must_use]
     pub const fn status_group(self) -> EnterpriseClaimStatusGroup {
-        match self {
-            Self::NotSubmitted => EnterpriseClaimStatusGroup::NotSubmitted,
-            Self::ClaimApplicationWaitAudit => {
-                EnterpriseClaimStatusGroup::Register
-            }
-            Self::SystemRejected => EnterpriseClaimStatusGroup::Reject,
-            Self::ClaimApplicationAudited
-            | Self::TemporarySaved
-            | Self::WaitInsuranceCompanyAudited => {
-                EnterpriseClaimStatusGroup::Audit
-            }
-            Self::InsuranceCompanyCompleted => {
-                EnterpriseClaimStatusGroup::Complete
-            }
-            Self::Canceled => EnterpriseClaimStatusGroup::Cancel,
-        }
+        status_group_for(self)
     }
 
     /// Returns the detailed states treated as unfinished by the Java model.
@@ -73,13 +55,65 @@ impl EnterpriseClaimStatus {
     #[inline(always)]
     #[must_use]
     pub const fn list_not_finished_status() -> &'static [Self] {
-        &[
-            Self::NotSubmitted,
-            Self::ClaimApplicationWaitAudit,
-            Self::SystemRejected,
-            Self::ClaimApplicationAudited,
-            Self::TemporarySaved,
-            Self::WaitInsuranceCompanyAudited,
-        ]
+        not_finished_statuses()
+    }
+}
+
+/// Maps a detailed enterprise claim status to its source reporting group.
+const fn status_group_for(
+    status: EnterpriseClaimStatus,
+) -> EnterpriseClaimStatusGroup {
+    match status {
+        EnterpriseClaimStatus::NotSubmitted => {
+            EnterpriseClaimStatusGroup::NotSubmitted
+        }
+        EnterpriseClaimStatus::ClaimApplicationWaitAudit => {
+            EnterpriseClaimStatusGroup::Register
+        }
+        EnterpriseClaimStatus::SystemRejected => {
+            EnterpriseClaimStatusGroup::Reject
+        }
+        EnterpriseClaimStatus::ClaimApplicationAudited
+        | EnterpriseClaimStatus::TemporarySaved
+        | EnterpriseClaimStatus::WaitInsuranceCompanyAudited => {
+            EnterpriseClaimStatusGroup::Audit
+        }
+        EnterpriseClaimStatus::InsuranceCompanyCompleted => {
+            EnterpriseClaimStatusGroup::Complete
+        }
+        EnterpriseClaimStatus::Canceled => EnterpriseClaimStatusGroup::Cancel,
+    }
+}
+
+/// Returns the stable source-order list of unfinished enterprise claim states.
+const fn not_finished_statuses() -> &'static [EnterpriseClaimStatus] {
+    &[
+        EnterpriseClaimStatus::NotSubmitted,
+        EnterpriseClaimStatus::ClaimApplicationWaitAudit,
+        EnterpriseClaimStatus::SystemRejected,
+        EnterpriseClaimStatus::ClaimApplicationAudited,
+        EnterpriseClaimStatus::TemporarySaved,
+        EnterpriseClaimStatus::WaitInsuranceCompanyAudited,
+    ]
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{EnterpriseClaimStatus, EnterpriseClaimStatusGroup};
+
+    /// Exercises the public forwarding API in the library test binary.
+    #[test]
+    fn public_status_apis_delegate_to_the_source_mappings() {
+        let status_group: fn(
+            EnterpriseClaimStatus,
+        ) -> EnterpriseClaimStatusGroup = EnterpriseClaimStatus::status_group;
+        let unfinished: fn() -> &'static [EnterpriseClaimStatus] =
+            EnterpriseClaimStatus::list_not_finished_status;
+
+        assert_eq!(
+            status_group(EnterpriseClaimStatus::InsuranceCompanyCompleted),
+            EnterpriseClaimStatusGroup::Complete
+        );
+        assert_eq!(unfinished().len(), 6);
     }
 }

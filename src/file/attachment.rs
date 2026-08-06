@@ -7,32 +7,18 @@
 // =============================================================================
 //! Persisted attachment metadata.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-    Serializer,
-    ser::SerializeStruct,
-};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::{
     commons::State,
-    metadata::{
-        AggregateRef,
-        Category,
-    },
+    metadata::{AggregateRef, Category},
 };
 
-use super::{
-    AttachmentType,
-    Upload,
-};
+use super::{AttachmentType, Upload};
 
 /// A categorized attachment belonging to an aggregate root.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact)]
@@ -142,53 +128,66 @@ impl Attachment {
     }
 }
 
+/// Borrowed JSON-wire projection for an [`Attachment`].
+#[derive(Serialize)]
+struct AttachmentWire<'a> {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    id: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    aggregate_ref: Option<&'a AggregateRef>,
+    #[serde(rename = "type")]
+    r#type: &'a AttachmentType,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    category: Option<&'a InfoWithEntity>,
+    index: i32,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    title: Option<&'a str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    description: Option<&'a str>,
+    upload: &'a Upload,
+    state: &'a State,
+    visible: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    create_time: Option<&'a DateTime<Utc>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    modify_time: Option<&'a DateTime<Utc>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    delete_time: Option<&'a DateTime<Utc>>,
+    file_path: &'a str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    screenshot_path: Option<&'a str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    large_thumbnail_path: Option<&'a str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    small_thumbnail_path: Option<&'a str>,
+}
+
 impl Serialize for Attachment {
     /// Serializes persisted fields plus source computed path properties.
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
-        let mut state = serializer.serialize_struct("Attachment", 17)?;
-        if let Some(id) = self.id {
-            state.serialize_field("id", &id)?;
+        AttachmentWire {
+            id: self.id,
+            aggregate_ref: self.aggregate_ref.as_ref(),
+            r#type: &self.r#type,
+            category: self.category.as_ref(),
+            index: self.index,
+            title: self.title.as_deref(),
+            description: self.description.as_deref(),
+            upload: &self.upload,
+            state: &self.state,
+            visible: self.visible,
+            create_time: self.create_time.as_ref(),
+            modify_time: self.modify_time.as_ref(),
+            delete_time: self.delete_time.as_ref(),
+            file_path: &self.upload.file.path,
+            screenshot_path: self.screenshot_path(),
+            large_thumbnail_path: self.large_thumbnail_path(),
+            small_thumbnail_path: self.small_thumbnail_path(),
         }
-        if let Some(aggregate_ref) = &self.aggregate_ref {
-            state.serialize_field("aggregate_ref", aggregate_ref)?;
-        }
-        state.serialize_field("type", &self.r#type)?;
-        if let Some(category) = &self.category {
-            state.serialize_field("category", category)?;
-        }
-        state.serialize_field("index", &self.index)?;
-        if let Some(title) = &self.title {
-            state.serialize_field("title", title)?;
-        }
-        if let Some(description) = &self.description {
-            state.serialize_field("description", description)?;
-        }
-        state.serialize_field("upload", &self.upload)?;
-        state.serialize_field("state", &self.state)?;
-        state.serialize_field("visible", &self.visible)?;
-        if let Some(create_time) = self.create_time {
-            state.serialize_field("create_time", &create_time)?;
-        }
-        if let Some(modify_time) = self.modify_time {
-            state.serialize_field("modify_time", &modify_time)?;
-        }
-        if let Some(delete_time) = self.delete_time {
-            state.serialize_field("delete_time", &delete_time)?;
-        }
-        state.serialize_field("file_path", &self.upload.file.path)?;
-        if let Some(path) = self.screenshot_path() {
-            state.serialize_field("screenshot_path", path)?;
-        }
-        if let Some(path) = self.large_thumbnail_path() {
-            state.serialize_field("large_thumbnail_path", path)?;
-        }
-        if let Some(path) = self.small_thumbnail_path() {
-            state.serialize_field("small_thumbnail_path", path)?;
-        }
-        state.end()
+        .serialize(serializer)
     }
 }
 

@@ -15,14 +15,67 @@ use qubit_model::{
     person::UserInfo,
     privilege::Role,
     system::{
-        Action, Environment, ErrorInfo, Expired, ExpiredReason, Host, Log, LogicRelation,
-        OperationLog, OperationLogInfo, Platform, Session, Setting, VerifyCode, VerifyScene,
+        Action, Environment, ErrorInfo, Expired, ExpiredReason, Host, Log,
+        LogicRelation, OperationLog, OperationLogInfo, Platform, Session,
+        Setting, VerifyCode, VerifyScene,
     },
 };
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
+use serde::Serialize;
+use std::io;
 
 fn assert_redact<T: Redact>() {}
+
+/// A deterministic writer that fails on the selected write operation.
+struct FailingWriter {
+    failure_at: usize,
+    writes: usize,
+}
+
+impl FailingWriter {
+    /// Creates a writer that fails exactly at `failure_at`.
+    const fn new(failure_at: usize) -> Self {
+        Self {
+            failure_at,
+            writes: 0,
+        }
+    }
+}
+
+impl io::Write for FailingWriter {
+    fn write(&mut self, buffer: &[u8]) -> io::Result<usize> {
+        self.writes += 1;
+        if self.writes == self.failure_at {
+            Err(io::Error::other("intentional test writer failure"))
+        } else {
+            Ok(buffer.len())
+        }
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
+}
+
+/// Verifies that every serializer write boundary propagates its I/O error.
+fn assert_serializer_propagates_each_write_error<T: Serialize>(value: &T) {
+    for failure_at in 1..=4_096 {
+        let mut serializer =
+            serde_json::Serializer::new(FailingWriter::new(failure_at));
+        if value.serialize(&mut serializer).is_ok() {
+            return;
+        }
+    }
+    panic!("serializer did not complete within the expected write boundary");
+}
+
+/// Serializes a value through the public JSON text representation.
+fn json_value<T: Serialize>(value: &T) -> serde_json::Value {
+    let text = serde_json::to_string(value)
+        .expect("value should serialize to JSON text");
+    serde_json::from_str(&text).expect("JSON text should parse into a value")
+}
 
 #[test]
 fn system_public_models_preserve_source_shapes_and_traits() {
@@ -100,7 +153,7 @@ fn system_enums_and_session_helpers_preserve_source_behavior() {
     };
     assert!(session.has_role("ADMIN"));
     assert_eq!(session.username(), Some("alice"));
-    assert_eq!(serde_json::to_value(&session).unwrap()["username"], "alice");
+    assert_eq!(json_value(&session)["username"], "alice");
 
     Session::reset();
     Session::set_current_user(session.user.clone());
@@ -112,7 +165,8 @@ fn system_enums_and_session_helpers_preserve_source_behavior() {
 }
 
 #[test]
-fn session_thread_local_accessors_normalize_values_and_serialize_present_fields() {
+fn session_thread_local_accessors_normalize_values_and_serialize_present_fields()
+ {
     Session::reset();
     assert_eq!(Session::current_session(), Session::default());
     let app = StatefulInfo {
@@ -177,7 +231,7 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
         expired: Some(Expired::default()),
         create_time: Some(Utc::now()),
     };
-    let json = serde_json::to_value(&session).expect("session serializes");
+    let json = json_value(&session);
     for field in [
         "id",
         "app",
@@ -194,10 +248,7 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
     ] {
         assert!(json.get(field).is_some(), "{field} must be serialized");
     }
-    assert_eq!(
-        serde_json::to_value(Session::default()).expect("empty session serializes"),
-        serde_json::json!({})
-    );
+    assert_eq!(json_value(&Session::default()), serde_json::json!({}));
     assert!(!Session::default().has_role("ADMIN"));
     assert_eq!(Session::default().username(), None);
 
@@ -207,6 +258,37 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
     Session::clear_super_admin_session();
     assert!(!Session::is_super_admin_mode());
     Session::reset();
+}
+
+#[test]
+fn session_serialization_propagates_every_writer_failure() {
+    let session = Session {
+        id: Some(1),
+        app: Some(StatefulInfo {
+            id: Some(2),
+            ..StatefulInfo::default()
+        }),
+        user: Some(UserInfo {
+            username: "alice".into(),
+            ..UserInfo::default()
+        }),
+        organization: Some(StatefulInfo {
+            id: Some(3),
+            ..StatefulInfo::default()
+        }),
+        token: Some(Token {
+            value: "token".into(),
+            ..Token::default()
+        }),
+        roles: vec!["ADMIN".into()],
+        privileges: vec!["READ".into()],
+        environment: Some(Environment::default()),
+        last_active_time: Some(Utc::now()),
+        expired: Some(Expired::default()),
+        create_time: Some(Utc::now()),
+    };
+
+    assert_serializer_propagates_each_write_error(&session);
 }
 
 #[test]
@@ -385,8 +467,7 @@ fn system_enum_mappings_cover_all_action_expiration_and_logic_variants() {
         Action::PerformAction,
     ] {
         assert!(!action.display_name().is_empty());
-        let name = serde_json::to_value(action)
-            .expect("actions are serializable")
+        let name = json_value(&action)
             .as_str()
             .expect("action wire value is textual")
             .to_owned();

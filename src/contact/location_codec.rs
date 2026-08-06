@@ -8,10 +8,7 @@
 //! String codec for geographic locations.
 
 use crate::contact::{
-    ContactCodecError,
-    CoordinateSystem,
-    Location,
-    LocationCoordinateCodec,
+    ContactCodecError, CoordinateSystem, Location, LocationCoordinateCodec,
 };
 
 /// Converts locations to and from comma-separated longitude and latitude
@@ -42,17 +39,18 @@ impl LocationCodec {
             return Ok(None);
         };
         let mut parts = source.split(Self::SPLITTER);
-        let longitude =
-            parts.next().ok_or(ContactCodecError::InvalidLocation)?;
+        let longitude = parts
+            .next()
+            .expect("nonempty input always has a first split component");
         let latitude =
             parts.next().ok_or(ContactCodecError::InvalidLocation)?;
         if parts.next().is_some() {
             return Err(ContactCodecError::InvalidLocation);
         }
         let longitude = LocationCoordinateCodec::decode(Some(longitude))?
-            .ok_or(ContactCodecError::InvalidLocation)?;
+            .expect("a present coordinate source never decodes to absence");
         let latitude = LocationCoordinateCodec::decode(Some(latitude))?
-            .ok_or(ContactCodecError::InvalidLocation)?;
+            .expect("a present coordinate source never decodes to absence");
         Ok(Some(Location {
             longitude,
             latitude,

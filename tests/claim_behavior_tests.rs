@@ -13,15 +13,17 @@ use chrono::Utc;
 use qubit_mixin::Info;
 use qubit_model::{
     claim::{
+        AccidentReason, InsuranceClaim, InsuranceClaimAmount,
+        InsuranceClaimInvoice, InsuranceClaimInvoiceStatus,
+        InsuranceClaimInvoiceType, InsuranceClaimStatus,
+        InsuranceClaimStatusGroup, InsuredStatus, QuickCompensationState,
         enterprise::{
             EnterpriseClaim, EnterpriseClaimInvoice, EnterpriseClaimItem,
-            EnterpriseClaimItemStatus, EnterpriseClaimMedical, EnterpriseClaimSelfCareItem,
-            EnterpriseClaimStatus, EnterpriseClaimStatusGroup, EnterpriseHistoryClaimAmount,
+            EnterpriseClaimItemStatus, EnterpriseClaimMedical,
+            EnterpriseClaimSelfCareItem, EnterpriseClaimStatus,
+            EnterpriseClaimStatusGroup, EnterpriseHistoryClaimAmount,
             EnterpriseInsuredType, EnterpriseOwnership, SaveStatus,
         },
-        AccidentReason, InsuranceClaim, InsuranceClaimAmount, InsuranceClaimInvoice,
-        InsuranceClaimInvoiceStatus, InsuranceClaimInvoiceType, InsuranceClaimStatus,
-        InsuranceClaimStatusGroup, InsuredStatus, QuickCompensationState,
     },
     commons::{Currency, DictEntryInfo, Kinship, State},
     mixin::StatefulInfo,
@@ -137,6 +139,9 @@ fn claim_amount() -> InsuranceClaimAmount {
 /// Builds an individual claim with a selectable workflow state.
 fn individual_claim(status: InsuranceClaimStatus) -> InsuranceClaim {
     let now = Utc::now();
+    let status_group: Box<
+        dyn Fn(InsuranceClaimStatus) -> InsuranceClaimStatusGroup,
+    > = Box::new(InsuranceClaimStatus::status_group);
     InsuranceClaim {
         id: None,
         product: product(),
@@ -166,7 +171,7 @@ fn individual_claim(status: InsuranceClaimStatus) -> InsuranceClaim {
         cancel_time: None,
         complete_time: None,
         status,
-        status_group: status.status_group(),
+        status_group: status_group(status),
         notes: String::new(),
         payload: None,
         attachment_list: Vec::new(),
@@ -182,6 +187,9 @@ fn individual_claim(status: InsuranceClaimStatus) -> InsuranceClaim {
 
 /// Builds an enterprise claim with a selectable workflow state.
 fn enterprise_claim(status: EnterpriseClaimStatus) -> EnterpriseClaim {
+    let status_group: Box<
+        dyn Fn(EnterpriseClaimStatus) -> EnterpriseClaimStatusGroup,
+    > = Box::new(EnterpriseClaimStatus::status_group);
     EnterpriseClaim {
         id: None,
         product: product(),
@@ -194,7 +202,7 @@ fn enterprise_claim(status: EnterpriseClaimStatus) -> EnterpriseClaim {
         cancel_time: None,
         complete_time: None,
         status,
-        status_group: status.status_group(),
+        status_group: status_group(status),
         notes: String::new(),
         quick_compensation_state: QuickCompensationState::Success,
         events: Vec::new(),
@@ -208,15 +216,15 @@ fn enterprise_claim(status: EnterpriseClaimStatus) -> EnterpriseClaim {
 /// source workflow branch.
 #[test]
 fn test_individual_claim_statuses_drive_operation_permissions() {
-    let status_group = std::hint::black_box(
-        InsuranceClaimStatus::status_group as fn(InsuranceClaimStatus) -> InsuranceClaimStatusGroup,
-    );
-    let allow_client =
-        std::hint::black_box(InsuranceClaim::allow_client_operation as fn(&InsuranceClaim) -> bool);
-    let allow_reject =
-        std::hint::black_box(InsuranceClaim::allow_system_reject as fn(&InsuranceClaim) -> bool);
-    let allow_accept =
-        std::hint::black_box(InsuranceClaim::allow_system_accept as fn(&InsuranceClaim) -> bool);
+    let status_group: Box<
+        dyn Fn(InsuranceClaimStatus) -> InsuranceClaimStatusGroup,
+    > = Box::new(InsuranceClaimStatus::status_group);
+    let allow_client: Box<dyn Fn(&InsuranceClaim) -> bool> =
+        Box::new(InsuranceClaim::allow_client_operation);
+    let allow_reject: Box<dyn Fn(&InsuranceClaim) -> bool> =
+        Box::new(InsuranceClaim::allow_system_reject);
+    let allow_accept: Box<dyn Fn(&InsuranceClaim) -> bool> =
+        Box::new(InsuranceClaim::allow_system_accept);
     let cases = [
         (InsuranceClaimStatus::NotSubmitted, true, false, false),
         (
@@ -267,17 +275,18 @@ fn test_individual_claim_statuses_drive_operation_permissions() {
         (InsuranceClaimStatus::Canceled, false, false, false),
     ];
     for (status, client_allowed, reject_allowed, accept_allowed) in cases {
-        let status = std::hint::black_box(status);
         let claim = individual_claim(status);
         assert_eq!(claim.status_group, status_group(status));
         assert_eq!(allow_client(&claim), client_allowed);
         assert_eq!(allow_reject(&claim), reject_allowed);
         assert_eq!(allow_accept(&claim), accept_allowed);
-        let json = serde_json::to_value(&claim).expect("an individual claim should serialize");
+        let json = serde_json::to_value(&claim)
+            .expect("an individual claim should serialize");
         assert_eq!(json["status"], serde_json::to_value(status).unwrap());
     }
     let unfinished = std::hint::black_box(
-        InsuranceClaimStatus::list_not_finished_status as fn() -> &'static [InsuranceClaimStatus],
+        InsuranceClaimStatus::list_not_finished_status
+            as fn() -> &'static [InsuranceClaimStatus],
     );
     assert_eq!(unfinished().len(), 8);
 }
@@ -286,18 +295,15 @@ fn test_individual_claim_statuses_drive_operation_permissions() {
 /// branch in the public model.
 #[test]
 fn test_enterprise_claim_statuses_drive_operation_permissions() {
-    let status_group = std::hint::black_box(
-        EnterpriseClaimStatus::status_group
-            as fn(EnterpriseClaimStatus) -> EnterpriseClaimStatusGroup,
-    );
-    let allow_client = std::hint::black_box(
-        EnterpriseClaim::allow_client_operation as fn(&EnterpriseClaim) -> bool,
-    );
-    let allow_reject =
-        std::hint::black_box(EnterpriseClaim::allow_reject as fn(&EnterpriseClaim) -> bool);
-    let allow_admin = std::hint::black_box(
-        EnterpriseClaim::allow_admin_operation as fn(&EnterpriseClaim) -> bool,
-    );
+    let status_group: Box<
+        dyn Fn(EnterpriseClaimStatus) -> EnterpriseClaimStatusGroup,
+    > = Box::new(EnterpriseClaimStatus::status_group);
+    let allow_client: Box<dyn Fn(&EnterpriseClaim) -> bool> =
+        Box::new(EnterpriseClaim::allow_client_operation);
+    let allow_reject: Box<dyn Fn(&EnterpriseClaim) -> bool> =
+        Box::new(EnterpriseClaim::allow_reject);
+    let allow_admin: Box<dyn Fn(&EnterpriseClaim) -> bool> =
+        Box::new(EnterpriseClaim::allow_admin_operation);
     let cases = [
         (EnterpriseClaimStatus::NotSubmitted, true, false, false),
         (
@@ -329,17 +335,18 @@ fn test_enterprise_claim_statuses_drive_operation_permissions() {
         (EnterpriseClaimStatus::Canceled, false, false, false),
     ];
     for (status, client_allowed, reject_allowed, admin_allowed) in cases {
-        let status = std::hint::black_box(status);
         let claim = enterprise_claim(status);
         assert_eq!(claim.status_group, status_group(status));
         assert_eq!(allow_client(&claim), client_allowed);
         assert_eq!(allow_reject(&claim), reject_allowed);
         assert_eq!(allow_admin(&claim), admin_allowed);
-        let json = serde_json::to_value(&claim).expect("an enterprise claim should serialize");
+        let json = serde_json::to_value(&claim)
+            .expect("an enterprise claim should serialize");
         assert_eq!(json["status"], serde_json::to_value(status).unwrap());
     }
     let unfinished = std::hint::black_box(
-        EnterpriseClaimStatus::list_not_finished_status as fn() -> &'static [EnterpriseClaimStatus],
+        EnterpriseClaimStatus::list_not_finished_status
+            as fn() -> &'static [EnterpriseClaimStatus],
     );
     assert_eq!(unfinished().len(), 6);
 }
@@ -434,38 +441,40 @@ fn test_claim_invoice_validations_check_component_boundaries() {
 fn test_enterprise_claim_item_initializes_hospital_and_disease_summaries() {
     let now = Utc::now();
     let medical =
-        |hospital_name: &str, hospital_level: i32, disease_code: &str| EnterpriseClaimMedical {
-            id: None,
-            claim_id: 1,
-            treatment_start_date: now.date_naive(),
-            treatment_end_date: now.date_naive(),
-            number: None,
-            claim_apply_id: None,
-            medical_category: None,
-            disease: Some(DictEntryInfo {
+        |hospital_name: &str, hospital_level: i32, disease_code: &str| {
+            EnterpriseClaimMedical {
                 id: None,
-                code: disease_code.into(),
-                name: String::new(),
-                dict_id: None,
-                params: Vec::new(),
+                claim_id: 1,
+                treatment_start_date: now.date_naive(),
+                treatment_end_date: now.date_naive(),
+                number: None,
+                claim_apply_id: None,
+                medical_category: None,
+                disease: Some(DictEntryInfo {
+                    id: None,
+                    code: disease_code.into(),
+                    name: String::new(),
+                    dict_id: None,
+                    params: Vec::new(),
+                    delete_time: None,
+                }),
+                hospital: Some(DictEntryInfo {
+                    id: None,
+                    code: String::new(),
+                    name: hospital_name.into(),
+                    dict_id: None,
+                    params: Vec::new(),
+                    delete_time: None,
+                }),
+                hospital_level: Some(hospital_level),
+                operator_name: None,
+                insured_type: EnterpriseInsuredType::InService,
+                status: SaveStatus::Saved,
+                invoices: Vec::new(),
+                create_time: now,
+                modify_time: None,
                 delete_time: None,
-            }),
-            hospital: Some(DictEntryInfo {
-                id: None,
-                code: String::new(),
-                name: hospital_name.into(),
-                dict_id: None,
-                params: Vec::new(),
-                delete_time: None,
-            }),
-            hospital_level: Some(hospital_level),
-            operator_name: None,
-            insured_type: EnterpriseInsuredType::InService,
-            status: SaveStatus::Saved,
-            invoices: Vec::new(),
-            create_time: now,
-            modify_time: None,
-            delete_time: None,
+            }
         };
     let history = EnterpriseHistoryClaimAmount {
         id: None,
@@ -545,7 +554,8 @@ fn test_claim_leaf_enumerations_round_trip_through_json() {
         serde_json::to_value(QuickCompensationState::Fetching).unwrap(),
         serde_json::to_value(InsuranceClaimInvoiceStatus::IgnoredGt).unwrap(),
         serde_json::to_value(InsuranceClaimInvoiceType::ClinicSpecial).unwrap(),
-        serde_json::to_value(InsuranceClaimStatusGroup::AuditRejection).unwrap(),
+        serde_json::to_value(InsuranceClaimStatusGroup::AuditRejection)
+            .unwrap(),
         serde_json::to_value(EnterpriseClaimStatusGroup::Register).unwrap(),
         serde_json::to_value(SaveStatus::NotSaved).unwrap(),
     ];
@@ -572,14 +582,12 @@ fn test_claim_leaf_enumerations_round_trip_through_json() {
         (EnterpriseInsuredType::ChildDonorGenus, "32", "子女供属"),
         (EnterpriseInsuredType::DonorGenus, "41", "供属"),
     ];
-    let insured_type_code = std::hint::black_box(
-        EnterpriseInsuredType::code as fn(EnterpriseInsuredType) -> &'static str,
-    );
-    let insured_type_description = std::hint::black_box(
-        EnterpriseInsuredType::description as fn(EnterpriseInsuredType) -> &'static str,
-    );
+    let insured_type_code: Box<dyn Fn(EnterpriseInsuredType) -> &'static str> =
+        Box::new(EnterpriseInsuredType::code);
+    let insured_type_description: Box<
+        dyn Fn(EnterpriseInsuredType) -> &'static str,
+    > = Box::new(EnterpriseInsuredType::description);
     for (insured_type, code, description) in insured_type_cases {
-        let insured_type = std::hint::black_box(insured_type);
         assert_eq!(insured_type_code(insured_type), code);
         assert_eq!(insured_type_description(insured_type), description);
     }
@@ -590,10 +598,12 @@ fn test_claim_leaf_enumerations_round_trip_through_json() {
         (EnterpriseOwnership::CoSolution, "2", "协解"),
         (EnterpriseOwnership::Test, "z", "测试"),
     ];
-    let ownership_code =
-        std::hint::black_box(EnterpriseOwnership::code as fn(EnterpriseOwnership) -> &'static str);
+    let ownership_code = std::hint::black_box(
+        EnterpriseOwnership::code as fn(EnterpriseOwnership) -> &'static str,
+    );
     let ownership_description = std::hint::black_box(
-        EnterpriseOwnership::description as fn(EnterpriseOwnership) -> &'static str,
+        EnterpriseOwnership::description
+            as fn(EnterpriseOwnership) -> &'static str,
     );
     for (ownership, code, description) in ownership_cases {
         let ownership = std::hint::black_box(ownership);

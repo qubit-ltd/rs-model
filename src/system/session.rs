@@ -7,43 +7,23 @@
 // =============================================================================
 //! Persisted and thread-local application sessions.
 
-use std::{
-    cell::RefCell,
-    collections::HashSet,
-};
+use std::{cell::RefCell, collections::HashSet};
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-    Serializer,
-    ser::SerializeStruct,
-};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::{
-    commons::{
-        App,
-        Token,
-    },
+    commons::{App, Token},
     mixin::StatefulInfo,
     organization::Organization,
-    person::{
-        User,
-        UserInfo,
-    },
+    person::{User, UserInfo},
     privilege::Role,
 };
 
-use super::{
-    Environment,
-    Expired,
-};
+use super::{Environment, Expired};
 
 thread_local! {
     static CURRENT_SESSION: RefCell<Option<Session>> = const { RefCell::new(None) };
@@ -219,48 +199,55 @@ impl Normalizable for Session {
     }
 }
 
+/// Borrowed JSON-wire projection for a [`Session`].
+#[derive(Serialize)]
+struct SessionWire<'a> {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    id: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    app: Option<&'a StatefulInfo>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    user: Option<&'a UserInfo>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    organization: Option<&'a StatefulInfo>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    token: Option<&'a Token>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    roles: &'a Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    privileges: &'a Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    environment: Option<&'a Environment>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    last_active_time: Option<&'a DateTime<Utc>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    expired: Option<&'a Expired>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    create_time: Option<&'a DateTime<Utc>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    username: Option<&'a str>,
+}
+
 impl Serialize for Session {
+    /// Serializes all source-visible session fields and the computed username.
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
-        let mut state = serializer.serialize_struct("Session", 12)?;
-        if let Some(id) = self.id {
-            state.serialize_field("id", &id)?;
+        SessionWire {
+            id: self.id,
+            app: self.app.as_ref(),
+            user: self.user.as_ref(),
+            organization: self.organization.as_ref(),
+            token: self.token.as_ref(),
+            roles: &self.roles,
+            privileges: &self.privileges,
+            environment: self.environment.as_ref(),
+            last_active_time: self.last_active_time.as_ref(),
+            expired: self.expired.as_ref(),
+            create_time: self.create_time.as_ref(),
+            username: self.username(),
         }
-        if let Some(app) = &self.app {
-            state.serialize_field("app", app)?;
-        }
-        if let Some(user) = &self.user {
-            state.serialize_field("user", user)?;
-        }
-        if let Some(organization) = &self.organization {
-            state.serialize_field("organization", organization)?;
-        }
-        if let Some(token) = &self.token {
-            state.serialize_field("token", token)?;
-        }
-        if !self.roles.is_empty() {
-            state.serialize_field("roles", &self.roles)?;
-        }
-        if !self.privileges.is_empty() {
-            state.serialize_field("privileges", &self.privileges)?;
-        }
-        if let Some(environment) = &self.environment {
-            state.serialize_field("environment", environment)?;
-        }
-        if let Some(last_active_time) = self.last_active_time {
-            state.serialize_field("last_active_time", &last_active_time)?;
-        }
-        if let Some(expired) = &self.expired {
-            state.serialize_field("expired", expired)?;
-        }
-        if let Some(create_time) = self.create_time {
-            state.serialize_field("create_time", &create_time)?;
-        }
-        if let Some(username) = self.username() {
-            state.serialize_field("username", username)?;
-        }
-        state.end()
+        .serialize(serializer)
     }
 }

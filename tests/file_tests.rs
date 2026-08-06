@@ -11,12 +11,67 @@ use qubit_mixin::{Emptyful, InfoWithEntity};
 use qubit_model::metadata::AggregateRef;
 use qubit_model::{
     commons::State,
-    file::{Attachment, AttachmentType, FileInfo, MediaInfo, MediaType, Upload, UploadParams},
+    file::{
+        Attachment, AttachmentType, FileInfo, MediaInfo, MediaType, Upload,
+        UploadParams,
+    },
 };
 use qubit_model_metadata::{UniqueComparison, metadata_of};
 use qubit_redact::Redact;
+use serde::Serialize;
+use std::io;
 
 fn assert_redact<T: Redact>() {}
+
+/// A deterministic writer that fails on the selected write operation.
+struct FailingWriter {
+    failure_at: usize,
+    writes: usize,
+}
+
+impl FailingWriter {
+    /// Creates a writer that fails exactly at `failure_at`.
+    const fn new(failure_at: usize) -> Self {
+        Self {
+            failure_at,
+            writes: 0,
+        }
+    }
+}
+
+impl io::Write for FailingWriter {
+    fn write(&mut self, buffer: &[u8]) -> io::Result<usize> {
+        self.writes += 1;
+        if self.writes == self.failure_at {
+            Err(io::Error::other("intentional test writer failure"))
+        } else {
+            Ok(buffer.len())
+        }
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
+}
+
+/// Verifies that every serializer write boundary propagates its I/O error.
+fn assert_serializer_propagates_each_write_error<T: Serialize>(value: &T) {
+    for failure_at in 1..=2_048 {
+        let mut serializer =
+            serde_json::Serializer::new(FailingWriter::new(failure_at));
+        if value.serialize(&mut serializer).is_ok() {
+            return;
+        }
+    }
+    panic!("serializer did not complete within the expected write boundary");
+}
+
+/// Serializes a value through the public JSON text representation.
+fn json_value<T: Serialize>(value: &T) -> serde_json::Value {
+    let text = serde_json::to_string(value)
+        .expect("value should serialize to JSON text");
+    serde_json::from_str(&text).expect("JSON text should parse into a value")
+}
 
 #[test]
 fn file_public_types_preserve_source_fields_and_traits() {
@@ -144,7 +199,7 @@ fn attachment_create_copies_upload_defaults_and_proxies_paths() {
         Some("/private/large.jpg")
     );
 
-    let serialized = serde_json::to_value(&attachment).unwrap();
+    let serialized = json_value(&attachment);
     assert_eq!(serialized["file_path"], "/private/original.jpg");
     assert_eq!(serialized["screenshot_path"], "/private/screenshot.jpg");
     assert_eq!(serialized["small_thumbnail_path"], "/private/small.jpg");
@@ -152,7 +207,7 @@ fn attachment_create_copies_upload_defaults_and_proxies_paths() {
 
     let empty = Attachment::default();
     assert_eq!(empty.file_path(), Some(""));
-    assert_eq!(serde_json::to_value(empty).unwrap()["file_path"], "");
+    assert_eq!(json_value(&empty)["file_path"], "");
 }
 
 #[test]
@@ -216,7 +271,8 @@ fn file_emptiness_observes_every_source_field() {
 
 #[test]
 fn upload_create_populates_file_and_verification_metadata() {
-    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let path =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
     let params = UploadParams {
         filename: None,
         content_type: Some("application/toml".into()),
@@ -235,7 +291,7 @@ fn upload_create_populates_file_and_verification_metadata() {
     assert_eq!(upload.hash_algorithm.as_deref(), Some("SHA-256"));
     assert_eq!(upload.hash_value.as_deref(), Some("expected-hash"));
 
-    let serialized = serde_json::to_value(&upload).unwrap();
+    let serialized = json_value(&upload);
     assert!(serialized.get("original_filename").is_none());
     assert!(serialized.get("originalFilename").is_none());
     assert!(serialized.get("id").is_none());
@@ -244,7 +300,8 @@ fn upload_create_populates_file_and_verification_metadata() {
 
 #[test]
 fn upload_create_rejects_the_source_invalid_missing_content_type() {
-    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let path =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
     let error = Upload::create(&path, &UploadParams::default()).unwrap_err();
 
     assert_eq!(error.kind(), std::io::ErrorKind::InvalidInput);
@@ -254,7 +311,10 @@ fn upload_create_rejects_the_source_invalid_missing_content_type() {
 fn upload_file_info_supports_relative_paths_and_missing_files() {
     let mut upload = Upload::default();
     let file = upload
-        .set_file_info(std::path::Path::new("missing-upload-file"), "text/plain")
+        .set_file_info(
+            std::path::Path::new("missing-upload-file"),
+            "text/plain",
+        )
         .expect("relative paths are resolved against the working directory");
     assert!(file.path.ends_with("missing-upload-file"));
     assert_eq!(file.size, 0);
@@ -323,8 +383,7 @@ fn attachment_serialization_preserves_every_present_optional_property() {
         ..Attachment::default()
     };
 
-    let serialized = serde_json::to_value(&attachment)
-        .expect("attachment with present optional values must serialize");
+    let serialized = json_value(&attachment);
     for field in [
         "id",
         "aggregate_ref",
@@ -343,6 +402,52 @@ fn attachment_serialization_preserves_every_present_optional_property() {
             "missing serialized {field}"
         );
     }
+}
+
+#[test]
+fn attachment_serialization_propagates_every_writer_failure() {
+    let attachment = Attachment {
+        id: Some(7),
+        aggregate_ref: Some(AggregateRef::default()),
+        category: Some(InfoWithEntity::default()),
+        title: Some("private title".into()),
+        description: Some("description".into()),
+        upload: Upload {
+            file: FileInfo {
+                path: "/private/original.jpg".into(),
+                ..FileInfo::default()
+            },
+            screenshot: Some(FileInfo {
+                path: "/private/screenshot.jpg".into(),
+                ..FileInfo::default()
+            }),
+            small_thumbnail: Some(FileInfo {
+                path: "/private/small.jpg".into(),
+                ..FileInfo::default()
+            }),
+            large_thumbnail: Some(FileInfo {
+                path: "/private/large.jpg".into(),
+                ..FileInfo::default()
+            }),
+            ..Upload::default()
+        },
+        create_time: Some(Utc::now()),
+        modify_time: Some(Utc::now()),
+        delete_time: Some(Utc::now()),
+        ..Attachment::default()
+    };
+
+    assert_serializer_propagates_each_write_error(&attachment);
+}
+
+#[test]
+fn upload_rendition_uses_a_generated_basename_when_the_source_path_is_empty() {
+    let mut upload = Upload::default();
+
+    let screenshot = upload.set_screenshot_info();
+
+    assert!(screenshot.path.contains(Upload::SCREENSHOT_SUFFIX));
+    assert!(screenshot.path.ends_with(Upload::IMAGE_EXTENSION));
 }
 
 #[test]
