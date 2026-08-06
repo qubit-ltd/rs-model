@@ -110,6 +110,20 @@ fn test_feedback_processing_rule_preserves_complete_lifecycle() {
     assert_eq!(
         FeedbackProcessingRule::next(
             FeedbackStatus::Rejected,
+            FeedbackAction::UserApprove,
+        ),
+        Some(FeedbackStatus::Closed)
+    );
+    assert_eq!(
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Rejected,
+            FeedbackAction::UserDisapprove,
+        ),
+        Some(FeedbackStatus::Disapproved)
+    );
+    assert_eq!(
+        FeedbackProcessingRule::next(
+            FeedbackStatus::Resolved,
             FeedbackAction::UserDisapprove,
         ),
         Some(FeedbackStatus::Disapproved)
