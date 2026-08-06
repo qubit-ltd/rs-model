@@ -16,8 +16,23 @@ use qubit_model::{
 };
 use qubit_model_metadata::{metadata_of, UniqueComparison};
 use qubit_redact::Redact;
+use serde::Serialize;
+use std::io;
 
 fn assert_redact<T: Redact>() {}
+
+/// A writer that exposes serialization error propagation without external I/O.
+struct FailingWriter;
+
+impl io::Write for FailingWriter {
+    fn write(&mut self, _: &[u8]) -> io::Result<usize> {
+        Err(io::Error::other("intentional test writer failure"))
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
+}
 
 /// Exercises the public empty and normalization trait dispatch for one
 /// metadata value.
@@ -429,6 +444,13 @@ fn dict_entry_info_and_payload_preserve_computed_behaviors() {
     }
     assert_eq!(complete_json["display_code"], "X");
     assert_eq!(complete_json["display_name"], "Name X");
+    let absent_json = serde_json::to_value(DictEntryInfo::default())
+        .expect("empty dictionary entry info should serialize");
+    for field in ["id", "dict_id", "params", "delete_time"] {
+        assert!(absent_json.get(field).is_none(), "{field} must be omitted");
+    }
+    let mut failing_serializer = serde_json::Serializer::new(FailingWriter);
+    assert!(complete_info.serialize(&mut failing_serializer).is_err());
     assert!(DictEntryInfo::create(None, Some("CODE"), None).is_some());
     assert!(DictEntryInfo::create(None, None, Some("Name")).is_some());
 
@@ -452,6 +474,11 @@ fn dict_entry_info_and_payload_preserve_computed_behaviors() {
     assert_entry_info_field_makes_value_nonempty!(|value: &mut DictEntryInfo| {
         value.params = Some(vec!["parameter".into()])
     });
+    assert!(DictEntryInfo {
+        params: Some(Vec::new()),
+        ..DictEntryInfo::default()
+    }
+    .is_empty());
     assert_entry_info_field_makes_value_nonempty!(|value: &mut DictEntryInfo| {
         value.delete_time = Some(now)
     });
