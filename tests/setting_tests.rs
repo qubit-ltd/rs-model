@@ -98,6 +98,7 @@ fn setting_names_match_the_java_contract() {
 
 #[test]
 fn setting_json_deserialization_applies_defaults_and_reports_invalid_inputs() {
+    assert_eq!(SettingJsonDeserializer::default(), SettingJsonDeserializer);
     let setting =
         SettingJsonDeserializer::deserialize(r#"{"name":"limit","values":[1,true,null,"three"]}"#)
             .expect("a JSON object with omitted optional fields is valid");

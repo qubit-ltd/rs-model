@@ -9,10 +9,11 @@
 use chrono::{TimeZone, Utc};
 use qubit_mixin::{Emptyful, Normalizable};
 use qubit_model::{
-    commons::Token,
+    commons::{State, Token},
     contact::Location,
     mixin::StatefulInfo,
     person::UserInfo,
+    privilege::Role,
     system::{
         Action, Environment, ErrorInfo, Expired, ExpiredReason, Host, Log, LogicRelation,
         OperationLog, OperationLogInfo, Platform, Session, Setting, VerifyCode, VerifyScene,
@@ -113,6 +114,7 @@ fn system_enums_and_session_helpers_preserve_source_behavior() {
 #[test]
 fn session_thread_local_accessors_normalize_values_and_serialize_present_fields() {
     Session::reset();
+    assert_eq!(Session::current_session(), Session::default());
     let app = StatefulInfo {
         id: Some(1),
         code: "APP".into(),
@@ -137,11 +139,24 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
     let count = Session::with_current_session(|session| {
         session.roles = vec![" ADMIN ".into(), "USER".into()];
         session.privileges = vec![" READ ".into()];
-        session.set_roles_and_privileges(&[]);
+        session.set_roles_and_privileges(&[Role {
+            id: None,
+            app: StatefulInfo::default(),
+            code: "ADMIN".into(),
+            name: "Administrator".into(),
+            description: None,
+            guest: None,
+            basic: None,
+            privileges: vec!["READ".into(), "WRITE".into()],
+            state: State::Normal,
+            create_time: Utc::now(),
+            modify_time: None,
+            delete_time: None,
+        }]);
         session.normalize();
         session.roles.len()
     });
-    assert_eq!(count, 0);
+    assert_eq!(count, 1);
 
     let session = Session {
         id: Some(1),
@@ -177,6 +192,8 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
         serde_json::to_value(Session::default()).expect("empty session serializes"),
         serde_json::json!({})
     );
+    assert!(!Session::default().has_role("ADMIN"));
+    assert_eq!(Session::default().username(), None);
 
     Session::set_super_admin_session(Some(session));
     assert!(Session::is_super_admin_mode());
