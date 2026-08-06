@@ -18,6 +18,9 @@ use qubit_model::{
         UploadParams,
     },
 };
+use chrono::Utc;
+use qubit_mixin::InfoWithEntity;
+use qubit_model::metadata::AggregateRef;
 use qubit_model_metadata::{
     UniqueComparison,
     metadata_of,
@@ -285,4 +288,58 @@ fn file_redaction_hides_paths_filenames_and_hashes_recursively() {
     let rendered = format!("{:?}", params.redacted());
     assert!(!rendered.contains("private-source.pdf"));
     assert!(!rendered.contains("raw-expected-hash"));
+}
+
+#[test]
+fn attachment_serialization_preserves_every_present_optional_property() {
+    let now = Utc::now();
+    let attachment = Attachment {
+        id: Some(7),
+        aggregate_ref: Some(AggregateRef::default()),
+        category: Some(InfoWithEntity::default()),
+        index: 2,
+        title: Some("private title".into()),
+        description: Some("description".into()),
+        upload: Upload {
+            file: FileInfo {
+                path: "/private/original.jpg".into(),
+                ..FileInfo::default()
+            },
+            screenshot: Some(FileInfo {
+                path: "/private/screenshot.jpg".into(),
+                ..FileInfo::default()
+            }),
+            small_thumbnail: Some(FileInfo {
+                path: "/private/small.jpg".into(),
+                ..FileInfo::default()
+            }),
+            large_thumbnail: Some(FileInfo {
+                path: "/private/large.jpg".into(),
+                ..FileInfo::default()
+            }),
+            ..Upload::default()
+        },
+        create_time: Some(now),
+        modify_time: Some(now),
+        delete_time: Some(now),
+        ..Attachment::default()
+    };
+
+    let serialized = serde_json::to_value(&attachment)
+        .expect("attachment with present optional values must serialize");
+    for field in [
+        "id",
+        "aggregate_ref",
+        "category",
+        "title",
+        "description",
+        "create_time",
+        "modify_time",
+        "delete_time",
+        "screenshot_path",
+        "small_thumbnail_path",
+        "large_thumbnail_path",
+    ] {
+        assert!(serialized.get(field).is_some(), "missing serialized {field}");
+    }
 }
