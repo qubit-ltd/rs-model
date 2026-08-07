@@ -19,6 +19,7 @@ pub struct LocationCoordinateDeserializer;
 impl LocationCoordinateDeserializer {
     /// Deserializes a non-null coordinate.
     pub fn deserialize(value: &str) -> Result<BigDecimal, ContactCodecError> {
-        LocationCoordinateCodec::decode(Some(value))?.ok_or(ContactCodecError::InvalidCoordinate)
+        LocationCoordinateCodec::decode(Some(value))?
+            .ok_or(ContactCodecError::InvalidCoordinate)
     }
 }

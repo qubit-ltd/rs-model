@@ -18,6 +18,7 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use super::TaxPayerType;
 use crate::commons::Category;
 use crate::commons::Credential;
 use crate::commons::CredentialInfo;
@@ -27,11 +28,12 @@ use crate::contact::Contact;
 use crate::mixin::StatefulInfo;
 use crate::person::PersonInfo;
 use crate::product::Seller;
-use super::TaxPayerType;
 
 /// A company, medical institution, school, government body, or other
 /// organization.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(
     unique(name = "organization_code", fields(code), ignore_case(code)),

@@ -18,7 +18,9 @@ use qubit_redact_derive::Redact;
 use super::Action;
 
 /// Compact information derived from a full operation log.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct OperationLogInfo {
     /// Optional persisted identifier.

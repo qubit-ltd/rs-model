@@ -19,7 +19,9 @@ use crate::person::UserInfo;
 use crate::system::Session;
 
 /// User, organization, token, privilege, and role data returned after login.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct LoginResponse {
     /// Logged-in user information.

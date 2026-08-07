@@ -17,6 +17,18 @@ use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use super::Blood;
+use super::Education;
+use super::Ethnic;
+use super::Gender;
+use super::Incoming;
+use super::Industry;
+use super::JobTitle;
+use super::Marriage;
+use super::PersonIdentity;
+use super::Politics;
+use super::Religion;
+use super::SexOrientation;
 use crate::commons::Category;
 use crate::commons::Credential;
 use crate::commons::CredentialInfo;
@@ -32,21 +44,11 @@ use crate::order::Client;
 use crate::order::Consignee;
 use crate::person::PersonInfo;
 use crate::upload::Attachment;
-use super::Blood;
-use super::Education;
-use super::Ethnic;
-use super::Gender;
-use super::Incoming;
-use super::Industry;
-use super::JobTitle;
-use super::Marriage;
-use super::PersonIdentity;
-use super::Politics;
-use super::Religion;
-use super::SexOrientation;
 
 /// A person's complete demographic, contact, and administrative record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[model(
     unique(name = "person_username", fields(username)),
     unique(name = "person_credential", fields(credential))
@@ -247,7 +249,13 @@ impl Person {
         self.gender = info.gender;
         self.birthday = info.birthday;
         self.credential = info.credential.clone();
-        self.contact = Contact::create(None, info.mobile.clone(), info.email.clone(), None, None);
+        self.contact = Contact::create(
+            None,
+            info.mobile.clone(),
+            info.email.clone(),
+            None,
+            None,
+        );
         self.test = info.test;
         self.delete_time = info.delete_time;
     }
@@ -272,7 +280,13 @@ impl Person {
         self.credential = buyer.credential.clone();
         self.gender = buyer.gender;
         self.birthday = buyer.birthday;
-        self.contact = Contact::create(None, buyer.mobile.clone(), buyer.email.clone(), None, None);
+        self.contact = Contact::create(
+            None,
+            buyer.mobile.clone(),
+            buyer.email.clone(),
+            None,
+            None,
+        );
     }
 
     /// Returns this person's compact information projection.
@@ -307,7 +321,8 @@ impl Person {
     /// Reports whether either benefit-coverage flag is explicitly true.
     #[must_use]
     pub fn has_medicare_or_social_security(&self) -> bool {
-        self.has_medicare.unwrap_or(false) || self.has_social_security.unwrap_or(false)
+        self.has_medicare.unwrap_or(false)
+            || self.has_social_security.unwrap_or(false)
     }
 
     /// Reports whether another projection identifies the same person.

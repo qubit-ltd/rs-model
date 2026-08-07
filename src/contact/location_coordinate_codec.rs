@@ -38,8 +38,9 @@ impl LocationCoordinateCodec {
             let round_degree = BigDecimal::from(360);
             let minimum = BigDecimal::from(-180);
             let maximum = BigDecimal::from(180);
-            let mut normalized =
-                value.with_scale_round(precision, RoundingMode::HalfUp) % &round_degree;
+            let mut normalized = value
+                .with_scale_round(precision, RoundingMode::HalfUp)
+                % &round_degree;
             if normalized < minimum {
                 normalized += &round_degree;
             } else if normalized > maximum {
@@ -50,12 +51,17 @@ impl LocationCoordinateCodec {
     }
 
     /// Decodes a decimal coordinate, treating null as absent.
-    pub fn decode(source: Option<&str>) -> Result<Option<BigDecimal>, ContactCodecError> {
+    pub fn decode(
+        source: Option<&str>,
+    ) -> Result<Option<BigDecimal>, ContactCodecError> {
         source
             .map(|source| {
                 BigDecimal::from_str(source.trim())
                     .map_err(|_| ContactCodecError::InvalidCoordinate)
-                    .map(|value| Self::normalize(Some(value)).expect("present coordinate"))
+                    .map(|value| {
+                        Self::normalize(Some(value))
+                            .expect("present coordinate")
+                    })
             })
             .transpose()
     }

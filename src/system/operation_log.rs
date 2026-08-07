@@ -15,17 +15,19 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::commons::App;
-use crate::mixin::StatefulInfo;
-use crate::person::User;
-use crate::person::UserInfo;
 use super::Action;
 use super::ErrorInfo;
 use super::LogicRelation;
 use super::OperationLogInfo;
+use crate::commons::App;
+use crate::mixin::StatefulInfo;
+use crate::person::User;
+use crate::person::UserInfo;
 
 /// A complete audited request, response, caller, service, and trace record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct OperationLog {
     /// Optional persisted identifier.
@@ -295,7 +297,10 @@ impl OperationLog {
             client_ip: self.client_ip.clone(),
             success: self.success,
             error_code: self.error.as_ref().map(|error| error.code.clone()),
-            error_message: self.error.as_ref().and_then(|error| error.message.clone()),
+            error_message: self
+                .error
+                .as_ref()
+                .and_then(|error| error.message.clone()),
             timestamp: self.request_time,
         }
     }

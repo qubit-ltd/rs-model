@@ -24,10 +24,16 @@ use crate::system::Environment;
 
 /// Account, profile, social identity, and client data used for registration.
 #[allow(clippy::duplicated_attributes)]
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(
-    unique(name = "register_username", fields(username), ignore_case(username)),
+    unique(
+        name = "register_username",
+        fields(username),
+        ignore_case(username)
+    ),
     unique(name = "register_mobile", fields(mobile)),
     unique(name = "register_email", fields(email), ignore_case(email)),
     unique(

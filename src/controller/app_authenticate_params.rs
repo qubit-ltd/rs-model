@@ -17,7 +17,9 @@ use crate::contact::Location;
 use crate::system::Platform;
 
 /// Credentials and client environment used to authenticate an application.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct AppAuthenticateParams {
     /// Application code.

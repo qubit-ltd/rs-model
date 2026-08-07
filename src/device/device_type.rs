@@ -13,7 +13,6 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-
 /// Device categories and radio-network classifications are kept together
 /// because they form the compact vocabulary used by device telemetry.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

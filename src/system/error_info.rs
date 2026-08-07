@@ -16,7 +16,9 @@ use qubit_redact_derive::Redact;
 use crate::security::KeyValuePair;
 
 /// Error type, code, message, and optional formatting parameters.
-#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct ErrorInfo {
     /// Stable error type.

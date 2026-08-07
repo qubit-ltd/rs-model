@@ -15,7 +15,9 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// User-supplied upload hints and hash verification material.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct UploadParams {
     /// Optional original filename.
     pub filename: Option<String>,

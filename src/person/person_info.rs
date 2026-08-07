@@ -21,7 +21,9 @@ use crate::person::User;
 use crate::upload::Attachment;
 
 /// A compact person snapshot used by references outside the person domain.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct PersonInfo {
     /// Optional persisted identifier.
     #[model(identifier)]

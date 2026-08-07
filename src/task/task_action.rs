@@ -14,7 +14,6 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-
 /// An operation applied to a task.
 #[derive(
     Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,

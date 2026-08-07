@@ -58,7 +58,11 @@ pub struct DictEntryInfo {
 impl DictEntryInfo {
     /// Creates an info value unless every supplied identity field is absent.
     #[must_use]
-    pub fn create(id: Option<i64>, code: Option<&str>, name: Option<&str>) -> Option<Self> {
+    pub fn create(
+        id: Option<i64>,
+        code: Option<&str>,
+        name: Option<&str>,
+    ) -> Option<Self> {
         if id.is_none() && code.is_none() && name.is_none() {
             None
         } else {

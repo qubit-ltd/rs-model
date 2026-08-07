@@ -23,7 +23,9 @@ use super::FileInfo;
 use super::UploadParams;
 
 /// A received file and its generated image renditions.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct Upload {
     /// Optional persisted identifier.
@@ -147,7 +149,11 @@ impl Upload {
     ///
     /// Returns an I/O error when a relative path cannot be made absolute.
     /// A nonexistent source path has size zero, matching `File.length()`.
-    pub fn set_file_info(&mut self, path: &Path, content_type: &str) -> std::io::Result<&FileInfo> {
+    pub fn set_file_info(
+        &mut self,
+        path: &Path,
+        content_type: &str,
+    ) -> std::io::Result<&FileInfo> {
         let absolute_path = if path.is_absolute() {
             path.to_path_buf()
         } else {
@@ -183,7 +189,8 @@ impl Upload {
 
     /// Creates and stores small-thumbnail metadata in the temporary directory.
     pub fn set_small_thumbnail_info(&mut self) -> &FileInfo {
-        self.small_thumbnail = Some(self.rendition(Self::SMALL_THUMBNAIL_SUFFIX));
+        self.small_thumbnail =
+            Some(self.rendition(Self::SMALL_THUMBNAIL_SUFFIX));
         self.small_thumbnail
             .as_ref()
             .expect("small thumbnail was just stored")
@@ -191,7 +198,8 @@ impl Upload {
 
     /// Creates and stores large-thumbnail metadata in the temporary directory.
     pub fn set_large_thumbnail_info(&mut self) -> &FileInfo {
-        self.large_thumbnail = Some(self.rendition(Self::LARGE_THUMBNAIL_SUFFIX));
+        self.large_thumbnail =
+            Some(self.rendition(Self::LARGE_THUMBNAIL_SUFFIX));
         self.large_thumbnail
             .as_ref()
             .expect("large thumbnail was just stored")

@@ -16,7 +16,9 @@ pub struct PhoneJsonSerializer;
 
 impl PhoneJsonSerializer {
     /// Serializes an optional telephone number as a JSON string or null.
-    pub fn serialize(phone: Option<&Phone>) -> Result<String, serde_json::Error> {
+    pub fn serialize(
+        phone: Option<&Phone>,
+    ) -> Result<String, serde_json::Error> {
         serde_json::to_string(&PhoneCodec::encode(phone))
     }
 }

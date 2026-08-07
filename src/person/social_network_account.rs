@@ -16,11 +16,11 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use super::SocialNetwork;
+use super::User;
 use crate::commons::Payload;
 use crate::controller::RegisterUserParams;
 use crate::security::KeyValuePair;
-use super::SocialNetwork;
-use super::User;
 
 /// A user's account identity within one social-network application.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
@@ -122,7 +122,9 @@ impl SocialNetworkAccount {
     pub fn from_register_params(params: &RegisterUserParams) -> Self {
         Self {
             username: params.username.clone(),
-            social_network: params.social_network.unwrap_or(SocialNetwork::Wechat),
+            social_network: params
+                .social_network
+                .unwrap_or(SocialNetwork::Wechat),
             app_id: params.app_id.clone().unwrap_or_default(),
             open_id: params.open_id.clone().unwrap_or_default(),
             nickname: params.nickname.clone(),

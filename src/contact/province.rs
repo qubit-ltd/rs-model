@@ -17,7 +17,6 @@ use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-
 /// A province in the administrative hierarchy.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Province {

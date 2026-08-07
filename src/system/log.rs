@@ -16,11 +16,13 @@ use std::cmp::Ordering;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::person::UserInfo;
 use super::ErrorInfo;
+use crate::person::UserInfo;
 
 /// A compact operation outcome ordered by its timestamp.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "log_id", fields(id)))]
 pub struct Log {

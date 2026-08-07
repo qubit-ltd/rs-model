@@ -10,7 +10,6 @@
 
 use thiserror::Error;
 
-
 /// An execution failure reported by a task implementation.
 #[derive(Clone, Debug, Error, PartialEq, Eq)]
 #[error("task execution failed: {message}")]

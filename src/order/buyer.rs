@@ -20,7 +20,9 @@ use crate::contact::Phone;
 use crate::person::Gender;
 
 /// Identifying and contact information for the person placing an order.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct Buyer {
     /// Optional persisted identifier.
     #[model(identifier)]

@@ -13,9 +13,10 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-
 /// Identifies the owner of a domain object.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize,
+)]
 pub struct Owner {
     /// Owning entity name.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

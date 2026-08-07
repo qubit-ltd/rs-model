@@ -17,7 +17,9 @@ pub struct PhoneXmlAdapter;
 
 impl PhoneXmlAdapter {
     /// Decodes an optional XML text value.
-    pub fn unmarshal(value: Option<&str>) -> Result<Option<Phone>, ContactCodecError> {
+    pub fn unmarshal(
+        value: Option<&str>,
+    ) -> Result<Option<Phone>, ContactCodecError> {
         PhoneCodec::decode(value)
     }
 

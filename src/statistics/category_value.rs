@@ -16,7 +16,6 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-
 /// A value aggregated for one category and optional time interval.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct CategoryValue {

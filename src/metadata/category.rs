@@ -21,11 +21,17 @@ use qubit_redact_derive::Redact;
 use super::Scope;
 
 /// A hierarchical category associated with an entity type.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(
     unique(name = "category_code", fields(code), ignore_case(code)),
-    unique(name = "category_entity_name", fields(entity, name), ignore_case(name))
+    unique(
+        name = "category_entity_name",
+        fields(entity, name),
+        ignore_case(name)
+    )
 )]
 pub struct Category {
     /// Persisted identifier.

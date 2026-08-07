@@ -16,7 +16,6 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-
 /// A country in the administrative hierarchy.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Country {

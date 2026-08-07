@@ -13,7 +13,8 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-
 /// Marker for the source China district dataset.
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize,
+)]
 pub struct ChinaDistricts;

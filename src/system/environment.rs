@@ -20,7 +20,9 @@ use crate::contact::Location;
 use crate::system::Platform;
 
 /// Network, location, platform, and device context captured for a request.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct Environment {
     /// Optional ASCII client IP address.

@@ -14,7 +14,6 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-
 /// A task lifecycle state.
 #[derive(
     Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,

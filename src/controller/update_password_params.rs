@@ -14,7 +14,9 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// Old and new credentials supplied to a password-update operation.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct UpdatePasswordParams {
     /// Optional current password.

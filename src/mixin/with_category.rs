@@ -10,7 +10,6 @@
 
 use qubit_mixin::InfoWithEntity;
 
-
 /// Provides category information.
 pub trait WithCategory {
     /// Returns the category.

@@ -100,7 +100,8 @@ impl EnterpriseClaim {
     pub const fn allow_client_operation(&self) -> bool {
         matches!(
             self.status,
-            EnterpriseClaimStatus::NotSubmitted | EnterpriseClaimStatus::SystemRejected
+            EnterpriseClaimStatus::NotSubmitted
+                | EnterpriseClaimStatus::SystemRejected
         )
     }
 
@@ -130,7 +131,8 @@ impl EnterpriseClaim {
     pub const fn allow_admin_operation(&self) -> bool {
         matches!(
             self.status,
-            EnterpriseClaimStatus::ClaimApplicationAudited | EnterpriseClaimStatus::TemporarySaved
+            EnterpriseClaimStatus::ClaimApplicationAudited
+                | EnterpriseClaimStatus::TemporarySaved
         )
     }
 }

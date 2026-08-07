@@ -15,11 +15,11 @@ use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::mixin::StatefulInfo;
-use crate::person::UserInfo;
 use super::AuthorizeRecord;
 use super::State;
 use super::Token;
+use crate::mixin::StatefulInfo;
+use crate::person::UserInfo;
 
 /// Represents the App domain type.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Redact, Serialize)]

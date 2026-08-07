@@ -19,6 +19,9 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use super::Department;
+use super::EmployeeInfo;
+use super::Organization;
 use crate::commons::Category;
 use crate::commons::Credential;
 use crate::commons::CredentialInfo;
@@ -29,9 +32,6 @@ use crate::person::Gender;
 use crate::person::Person;
 use crate::person::User;
 use crate::upload::Attachment;
-use super::Department;
-use super::EmployeeInfo;
-use super::Organization;
 
 /// A complete employee record within an organization.
 #[allow(clippy::duplicated_attributes)]
@@ -44,7 +44,10 @@ use super::Organization;
         fields(organization, internal_code),
         ignore_case(internal_code)
     ),
-    unique(name = "employee_organization_mobile", fields(organization, mobile)),
+    unique(
+        name = "employee_organization_mobile",
+        fields(organization, mobile)
+    ),
     unique(
         name = "employee_organization_email",
         fields(organization, email),

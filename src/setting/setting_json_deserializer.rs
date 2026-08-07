@@ -24,8 +24,8 @@ pub struct SettingJsonDeserializer;
 impl SettingJsonDeserializer {
     /// Deserializes a setting from a JSON object string.
     pub fn deserialize(source: &str) -> Result<Setting, SettingAdapterError> {
-        let value: Value =
-            serde_json::from_str(source).map_err(SettingAdapterError::InvalidJson)?;
+        let value: Value = serde_json::from_str(source)
+            .map_err(SettingAdapterError::InvalidJson)?;
         let object = value
             .as_object()
             .ok_or(SettingAdapterError::InvalidJsonRoot)?;
@@ -37,7 +37,11 @@ impl SettingJsonDeserializer {
             readonly: bool_field(object, "readonly", Setting::DEFAULT_READONLY),
             nullable: bool_field(object, "nullable", Setting::DEFAULT_NULLABLE),
             multiple: bool_field(object, "multiple", Setting::DEFAULT_MULTIPLE),
-            encrypted: bool_field(object, "encrypted", Setting::DEFAULT_ENCRYPTED),
+            encrypted: bool_field(
+                object,
+                "encrypted",
+                Setting::DEFAULT_ENCRYPTED,
+            ),
             description: string_field(object, "description"),
             create_time: timestamp_field(object, "createTime")?,
             modify_time: timestamp_field(object, "modifyTime")?,
@@ -46,11 +50,14 @@ impl SettingJsonDeserializer {
 }
 
 /// Reads the setting data type or applies the source default.
-fn data_type(object: &Map<String, Value>) -> Result<DataType, SettingAdapterError> {
+fn data_type(
+    object: &Map<String, Value>,
+) -> Result<DataType, SettingAdapterError> {
     let Some(name) = object.get("type").and_then(Value::as_str) else {
         return Ok(DataType::default());
     };
-    parse_data_type_name(name).ok_or_else(|| SettingAdapterError::InvalidDataType(name.to_owned()))
+    parse_data_type_name(name)
+        .ok_or_else(|| SettingAdapterError::InvalidDataType(name.to_owned()))
 }
 
 /// Reads an optional string field.

@@ -18,7 +18,9 @@ use crate::contact::Location;
 
 /// A postal address linked to each administrative level and an optional
 /// location.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct Address {
     /// Basic information for the country.
     #[model(opaque)]

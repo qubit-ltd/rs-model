@@ -118,7 +118,8 @@ impl InsuranceClaimInvoice {
     /// `true` when `amount` is at least the sum of all six payment components.
     #[must_use]
     pub fn check_amount(&self) -> bool {
-        let optional = |value: &Option<BigDecimal>| value.clone().unwrap_or_default();
+        let optional =
+            |value: &Option<BigDecimal>| value.clone().unwrap_or_default();
         let components = &self.fund_paid_amount
             + &self.self_care_amount
             + &self.self_paid_amount

@@ -13,7 +13,6 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-
 /// Time granularity used by a statistics aggregation.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]

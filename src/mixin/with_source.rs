@@ -10,7 +10,6 @@
 
 use qubit_mixin::InfoWithEntity;
 
-
 /// Provides source information.
 pub trait WithSource {
     /// Returns the source.

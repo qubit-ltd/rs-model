@@ -32,7 +32,10 @@ impl LocationCodec {
     }
 
     /// Decodes a location, treating null or empty input as absent.
-    pub fn decode(&self, source: Option<&str>) -> Result<Option<Location>, ContactCodecError> {
+    pub fn decode(
+        &self,
+        source: Option<&str>,
+    ) -> Result<Option<Location>, ContactCodecError> {
         let Some(source) = source.filter(|value| !value.is_empty()) else {
             return Ok(None);
         };
@@ -40,7 +43,8 @@ impl LocationCodec {
         let longitude = parts
             .next()
             .expect("nonempty input always has a first split component");
-        let latitude = parts.next().ok_or(ContactCodecError::InvalidLocation)?;
+        let latitude =
+            parts.next().ok_or(ContactCodecError::InvalidLocation)?;
         if parts.next().is_some() {
             return Err(ContactCodecError::InvalidLocation);
         }
@@ -74,10 +78,12 @@ impl LocationCodec {
     #[must_use]
     pub fn encode(&self, source: Option<&Location>) -> Option<String> {
         source.map(|location| {
-            let longitude = LocationCoordinateCodec::encode(Some(&location.longitude))
-                .expect("present longitude");
-            let latitude = LocationCoordinateCodec::encode(Some(&location.latitude))
-                .expect("present latitude");
+            let longitude =
+                LocationCoordinateCodec::encode(Some(&location.longitude))
+                    .expect("present longitude");
+            let latitude =
+                LocationCoordinateCodec::encode(Some(&location.latitude))
+                    .expect("present latitude");
             format!("{longitude}{}{latitude}", Self::SPLITTER)
         })
     }

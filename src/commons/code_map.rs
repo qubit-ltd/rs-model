@@ -20,7 +20,9 @@ use qubit_redact_derive::Redact;
 use super::Code;
 
 /// Maps a source-system code to a platform code for one entity type.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct CodeMap {
     /// Optional persisted identifier.

@@ -16,9 +16,10 @@ use serde::Serialize;
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
-
 /// A common category record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize,
+)]
 pub struct Category {
     /// Persisted identifier.
     #[model(identifier)]

@@ -19,13 +19,15 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::mixin::StatefulInfo;
 use super::App;
 use super::Category;
 use super::State;
+use crate::mixin::StatefulInfo;
 
 /// A frequently asked question associated with an application and product.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct Faq {
     /// Optional persisted identifier.

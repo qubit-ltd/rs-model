@@ -17,7 +17,9 @@ use crate::contact::Phone;
 use crate::mixin::StatefulInfo;
 
 /// Identifying information used to bind a user to an employee record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct BindEmployeeParams {
     /// Username to bind.

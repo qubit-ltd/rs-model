@@ -18,7 +18,9 @@ use qubit_redact_derive::Redact;
 use super::ExpiredReason;
 
 /// Timestamp and reason for session expiration.
-#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct Expired {
     /// UTC expiration timestamp.

@@ -18,14 +18,16 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::commons::State;
 use super::Category;
 use super::Dict;
 use super::DictEntry;
 use super::Scope;
+use crate::commons::State;
 
 /// A dictionary carrying its complete entry collection.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "dict_code", fields(code), ignore_case(code)))]
 pub struct FullDict {
@@ -121,9 +123,9 @@ impl FullDict {
                 .find(|entry| entry.code.eq_ignore_ascii_case(candidate))
                 .map(|entry| entry.name.clone())
                 .or_else(|| {
-                    entries
-                        .iter()
-                        .find_map(|entry| entry.match_code_and_format_name(candidate))
+                    entries.iter().find_map(|entry| {
+                        entry.match_code_and_format_name(candidate)
+                    })
                 })
         };
         exact(value).or_else(|| {

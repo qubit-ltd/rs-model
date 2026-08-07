@@ -13,8 +13,8 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-use crate::mixin::StatefulInfo;
 use super::DictEntryInfo;
+use crate::mixin::StatefulInfo;
 /// Represents the DictEntry domain type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct DictEntry {

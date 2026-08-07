@@ -17,11 +17,11 @@ use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use super::AttachmentType;
+use super::Upload;
 use crate::commons::State;
 use crate::metadata::AggregateRef;
 use crate::metadata::Category;
-use super::AttachmentType;
-use super::Upload;
 
 /// A categorized attachment belonging to an aggregate root.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact)]

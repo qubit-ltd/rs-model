@@ -18,7 +18,9 @@ use crate::mixin::StatefulInfo;
 use crate::mixin::WithApp;
 
 /// Basic information for an entity that belongs to an application.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct InfoWithAppEntity {
     /// Basic identifying information and entity discriminator.
     #[model(opaque)]

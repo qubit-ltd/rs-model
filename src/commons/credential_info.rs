@@ -18,7 +18,9 @@ use super::CredentialType;
 use super::VerifyState;
 
 /// Lightweight credential information.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Eq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Deserialize, Model, PartialEq, Eq, Redact, Serialize,
+)]
 pub struct CredentialInfo {
     /// Persisted identifier.
     #[model(identifier)]

@@ -19,7 +19,9 @@ use super::KeyValuePair;
 use super::SignatureAlgorithm;
 
 /// Message, signer identity, key material, and payload covered by a signature.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct SignedInfo {
     /// Message to sign.

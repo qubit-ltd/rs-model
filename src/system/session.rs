@@ -19,6 +19,8 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use super::Environment;
+use super::Expired;
 use crate::commons::App;
 use crate::commons::Token;
 use crate::mixin::StatefulInfo;
@@ -26,8 +28,6 @@ use crate::organization::Organization;
 use crate::person::User;
 use crate::person::UserInfo;
 use crate::privilege::Role;
-use super::Environment;
-use super::Expired;
 
 thread_local! {
     static CURRENT_SESSION: RefCell<Option<Session>> = const { RefCell::new(None) };
@@ -150,7 +150,9 @@ impl Session {
     }
 
     /// Mutates this thread's current session and returns the closure result.
-    pub fn with_current_session<R>(operation: impl FnOnce(&mut Self) -> R) -> R {
+    pub fn with_current_session<R>(
+        operation: impl FnOnce(&mut Self) -> R,
+    ) -> R {
         CURRENT_SESSION.with(|session| {
             let mut session = session.borrow_mut();
             operation(session.get_or_insert_with(Self::default))
@@ -193,7 +195,8 @@ impl Session {
 
     /// Replaces role codes and effective privileges from role models.
     pub fn set_roles_and_privileges(&mut self, roles: &[Role]) {
-        let role_codes: HashSet<_> = roles.iter().map(|role| role.code.clone()).collect();
+        let role_codes: HashSet<_> =
+            roles.iter().map(|role| role.code.clone()).collect();
         let privileges: HashSet<_> = roles
             .iter()
             .flat_map(|role| role.privileges.iter().cloned())

@@ -14,9 +14,9 @@ use thiserror::Error;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use super::AddressErrorCode;
 use crate::contact::Phone;
 use crate::error::ErrorType;
-use super::AddressErrorCode;
 
 /// An expected and actual mobile number do not match.
 #[derive(Clone, Debug, Error, Model, PartialEq, Redact)]
@@ -37,7 +37,11 @@ pub struct MismatchMobileException {
 impl MismatchMobileException {
     /// Creates a mismatch error with its template values.
     #[must_use]
-    pub fn new(name: &str, expected_mobile: Phone, actual_mobile: Phone) -> Self {
+    pub fn new(
+        name: &str,
+        expected_mobile: Phone,
+        actual_mobile: Phone,
+    ) -> Self {
         Self {
             name: name.to_owned(),
             expected_mobile,

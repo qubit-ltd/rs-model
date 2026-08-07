@@ -16,7 +16,9 @@ use qubit_redact_derive::Redact;
 use super::ScopeType;
 
 /// A scope classification and its optional owner identifier.
-#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct Scope {
     /// Scope classification.

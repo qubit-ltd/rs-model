@@ -15,14 +15,16 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::commons::State;
 use super::KeyFormat;
 use super::Signature;
 use super::SignatureAlgorithm;
 use super::SignedInfo;
+use crate::commons::State;
 
 /// Versioned asymmetric key material owned by a domain entity.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct KeyPair {
     /// Optional persisted identifier.

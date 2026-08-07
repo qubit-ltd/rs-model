@@ -15,9 +15,10 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-
 /// Records failures and the last authorization time.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize,
+)]
 pub struct AuthorizeRecord {
     /// Consecutive authorization failures.
     pub failures: Option<i32>,

@@ -11,7 +11,6 @@
 use chrono::DateTime;
 use chrono::Utc;
 
-
 /// Provides an optional expiration timestamp.
 pub trait Expirable {
     /// Returns the expiration timestamp.

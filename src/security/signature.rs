@@ -17,7 +17,9 @@ use super::KeyValuePair;
 use super::SignedInfo;
 
 /// A signature, its owner, signer, covered information, and encoded value.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct Signature {
     /// Optional persisted identifier.

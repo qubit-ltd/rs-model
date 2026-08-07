@@ -22,7 +22,9 @@ use super::Category;
 use super::Scope;
 
 /// A channel source associated with an entity type.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "source_code", fields(code), ignore_case(code)))]
 pub struct Source {

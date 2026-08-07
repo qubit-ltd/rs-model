@@ -17,7 +17,9 @@ use crate::commons::CredentialInfo;
 use crate::contact::Phone;
 
 /// Identifying information used to bind a user to a person record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct BindPersonParams {
     /// Username to bind.

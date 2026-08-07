@@ -14,7 +14,6 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-
 /// A user's satisfaction rating for a feedback outcome.
 #[derive(
     Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,

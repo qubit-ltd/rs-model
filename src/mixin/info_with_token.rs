@@ -18,7 +18,9 @@ use crate::commons::Token;
 use crate::mixin::WithToken;
 
 /// Basic identifying information together with an optional access token.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 pub struct InfoWithToken {
     /// Basic identifying information.
     #[model(opaque)]

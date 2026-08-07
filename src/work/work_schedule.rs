@@ -19,7 +19,9 @@ use qubit_redact_derive::Redact;
 use super::LocalTimeRange;
 
 /// Work intervals assigned to an employee on a calendar date.
-#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 pub struct WorkSchedule {
     /// Optional persisted identifier.

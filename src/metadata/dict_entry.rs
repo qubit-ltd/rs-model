@@ -18,14 +18,20 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::mixin::StatefulInfo;
 use super::Dict;
 use super::DictEntryInfo;
+use crate::mixin::StatefulInfo;
 
 /// An entry belonging to a data dictionary.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
-#[model(unique(name = "dict_entry_dict_code", fields(dict, code), ignore_case(code)))]
+#[model(unique(
+    name = "dict_entry_dict_code",
+    fields(dict, code),
+    ignore_case(code)
+))]
 pub struct DictEntry {
     /// Persisted identifier.
     #[model(identifier)]
@@ -105,7 +111,8 @@ impl DictEntry {
         self.code.clone_from(&info.code);
         self.name.clone_from(&info.name);
         if let Some(dict_id) = info.dict_id {
-            self.dict.get_or_insert_with(StatefulInfo::default).id = Some(dict_id);
+            self.dict.get_or_insert_with(StatefulInfo::default).id =
+                Some(dict_id);
         }
         self.delete_time = info.delete_time;
     }
@@ -213,17 +220,22 @@ fn stateful_info_is_empty(info: &StatefulInfo) -> bool {
 }
 
 /// Replaces numbered placeholders in `template` with the supplied parameters.
-pub(super) fn format_with_params<T: AsRef<str>>(template: &str, params: &[T]) -> String {
-    params
-        .iter()
-        .enumerate()
-        .fold(template.to_owned(), |result, (index, value)| {
+pub(super) fn format_with_params<T: AsRef<str>>(
+    template: &str,
+    params: &[T],
+) -> String {
+    params.iter().enumerate().fold(
+        template.to_owned(),
+        |result, (index, value)| {
             result.replace(&format!("{{{index}}}"), value.as_ref())
-        })
+        },
+    )
 }
 
 /// Locates well-formed numbered placeholders within a template.
-fn placeholder_ranges(value: &str) -> impl Iterator<Item = (usize, usize)> + '_ {
+fn placeholder_ranges(
+    value: &str,
+) -> impl Iterator<Item = (usize, usize)> + '_ {
     value.match_indices('{').filter_map(|(start, _)| {
         let suffix = &value[start + 1..];
         let close = suffix.find('}')?;

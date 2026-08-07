@@ -18,12 +18,14 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::commons::State;
 use super::Category;
 use super::Scope;
+use crate::commons::State;
 
 /// A data dictionary without its entry collection.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(name = "dict_code", fields(code), ignore_case(code)))]
 pub struct Dict {

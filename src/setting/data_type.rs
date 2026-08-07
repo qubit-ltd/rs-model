@@ -14,7 +14,6 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-
 /// The value type declared by a setting.
 #[derive(
     Clone,

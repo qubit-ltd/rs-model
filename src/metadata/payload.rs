@@ -20,7 +20,9 @@ use qubit_redact_derive::Redact;
 use super::AggregateRef;
 
 /// A named string payload attached to an aggregate root.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(unique(
     name = "payload_aggregate_key",

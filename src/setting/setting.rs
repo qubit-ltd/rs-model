@@ -20,7 +20,9 @@ use qubit_redact_derive::Redact;
 use super::DataType;
 
 /// A named system setting containing zero, one, or multiple textual values.
-#[derive(Clone, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct Setting {
     /// Stable setting name.
@@ -98,7 +100,8 @@ impl Setting {
     /// Returns whether the nullability and cardinality constraints are met.
     #[must_use]
     pub fn is_valid(&self) -> bool {
-        (self.nullable || !self.values.is_empty()) && (self.multiple || self.values.len() <= 1)
+        (self.nullable || !self.values.is_empty())
+            && (self.multiple || self.values.len() <= 1)
     }
 
     /// Encodes all values into the source database representation.

@@ -13,7 +13,6 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-
 /// SIM-card availability and lock state.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]

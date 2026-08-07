@@ -13,7 +13,6 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-
 /// Identifies the type of a failed message-queue task.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]

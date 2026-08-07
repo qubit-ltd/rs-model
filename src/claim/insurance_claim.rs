@@ -215,7 +215,8 @@ impl InsuranceClaim {
     pub const fn allow_system_accept(&self) -> bool {
         matches!(
             self.status,
-            InsuranceClaimStatus::ClaimApplicationAudited | InsuranceClaimStatus::TemporarySaved
+            InsuranceClaimStatus::ClaimApplicationAudited
+                | InsuranceClaimStatus::TemporarySaved
         )
     }
 }

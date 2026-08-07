@@ -168,6 +168,7 @@ impl EnterpriseClaimItem {
                 .filter_map(|item| item.hospital_level)
                 .max();
         }
-        self.disease_code = first.disease.as_ref().map(|disease| disease.code.clone());
+        self.disease_code =
+            first.disease.as_ref().map(|disease| disease.code.clone());
     }
 }

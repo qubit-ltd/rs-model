@@ -16,7 +16,9 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// Identifies an aggregate root and an optional property on it.
-#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
+)]
 #[serde(default)]
 #[model(key(name = "aggregate_ref", fields(type, id, property)))]
 pub struct AggregateRef {
