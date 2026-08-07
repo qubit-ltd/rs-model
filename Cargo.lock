@@ -275,10 +275,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "qubit-case"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d62b8e436f0f97d77ad0078b3ea41d80f78eeb53c6115cb9ab0b18af650d1c8c"
+
+[[package]]
 name = "qubit-mixin"
 version = "0.2.4"
 dependencies = [
  "chrono",
+ "qubit-case",
  "serde",
  "thiserror",
 ]
@@ -326,7 +333,7 @@ version = "0.4.0"
 
 [[package]]
 name = "qubit-redact-derive"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
