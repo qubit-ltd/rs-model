@@ -7,6 +7,7 @@
 // =============================================================================
 //! Setting wire-adapter failures.
 
+use chrono::ParseError;
 use thiserror::Error;
 
 /// Errors produced while adapting settings to or from wire representations.
@@ -23,5 +24,5 @@ pub enum SettingAdapterError {
     InvalidDataType(String),
     /// A source timestamp is not an ISO-8601 timestamp.
     #[error("invalid setting timestamp")]
-    InvalidTimestamp(#[source] chrono::ParseError),
+    InvalidTimestamp(#[source] ParseError),
 }

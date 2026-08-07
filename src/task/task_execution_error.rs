@@ -8,17 +8,15 @@
 
 //! Task lifecycle vocabularies and errors.
 
+use thiserror::Error;
+
 #[allow(unused_imports)]
 use super::{
-    TaskAction,
-    TaskPipelineStatus,
-    TaskStatus,
-    TaskStatusTransitionError,
-    TaskStatusTransitionRule,
+    TaskAction, TaskPipelineStatus, TaskStatus, TaskStatusTransitionError, TaskStatusTransitionRule,
 };
 
 /// An execution failure reported by a task implementation.
-#[derive(Clone, Debug, thiserror::Error, PartialEq, Eq)]
+#[derive(Clone, Debug, Error, PartialEq, Eq)]
 #[error("task execution failed: {message}")]
 pub struct TaskExecutionError {
     /// Human-readable failure message.
