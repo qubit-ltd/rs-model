@@ -6,38 +6,27 @@
 
 use bigdecimal::BigDecimal;
 use chrono::Utc;
-use qubit_mixin::{
-    Info,
-    Normalizable,
-};
-use qubit_model::{
-    activity::{
-        Activity,
-        ActivityCoupon,
-        ActivityProductItem,
-    },
-    commons::{
-        CredentialInfo,
-        CredentialType,
-        Currency,
-        State,
-        VerifyState,
-    },
-    contact::{
-        Address,
-        Contact,
-        Phone,
-    },
-    mixin::StatefulInfo,
-    order::{
-        Buyer,
-        OrderInfo,
-        OrderStatus,
-        PayType,
-    },
-    person::Person,
-    product::Seller,
-};
+
+use qubit_mixin::Info;
+use qubit_mixin::Normalizable;
+use qubit_model::activity::Activity;
+use qubit_model::activity::ActivityCoupon;
+use qubit_model::activity::ActivityProductItem;
+use qubit_model::commons::CredentialInfo;
+use qubit_model::commons::CredentialType;
+use qubit_model::commons::Currency;
+use qubit_model::commons::State;
+use qubit_model::commons::VerifyState;
+use qubit_model::contact::Address;
+use qubit_model::contact::Contact;
+use qubit_model::contact::Phone;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::order::Buyer;
+use qubit_model::order::OrderInfo;
+use qubit_model::order::OrderStatus;
+use qubit_model::order::PayType;
+use qubit_model::person::Person;
+use qubit_model::product::Seller;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

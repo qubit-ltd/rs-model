@@ -6,21 +6,16 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use chrono::{
-    DateTime,
-    Utc,
-};
-use qubit_model::{
-    contact::Phone,
-    error::ErrorType,
-    mixin::StatefulInfo,
-    notification::{
-        NotificationErrorCode,
-        SendSmsException,
-        VerifyCode,
-        VerifyScene,
-    },
-};
+use chrono::DateTime;
+use chrono::Utc;
+
+use qubit_model::contact::Phone;
+use qubit_model::error::ErrorType;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::notification::NotificationErrorCode;
+use qubit_model::notification::SendSmsException;
+use qubit_model::notification::VerifyCode;
+use qubit_model::notification::VerifyScene;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

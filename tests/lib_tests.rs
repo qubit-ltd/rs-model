@@ -8,26 +8,25 @@
 
 //! Integration tests for the crate root exports.
 
-use std::{
-    fs,
-    path::PathBuf,
-    process::Command,
-    time::{
-        SystemTime,
-        UNIX_EPOCH,
-    },
-};
+use std::fs;
+use std::path::PathBuf;
+use std::process::Command;
+use std::time::SystemTime;
+use std::time::UNIX_EPOCH;
+
+use qubit_model::ModelError;
+use qubit_model::ValidationViolation;
 
 #[test]
 fn test_root_model_module_is_available() {
-    let _: Option<qubit_model::ModelError> = None;
+    let _: Option<ModelError> = None;
 }
 
 #[test]
 fn test_model_error_preserves_validation_violation_context() {
-    let error = qubit_model::ModelError::ValidationFailed {
+    let error = ModelError::ValidationFailed {
         message: Some("name is required".to_owned()),
-        violations: vec![qubit_model::ValidationViolation {
+        violations: vec![ValidationViolation {
             field: "name".to_owned(),
             reason: "must not be empty".to_owned(),
         }],
@@ -35,9 +34,9 @@ fn test_model_error_preserves_validation_violation_context() {
 
     assert!(matches!(
         &error,
-        qubit_model::ModelError::ValidationFailed { message: Some(message), violations }
+        ModelError::ValidationFailed { message: Some(message), violations }
             if message == "name is required"
-                && violations == &[qubit_model::ValidationViolation {
+                && violations == &[ValidationViolation {
                     field: "name".to_owned(),
                     reason: "must not be empty".to_owned(),
                 }]
@@ -48,14 +47,14 @@ fn test_model_error_preserves_validation_violation_context() {
 /// Verifies a validation failure can represent an empty violation set.
 #[test]
 fn test_model_error_represents_zero_validation_violations() {
-    let error = qubit_model::ModelError::ValidationFailed {
+    let error = ModelError::ValidationFailed {
         message: None,
         violations: Vec::new(),
     };
 
     assert!(matches!(
         error,
-        qubit_model::ModelError::ValidationFailed { message: None, violations }
+        ModelError::ValidationFailed { message: None, violations }
             if violations.is_empty()
     ));
 }
@@ -63,14 +62,14 @@ fn test_model_error_represents_zero_validation_violations() {
 /// Verifies a validation failure retains multiple structured violations.
 #[test]
 fn test_model_error_represents_multiple_validation_violations() {
-    let error = qubit_model::ModelError::ValidationFailed {
+    let error = ModelError::ValidationFailed {
         message: None,
         violations: vec![
-            qubit_model::ValidationViolation {
+            ValidationViolation {
                 field: "name".to_owned(),
                 reason: "must not be empty".to_owned(),
             },
-            qubit_model::ValidationViolation {
+            ValidationViolation {
                 field: "email".to_owned(),
                 reason: "must be a valid email address".to_owned(),
             },
@@ -79,7 +78,7 @@ fn test_model_error_represents_multiple_validation_violations() {
 
     assert!(matches!(
         error,
-        qubit_model::ModelError::ValidationFailed { message: None, violations }
+        ModelError::ValidationFailed { message: None, violations }
             if violations.len() == 2
     ));
 }

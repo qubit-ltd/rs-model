@@ -4,19 +4,16 @@
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
 
-use chrono::{
-    TimeZone,
-    Utc,
-};
-use qubit_model::setting::{
-    DataType,
-    Setting,
-    SettingAdapterError,
-    SettingJsonDeserializer,
-    SettingName,
-    SettingRandomizer,
-    SettingXmlAdapted,
-};
+use chrono::TimeZone;
+use chrono::Utc;
+
+use qubit_model::setting::DataType;
+use qubit_model::setting::Setting;
+use qubit_model::setting::SettingAdapterError;
+use qubit_model::setting::SettingJsonDeserializer;
+use qubit_model::setting::SettingName;
+use qubit_model::setting::SettingRandomizer;
+use qubit_model::setting::SettingXmlAdapted;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

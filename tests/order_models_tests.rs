@@ -8,23 +8,21 @@
 
 //! Integration coverage for order-domain model migrations.
 
-use qubit_model::order::{
-    Buyer,
-    Client,
-    ClientOrder,
-    ClientRefundSubmitRequest,
-    Consignee,
-    Order,
-    OrderDetail,
-    OrderInfo,
-    OrderItem,
-    OrderSubmitRequest,
-    OrderSubmitResponse,
-    RefererInfo,
-    RefererOrderRecord,
-    Replacement,
-    Return,
-};
+use qubit_model::order::Buyer;
+use qubit_model::order::Client;
+use qubit_model::order::ClientOrder;
+use qubit_model::order::ClientRefundSubmitRequest;
+use qubit_model::order::Consignee;
+use qubit_model::order::Order;
+use qubit_model::order::OrderDetail;
+use qubit_model::order::OrderInfo;
+use qubit_model::order::OrderItem;
+use qubit_model::order::OrderSubmitRequest;
+use qubit_model::order::OrderSubmitResponse;
+use qubit_model::order::RefererInfo;
+use qubit_model::order::RefererOrderRecord;
+use qubit_model::order::Replacement;
+use qubit_model::order::Return;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies order structs retain every Java source field.

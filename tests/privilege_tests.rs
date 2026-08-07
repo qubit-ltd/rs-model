@@ -7,15 +7,12 @@
 // =============================================================================
 
 use chrono::Utc;
-use qubit_model::{
-    commons::State,
-    mixin::StatefulInfo,
-    privilege::{
-        Privileges,
-        PrivilegesCodecError,
-        Role,
-    },
-};
+
+use qubit_model::commons::State;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::privilege::Privileges;
+use qubit_model::privilege::PrivilegesCodecError;
+use qubit_model::privilege::Role;
 
 fn role(privileges: &[&str]) -> Role {
     Role {

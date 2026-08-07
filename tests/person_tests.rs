@@ -9,26 +9,21 @@
 //! Integration tests for migrated person-domain classifications.
 
 use chrono::Utc;
+
 use qubit_mixin::Normalizable;
-use qubit_model::{
-    commons::{
-        AuthorizeRecord,
-        State,
-        VerifyState,
-    },
-    contact::Phone,
-    controller::RegisterUserParams,
-    medical::MedicareType,
-    mixin::StatefulInfo,
-    person::{
-        Gender,
-        Person,
-        PersonInfo,
-        SocialNetwork,
-        SocialNetworkAccount,
-        User,
-    },
-};
+use qubit_model::commons::AuthorizeRecord;
+use qubit_model::commons::State;
+use qubit_model::commons::VerifyState;
+use qubit_model::contact::Phone;
+use qubit_model::controller::RegisterUserParams;
+use qubit_model::medical::MedicareType;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::person::Gender;
+use qubit_model::person::Person;
+use qubit_model::person::PersonInfo;
+use qubit_model::person::SocialNetwork;
+use qubit_model::person::SocialNetworkAccount;
+use qubit_model::person::User;
 use qubit_redact::Redact as _;
 
 #[test]

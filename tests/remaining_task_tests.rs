@@ -6,12 +6,10 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_model::task::{
-    Task,
-    TaskInfo,
-    TaskPipeline,
-    TaskPipelineStatus,
-};
+use qubit_model::task::Task;
+use qubit_model::task::TaskInfo;
+use qubit_model::task::TaskPipeline;
+use qubit_model::task::TaskPipelineStatus;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

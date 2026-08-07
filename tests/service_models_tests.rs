@@ -8,15 +8,13 @@
 
 //! Integration coverage for medical-service models.
 
-use qubit_model::service::{
-    EmployeeMedicalItem,
-    MedicalItem,
-    MedicalItemUseRecord,
-    MedicalPackage,
-    MedicalPackageItem,
-    UserMedicalItem,
-    UserMedicalPackage,
-};
+use qubit_model::service::EmployeeMedicalItem;
+use qubit_model::service::MedicalItem;
+use qubit_model::service::MedicalItemUseRecord;
+use qubit_model::service::MedicalPackage;
+use qubit_model::service::MedicalPackageItem;
+use qubit_model::service::UserMedicalItem;
+use qubit_model::service::UserMedicalPackage;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies service structs retain every Java source field.

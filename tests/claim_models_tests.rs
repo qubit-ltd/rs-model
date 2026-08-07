@@ -8,15 +8,13 @@
 
 //! Integration coverage for individual insurance-claim models.
 
-use qubit_model::claim::{
-    InsuranceClaim,
-    InsuranceClaimAmount,
-    InsuranceClaimEvent,
-    InsuranceClaimInvoice,
-    InsuranceClaimInvoiceCost,
-    InsuranceClaimMedical,
-    InsuranceProductRule,
-};
+use qubit_model::claim::InsuranceClaim;
+use qubit_model::claim::InsuranceClaimAmount;
+use qubit_model::claim::InsuranceClaimEvent;
+use qubit_model::claim::InsuranceClaimInvoice;
+use qubit_model::claim::InsuranceClaimInvoiceCost;
+use qubit_model::claim::InsuranceClaimMedical;
+use qubit_model::claim::InsuranceProductRule;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies individual claim structs retain every Java source field.

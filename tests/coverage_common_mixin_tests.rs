@@ -9,35 +9,29 @@
 //! Behavioural coverage for common values and composed model mixins.
 
 use chrono::Utc;
-use qubit_mixin::{
-    Emptyful,
-    Info,
-    InfoWithEntity,
-    Normalizable,
-};
-use qubit_model::{
-    commons::{
-        Code,
-        CodeMap,
-        CredentialInfo,
-        CredentialInfoCodec,
-        CredentialInfoCodecError,
-        CredentialType,
-        Faq,
-        Schedule,
-        State,
-    },
-    mixin::{
-        HasStatefulInfo,
-        InfoWithAppEntity,
-        InfoWithToken,
-        Stateful,
-        StatefulInfo,
-        WithApp,
-        WithStatefulInfoWithToken,
-        WithToken,
-    },
-};
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::Info;
+use qubit_mixin::InfoWithEntity;
+use qubit_mixin::Normalizable;
+use qubit_model::commons::Code;
+use qubit_model::commons::CodeMap;
+use qubit_model::commons::CredentialInfo;
+use qubit_model::commons::CredentialInfoCodec;
+use qubit_model::commons::CredentialInfoCodecError;
+use qubit_model::commons::CredentialType;
+use qubit_model::commons::Faq;
+use qubit_model::commons::Schedule;
+use qubit_model::commons::State;
+use qubit_model::commons::Token;
+use qubit_model::mixin::HasStatefulInfo;
+use qubit_model::mixin::InfoWithAppEntity;
+use qubit_model::mixin::InfoWithToken;
+use qubit_model::mixin::Stateful;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::mixin::WithApp;
+use qubit_model::mixin::WithStatefulInfoWithToken;
+use qubit_model::mixin::WithToken;
 
 /// Exercises source empty and normalization traits for a model value.
 fn exercise_traits<T: Emptyful + Normalizable>(value: &mut T) {
@@ -52,7 +46,7 @@ struct Projection {
     /// The lifecycle snapshot exposed by the source interface.
     info: StatefulInfo,
     /// The optional current access token.
-    token: Option<qubit_model::commons::Token>,
+    token: Option<Token>,
 }
 
 impl Stateful for Projection {
@@ -72,11 +66,11 @@ impl HasStatefulInfo for Projection {
 }
 
 impl WithToken for Projection {
-    fn token(&self) -> Option<&qubit_model::commons::Token> {
+    fn token(&self) -> Option<&Token> {
         self.token.as_ref()
     }
 
-    fn set_token(&mut self, token: Option<qubit_model::commons::Token>) {
+    fn set_token(&mut self, token: Option<Token>) {
         self.token = token;
     }
 }
@@ -278,7 +272,7 @@ fn test_composed_information_mixins_mutate_and_project_public_values() {
     app_entity.set_app(None);
     assert_eq!(app_entity.app(), None);
 
-    let token = qubit_model::commons::Token {
+    let token = Token {
         value: "secret".into(),
         ..Default::default()
     };

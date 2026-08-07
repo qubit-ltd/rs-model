@@ -8,18 +8,16 @@
 
 //! Integration coverage for enterprise insurance-claim models.
 
-use qubit_model::claim::enterprise::{
-    EnterpriseClaim,
-    EnterpriseClaimEvent,
-    EnterpriseClaimInvoice,
-    EnterpriseClaimItem,
-    EnterpriseClaimItemMedical,
-    EnterpriseClaimMedical,
-    EnterpriseClaimSelfCareItem,
-    EnterpriseHistoryClaimAmount,
-    EnterpriseInsuredInfo,
-    HistoryClaimAmount,
-};
+use qubit_model::claim::enterprise::EnterpriseClaim;
+use qubit_model::claim::enterprise::EnterpriseClaimEvent;
+use qubit_model::claim::enterprise::EnterpriseClaimInvoice;
+use qubit_model::claim::enterprise::EnterpriseClaimItem;
+use qubit_model::claim::enterprise::EnterpriseClaimItemMedical;
+use qubit_model::claim::enterprise::EnterpriseClaimMedical;
+use qubit_model::claim::enterprise::EnterpriseClaimSelfCareItem;
+use qubit_model::claim::enterprise::EnterpriseHistoryClaimAmount;
+use qubit_model::claim::enterprise::EnterpriseInsuredInfo;
+use qubit_model::claim::enterprise::HistoryClaimAmount;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies enterprise claim reference structs retain every Java source field.

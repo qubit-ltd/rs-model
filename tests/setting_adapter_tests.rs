@@ -6,22 +6,18 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_model::setting::{
-    DataType,
-    Setting,
-    SettingJsonDeserializer,
-    SettingJsonSerializer,
-    SettingRandomizer,
-    SettingXmlAdapted,
-    SettingXmlAdapter,
-};
-use qubit_model::system::{
-    SettingJsonDeserializer as SystemSettingJsonDeserializer,
-    SettingJsonSerializer as SystemSettingJsonSerializer,
-    SettingRandomizer as SystemSettingRandomizer,
-    SettingXmlAdapted as SystemSettingXmlAdapted,
-    SettingXmlAdapter as SystemSettingXmlAdapter,
-};
+use qubit_model::setting::DataType;
+use qubit_model::setting::Setting;
+use qubit_model::setting::SettingJsonDeserializer;
+use qubit_model::setting::SettingJsonSerializer;
+use qubit_model::setting::SettingRandomizer;
+use qubit_model::setting::SettingXmlAdapted;
+use qubit_model::setting::SettingXmlAdapter;
+use qubit_model::system::SettingJsonDeserializer as SystemSettingJsonDeserializer;
+use qubit_model::system::SettingJsonSerializer as SystemSettingJsonSerializer;
+use qubit_model::system::SettingRandomizer as SystemSettingRandomizer;
+use qubit_model::system::SettingXmlAdapted as SystemSettingXmlAdapted;
+use qubit_model::system::SettingXmlAdapter as SystemSettingXmlAdapter;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

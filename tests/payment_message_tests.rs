@@ -10,28 +10,23 @@
 
 use bigdecimal::BigDecimal;
 use chrono::Utc;
-use qubit_model::{
-    commons::Currency,
-    invoice::InvoiceStatus,
-    mixin::StatefulInfo,
-    order::ReturnIssuer,
-    payment::{
-        Account,
-        AccountType,
-        Participant,
-        ParticipantType,
-        PaymentRequest,
-        PaymentRequestTransformer,
-        PaymentResponse,
-        PaymentResponseBase64,
-    },
-    settlement::{
-        Transaction,
-        TransactionStatus,
-        TransactionType,
-    },
-    system::Environment,
-};
+
+use qubit_model::commons::Currency;
+use qubit_model::invoice::InvoiceStatus;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::order::ReturnIssuer;
+use qubit_model::payment::Account;
+use qubit_model::payment::AccountType;
+use qubit_model::payment::Participant;
+use qubit_model::payment::ParticipantType;
+use qubit_model::payment::PaymentRequest;
+use qubit_model::payment::PaymentRequestTransformer;
+use qubit_model::payment::PaymentResponse;
+use qubit_model::payment::PaymentResponseBase64;
+use qubit_model::settlement::Transaction;
+use qubit_model::settlement::TransactionStatus;
+use qubit_model::settlement::TransactionType;
+use qubit_model::system::Environment;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies payment message structs retain every Java source field.

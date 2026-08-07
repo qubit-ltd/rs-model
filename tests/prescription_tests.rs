@@ -8,15 +8,13 @@
 
 //! Integration coverage for prescription and medical-settlement models.
 
-use qubit_model::medical::{
-    Diagnosis,
-    MedicalSettlement,
-    Prescription,
-    PrescriptionActionParams,
-    PrescriptionContent,
-    PrescriptionItem,
-    PrescriptionOrderRequest,
-};
+use qubit_model::medical::Diagnosis;
+use qubit_model::medical::MedicalSettlement;
+use qubit_model::medical::Prescription;
+use qubit_model::medical::PrescriptionActionParams;
+use qubit_model::medical::PrescriptionContent;
+use qubit_model::medical::PrescriptionItem;
+use qubit_model::medical::PrescriptionOrderRequest;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies prescription and settlement structs retain every Java source field.

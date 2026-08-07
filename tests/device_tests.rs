@@ -6,14 +6,10 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_model::{
-    device::{
-        DataNetworkType,
-        DeviceType,
-        SimCardStatus,
-    },
-    system::Platform,
-};
+use qubit_model::device::DataNetworkType;
+use qubit_model::device::DeviceType;
+use qubit_model::device::SimCardStatus;
+use qubit_model::system::Platform;
 
 #[test]
 fn test_data_network_type_reports_source_generation() {

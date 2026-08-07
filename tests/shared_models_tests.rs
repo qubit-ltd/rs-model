@@ -9,27 +9,20 @@
 //! Integration coverage for shared domain-model exports.
 
 use chrono::DateTime;
-use qubit_model::{
-    Entity,
-    Module,
-    Operation,
-    commons::{
-        CredentialType,
-        Currency,
-        RequestStatus,
-        State,
-        Token,
-        VerifyState,
-    },
-    mixin::{
-        StatefulInfo,
-        StatefulInfoWithToken,
-    },
-    util::{
-        MessageFormatter,
-        Result,
-    },
-};
+
+use qubit_model::Entity;
+use qubit_model::Module;
+use qubit_model::Operation;
+use qubit_model::commons::CredentialType;
+use qubit_model::commons::Currency;
+use qubit_model::commons::RequestStatus;
+use qubit_model::commons::State;
+use qubit_model::commons::Token;
+use qubit_model::commons::VerifyState;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::mixin::StatefulInfoWithToken;
+use qubit_model::util::MessageFormatter;
+use qubit_model::util::Result;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies shared model values preserve serde and static metadata support.

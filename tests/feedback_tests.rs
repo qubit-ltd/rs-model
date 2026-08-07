@@ -6,15 +6,13 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_model::feedback::{
-    Feedback,
-    FeedbackAction,
-    FeedbackProcessingRule,
-    FeedbackRating,
-    FeedbackStatus,
-    FeedbackTrack,
-    FeedbackType,
-};
+use qubit_model::feedback::Feedback;
+use qubit_model::feedback::FeedbackAction;
+use qubit_model::feedback::FeedbackProcessingRule;
+use qubit_model::feedback::FeedbackRating;
+use qubit_model::feedback::FeedbackStatus;
+use qubit_model::feedback::FeedbackTrack;
+use qubit_model::feedback::FeedbackType;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

@@ -8,15 +8,13 @@
 
 //! Integration coverage for invoice-domain model migrations.
 
-use qubit_model::invoice::{
-    Invoice,
-    InvoiceApply,
-    InvoiceHospitalRegiste,
-    InvoiceInfo,
-    InvoiceItem,
-    InvoiceNumberSegment,
-    InvoicePlace,
-};
+use qubit_model::invoice::Invoice;
+use qubit_model::invoice::InvoiceApply;
+use qubit_model::invoice::InvoiceHospitalRegiste;
+use qubit_model::invoice::InvoiceInfo;
+use qubit_model::invoice::InvoiceItem;
+use qubit_model::invoice::InvoiceNumberSegment;
+use qubit_model::invoice::InvoicePlace;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies invoice structs retain every Java source field.

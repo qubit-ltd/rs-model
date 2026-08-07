@@ -4,10 +4,8 @@
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
 
-use qubit_model::{
-    appointment::Appointment,
-    commons::App,
-};
+use qubit_model::appointment::Appointment;
+use qubit_model::commons::App;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

@@ -8,18 +8,16 @@
 
 //! Integration coverage for reusable medical reference models.
 
-use qubit_model::medical::{
-    Disease,
-    Dosage,
-    Drug,
-    DrugInfo,
-    DrugProduct,
-    HospitalDrugstore,
-    MedicalPayment,
-    MedicalSettlementItem,
-    Patient,
-    PatientInfo,
-};
+use qubit_model::medical::Disease;
+use qubit_model::medical::Dosage;
+use qubit_model::medical::Drug;
+use qubit_model::medical::DrugInfo;
+use qubit_model::medical::DrugProduct;
+use qubit_model::medical::HospitalDrugstore;
+use qubit_model::medical::MedicalPayment;
+use qubit_model::medical::MedicalSettlementItem;
+use qubit_model::medical::Patient;
+use qubit_model::medical::PatientInfo;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies medical reference structs retain every Java source field.

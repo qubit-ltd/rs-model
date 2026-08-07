@@ -6,36 +6,28 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+use bigdecimal::BigDecimal;
+use chrono::DateTime;
+use chrono::NaiveDate;
 use std::str::FromStr;
 
-use bigdecimal::BigDecimal;
-use chrono::{
-    DateTime,
-    NaiveDate,
-};
-use qubit_model::{
-    china::{
-        ChinaCities,
-        ChinaDistricts,
-        ChinaProvinces,
-        IdentityCardUtils,
-    },
-    person::Gender,
-    statistics::{
-        CategoryValue,
-        StatsDataset,
-        StatsItem,
-        TimeDimension,
-    },
-};
-use qubit_model_metadata::{
-    TemporalNormalization,
-    TemporalPrecision,
-    metadata_of,
-};
+use qubit_model::china::ChinaCities;
+use qubit_model::china::ChinaDistricts;
+use qubit_model::china::ChinaProvinces;
+use qubit_model::china::IdentityCardUtils;
+use qubit_model::person::Gender;
+use qubit_model::statistics::CategoryValue;
+use qubit_model::statistics::StatsDataset;
+use qubit_model::statistics::StatsItem;
+use qubit_model::statistics::TimeDimension;
+use qubit_model_metadata::AttributeMetadata;
+use qubit_model_metadata::HasTypeMetadata;
+use qubit_model_metadata::TemporalNormalization;
+use qubit_model_metadata::TemporalPrecision;
+use qubit_model_metadata::metadata_of;
 
 /// Asserts that a type exposes model metadata.
-fn assert_model<T: qubit_model_metadata::HasTypeMetadata>() {
+fn assert_model<T: HasTypeMetadata>() {
     let _ = metadata_of::<T>();
 }
 
@@ -101,7 +93,7 @@ fn test_statistics_models_preserve_numeric_and_time_constraints() {
         .expect("the values field should constrain each decimal element");
     assert!(matches!(
         element.attributes(),
-        [qubit_model_metadata::AttributeMetadata::Decimal(decimal)]
+        [AttributeMetadata::Decimal(decimal)]
             if decimal.scale() == 2
     ));
 }

@@ -7,21 +7,18 @@
 // =============================================================================
 
 use chrono::Utc;
+use serde_json::Value;
+use serde_json::json;
+
 use qubit_mixin::InfoWithEntity;
-use qubit_model::task::{
-    Task,
-    TaskAction,
-    TaskExecutionError,
-    TaskInfo,
-    TaskPipeline,
-    TaskPipelineStatus,
-    TaskStatus,
-    TaskStatusTransitionRule,
-};
-use serde_json::{
-    Value,
-    json,
-};
+use qubit_model::task::Task;
+use qubit_model::task::TaskAction;
+use qubit_model::task::TaskExecutionError;
+use qubit_model::task::TaskInfo;
+use qubit_model::task::TaskPipeline;
+use qubit_model::task::TaskPipelineStatus;
+use qubit_model::task::TaskStatus;
+use qubit_model::task::TaskStatusTransitionRule;
 
 struct TestTask {
     info: TaskInfo,

@@ -6,31 +6,25 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+use bigdecimal::BigDecimal;
 use std::str::FromStr;
 
-use bigdecimal::BigDecimal;
-use qubit_model::{
-    commons::{
-        CredentialInfoCodec,
-        CredentialType,
-    },
-    contact::{
-        CoordinateSystem,
-        LocationCodec,
-        LocationCoordinateCodec,
-        LocationCoordinateDeserializer,
-        LocationCoordinateSerializer,
-        LocationCoordinateXmlAdapter,
-        Phone,
-        PhoneCodec,
-        PhoneJsonDeserializer,
-        PhoneJsonKeyDeserializer,
-        PhoneJsonSerializer,
-        PhoneTypeRegister,
-        PhoneXmlAdapter,
-    },
-    privilege::PrivilegesCodec,
-};
+use qubit_model::commons::CredentialInfoCodec;
+use qubit_model::commons::CredentialType;
+use qubit_model::contact::CoordinateSystem;
+use qubit_model::contact::LocationCodec;
+use qubit_model::contact::LocationCoordinateCodec;
+use qubit_model::contact::LocationCoordinateDeserializer;
+use qubit_model::contact::LocationCoordinateSerializer;
+use qubit_model::contact::LocationCoordinateXmlAdapter;
+use qubit_model::contact::Phone;
+use qubit_model::contact::PhoneCodec;
+use qubit_model::contact::PhoneJsonDeserializer;
+use qubit_model::contact::PhoneJsonKeyDeserializer;
+use qubit_model::contact::PhoneJsonSerializer;
+use qubit_model::contact::PhoneTypeRegister;
+use qubit_model::contact::PhoneXmlAdapter;
+use qubit_model::privilege::PrivilegesCodec;
 
 #[test]
 fn test_credential_info_codec_round_trips_source_format() {

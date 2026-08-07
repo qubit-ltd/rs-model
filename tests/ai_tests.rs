@@ -4,13 +4,9 @@
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
 
-use qubit_model::{
-    ai::{
-        AiResult,
-        AiResultType,
-    },
-    upload::Attachment,
-};
+use qubit_model::ai::AiResult;
+use qubit_model::ai::AiResultType;
+use qubit_model::upload::Attachment;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

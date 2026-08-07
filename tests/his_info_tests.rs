@@ -9,16 +9,15 @@
 //! Integration coverage for polymorphic hospital-information-system records.
 
 use chrono::Utc;
+
 use qubit_mixin::Info;
-use qubit_model::medical::{
-    ClinicInfo,
-    EmergentClinicInfo,
-    ExaminationInfo,
-    HisInfo,
-    HospitalizationInfo,
-    RegistrationInfo,
-    SpecificClinicInfo,
-};
+use qubit_model::medical::ClinicInfo;
+use qubit_model::medical::EmergentClinicInfo;
+use qubit_model::medical::ExaminationInfo;
+use qubit_model::medical::HisInfo;
+use qubit_model::medical::HospitalizationInfo;
+use qubit_model::medical::RegistrationInfo;
+use qubit_model::medical::SpecificClinicInfo;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies concrete HIS records retain their shared and specialized fields.

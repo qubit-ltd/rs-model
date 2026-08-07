@@ -7,13 +7,10 @@
 // =============================================================================
 
 use chrono::NaiveTime;
-use qubit_model::{
-    thirdpart::WechatJsConfig,
-    work::{
-        LocalTimeRange,
-        WorkSchedule,
-    },
-};
+
+use qubit_model::thirdpart::WechatJsConfig;
+use qubit_model::work::LocalTimeRange;
+use qubit_model::work::WorkSchedule;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

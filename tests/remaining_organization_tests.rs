@@ -6,16 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_model::{
-    contact::Phone,
-    organization::{
-        Employee,
-        Organization,
-    },
-    person::SocialNetworkAccount,
-    product::Seller,
-    system::Session,
-};
+use qubit_mixin::Emptyful;
+use qubit_mixin::Normalizable;
+use qubit_model::contact::Phone;
+use qubit_model::organization::Employee;
+use qubit_model::organization::Organization;
+use qubit_model::person::SocialNetworkAccount;
+use qubit_model::product::Seller;
+use qubit_model::system::Session;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 
@@ -91,11 +89,6 @@ fn test_employee_projects_and_assigns_source_info() {
 
 #[test]
 fn test_employee_and_organization_empty_checks_and_normalization() {
-    use qubit_mixin::{
-        Emptyful,
-        Normalizable,
-    };
-
     let mut employee = Employee::default();
     assert!(employee.is_empty());
     assert!(Emptyful::is_empty(&employee));

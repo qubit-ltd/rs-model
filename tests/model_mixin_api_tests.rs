@@ -6,23 +6,18 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_mixin::{
-    Info,
-    InfoWithEntity,
-};
-use qubit_model::{
-    commons::Token,
-    mixin::{
-        InfoWithAppEntity,
-        InfoWithToken,
-        WithAttachment,
-        WithAttachments,
-        WithCreator,
-        WithDeleter,
-        WithModifier,
-        WithStatefulInfoWithToken,
-    },
-};
+use qubit_mixin::Info;
+use qubit_mixin::InfoWithEntity;
+use qubit_model::commons::Token;
+use qubit_model::mixin::InfoWithAppEntity;
+use qubit_model::mixin::InfoWithToken;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::mixin::WithAttachment;
+use qubit_model::mixin::WithAttachments;
+use qubit_model::mixin::WithCreator;
+use qubit_model::mixin::WithDeleter;
+use qubit_model::mixin::WithModifier;
+use qubit_model::mixin::WithStatefulInfoWithToken;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 
@@ -75,7 +70,7 @@ fn test_info_with_app_entity_preserves_composed_source_shape() {
             None,
             "document".into(),
         ),
-        Some(qubit_model::mixin::StatefulInfo::default()),
+        Some(StatefulInfo::default()),
     );
 
     assert!(value.is_complete());

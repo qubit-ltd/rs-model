@@ -9,31 +9,23 @@
 //! Integration coverage for medical, service, invoice, and claim
 //! classifications.
 
-use qubit_model::{
-    claim::{
-        AccidentReason,
-        InsuranceClaimInvoiceStatus,
-        InsuranceClaimInvoiceType,
-        InsuranceClaimStatus,
-        InsuranceClaimStatusGroup,
-        InsuredStatus,
-        QuickCompensationState,
-        enterprise::{
-            EnterpriseClaimItemStatus,
-            EnterpriseClaimStatus,
-            EnterpriseClaimStatusGroup,
-            EnterpriseInsuredType,
-            EnterpriseOwnership,
-            SaveStatus,
-        },
-    },
-    invoice::InvoiceStatus,
-    medical::{
-        MedicalInvoiceType,
-        MedicalType,
-    },
-    service::UserServiceState,
-};
+use qubit_model::claim::AccidentReason;
+use qubit_model::claim::InsuranceClaimInvoiceStatus;
+use qubit_model::claim::InsuranceClaimInvoiceType;
+use qubit_model::claim::InsuranceClaimStatus;
+use qubit_model::claim::InsuranceClaimStatusGroup;
+use qubit_model::claim::InsuredStatus;
+use qubit_model::claim::QuickCompensationState;
+use qubit_model::claim::enterprise::EnterpriseClaimItemStatus;
+use qubit_model::claim::enterprise::EnterpriseClaimStatus;
+use qubit_model::claim::enterprise::EnterpriseClaimStatusGroup;
+use qubit_model::claim::enterprise::EnterpriseInsuredType;
+use qubit_model::claim::enterprise::EnterpriseOwnership;
+use qubit_model::claim::enterprise::SaveStatus;
+use qubit_model::invoice::InvoiceStatus;
+use qubit_model::medical::MedicalInvoiceType;
+use qubit_model::medical::MedicalType;
+use qubit_model::service::UserServiceState;
 
 /// Verifies classifications preserve every Java wire variant added to the
 /// graph.

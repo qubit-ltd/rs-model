@@ -4,27 +4,18 @@
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
 
-use qubit_model::{
-    commons::{
-        CredentialInfo,
-        CredentialType,
-        VerifyState,
-    },
-    contact::{
-        Address,
-        Phone,
-    },
-    order::{
-        Buyer,
-        Client,
-        Consignee,
-    },
-    person::{
-        Gender,
-        Person,
-        PersonInfo,
-    },
-};
+use qubit_model::commons::CredentialInfo;
+use qubit_model::commons::CredentialType;
+use qubit_model::commons::VerifyState;
+use qubit_model::contact::Address;
+use qubit_model::contact::Contact;
+use qubit_model::contact::Phone;
+use qubit_model::order::Buyer;
+use qubit_model::order::Client;
+use qubit_model::order::Consignee;
+use qubit_model::person::Gender;
+use qubit_model::person::Person;
+use qubit_model::person::PersonInfo;
 use qubit_model_metadata::metadata_of;
 
 fn credential(id: Option<i64>) -> CredentialInfo {
@@ -44,7 +35,7 @@ fn person_projects_and_assigns_person_info_like_the_source() {
         username: Some("ada".into()),
         gender: Some(Gender::Female),
         credential: Some(credential(Some(21))),
-        contact: qubit_model::contact::Contact::create(
+        contact: Contact::create(
             None,
             Some(Phone::from("13800138000")),
             Some("ada@example.test".into()),

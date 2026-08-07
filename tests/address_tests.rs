@@ -6,28 +6,20 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+use bigdecimal::BigDecimal;
 use std::str::FromStr;
 
-use bigdecimal::BigDecimal;
-use qubit_mixin::{
-    Info,
-    Normalizable,
-};
-use qubit_model::{
-    address::{
-        Address,
-        AddressBuilder,
-        AddressErrorCode,
-        MismatchMobileException,
-        Region,
-    },
-    commons::VerifyState,
-    contact::{
-        Contact,
-        Phone,
-    },
-    error::ErrorType,
-};
+use qubit_mixin::Info;
+use qubit_mixin::Normalizable;
+use qubit_model::address::Address;
+use qubit_model::address::AddressBuilder;
+use qubit_model::address::AddressErrorCode;
+use qubit_model::address::MismatchMobileException;
+use qubit_model::address::Region;
+use qubit_model::commons::VerifyState;
+use qubit_model::contact::Contact;
+use qubit_model::contact::Phone;
+use qubit_model::error::ErrorType;
 use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}

@@ -8,12 +8,12 @@
 
 //! Behavioral coverage for organization aggregate roots.
 
-use qubit_mixin::{Emptyful, Normalizable};
-use qubit_model::{
-    contact::{Address, Phone},
-    organization::Organization,
-    product::Seller,
-};
+use qubit_mixin::Emptyful;
+use qubit_mixin::Normalizable;
+use qubit_model::contact::Address;
+use qubit_model::contact::Phone;
+use qubit_model::organization::Organization;
+use qubit_model::product::Seller;
 
 /// Verifies source seller assignment and the organization value operations.
 #[test]

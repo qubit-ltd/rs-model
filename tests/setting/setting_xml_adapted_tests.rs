@@ -8,7 +8,10 @@
 
 //! Behavioral coverage for XML-oriented setting values.
 
-use qubit_model::setting::{DataType, Setting, SettingAdapterError, SettingXmlAdapted};
+use qubit_model::setting::DataType;
+use qubit_model::setting::Setting;
+use qubit_model::setting::SettingAdapterError;
+use qubit_model::setting::SettingXmlAdapted;
 
 /// Omits source defaults and reconstructs a complete setting.
 #[test]

@@ -6,32 +6,27 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_mixin::{
-    Emptyful,
-    Normalizable,
-};
-use qubit_model::{
-    commons::State,
-    metadata::{
-        AggregateRef,
-        Category,
-        Dict,
-        DictEntry,
-        DictEntryInfo,
-        FullDict,
-        Payload,
-        Scope,
-        ScopeType,
-        Source,
-    },
-};
-use qubit_model_metadata::{
-    UniqueComparison,
-    metadata_of,
-};
-use qubit_redact::Redact;
+use chrono::Utc;
 use serde::Serialize;
 use std::io;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::Normalizable;
+use qubit_model::commons::State;
+use qubit_model::metadata::AggregateRef;
+use qubit_model::metadata::Category;
+use qubit_model::metadata::Dict;
+use qubit_model::metadata::DictEntry;
+use qubit_model::metadata::DictEntryInfo;
+use qubit_model::metadata::FullDict;
+use qubit_model::metadata::Payload;
+use qubit_model::metadata::Scope;
+use qubit_model::metadata::ScopeType;
+use qubit_model::metadata::Source;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model_metadata::UniqueComparison;
+use qubit_model_metadata::metadata_of;
+use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
 
@@ -379,7 +374,7 @@ fn dict_entry_formats_and_matches_parameterized_codes() {
         .id =
         Some(1));
     assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
-        value.dict = Some(qubit_model::mixin::StatefulInfo {
+        value.dict = Some(StatefulInfo {
             code: "DICT".into(),
             ..Default::default()
         })
@@ -403,13 +398,13 @@ fn dict_entry_formats_and_matches_parameterized_codes() {
         })
     });
     assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
-        value.create_time = Some(chrono::Utc::now())
+        value.create_time = Some(Utc::now())
     });
     assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
-        value.modify_time = Some(chrono::Utc::now())
+        value.modify_time = Some(Utc::now())
     });
     assert_entry_field_makes_value_nonempty!(|value: &mut DictEntry| {
-        value.delete_time = Some(chrono::Utc::now())
+        value.delete_time = Some(Utc::now())
     });
 }
 
@@ -469,7 +464,7 @@ fn dict_entry_info_and_payload_preserve_computed_behaviors() {
     assert_eq!(no_params.display_code(), "{0}W{1}D");
     assert!(json_value(&no_params).get("params").is_none());
 
-    let now = chrono::Utc::now();
+    let now = Utc::now();
     let mut complete_info = DictEntryInfo {
         id: Some(7),
         code: "  {0}  ".into(),

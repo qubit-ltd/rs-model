@@ -11,44 +11,31 @@
 use std::cmp::Ordering;
 
 use qubit_mixin::Normalizable;
-use qubit_model::{
-    Entity,
-    Module,
-    Operation,
-    commons::{
-        Code,
-        CodeMap,
-        CredentialType,
-        RequestStatus,
-        VerifyState,
-    },
-    contact::{
-        CoordinateSystem,
-        Phone,
-        PhoneCodec,
-        Region,
-    },
-    controller::{
-        NullSortOption,
-        SortOrder,
-    },
-    error::ErrorType,
-    file::AttachmentType,
-    notification::{
-        NotificationErrorCode,
-        VerifyScene,
-    },
-    privilege::{
-        Privileges,
-        PrivilegesCodec,
-    },
-    security::{
-        KeyFormat,
-        Signature,
-        SignatureAlgorithm,
-    },
-    util::ResultValue,
-};
+use qubit_model::Entity;
+use qubit_model::Module;
+use qubit_model::Operation;
+use qubit_model::commons::Code;
+use qubit_model::commons::CodeMap;
+use qubit_model::commons::CredentialType;
+use qubit_model::commons::RequestStatus;
+use qubit_model::commons::VerifyState;
+use qubit_model::contact::CoordinateSystem;
+use qubit_model::contact::Phone;
+use qubit_model::contact::PhoneCodec;
+use qubit_model::contact::Region;
+use qubit_model::controller::NullSortOption;
+use qubit_model::controller::SortOrder;
+use qubit_model::error::ErrorType;
+use qubit_model::file::AttachmentType;
+use qubit_model::notification::NotificationErrorCode;
+use qubit_model::notification::VerifyScene;
+use qubit_model::privilege::Privileges;
+use qubit_model::privilege::PrivilegesCodec;
+use qubit_model::security::KeyFormat;
+use qubit_model::security::Signature;
+use qubit_model::security::SignatureAlgorithm;
+use qubit_model::util::Result;
+use qubit_model::util::ResultValue;
 
 /// Exercises every stable code that is exposed by shared enumeration values.
 #[test]
@@ -402,7 +389,7 @@ fn test_notification_values_preserve_source_contracts() {
 fn test_result_value_owns_and_returns_the_response_value() {
     let value = ResultValue::new(String::from("result"));
     assert_eq!(value.clone().into_inner(), "result");
-    let alias: qubit_model::util::Result<i32> = ResultValue::new(7);
+    let alias: Result<i32> = ResultValue::new(7);
     assert_eq!(alias.value, 7);
 }
 

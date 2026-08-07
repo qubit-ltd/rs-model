@@ -6,18 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_model::{
-    commons::State,
-    security::{
-        KeyFormat,
-        KeyPair,
-        KeyValuePair,
-        Signature,
-        SignatureAlgorithm,
-        SignedData,
-        SignedInfo,
-    },
-};
+use qubit_model::commons::State;
+use qubit_model::security::KeyFormat;
+use qubit_model::security::KeyPair;
+use qubit_model::security::KeyValuePair;
+use qubit_model::security::Signature;
+use qubit_model::security::SignatureAlgorithm;
+use qubit_model::security::SignedData;
+use qubit_model::security::SignedInfo;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

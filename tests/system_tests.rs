@@ -6,45 +6,37 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use chrono::{
-    TimeZone,
-    Utc,
-};
-use qubit_mixin::{
-    Emptyful,
-    Normalizable,
-};
-use qubit_model::{
-    commons::{
-        State,
-        Token,
-    },
-    contact::Location,
-    mixin::StatefulInfo,
-    person::UserInfo,
-    privilege::Role,
-    system::{
-        Action,
-        Environment,
-        ErrorInfo,
-        Expired,
-        ExpiredReason,
-        Host,
-        Log,
-        LogicRelation,
-        OperationLog,
-        OperationLogInfo,
-        Platform,
-        Session,
-        Setting,
-        VerifyCode,
-        VerifyScene,
-    },
-};
-use qubit_model_metadata::metadata_of;
-use qubit_redact::Redact;
+use chrono::TimeZone;
+use chrono::Utc;
 use serde::Serialize;
 use std::io;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::Normalizable;
+use qubit_model::commons::State;
+use qubit_model::commons::Token;
+use qubit_model::contact::Location;
+use qubit_model::mixin::StatefulInfo;
+use qubit_model::person::UserInfo;
+use qubit_model::privilege::Role;
+use qubit_model::system::Action;
+use qubit_model::system::Environment;
+use qubit_model::system::ErrorInfo;
+use qubit_model::system::Expired;
+use qubit_model::system::ExpiredReason;
+use qubit_model::system::Host;
+use qubit_model::system::Log;
+use qubit_model::system::LogicRelation;
+use qubit_model::system::OperationLog;
+use qubit_model::system::OperationLogInfo;
+use qubit_model::system::Platform;
+use qubit_model::system::Session;
+use qubit_model::system::Setting;
+use qubit_model::system::VerifyCode;
+use qubit_model::system::VerifyScene;
+use qubit_model_metadata::UniqueComparison;
+use qubit_model_metadata::metadata_of;
+use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
 
@@ -133,7 +125,7 @@ fn system_model_metadata_preserves_source_constraints() {
             .next()
             .unwrap()
             .comparison_of("udid"),
-        Some(qubit_model_metadata::UniqueComparison::Exact)
+        Some(UniqueComparison::Exact)
     );
 
     let operation = metadata_of::<OperationLog>();

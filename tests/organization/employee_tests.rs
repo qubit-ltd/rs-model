@@ -8,8 +8,10 @@
 
 //! Behavioral coverage for complete employee records.
 
-use qubit_mixin::{Emptyful, Normalizable};
-use qubit_model::{contact::Phone, organization::Employee};
+use qubit_mixin::Emptyful;
+use qubit_mixin::Normalizable;
+use qubit_model::contact::Phone;
+use qubit_model::organization::Employee;
 
 /// Verifies employee projection, assignment, empty checks, and normalization.
 #[test]

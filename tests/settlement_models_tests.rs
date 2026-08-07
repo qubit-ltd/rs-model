@@ -8,10 +8,8 @@
 
 //! Integration coverage for settlement-domain model migrations.
 
-use qubit_model::settlement::{
-    Settlement,
-    Transaction,
-};
+use qubit_model::settlement::Settlement;
+use qubit_model::settlement::Transaction;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies settlement structs retain every Java source field.

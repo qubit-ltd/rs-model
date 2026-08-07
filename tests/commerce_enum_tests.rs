@@ -8,30 +8,22 @@
 
 //! Integration coverage for order, payment, and settlement classifications.
 
-use qubit_model::{
-    order::{
-        ConfirmStatus,
-        OpenidType,
-        OrderStatus,
-        PayType,
-        RefererOrderRecordStatus,
-        ReturnIssuer,
-        ReturnReason,
-        ReturnStatus,
-    },
-    payment::{
-        AccountType,
-        ParticipantType,
-        PaymentChannel,
-        PaymentMode,
-        PaymentOption,
-        PaymentType,
-    },
-    settlement::{
-        TransactionStatus,
-        TransactionType,
-    },
-};
+use qubit_model::order::ConfirmStatus;
+use qubit_model::order::OpenidType;
+use qubit_model::order::OrderStatus;
+use qubit_model::order::PayType;
+use qubit_model::order::RefererOrderRecordStatus;
+use qubit_model::order::ReturnIssuer;
+use qubit_model::order::ReturnReason;
+use qubit_model::order::ReturnStatus;
+use qubit_model::payment::AccountType;
+use qubit_model::payment::ParticipantType;
+use qubit_model::payment::PaymentChannel;
+use qubit_model::payment::PaymentMode;
+use qubit_model::payment::PaymentOption;
+use qubit_model::payment::PaymentType;
+use qubit_model::settlement::TransactionStatus;
+use qubit_model::settlement::TransactionType;
 
 /// Verifies representative commerce classifications preserve Java wire names.
 #[test]

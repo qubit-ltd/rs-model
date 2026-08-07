@@ -8,16 +8,12 @@
 
 //! Integration coverage for shipping-domain model migrations.
 
-use qubit_model::{
-    shipping::{
-        ConsignInfo,
-        Packing,
-        Shipping,
-        ShippingDemand,
-        ShippingMode,
-    },
-    system::Environment,
-};
+use qubit_model::shipping::ConsignInfo;
+use qubit_model::shipping::Packing;
+use qubit_model::shipping::Shipping;
+use qubit_model::shipping::ShippingDemand;
+use qubit_model::shipping::ShippingMode;
+use qubit_model::system::Environment;
 use qubit_model_metadata::metadata_of;
 
 /// Verifies shipping structs retain every source field in model metadata.

@@ -7,30 +7,23 @@
 // =============================================================================
 
 use chrono::Utc;
-use qubit_mixin::{
-    Emptyful,
-    InfoWithEntity,
-};
-use qubit_model::metadata::AggregateRef;
-use qubit_model::{
-    commons::State,
-    file::{
-        Attachment,
-        AttachmentType,
-        FileInfo,
-        MediaInfo,
-        MediaType,
-        Upload,
-        UploadParams,
-    },
-};
-use qubit_model_metadata::{
-    UniqueComparison,
-    metadata_of,
-};
-use qubit_redact::Redact;
 use serde::Serialize;
 use std::io;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::InfoWithEntity;
+use qubit_model::commons::State;
+use qubit_model::file::Attachment;
+use qubit_model::file::AttachmentType;
+use qubit_model::file::FileInfo;
+use qubit_model::file::MediaInfo;
+use qubit_model::file::MediaType;
+use qubit_model::file::Upload;
+use qubit_model::file::UploadParams;
+use qubit_model::metadata::AggregateRef;
+use qubit_model_metadata::UniqueComparison;
+use qubit_model_metadata::metadata_of;
+use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
 

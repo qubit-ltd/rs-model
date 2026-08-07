@@ -6,29 +6,26 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use qubit_model::{
-    controller::{
-        AppAuthenticateParams,
-        AuditableQueryParams,
-        BindDeviceParams,
-        BindEmployeeParams,
-        BindPersonParams,
-        LoginParams,
-        LoginResponse,
-        NullSortOption,
-        RegisterUserParams,
-        SortOrder,
-        UnupdatableQueryParams,
-        UpdatePasswordParams,
-    },
-    person::{
-        SocialNetwork,
-        SocialNetworkAccount,
-        User,
-        UserInfo,
-    },
-    system::Session,
-};
+use chrono::Utc;
+use qubit_model::commons::AuthorizeRecord;
+use qubit_model::commons::State;
+use qubit_model::controller::AppAuthenticateParams;
+use qubit_model::controller::AuditableQueryParams;
+use qubit_model::controller::BindDeviceParams;
+use qubit_model::controller::BindEmployeeParams;
+use qubit_model::controller::BindPersonParams;
+use qubit_model::controller::LoginParams;
+use qubit_model::controller::LoginResponse;
+use qubit_model::controller::NullSortOption;
+use qubit_model::controller::RegisterUserParams;
+use qubit_model::controller::SortOrder;
+use qubit_model::controller::UnupdatableQueryParams;
+use qubit_model::controller::UpdatePasswordParams;
+use qubit_model::person::SocialNetwork;
+use qubit_model::person::SocialNetworkAccount;
+use qubit_model::person::User;
+use qubit_model::person::UserInfo;
+use qubit_model::system::Session;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 
@@ -160,15 +157,15 @@ fn test_register_user_params_projects_users_and_desensitizes_credentials() {
         url: None,
         description: None,
         organization: None,
-        state: qubit_model::commons::State::Normal,
-        last_login: qubit_model::commons::AuthorizeRecord::default(),
+        state: State::Normal,
+        last_login: AuthorizeRecord::default(),
         change_password: false,
         valid_time: None,
         expired_time: None,
         comment: None,
         predefined: false,
         test: false,
-        create_time: chrono::Utc::now(),
+        create_time: Utc::now(),
         modify_time: None,
         delete_time: None,
     };

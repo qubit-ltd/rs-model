@@ -8,8 +8,12 @@
 
 //! Behavioral coverage for task-pipeline status helpers.
 
-use qubit_model::task::{Task, TaskPipeline, TaskPipelineStatus};
-use serde_json::{Value, json};
+use serde_json::Value;
+use serde_json::json;
+
+use qubit_model::task::Task;
+use qubit_model::task::TaskPipeline;
+use qubit_model::task::TaskPipelineStatus;
 
 struct TestPipeline {
     status: TaskPipelineStatus,

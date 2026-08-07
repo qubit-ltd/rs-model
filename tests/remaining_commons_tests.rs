@@ -7,19 +7,15 @@
 // =============================================================================
 
 use qubit_mixin::Normalizable;
-use qubit_model::{
-    Field,
-    commons::{
-        App,
-        AppResource,
-        Code,
-        CodeMap,
-        Faq,
-        MqFailedTask,
-        Schedule,
-        State,
-    },
-};
+use qubit_model::Field;
+use qubit_model::commons::App;
+use qubit_model::commons::AppResource;
+use qubit_model::commons::Code;
+use qubit_model::commons::CodeMap;
+use qubit_model::commons::Faq;
+use qubit_model::commons::MqFailedTask;
+use qubit_model::commons::Schedule;
+use qubit_model::commons::State;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 

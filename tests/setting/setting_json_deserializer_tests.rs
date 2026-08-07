@@ -8,7 +8,9 @@
 
 //! Behavioral coverage for setting JSON deserialization.
 
-use qubit_model::setting::{DataType, SettingAdapterError, SettingJsonDeserializer};
+use qubit_model::setting::DataType;
+use qubit_model::setting::SettingAdapterError;
+use qubit_model::setting::SettingJsonDeserializer;
 
 /// Applies absent-field defaults and canonicalizes JSON scalar values.
 #[test]

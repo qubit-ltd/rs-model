@@ -9,22 +9,19 @@
 //! Integration coverage for product-domain model migrations.
 
 use chrono::TimeDelta;
-use qubit_model::{
-    person::Gender,
-    product::{
-        Coupon,
-        CouponRule,
-        CouponType,
-        PersonConstraint,
-        Product,
-        ProductConstraint,
-        ProductInfo,
-        ProductItem,
-        ProductPrice,
-        Quality,
-        Seller,
-    },
-};
+
+use qubit_model::person::Gender;
+use qubit_model::product::Coupon;
+use qubit_model::product::CouponRule;
+use qubit_model::product::CouponType;
+use qubit_model::product::PersonConstraint;
+use qubit_model::product::Product;
+use qubit_model::product::ProductConstraint;
+use qubit_model::product::ProductInfo;
+use qubit_model::product::ProductItem;
+use qubit_model::product::ProductPrice;
+use qubit_model::product::Quality;
+use qubit_model::product::Seller;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact as _;
 

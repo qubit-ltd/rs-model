@@ -6,62 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-#[allow(unused_imports)]
-use qubit_mixin::{
-    Auditable,
-    Creatable,
-    DataWithMaxAge,
-    Deletable,
-    Desensitizable,
-    Emptyful,
-    HasClock,
-    HasInfo,
-    HasInfoWithEntity,
-    HasLogger,
-    HasSpecificInfo,
-    Identifiable,
-    Info,
-    InfoWithEntity,
-    MixinError,
-    Modifiable,
-    NameBuilder,
-    Normalizable,
-    Predefinable,
-    Validatable,
-    WithBirthday,
-    WithCode,
-    WithComment,
-    WithEmail,
-    WithEntity,
-    WithIndex,
-    WithKey,
-    WithName,
-    WithPassword,
-    WithSecurityKey,
-    WithStatus,
-    WithUdid,
-    WithUsername,
-    WithUuid,
-    WithVisibility,
-    normalize,
-};
-use qubit_model::{
-    commons::{
-        Dict,
-        FullDict,
-    },
-    contact::AddressBuilder,
-    system::{
-        Setting,
-        SettingJsonDeserializer,
-        SettingJsonSerializer,
-        SettingRandomizer,
-        SettingXmlAdapted,
-        SettingXmlAdapter,
-        VerifyCode,
-        VerifyScene,
-    },
-};
+use qubit_mixin::MixinError;
+use qubit_mixin::normalize;
+use qubit_model::commons::Dict;
+use qubit_model::commons::FullDict;
+use qubit_model::contact::AddressBuilder;
+use qubit_model::system::Setting;
+use qubit_model::system::SettingJsonDeserializer;
+use qubit_model::system::SettingJsonSerializer;
+use qubit_model::system::SettingRandomizer;
+use qubit_model::system::SettingXmlAdapted;
+use qubit_model::system::SettingXmlAdapter;
+use qubit_model::system::VerifyCode;
+use qubit_model::system::VerifyScene;
 
 #[test]
 fn test_package_compatibility_reexports_resolve() {

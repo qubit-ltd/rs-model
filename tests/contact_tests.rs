@@ -11,14 +11,12 @@
 use std::fmt;
 
 use qubit_mixin::Normalizable;
-use qubit_model::contact::{
-    ContactCodecError,
-    CoordinateSystem,
-    LocationCodec,
-    LocationCoordinateDeserializer,
-    Phone,
-    PhoneJsonKeyDeserializer,
-};
+use qubit_model::contact::ContactCodecError;
+use qubit_model::contact::CoordinateSystem;
+use qubit_model::contact::LocationCodec;
+use qubit_model::contact::LocationCoordinateDeserializer;
+use qubit_model::contact::Phone;
+use qubit_model::contact::PhoneJsonKeyDeserializer;
 
 /// A formatter that returns an error for every write attempt.
 struct FailingFormatter;
