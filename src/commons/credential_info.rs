@@ -10,43 +10,29 @@
 
 #[allow(unused_imports)]
 use super::{
-    AuthorizeRecord,
-    Category,
-    Credential,
-    CredentialType,
-    Currency,
-    DayType,
-    Kinship,
-    MqType,
-    Owner,
-    Owners,
-    Payload,
-    RequestStatus,
-    Source,
-    VerifyState,
+    AuthorizeRecord, Category, Credential, CredentialType, Currency, DayType, Kinship, MqType,
+    Owner, Owners, Payload, RequestStatus, Source, VerifyState,
 };
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// Lightweight credential information.
-#[derive(
-    Clone, Debug, Deserialize, Model, PartialEq, Eq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Eq, Redact, Serialize)]
 pub struct CredentialInfo {
     /// Persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Credential classification.
     pub r#type: CredentialType,
+
     /// Credential number.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
     pub number: String,
+
     /// Optional verification state.
     pub verified: Option<VerifyState>,
 }

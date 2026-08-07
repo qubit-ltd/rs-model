@@ -8,16 +8,10 @@
 
 //! Persisted mobile and email verification codes.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::contact::Phone;
 use crate::mixin::StatefulInfo;
@@ -29,25 +23,34 @@ pub struct VerifyCode {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Tenant that owns the issuing application.
     pub tenant: StatefulInfo,
+
     /// Application that issued the code.
     pub app: StatefulInfo,
+
     /// Optional destination mobile number.
     pub mobile: Option<Phone>,
+
     /// Optional destination email address.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub email: Option<String>,
+
     /// Verification scenario.
     pub scene: VerifyScene,
+
     /// Secret verification token.
     #[model(sensitive(token), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub code: String,
+
     /// Message delivered with the code.
     pub message: String,
+
     /// Whether this code has already been verified.
     pub verified: bool,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,

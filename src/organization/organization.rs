@@ -7,30 +7,14 @@
 // =============================================================================
 //! Organization aggregate roots.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
-use qubit_mixin::{
-    Emptyful,
-    InfoWithEntity,
-    Normalizable,
-};
+use chrono::{DateTime, Utc};
+use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::{
-    commons::{
-        Category,
-        Credential,
-        CredentialInfo,
-        Payload,
-        State,
-    },
+    commons::{Category, Credential, CredentialInfo, Payload, State},
     contact::Contact,
     mixin::StatefulInfo,
     person::PersonInfo,
@@ -41,9 +25,7 @@ use super::TaxPayerType;
 
 /// A company, medical institution, school, government body, or other
 /// organization.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 #[model(
     unique(name = "organization_code", fields(code), ignore_case(code)),
@@ -54,61 +36,76 @@ pub struct Organization {
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Globally unique ASCII code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
+
     /// Globally unique display name.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), index, opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
+
     /// Optional parent-organization information.
     #[model(reference(target = Organization, target_field = info), index, opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent: Option<StatefulInfo>,
+
     /// Lifecycle state.
     #[model(index)]
     pub state: State,
+
     /// Optional ASCII icon path or URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub icon: Option<String>,
+
     /// Optional user-facing description.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+
     /// Optional administrator comment.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,
+
     /// Optional contact details.
     #[model(index, opaque)]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contact: Option<Contact>,
+
     /// Optional primary identity credential.
     #[model(reference(target = Credential, target_field = info, must_exist = false), opaque)]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub credential: Option<CredentialInfo>,
+
     /// Optional qualification credentials.
     #[model(reference(target = Credential, target_field = info, must_exist = false), opaque)]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub licenses: Option<Vec<CredentialInfo>>,
+
     /// Optional legal representative or responsible person.
     #[model(index, opaque)]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub principal: Option<PersonInfo>,
+
     /// Optional tax-payer classification.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_payer_type: Option<TaxPayerType>,
+
     /// Optional ASCII tax number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_number: Option<String>,
+
     /// Optional extension payloads.
     #[model(
         reference(target = Payload, target_field = id, must_exist = false),
@@ -116,20 +113,25 @@ pub struct Organization {
     )]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payloads: Option<Vec<Payload>>,
+
     /// Whether this is predefined reference data.
     #[model(index)]
     pub predefined: bool,
+
     /// Whether this is development or test data.
     #[model(index)]
     pub test: bool,
+
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]

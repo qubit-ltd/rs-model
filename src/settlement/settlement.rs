@@ -8,15 +8,9 @@
 
 //! Common settlement record fields.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::mixin::StatefulInfo;
 
@@ -26,16 +20,22 @@ pub struct Settlement {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Application that owns this settlement.
     pub app: StatefulInfo,
+
     /// Organization that owns this settlement.
     pub organization: StatefulInfo,
+
     /// Optional settlement remark.
     pub remark: Option<String>,
+
     /// UTC creation timestamp.
     pub create_time: DateTime<Utc>,
+
     /// Optional UTC modification timestamp.
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     pub delete_time: Option<DateTime<Utc>>,
 }

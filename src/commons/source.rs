@@ -10,32 +10,14 @@
 
 #[allow(unused_imports)]
 use super::{
-    AuthorizeRecord,
-    Category,
-    Credential,
-    CredentialInfo,
-    CredentialType,
-    Currency,
-    DayType,
-    Kinship,
-    MqType,
-    Owner,
-    Owners,
-    Payload,
-    RequestStatus,
-    VerifyState,
+    AuthorizeRecord, Category, Credential, CredentialInfo, CredentialType, Currency, DayType,
+    Kinship, MqType, Owner, Owners, Payload, RequestStatus, VerifyState,
 };
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::mixin::StatefulInfo;
 
@@ -45,34 +27,46 @@ pub struct Source {
     /// Persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Importing application information.
     pub app: StatefulInfo,
+
     /// Entity discriminator.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub entity: String,
+
     /// Source code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
+
     /// Source name.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Optional source description.
     pub description: Option<String>,
+
     /// Optional category information.
     #[model(opaque)]
     pub category: Option<InfoWithEntity>,
+
     /// Optional provider application information.
     pub provider_app: Option<StatefulInfo>,
+
     /// Optional provider organization information.
     pub provider_organization: Option<StatefulInfo>,
+
     /// Whether this source is predefined.
     pub predefined: bool,
+
     /// Optional UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,

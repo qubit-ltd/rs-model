@@ -26,9 +26,11 @@ use crate::error::ErrorType;
 pub struct MismatchMobileException {
     /// Entity name or description associated with the mismatch.
     pub name: String,
+
     /// Expected mobile number.
     #[redact(nested)]
     pub expected_mobile: Phone,
+
     /// Actual mobile number.
     #[redact(nested)]
     pub actual_mobile: Phone,
@@ -37,11 +39,7 @@ pub struct MismatchMobileException {
 impl MismatchMobileException {
     /// Creates a mismatch error with its template values.
     #[must_use]
-    pub fn new(
-        name: &str,
-        expected_mobile: Phone,
-        actual_mobile: Phone,
-    ) -> Self {
+    pub fn new(name: &str, expected_mobile: Phone, actual_mobile: Phone) -> Self {
         Self {
             name: name.to_owned(),
             expected_mobile,

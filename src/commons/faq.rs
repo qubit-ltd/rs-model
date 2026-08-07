@@ -7,69 +7,62 @@
 // =============================================================================
 //! Frequently asked questions.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
-use qubit_mixin::{
-    Emptyful,
-    Info,
-    InfoWithEntity,
-    Normalizable,
-};
+use chrono::{DateTime, Utc};
+use qubit_mixin::{Emptyful, Info, InfoWithEntity, Normalizable};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::mixin::StatefulInfo;
 
-use super::{
-    App,
-    Category,
-    State,
-};
+use super::{App, Category, State};
 
 /// A frequently asked question associated with an application and product.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 pub struct Faq {
     /// Optional persisted identifier.
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Owning application information.
     #[model(reference(target = App, target_field = info), opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub app: Option<StatefulInfo>,
+
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
+
     /// Product information.
     #[model(opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product: Option<Info>,
+
     /// Question text.
     pub question: String,
+
     /// Answer text.
     pub answer: String,
+
     /// Number of times the question was viewed.
     pub frequency: i64,
+
     /// Lifecycle state.
     pub state: State,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]

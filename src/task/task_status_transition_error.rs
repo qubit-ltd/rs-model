@@ -10,11 +10,7 @@
 
 #[allow(unused_imports)]
 use super::{
-    TaskAction,
-    TaskExecutionError,
-    TaskPipelineStatus,
-    TaskStatus,
-    TaskStatusTransitionRule,
+    TaskAction, TaskExecutionError, TaskPipelineStatus, TaskStatus, TaskStatusTransitionRule,
 };
 
 use thiserror::Error;
@@ -25,6 +21,7 @@ use thiserror::Error;
 pub struct TaskStatusTransitionError {
     /// State before the invalid action.
     pub status: TaskStatus,
+
     /// Action that is invalid for `status`.
     pub action: TaskAction,
 }

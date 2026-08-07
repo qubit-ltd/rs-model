@@ -7,12 +7,7 @@
 // =============================================================================
 //! Registration of telephone-number wire adapters.
 
-use crate::contact::{
-    Phone,
-    PhoneJsonDeserializer,
-    PhoneJsonKeyDeserializer,
-    PhoneJsonSerializer,
-};
+use crate::contact::{Phone, PhoneJsonDeserializer, PhoneJsonKeyDeserializer, PhoneJsonSerializer};
 
 /// Describes the serializer and deserializer components used for [`Phone`].
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

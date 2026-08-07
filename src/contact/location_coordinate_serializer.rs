@@ -19,7 +19,6 @@ impl LocationCoordinateSerializer {
     /// Serializes a non-null coordinate.
     #[must_use]
     pub fn serialize(value: &BigDecimal) -> String {
-        LocationCoordinateCodec::encode(Some(value))
-            .expect("present coordinate")
+        LocationCoordinateCodec::encode(Some(value)).expect("present coordinate")
     }
 }

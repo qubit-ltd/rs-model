@@ -9,33 +9,26 @@
 //! Statistics value objects.
 
 #[allow(unused_imports)]
-use super::{
-    StatsDataset,
-    StatsItem,
-    TimeDimension,
-};
+use super::{StatsDataset, StatsItem, TimeDimension};
 
 use bigdecimal::BigDecimal;
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// A value aggregated for one category and optional time interval.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct CategoryValue {
     /// Category name.
     pub category: String,
+
     /// Aggregated value for the category.
     pub value: BigDecimal,
+
     /// Optional inclusive start of the aggregation interval.
     #[model(time(precision = second, normalization = utc))]
     pub start_time: Option<DateTime<Utc>>,
+
     /// Optional inclusive end of the aggregation interval.
     #[model(time(precision = second, normalization = utc))]
     pub end_time: Option<DateTime<Utc>>,

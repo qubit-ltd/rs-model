@@ -7,45 +7,21 @@
 // =============================================================================
 //! Complete employee records.
 
-use chrono::{
-    DateTime,
-    NaiveDate,
-    Utc,
-};
-use qubit_mixin::{
-    Emptyful,
-    InfoWithEntity,
-    Normalizable,
-};
+use chrono::{DateTime, NaiveDate, Utc};
+use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::{
-    commons::{
-        Category,
-        Credential,
-        CredentialInfo,
-        State,
-    },
+    commons::{Category, Credential, CredentialInfo, State},
     contact::Phone,
     mixin::StatefulInfo,
-    person::{
-        Gender,
-        Person,
-        User,
-    },
+    person::{Gender, Person, User},
     upload::Attachment,
 };
 
-use super::{
-    Department,
-    EmployeeInfo,
-    Organization,
-};
+use super::{Department, EmployeeInfo, Organization};
 
 /// A complete employee record within an organization.
 #[allow(clippy::duplicated_attributes)]
@@ -58,10 +34,7 @@ use super::{
         fields(organization, internal_code),
         ignore_case(internal_code)
     ),
-    unique(
-        name = "employee_organization_mobile",
-        fields(organization, mobile)
-    ),
+    unique(name = "employee_organization_mobile", fields(organization, mobile)),
     unique(
         name = "employee_organization_email",
         fields(organization, email),
@@ -73,6 +46,7 @@ pub struct Employee {
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Optional registered username.
     #[model(
         reference(target = User, target_field = username),
@@ -81,26 +55,33 @@ pub struct Employee {
     )]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub username: Option<String>,
+
     /// Optional linked person identifier.
     #[model(reference(target = Person, target_field = id), index)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub person_id: Option<i64>,
+
     /// Globally unique employee code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
+
     /// Optional organization-local employee code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub internal_code: Option<String>,
+
     /// Employee name.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Employee gender.
     #[model(index)]
     pub gender: Gender,
+
     /// Optional birthday.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub birthday: Option<NaiveDate>,
+
     /// Optional identity credential.
     #[model(
         reference(target = Credential, target_field = info, must_exist = false),
@@ -110,81 +91,101 @@ pub struct Employee {
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub credential: Option<CredentialInfo>,
+
     /// Optional employee category.
     #[model(reference(target = Category, target_field = info), index, opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
+
     /// Employer information.
     #[model(reference(target = Organization, target_field = info), index, opaque)]
     pub organization: StatefulInfo,
+
     /// Optional department information.
     #[model(reference(target = Department, target_field = info), index, opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub department: Option<StatefulInfo>,
+
     /// Optional landline number.
     #[model(index)]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub phone: Option<Phone>,
+
     /// Organization-unique mobile number.
     #[model(index)]
     #[redact(nested)]
     pub mobile: Phone,
+
     /// Optional organization-unique email address.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub email: Option<String>,
+
     /// Optional ASCII website URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
+
     /// Optional profile photograph.
     #[model(reference(target = Attachment, target_field = id, must_exist = false), opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub photo: Option<Attachment>,
+
     /// Optional description.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+
     /// Optional practising credential.
     #[model(reference(target = Credential, target_field = info, must_exist = false), opaque)]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub practising_certificate: Option<CredentialInfo>,
+
     /// Optional professional-title credential.
     #[model(reference(target = Credential, target_field = info, must_exist = false), opaque)]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub title_certificate: Option<CredentialInfo>,
+
     /// Optional practising category.
     #[model(text(min_chars = 1, max_chars = 256))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub practising_type: Option<String>,
+
     /// Optional practising scope.
     #[model(text(min_chars = 1, max_chars = 256))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub practising_scope: Option<String>,
+
     /// Optional job title.
     #[model(index, text(min_chars = 1, max_chars = 256))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub job_title: Option<String>,
+
     /// Optional comment.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,
+
     /// Lifecycle state.
     #[model(index)]
     pub state: State,
+
     /// Whether this is test data.
     #[model(index)]
     pub test: bool,
+
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]

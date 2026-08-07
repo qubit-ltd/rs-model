@@ -7,31 +7,16 @@
 // =============================================================================
 //! Channel and acquisition sources.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
-use qubit_mixin::{
-    Emptyful,
-    InfoWithEntity,
-    Normalizable,
-};
+use chrono::{DateTime, Utc};
+use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use super::{
-    Category,
-    Scope,
-};
+use super::{Category, Scope};
 
 /// A channel source associated with an entity type.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 #[model(unique(name = "source_code", fields(code), ignore_case(code)))]
 pub struct Source {
@@ -39,37 +24,47 @@ pub struct Source {
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Globally unique ASCII code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
+
     /// Source name.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Ownership scope.
     #[model(index)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scope: Option<Scope>,
+
     /// Associated entity name.
     #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub entity: String,
+
     /// Optional description.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
+
     /// Whether this source is predefined.
     #[model(index)]
     pub predefined: bool,
+
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]

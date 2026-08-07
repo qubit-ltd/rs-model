@@ -8,25 +8,13 @@
 
 //! Medical settlement records.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::{
     commons::CredentialInfo,
-    medical::{
-        HisInfo,
-        MedicalPayment,
-        MedicalSettlementItem,
-        MedicareType,
-        PatientInfo,
-    },
+    medical::{HisInfo, MedicalPayment, MedicalSettlementItem, MedicareType, PatientInfo},
     mixin::StatefulInfo,
 };
 
@@ -36,32 +24,44 @@ pub struct MedicalSettlement {
     /// Optional persisted identifier inherited from the settlement model.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Application that owns this settlement.
     pub app: StatefulInfo,
+
     /// Organization that owns this settlement.
     pub organization: StatefulInfo,
+
     /// Optional settlement remark.
     pub remark: Option<String>,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
+
     /// Medical-insurance classification.
     pub medicare: MedicareType,
+
     /// Patient information.
     pub patient: PatientInfo,
+
     /// Medical card used by the patient.
     pub card: CredentialInfo,
+
     /// Polymorphic hospital-information-system payload.
     #[model(opaque)]
     pub his_info: HisInfo,
+
     /// Medical payment breakdown.
     pub payment: MedicalPayment,
+
     /// Settlement line items.
     #[model(sequence(min_items = 1))]
     pub items: Vec<MedicalSettlementItem>,

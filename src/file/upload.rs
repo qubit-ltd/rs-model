@@ -9,71 +9,69 @@
 
 use std::path::Path;
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_mixin::Emptyful;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use super::{
-    AttachmentType,
-    FileInfo,
-    UploadParams,
-};
+use super::{AttachmentType, FileInfo, UploadParams};
 
 /// A received file and its generated image renditions.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 pub struct Upload {
     /// Optional persisted identifier.
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Optional user-facing original filename.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub original_filename: Option<String>,
+
     /// Type inferred for the uploaded file.
     #[model(index)]
     pub r#type: AttachmentType,
+
     /// Original file storage metadata.
     #[redact(nested)]
     pub file: FileInfo,
+
     /// Optional screenshot rendition.
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub screenshot: Option<FileInfo>,
+
     /// Optional small-thumbnail rendition.
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub small_thumbnail: Option<FileInfo>,
+
     /// Optional large-thumbnail rendition.
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub large_thumbnail: Option<FileInfo>,
+
     /// Optional hash algorithm name.
     #[model(text(min_chars = 1, max_chars = 64))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub hash_algorithm: Option<String>,
+
     /// Optional content hash value.
     #[model(text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub hash_value: Option<String>,
+
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -145,11 +143,7 @@ impl Upload {
     ///
     /// Returns an I/O error when a relative path cannot be made absolute.
     /// A nonexistent source path has size zero, matching `File.length()`.
-    pub fn set_file_info(
-        &mut self,
-        path: &Path,
-        content_type: &str,
-    ) -> std::io::Result<&FileInfo> {
+    pub fn set_file_info(&mut self, path: &Path, content_type: &str) -> std::io::Result<&FileInfo> {
         let absolute_path = if path.is_absolute() {
             path.to_path_buf()
         } else {
@@ -185,8 +179,7 @@ impl Upload {
 
     /// Creates and stores small-thumbnail metadata in the temporary directory.
     pub fn set_small_thumbnail_info(&mut self) -> &FileInfo {
-        self.small_thumbnail =
-            Some(self.rendition(Self::SMALL_THUMBNAIL_SUFFIX));
+        self.small_thumbnail = Some(self.rendition(Self::SMALL_THUMBNAIL_SUFFIX));
         self.small_thumbnail
             .as_ref()
             .expect("small thumbnail was just stored")
@@ -194,8 +187,7 @@ impl Upload {
 
     /// Creates and stores large-thumbnail metadata in the temporary directory.
     pub fn set_large_thumbnail_info(&mut self) -> &FileInfo {
-        self.large_thumbnail =
-            Some(self.rendition(Self::LARGE_THUMBNAIL_SUFFIX));
+        self.large_thumbnail = Some(self.rendition(Self::LARGE_THUMBNAIL_SUFFIX));
         self.large_thumbnail
             .as_ref()
             .expect("large thumbnail was just stored")

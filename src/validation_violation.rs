@@ -14,6 +14,7 @@
 pub struct ValidationViolation {
     /// The field whose constraint failed.
     pub field: String,
+
     /// The constraint failure reason.
     pub reason: String,
 }

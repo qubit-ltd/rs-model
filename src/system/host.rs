@@ -9,15 +9,10 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// A provider host identified by its device identifier.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 #[model(unique(name = "host_udid", fields(udid)))]
 pub struct Host {
@@ -25,9 +20,11 @@ pub struct Host {
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Provider name.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub provider: String,
+
     /// Exact case-sensitive device identifier.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]

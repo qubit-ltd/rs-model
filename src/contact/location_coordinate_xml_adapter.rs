@@ -9,10 +9,7 @@
 
 use bigdecimal::BigDecimal;
 
-use crate::contact::{
-    ContactCodecError,
-    LocationCoordinateCodec,
-};
+use crate::contact::{ContactCodecError, LocationCoordinateCodec};
 
 /// Marshals and unmarshals optional coordinates as XML text values.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -20,9 +17,7 @@ pub struct LocationCoordinateXmlAdapter;
 
 impl LocationCoordinateXmlAdapter {
     /// Decodes an optional XML text value.
-    pub fn unmarshal(
-        value: Option<&str>,
-    ) -> Result<Option<BigDecimal>, ContactCodecError> {
+    pub fn unmarshal(value: Option<&str>) -> Result<Option<BigDecimal>, ContactCodecError> {
         LocationCoordinateCodec::decode(value)
     }
 

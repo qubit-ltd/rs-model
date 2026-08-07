@@ -8,16 +8,10 @@
 
 //! General clinic visit information.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// Hospital-system information for a general outpatient visit.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
@@ -25,14 +19,18 @@ pub struct ClinicInfo {
     /// Source-system business sequence number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub number: String,
+
     /// Optional remark.
     pub remark: Option<String>,
+
     /// Department visited by the patient.
     #[model(opaque)]
     pub department: Info,
+
     /// Optional outpatient record number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub record_number: Option<String>,
+
     /// UTC visit timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub visit_time: DateTime<Utc>,

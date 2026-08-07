@@ -10,32 +10,15 @@
 
 #[allow(unused_imports)]
 use super::{
-    AuthorizeRecord,
-    Category,
-    Credential,
-    CredentialInfo,
-    CredentialType,
-    Currency,
-    DayType,
-    Kinship,
-    MqType,
-    Owner,
-    Payload,
-    RequestStatus,
-    Source,
-    VerifyState,
+    AuthorizeRecord, Category, Credential, CredentialInfo, CredentialType, Currency, DayType,
+    Kinship, MqType, Owner, Payload, RequestStatus, Source, VerifyState,
 };
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// A set of owners represented by their entity and identifier pairs.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize)]
 pub struct Owners {
     /// Owners in source order.
     pub values: Vec<Owner>,

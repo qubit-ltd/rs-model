@@ -7,73 +7,64 @@
 // =============================================================================
 //! Data-dictionary entries and parameter matching.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
-use qubit_mixin::{
-    Emptyful,
-    Normalizable,
-};
+use chrono::{DateTime, Utc};
+use qubit_mixin::{Emptyful, Normalizable};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 use regex::RegexBuilder;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::mixin::StatefulInfo;
 
-use super::{
-    Dict,
-    DictEntryInfo,
-};
+use super::{Dict, DictEntryInfo};
 
 /// An entry belonging to a data dictionary.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
-#[model(unique(
-    name = "dict_entry_dict_code",
-    fields(dict, code),
-    ignore_case(code)
-))]
+#[model(unique(name = "dict_entry_dict_code", fields(dict, code), ignore_case(code)))]
 pub struct DictEntry {
     /// Persisted identifier.
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Owning dictionary information.
     #[model(reference(target = Dict, target_field = info))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub dict: Option<StatefulInfo>,
+
     /// Case-insensitive code unique within the dictionary.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
+
     /// Display-name template.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Optional description.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+
     /// Optional comment.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,
+
     /// Optional parent-entry information.
     #[model(reference(target = DictEntry, target_field = info))]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent: Option<DictEntryInfo>,
+
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -110,8 +101,7 @@ impl DictEntry {
         self.code.clone_from(&info.code);
         self.name.clone_from(&info.name);
         if let Some(dict_id) = info.dict_id {
-            self.dict.get_or_insert_with(StatefulInfo::default).id =
-                Some(dict_id);
+            self.dict.get_or_insert_with(StatefulInfo::default).id = Some(dict_id);
         }
         self.delete_time = info.delete_time;
     }
@@ -219,22 +209,17 @@ fn stateful_info_is_empty(info: &StatefulInfo) -> bool {
 }
 
 /// Replaces numbered placeholders in `template` with the supplied parameters.
-pub(super) fn format_with_params<T: AsRef<str>>(
-    template: &str,
-    params: &[T],
-) -> String {
-    params.iter().enumerate().fold(
-        template.to_owned(),
-        |result, (index, value)| {
+pub(super) fn format_with_params<T: AsRef<str>>(template: &str, params: &[T]) -> String {
+    params
+        .iter()
+        .enumerate()
+        .fold(template.to_owned(), |result, (index, value)| {
             result.replace(&format!("{{{index}}}"), value.as_ref())
-        },
-    )
+        })
 }
 
 /// Locates well-formed numbered placeholders within a template.
-fn placeholder_ranges(
-    value: &str,
-) -> impl Iterator<Item = (usize, usize)> + '_ {
+fn placeholder_ranges(value: &str) -> impl Iterator<Item = (usize, usize)> + '_ {
     value.match_indices('{').filter_map(|(start, _)| {
         let suffix = &value[start + 1..];
         let close = suffix.find('}')?;

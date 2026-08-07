@@ -7,27 +7,16 @@
 // =============================================================================
 //! Aggregate payload values.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
-use qubit_mixin::{
-    Emptyful,
-    Normalizable,
-};
+use chrono::{DateTime, Utc};
+use qubit_mixin::{Emptyful, Normalizable};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use super::AggregateRef;
 
 /// A named string payload attached to an aggregate root.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 #[model(unique(
     name = "payload_aggregate_key",
@@ -39,26 +28,32 @@ pub struct Payload {
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Payload key unique within the aggregate.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub key: String,
+
     /// Optional payload value.
     #[model(text(min_chars = 1, max_chars = 256))]
     #[redact(level = "secret")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
+
     /// Owning aggregate reference.
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub aggregate_ref: Option<AggregateRef>,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]

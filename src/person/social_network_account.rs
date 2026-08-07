@@ -7,28 +7,15 @@
 // =============================================================================
 //! User accounts maintained by external social networks.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::Payload,
-    controller::RegisterUserParams,
-    security::KeyValuePair,
-};
+use crate::{commons::Payload, controller::RegisterUserParams, security::KeyValuePair};
 
-use super::{
-    SocialNetwork,
-    User,
-};
+use super::{SocialNetwork, User};
 
 /// A user's account identity within one social-network application.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
@@ -43,6 +30,7 @@ pub struct SocialNetworkAccount {
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Owning platform username.
     #[model(
         reference(target = User, target_field = username),
@@ -50,29 +38,36 @@ pub struct SocialNetworkAccount {
         text(min_chars = 1, max_chars = 64, repertoire = ascii)
     )]
     pub username: String,
+
     /// Social-network provider.
     #[model(index)]
     pub social_network: SocialNetwork,
+
     /// Provider-side application identifier.
     #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub app_id: String,
+
     /// Provider-side open identifier.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub open_id: String,
+
     /// Optional provider nickname.
     #[model(text(min_chars = 1, max_chars = 128))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub nickname: Option<String>,
+
     /// Optional provider avatar URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub avatar: Option<String>,
+
     /// Optional provider profile properties.
     #[model(sequence(min_items = 1, max_items = 10))]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub profiles: Option<Vec<KeyValuePair>>,
+
     /// Optional extension payloads.
     #[model(
         reference(target = Payload, target_field = id, must_exist = false),
@@ -80,14 +75,17 @@ pub struct SocialNetworkAccount {
     )]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payloads: Option<Vec<Payload>>,
+
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -119,9 +117,7 @@ impl SocialNetworkAccount {
     pub fn from_register_params(params: &RegisterUserParams) -> Self {
         Self {
             username: params.username.clone(),
-            social_network: params
-                .social_network
-                .unwrap_or(SocialNetwork::Wechat),
+            social_network: params.social_network.unwrap_or(SocialNetwork::Wechat),
             app_id: params.app_id.clone().unwrap_or_default(),
             open_id: params.open_id.clone().unwrap_or_default(),
             nickname: params.nickname.clone(),

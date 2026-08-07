@@ -9,39 +9,19 @@
 //! China administrative-data markers and resident identity-card utilities.
 
 #[allow(unused_imports)]
-use super::{
-    ChinaCities,
-    ChinaDistricts,
-    ChinaProvinces,
-};
+use super::{ChinaCities, ChinaDistricts, ChinaProvinces};
 
-use std::{
-    collections::HashMap,
-    sync::LazyLock,
-};
+use std::{collections::HashMap, sync::LazyLock};
 
-use chrono::{
-    DateTime,
-    Datelike,
-    NaiveDate,
-    Utc,
-};
+use chrono::{DateTime, Datelike, NaiveDate, Utc};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use crate::{
-    contact::District,
-    person::Gender,
-};
+use crate::{contact::District, person::Gender};
 
 /// Utilities for 18-character Chinese resident identity-card numbers.
-#[derive(
-    Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize,
-)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize)]
 pub struct IdentityCardUtils;
 
 impl IdentityCardUtils {
@@ -82,8 +62,7 @@ impl IdentityCardUtils {
         let Some(expected) = Self::get_last_char(number) else {
             return false;
         };
-        number.as_bytes()[Self::VERIFY_INDEX].to_ascii_uppercase()
-            == expected as u8
+        number.as_bytes()[Self::VERIFY_INDEX].to_ascii_uppercase() == expected as u8
             && Self::get_birthday(number).is_some()
     }
 
@@ -94,10 +73,8 @@ impl IdentityCardUtils {
     /// in the Java source.
     #[must_use]
     pub fn get_last_char(number: &str) -> Option<char> {
-        const RATIOS: [u32; 17] =
-            [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-        const LAST_CHARS: [char; 11] =
-            ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+        const RATIOS: [u32; 17] = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+        const LAST_CHARS: [char; 11] = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
 
         let digits = number.as_bytes().get(..Self::VERIFY_INDEX)?;
         let mut sum = 0_u32;
@@ -130,11 +107,7 @@ impl IdentityCardUtils {
             Self::MONTH_INDEX,
             Self::MONTH_INDEX + Self::MONTH_LENGTH,
         )?;
-        let day = parse_number(
-            number,
-            Self::DAY_INDEX,
-            Self::DAY_INDEX + Self::DAY_LENGTH,
-        )?;
+        let day = parse_number(number, Self::DAY_INDEX, Self::DAY_INDEX + Self::DAY_LENGTH)?;
         NaiveDate::from_ymd_opt(i32::try_from(year).ok()?, month, day)
     }
 
@@ -169,8 +142,7 @@ impl IdentityCardUtils {
         if number.len() != Self::NUMBER_LENGTH {
             return None;
         }
-        let area = number
-            .get(Self::AREA_INDEX..Self::AREA_INDEX + Self::AREA_LENGTH)?;
+        let area = number.get(Self::AREA_INDEX..Self::AREA_INDEX + Self::AREA_LENGTH)?;
         let name = Self::get_area_map().get(area)?;
         let city_code = format!("{}00", &area[..4]);
         let city_name = Self::get_area_map()
@@ -218,20 +190,14 @@ impl IdentityCardUtils {
     /// Returns `None` when `number` is incorrectly sized or its preserved area
     /// and sequence components do not form 17 ASCII digits.
     #[must_use]
-    pub fn change_birthday(
-        number: &str,
-        birthday: NaiveDate,
-    ) -> Option<String> {
+    pub fn change_birthday(number: &str, birthday: NaiveDate) -> Option<String> {
         if number.len() != Self::NUMBER_LENGTH {
             return None;
         }
-        let area = number
-            .get(Self::AREA_INDEX..Self::AREA_INDEX + Self::AREA_LENGTH)?;
-        let sequence = number.get(
-            Self::SEQUENCE_INDEX..Self::SEQUENCE_INDEX + Self::SEQUENCE_LENGTH,
-        )?;
-        let mut result =
-            format!("{area}{}{sequence}", get_birthday_code(birthday));
+        let area = number.get(Self::AREA_INDEX..Self::AREA_INDEX + Self::AREA_LENGTH)?;
+        let sequence =
+            number.get(Self::SEQUENCE_INDEX..Self::SEQUENCE_INDEX + Self::SEQUENCE_LENGTH)?;
+        let mut result = format!("{area}{}{sequence}", get_birthday_code(birthday));
         result.push(Self::get_last_char(&result)?);
         Some(result)
     }
@@ -276,5 +242,4 @@ fn load_area_map() -> HashMap<&'static str, &'static str> {
         .collect()
 }
 
-static AREA_MAP: LazyLock<HashMap<&'static str, &'static str>> =
-    LazyLock::new(load_area_map);
+static AREA_MAP: LazyLock<HashMap<&'static str, &'static str>> = LazyLock::new(load_area_map);

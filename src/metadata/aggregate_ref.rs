@@ -7,30 +7,24 @@
 // =============================================================================
 //! Aggregate-root references.
 
-use qubit_mixin::{
-    Emptyful,
-    Normalizable,
-};
+use qubit_mixin::{Emptyful, Normalizable};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// Identifies an aggregate root and an optional property on it.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 #[model(key(name = "aggregate_ref", fields(type, id, property)))]
 pub struct AggregateRef {
     /// Aggregate-root entity type.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub r#type: String,
+
     /// Aggregate-root identifier.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Optional property name within the aggregate root.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -11,18 +11,12 @@
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::{
     commons::CredentialInfo,
     contact::Phone,
-    payment::{
-        Account,
-        ParticipantType,
-    },
+    payment::{Account, ParticipantType},
 };
 
 /// Identifying, contact, account, and category information for a payer or
@@ -32,22 +26,30 @@ pub struct Participant {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Participant classification.
     pub r#type: Option<ParticipantType>,
+
     /// Display name.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Optional identity credential.
     pub credential: Option<CredentialInfo>,
+
     /// Optional mobile telephone number.
     pub mobile: Option<Phone>,
+
     /// Optional landline telephone number.
     pub phone: Option<Phone>,
+
     /// Optional email address.
     #[redact(level = "secret")]
     pub email: Option<String>,
+
     /// Optional payment account.
     pub account: Option<Account>,
+
     /// Optional participant category.
     #[model(opaque)]
     pub category: Option<InfoWithEntity>,

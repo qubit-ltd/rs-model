@@ -8,15 +8,9 @@
 
 //! Application role model.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::commons::State;
 use crate::mixin::StatefulInfo;
@@ -27,30 +21,41 @@ pub struct Role {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Application to which the role belongs.
     pub app: StatefulInfo,
+
     /// ASCII code unique within `app`.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
+
     /// Name unique within `app`.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Optional role description.
     pub description: Option<String>,
+
     /// Whether this is the guest role.
     pub guest: Option<bool>,
+
     /// Whether this is the application's basic role.
     pub basic: Option<bool>,
+
     /// ASCII permission names.
     pub privileges: Vec<String>,
+
     /// Lifecycle state.
     pub state: State,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,

@@ -10,26 +10,19 @@
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use crate::mixin::{
-    StatefulInfo,
-    WithApp,
-};
+use crate::mixin::{StatefulInfo, WithApp};
 
 /// Basic information for an entity that belongs to an application.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct InfoWithAppEntity {
     /// Basic identifying information and entity discriminator.
     #[model(opaque)]
     #[redact(skip)]
     #[serde(flatten)]
     pub info: InfoWithEntity,
+
     /// Optional application that owns the entity.
     #[redact(skip)]
     pub app: Option<StatefulInfo>,

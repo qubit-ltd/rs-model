@@ -9,16 +9,10 @@
 //! Expanded order query results.
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::{
-    order::{
-        Order,
-        Return,
-    },
+    order::{Order, Return},
     settlement::Transaction,
 };
 
@@ -27,8 +21,10 @@ use crate::{
 pub struct OrderDetail {
     /// Order aggregate.
     pub order: Order,
+
     /// Optional related transactions.
     pub transactions: Option<Vec<Transaction>>,
+
     /// Optional related returns.
     pub returns: Option<Vec<Return>>,
 }

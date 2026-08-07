@@ -9,10 +9,7 @@
 //! Medical package line items.
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::service::MedicalItem;
 
@@ -21,8 +18,10 @@ use crate::service::MedicalItem;
 pub struct MedicalPackageItem {
     /// Persisted identifier of the owning medical package.
     pub package_id: i64,
+
     /// Included medical service item.
     pub item: MedicalItem,
+
     /// Number of uses included in the package.
     pub count: i32,
 }

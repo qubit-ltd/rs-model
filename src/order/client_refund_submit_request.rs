@@ -10,10 +10,7 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::order::Client;
 
@@ -24,10 +21,13 @@ pub struct ClientRefundSubmitRequest {
     #[model(sensitive(token))]
     #[redact(level = "secret")]
     pub verify_code: String,
+
     /// Client receiving the refund.
     pub client: Client,
+
     /// Browser return URL.
     pub return_url: String,
+
     /// Server notification URL.
     pub notify_url: String,
 }

@@ -7,31 +7,18 @@
 // =============================================================================
 //! Persisted attachment metadata.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-    Serializer,
-};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::{
     commons::State,
-    metadata::{
-        AggregateRef,
-        Category,
-    },
+    metadata::{AggregateRef, Category},
 };
 
-use super::{
-    AttachmentType,
-    Upload,
-};
+use super::{AttachmentType, Upload};
 
 /// A categorized attachment belonging to an aggregate root.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact)]
@@ -41,49 +28,61 @@ pub struct Attachment {
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Owning aggregate-root reference.
     #[model(index)]
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub aggregate_ref: Option<AggregateRef>,
+
     /// Attachment classification.
     #[model(index)]
     pub r#type: AttachmentType,
+
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), opaque)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
+
     /// Zero-based order within the aggregate property.
     #[model(index)]
     #[serde(default)]
     pub index: i32,
+
     /// Optional title.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
+
     /// Optional description.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+
     /// Stored upload.
     #[model(reference(target = Upload, target_field = id))]
     #[redact(nested)]
     pub upload: Upload,
+
     /// Lifecycle state.
     #[model(index)]
     pub state: State,
+
     /// Whether the attachment is visible.
     #[model(index)]
     #[serde(default = "default_visible")]
     pub visible: bool,
+
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -146,31 +145,42 @@ impl Attachment {
 struct AttachmentWire<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<i64>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     aggregate_ref: Option<&'a AggregateRef>,
+
     #[serde(rename = "type")]
     r#type: &'a AttachmentType,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     category: Option<&'a InfoWithEntity>,
     index: i32,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<&'a str>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<&'a str>,
     upload: &'a Upload,
     state: &'a State,
     visible: bool,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     create_time: Option<&'a DateTime<Utc>>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     modify_time: Option<&'a DateTime<Utc>>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     delete_time: Option<&'a DateTime<Utc>>,
     file_path: &'a str,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     screenshot_path: Option<&'a str>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     large_thumbnail_path: Option<&'a str>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     small_thumbnail_path: Option<&'a str>,
 }

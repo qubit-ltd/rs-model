@@ -8,16 +8,10 @@
 
 //! Insurance product rules.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// A key-value processing rule attached to an insurance product.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
@@ -25,21 +19,28 @@ pub struct InsuranceProductRule {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Insurance product information.
     #[model(opaque)]
     pub product: Info,
+
     /// Rule key.
     pub key: String,
+
     /// Rule value.
     pub value: String,
+
     /// Rule description.
     pub description: String,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,

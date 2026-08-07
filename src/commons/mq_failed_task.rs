@@ -7,16 +7,10 @@
 // =============================================================================
 //! Failed message-queue tasks.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use super::MqType;
 
@@ -28,23 +22,31 @@ pub struct MqFailedTask {
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Message topic.
     pub topic: String,
+
     /// Message tag.
     pub tag: String,
+
     /// Message operation type.
     pub r#type: MqType,
+
     /// Provider-assigned message identifier.
     pub message_id: String,
+
     /// Business message key.
     pub message_key: String,
+
     /// Serialized message payload.
     #[redact(level = "secret")]
     pub message_value: String,
+
     /// UTC submission timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]

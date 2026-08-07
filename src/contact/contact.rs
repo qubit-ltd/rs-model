@@ -8,51 +8,51 @@
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::commons::VerifyState;
-use crate::contact::{
-    Address,
-    Phone,
-};
+use crate::contact::{Address, Phone};
 
 /// Contact methods and their independent verification states.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Contact {
     /// Optional landline number.
     #[model(index)]
     #[redact(nested)]
     pub phone: Option<Phone>,
+
     /// Verification state for `phone` when present.
     #[model(index)]
     pub phone_verified: Option<VerifyState>,
+
     /// Optional mobile number.
     #[model(index)]
     #[redact(nested)]
     pub mobile: Option<Phone>,
+
     /// Verification state for `mobile` when present.
     #[model(index)]
     pub mobile_verified: Option<VerifyState>,
+
     /// Optional ASCII email address.
     #[model(index, text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub email: Option<String>,
+
     /// Verification state for `email` when present.
     #[model(index)]
     pub email_verified: Option<VerifyState>,
+
     /// Optional ASCII URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub url: Option<String>,
+
     /// Optional postal address.
     #[model(index)]
     #[redact(nested)]
     pub address: Option<Address>,
+
     /// Verification state for `address` when present.
     #[model(index)]
     pub address_verified: Option<VerifyState>,
@@ -95,8 +95,7 @@ impl Contact {
         self.phone_verified = self.phone.as_ref().map(|_| VerifyState::None);
         self.mobile_verified = self.mobile.as_ref().map(|_| VerifyState::None);
         self.email_verified = self.email.as_ref().map(|_| VerifyState::None);
-        self.address_verified =
-            self.address.as_ref().map(|_| VerifyState::None);
+        self.address_verified = self.address.as_ref().map(|_| VerifyState::None);
     }
 
     /// Copies verification states for values that are unchanged from `other`.
@@ -104,27 +103,14 @@ impl Contact {
     /// Absent values receive no state, and changed present values are reset to
     /// [`VerifyState::None`].
     pub fn copy_verify_state(&mut self, other: &Self) {
-        self.phone_verified = copied_verify_state(
-            &self.phone,
-            &other.phone,
-            other.phone_verified,
-        );
-        self.mobile_verified = copied_verify_state(
-            &self.mobile,
-            &other.mobile,
-            other.mobile_verified,
-        );
-        self.email_verified = copied_verify_state(
-            &self.email,
-            &other.email,
-            other.email_verified,
-        );
+        self.phone_verified = copied_verify_state(&self.phone, &other.phone, other.phone_verified);
+        self.mobile_verified =
+            copied_verify_state(&self.mobile, &other.mobile, other.mobile_verified);
+        self.email_verified = copied_verify_state(&self.email, &other.email, other.email_verified);
         self.address_verified = match &self.address {
             None => None,
             Some(current) => match &other.address {
-                Some(previous) if current.is_same(previous) => {
-                    other.address_verified
-                }
+                Some(previous) if current.is_same(previous) => other.address_verified,
                 _ => Some(VerifyState::None),
             },
         };

@@ -9,40 +9,39 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use super::{
-    KeyValuePair,
-    SignedInfo,
-};
+use super::{KeyValuePair, SignedInfo};
 
 /// A signature, its owner, signer, covered information, and encoded value.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 pub struct Signature {
     /// Optional persisted identifier.
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Owner entity type.
     pub owner_type: String,
+
     /// Owner entity identifier.
     pub owner_id: i64,
+
     /// Signer entity type.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub signer_type: String,
+
     /// Signer entity identifier.
     pub signer_id: i64,
+
     /// Signer entity code.
     pub signer_code: String,
+
     /// Canonical signed information.
     #[redact(nested)]
     pub signed_info: SignedInfo,
+
     /// Base64-encoded signature bytes.
     #[model(text(min_chars = 1, max_chars = 2048))]
     #[redact(level = "secret")]

@@ -10,36 +10,20 @@
 
 #[allow(unused_imports)]
 use super::{
-    AuthorizeRecord,
-    Category,
-    Credential,
-    CredentialInfo,
-    CredentialType,
-    Currency,
-    DayType,
-    Kinship,
-    MqType,
-    Owners,
-    Payload,
-    RequestStatus,
-    Source,
-    VerifyState,
+    AuthorizeRecord, Category, Credential, CredentialInfo, CredentialType, Currency, DayType,
+    Kinship, MqType, Owners, Payload, RequestStatus, Source, VerifyState,
 };
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// Identifies the owner of a domain object.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize)]
 pub struct Owner {
     /// Owning entity name.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub entity: String,
+
     /// Owner's persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,

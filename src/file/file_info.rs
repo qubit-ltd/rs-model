@@ -13,15 +13,10 @@ use bigdecimal::BigDecimal;
 use qubit_mixin::Emptyful;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// Storage metadata for a file, image, video, or audio asset.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 #[model(unique(name = "file_info_path", fields(path), ignore_case(path)))]
 pub struct FileInfo {
@@ -29,23 +24,30 @@ pub struct FileInfo {
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub path: String,
+
     /// ASCII format name.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub format: String,
+
     /// ASCII MIME content type.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub content_type: String,
+
     /// File size in bytes.
     pub size: i64,
+
     /// Optional image or video width in pixels.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub width: Option<i32>,
+
     /// Optional image or video height in pixels.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub height: Option<i32>,
+
     /// Optional audio or video duration in seconds.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<i32>,
+
     /// Optional compression quality percentage with two fractional digits.
     #[model(decimal(scale = 2))]
     #[serde(skip_serializing_if = "Option::is_none")]

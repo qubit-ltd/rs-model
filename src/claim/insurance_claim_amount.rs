@@ -9,16 +9,9 @@
 //! Insurance-claim amount summaries.
 
 use bigdecimal::BigDecimal;
-use chrono::{
-    DateTime,
-    NaiveDate,
-    Utc,
-};
+use chrono::{DateTime, NaiveDate, Utc};
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// Submitted, covered, claimed, and actually paid amounts for a claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
@@ -26,61 +19,82 @@ pub struct InsuranceClaimAmount {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Persisted claim identifier.
     pub claim_id: i64,
+
     /// Optional total medical expense.
     #[model(money(scale = 4))]
     pub total_amount: Option<BigDecimal>,
+
     /// Optional expense within medical-insurance coverage.
     #[model(money(scale = 4))]
     pub medicare_amount: Option<BigDecimal>,
+
     /// Optional self-paid expense.
     #[model(money(scale = 4))]
     pub self_paid_amount: Option<BigDecimal>,
+
     /// Optional self-care expense.
     #[model(money(scale = 4))]
     pub self_care_amount: Option<BigDecimal>,
+
     /// Optional medical-insurance fund payment.
     #[model(money(scale = 4))]
     pub fund_paid_amount: Option<BigDecimal>,
+
     /// Optional serious-illness fund payment.
     #[model(money(scale = 4))]
     pub serious_illness_paid: Option<BigDecimal>,
+
     /// Optional serious-illness insurance payment.
     #[model(money(scale = 4))]
     pub serious_illness_insurance_paid: Option<BigDecimal>,
+
     /// Optional civil-affairs subsidy payment.
     #[model(money(scale = 4))]
     pub civil_affair_subsidy_paid: Option<BigDecimal>,
+
     /// Optional claimed self-paid amount.
     #[model(money(scale = 4))]
     pub self_paid_claim_amount: Option<BigDecimal>,
+
     /// Optional claimed self-care amount.
     #[model(money(scale = 4))]
     pub self_care_claim_amount: Option<BigDecimal>,
+
     /// Optional total claimed amount.
     #[model(money(scale = 4))]
     pub total_claim_amount: Option<BigDecimal>,
+
     /// Optional actual self-paid amount.
     #[model(money(scale = 4))]
     pub actual_self_paid_amount: Option<BigDecimal>,
+
     /// Optional actual self-care amount.
     #[model(money(scale = 4))]
     pub actual_self_care_amount: Option<BigDecimal>,
+
     /// Optional actual insurer payment.
     #[model(money(scale = 4))]
     pub actual_paid_amount: Option<BigDecimal>,
+
     /// Whether paid amounts were calibrated.
     pub paid_amount_calibration: bool,
+
     /// Optional payment date.
     pub pay_time: Option<NaiveDate>,
+
     /// Optional case-closing date.
     pub endcase_date: Option<NaiveDate>,
+
     /// Optional raw amount payload.
     pub payload: Option<String>,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,

@@ -8,15 +8,9 @@
 
 //! Coupon calculation rules.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::mixin::StatefulInfo;
 
@@ -26,24 +20,32 @@ pub struct CouponRule {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// App-scoped unique rule code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
+
     /// Human-readable rule name.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Application that owns this rule.
     pub app: StatefulInfo,
+
     /// Rule expression evaluated by the coupon engine.
     pub rule: String,
+
     /// Optional rule description.
     pub description: Option<String>,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,

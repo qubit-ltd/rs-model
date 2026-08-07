@@ -7,64 +7,26 @@
 
 #[allow(unused_imports)]
 use super::{
-    Blood,
-    Education,
-    Ethnic,
-    Gender,
-    Incoming,
-    Industry,
-    JobTitle,
-    Marriage,
-    PersonIdentity,
-    Politics,
-    Religion,
-    SexOrientation,
-    SocialNetwork,
+    Blood, Education, Ethnic, Gender, Incoming, Industry, JobTitle, Marriage, PersonIdentity,
+    Politics, Religion, SexOrientation, SocialNetwork,
 };
 
-use chrono::{
-    DateTime,
-    NaiveDate,
-    NaiveTime,
-    Utc,
-};
-use qubit_mixin::{
-    Info,
-    InfoWithEntity,
-};
+use chrono::{DateTime, NaiveDate, NaiveTime, Utc};
+use qubit_mixin::{Info, InfoWithEntity};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use crate::commons::{
-    Category,
-    Credential,
-    CredentialInfo,
-    Source,
-};
-use crate::contact::{
-    City,
-    Contact,
-    Country,
-    Province,
-};
+use crate::commons::{Category, Credential, CredentialInfo, Source};
+use crate::contact::{City, Contact, Country, Province};
 use crate::medical::MedicareType;
 use crate::mixin::StatefulInfo;
-use crate::order::{
-    Buyer,
-    Client,
-    Consignee,
-};
+use crate::order::{Buyer, Client, Consignee};
 use crate::person::PersonInfo;
 use crate::upload::Attachment;
 
 /// A person's complete demographic, contact, and administrative record.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[model(
     unique(name = "person_username", fields(username)),
     unique(name = "person_credential", fields(credential))
@@ -73,119 +35,161 @@ pub struct Person {
     /// Optional persisted identifier.
     #[model(identifier)]
     pub id: Option<i64>,
+
     /// Optional data-source information.
     #[model(reference(target = Source, target_field = info), index, opaque)]
     pub source: Option<InfoWithEntity>,
+
     /// Optional classification information.
     #[model(reference(target = Category, target_field = info), index, opaque)]
     pub category: Option<InfoWithEntity>,
+
     /// Real name.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
+
     /// Optional globally unique registered user name.
     #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub username: Option<String>,
+
     /// Optional gender.
     #[model(index)]
     pub gender: Option<Gender>,
+
     /// Optional birth date.
     #[model(index)]
     pub birthday: Option<NaiveDate>,
+
     /// Optional birth time.
     #[model(index)]
     pub birth_time: Option<NaiveTime>,
+
     /// Optional birth-country information.
     #[model(reference(target = Country, target_field = info), index, opaque)]
     pub birth_country: Option<Info>,
+
     /// Optional birth-province information.
     #[model(reference(target = Province, target_field = info), index, opaque)]
     pub birth_province: Option<Info>,
+
     /// Optional birth-city information.
     #[model(reference(target = City, target_field = info), index, opaque)]
     pub birth_city: Option<Info>,
+
     /// Optional identity credential.
     #[model(reference(target = Credential, target_field = info, must_exist = false))]
     #[redact(nested)]
     pub credential: Option<CredentialInfo>,
+
     /// Whether the person has medical insurance.
     #[model(index)]
     pub has_medicare: Option<bool>,
+
     /// Optional medical-insurance classification.
     #[model(index)]
     pub medicare_type: Option<MedicareType>,
+
     /// Optional medical-insurance card.
     #[model(reference(target = Credential, target_field = info, must_exist = false))]
     #[redact(nested)]
     pub medicare_card: Option<CredentialInfo>,
+
     /// Optional medical-insurance city.
     #[model(reference(target = City, target_field = info), index, opaque)]
     pub medicare_city: Option<Info>,
+
     /// Whether the person has social security.
     #[model(index)]
     pub has_social_security: Option<bool>,
+
     /// Optional social-security card.
     #[model(reference(target = Credential, target_field = info, must_exist = false))]
     #[redact(nested)]
     pub social_security_card: Option<CredentialInfo>,
+
     /// Optional social-security city.
     #[model(reference(target = City, target_field = info), index, opaque)]
     pub social_security_city: Option<Info>,
+
     /// Optional contact details.
     #[model(index)]
     #[redact(nested)]
     pub contact: Option<Contact>,
+
     /// Optional guardian information.
     #[model(reference(target = Person, target_field = info))]
     #[redact(nested)]
     pub guardian: Option<PersonInfo>,
+
     /// Optional education level.
     pub education: Option<Education>,
+
     /// Optional ethnicity.
     pub ethnic: Option<Ethnic>,
+
     /// Optional blood type.
     pub blood: Option<Blood>,
+
     /// Optional marital status.
     pub marriage: Option<Marriage>,
+
     /// Whether the person has children.
     #[model(index)]
     pub has_child: Option<bool>,
+
     /// Optional sexual orientation.
     pub sex_orientation: Option<SexOrientation>,
+
     /// Optional religion.
     pub religion: Option<Religion>,
+
     /// Optional political affiliation.
     pub politics: Option<Politics>,
+
     /// Optional industry.
     pub industry: Option<Industry>,
+
     /// Optional occupation.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub job: Option<String>,
+
     /// Optional professional title.
     pub job_title: Option<JobTitle>,
+
     /// Optional income band.
     pub incoming: Option<Incoming>,
+
     /// Optional employer information.
     pub organization: Option<StatefulInfo>,
+
     /// Optional height in centimetres.
     pub height: Option<i32>,
+
     /// Optional weight in kilograms.
     pub weight: Option<i32>,
+
     /// Optional allergy history.
     pub allergic_history: Option<String>,
+
     /// Optional portrait photograph.
     #[model(reference(target = Attachment, target_field = id, must_exist = false))]
     pub photo: Option<Attachment>,
+
     /// Optional comment.
     pub comment: Option<String>,
+
     /// Whether this is test data.
     #[model(index)]
     pub test: bool,
+
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
+
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC soft-deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
@@ -223,13 +227,7 @@ impl Person {
         self.gender = info.gender;
         self.birthday = info.birthday;
         self.credential = info.credential.clone();
-        self.contact = Contact::create(
-            None,
-            info.mobile.clone(),
-            info.email.clone(),
-            None,
-            None,
-        );
+        self.contact = Contact::create(None, info.mobile.clone(), info.email.clone(), None, None);
         self.test = info.test;
         self.delete_time = info.delete_time;
     }
@@ -254,13 +252,7 @@ impl Person {
         self.credential = buyer.credential.clone();
         self.gender = buyer.gender;
         self.birthday = buyer.birthday;
-        self.contact = Contact::create(
-            None,
-            buyer.mobile.clone(),
-            buyer.email.clone(),
-            None,
-            None,
-        );
+        self.contact = Contact::create(None, buyer.mobile.clone(), buyer.email.clone(), None, None);
     }
 
     /// Returns this person's compact information projection.
@@ -295,8 +287,7 @@ impl Person {
     /// Reports whether either benefit-coverage flag is explicitly true.
     #[must_use]
     pub fn has_medicare_or_social_security(&self) -> bool {
-        self.has_medicare.unwrap_or(false)
-            || self.has_social_security.unwrap_or(false)
+        self.has_medicare.unwrap_or(false) || self.has_social_security.unwrap_or(false)
     }
 
     /// Reports whether another projection identifies the same person.

@@ -7,10 +7,7 @@
 // =============================================================================
 //! JSON serializer for telephone-number wire values.
 
-use crate::contact::{
-    Phone,
-    PhoneCodec,
-};
+use crate::contact::{Phone, PhoneCodec};
 
 /// Serializes a telephone number as a JSON string instead of an object.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -18,9 +15,7 @@ pub struct PhoneJsonSerializer;
 
 impl PhoneJsonSerializer {
     /// Serializes an optional telephone number as a JSON string or null.
-    pub fn serialize(
-        phone: Option<&Phone>,
-    ) -> Result<String, serde_json::Error> {
+    pub fn serialize(phone: Option<&Phone>) -> Result<String, serde_json::Error> {
         serde_json::to_string(&PhoneCodec::encode(phone))
     }
 }

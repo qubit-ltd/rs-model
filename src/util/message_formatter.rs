@@ -33,11 +33,11 @@ impl MessageFormatter {
     /// The formatted message. Unmatched placeholders remain unchanged.
     #[must_use]
     pub fn format(template: &str, parameters: &[&str]) -> String {
-        parameters.iter().enumerate().fold(
-            template.to_owned(),
-            |message, (index, parameter)| {
+        parameters
+            .iter()
+            .enumerate()
+            .fold(template.to_owned(), |message, (index, parameter)| {
                 message.replace(&format!("{{{index}}}"), parameter)
-            },
-        )
+            })
     }
 }

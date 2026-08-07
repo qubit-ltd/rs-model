@@ -9,54 +9,52 @@
 //! Setting values and stable setting names.
 
 #[allow(unused_imports)]
-use super::{
-    DataType,
-    SettingName,
-};
+use super::{DataType, SettingName};
 
 use std::cmp::Ordering;
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// A named system setting containing zero, one, or multiple textual values.
-#[derive(
-    Clone, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Setting {
     /// Stable setting name.
     pub name: String,
+
     /// Declared value type.
     #[serde(rename = "type")]
     pub data_type: DataType,
+
     /// Values represented in the source model's canonical string form.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[redact(skip)]
     pub values: Vec<String>,
+
     /// Whether callers may modify this setting.
     pub readonly: bool,
+
     /// Whether the setting may contain no values.
     pub nullable: bool,
+
     /// Whether the setting may contain more than one value.
     pub multiple: bool,
+
     /// Whether persisted values are encrypted.
     pub encrypted: bool,
+
     /// Optional human-readable description.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+
     /// Optional UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC last-modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -99,8 +97,7 @@ impl Setting {
     /// Returns whether the nullability and cardinality constraints are met.
     #[must_use]
     pub fn is_valid(&self) -> bool {
-        (self.nullable || !self.values.is_empty())
-            && (self.multiple || self.values.len() <= 1)
+        (self.nullable || !self.values.is_empty()) && (self.multiple || self.values.len() <= 1)
     }
 
     /// Encodes all values into the source database representation.

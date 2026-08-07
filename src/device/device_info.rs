@@ -7,50 +7,51 @@
 // =============================================================================
 
 use crate::{
-    commons::State,
-    contact::Location,
-    device::DeviceType,
-    mixin::StatefulInfo,
-    person::PersonInfo,
+    commons::State, contact::Location, device::DeviceType, mixin::StatefulInfo, person::PersonInfo,
 };
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+use serde::{Deserialize, Serialize};
 /// Represents the DeviceInfo domain type.
+#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct DeviceInfo {
-    #[model(identifier)]
     /// The id value associated with this model.
+    #[model(identifier)]
     pub id: Option<i64>,
+
     /// The code value associated with this model.
     pub code: String,
+
     /// The name value associated with this model.
     pub name: String,
+
     /// The app value associated with this model.
     pub app: StatefulInfo,
+
     /// The owner value associated with this model.
     pub owner: Option<PersonInfo>,
+
     /// The state value associated with this model.
     pub state: State,
+
     /// The device_type value associated with this model.
     pub device_type: DeviceType,
+
     /// The location value associated with this model.
     pub location: Option<Location>,
+
     /// The test value associated with this model.
     pub test: bool,
-    #[model(time(precision=second,normalization=utc))]
+
     /// The binding_time value associated with this model.
+    #[model(time(precision=second,normalization=utc))]
     pub binding_time: Option<DateTime<Utc>>,
-    #[model(time(precision=second,normalization=utc))]
+
     /// The register_time value associated with this model.
-    pub register_time: Option<DateTime<Utc>>,
     #[model(time(precision=second,normalization=utc))]
+    pub register_time: Option<DateTime<Utc>>,
+
     /// The delete_time value associated with this model.
+    #[model(time(precision=second,normalization=utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

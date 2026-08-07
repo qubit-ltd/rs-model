@@ -9,10 +9,7 @@
 //! Order submission messages.
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::order::Order;
 
@@ -21,8 +18,10 @@ use crate::order::Order;
 pub struct OrderSubmitRequest {
     /// Order being submitted.
     pub order: Order,
+
     /// Browser return URL.
     pub return_url: String,
+
     /// Server notification URL.
     pub notify_url: String,
 }

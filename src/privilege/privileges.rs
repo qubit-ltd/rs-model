@@ -8,10 +8,7 @@
 
 //! Permission collections.
 
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::privilege::PrivilegesCodecError;
 
@@ -26,9 +23,7 @@ impl Privileges {
     /// `None` remains `None`; an empty string becomes an empty collection.
     /// Surrounding whitespace and empty segments are ignored, matching the
     /// source `Splitter` settings.
-    pub fn decode(
-        value: Option<&str>,
-    ) -> Result<Option<Self>, PrivilegesCodecError> {
+    pub fn decode(value: Option<&str>) -> Result<Option<Self>, PrivilegesCodecError> {
         let Some(value) = value else {
             return Ok(None);
         };

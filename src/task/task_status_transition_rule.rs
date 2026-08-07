@@ -10,11 +10,7 @@
 
 #[allow(unused_imports)]
 use super::{
-    TaskAction,
-    TaskExecutionError,
-    TaskPipelineStatus,
-    TaskStatus,
-    TaskStatusTransitionError,
+    TaskAction, TaskExecutionError, TaskPipelineStatus, TaskStatus, TaskStatusTransitionError,
 };
 
 /// Evaluates the fixed task lifecycle transition table.
@@ -33,16 +29,10 @@ impl TaskStatusTransitionRule {
         let next = match (status, action) {
             (TaskStatus::Created, TaskAction::Submit) => TaskStatus::Submitted,
             (TaskStatus::Created, TaskAction::Fail) => TaskStatus::Failed,
-            (TaskStatus::Submitted, TaskAction::Init) => {
-                TaskStatus::Initializing
-            }
+            (TaskStatus::Submitted, TaskAction::Init) => TaskStatus::Initializing,
             (TaskStatus::Submitted, TaskAction::Fail) => TaskStatus::Failed,
-            (TaskStatus::Initializing, TaskAction::Start) => {
-                TaskStatus::Running
-            }
-            (TaskStatus::Initializing, TaskAction::Cancel) => {
-                TaskStatus::Cancelled
-            }
+            (TaskStatus::Initializing, TaskAction::Start) => TaskStatus::Running,
+            (TaskStatus::Initializing, TaskAction::Cancel) => TaskStatus::Cancelled,
             (TaskStatus::Initializing, TaskAction::Fail) => TaskStatus::Failed,
             (TaskStatus::Running, TaskAction::Cancel) => TaskStatus::Cancelled,
             (TaskStatus::Running, TaskAction::Fail) => TaskStatus::Failed,

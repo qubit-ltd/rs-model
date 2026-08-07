@@ -7,51 +7,46 @@
 // =============================================================================
 //! External-to-platform code mappings.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
-use qubit_mixin::{
-    Emptyful,
-    Normalizable,
-};
+use chrono::{DateTime, Utc};
+use qubit_mixin::{Emptyful, Normalizable};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use super::Code;
 
 /// Maps a source-system code to a platform code for one entity type.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 pub struct CodeMap {
     /// Optional persisted identifier.
     #[model(identifier)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<i64>,
+
     /// Entity type owning the mapping.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub entity: String,
+
     /// Source-system code.
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub source: Option<Code>,
+
     /// Platform code value.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub platform_code: String,
+
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
+
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
+
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     #[serde(skip_serializing_if = "Option::is_none")]

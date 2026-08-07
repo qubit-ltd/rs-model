@@ -9,24 +9,22 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 /// Parameters required to initialize the WeChat JavaScript SDK.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 pub struct WechatJsConfig {
     /// WeChat application identifier.
     pub app_id: String,
+
     /// WeChat timestamp text.
     pub timestamp: String,
+
     /// Per-request nonce.
     #[redact(level = "secret")]
     pub nonce_str: String,
+
     /// WeChat request signature.
     #[redact(level = "secret")]
     pub signature: String,

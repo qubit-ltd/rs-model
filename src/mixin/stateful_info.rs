@@ -8,15 +8,9 @@
 
 //! Stateful basic-information snapshots.
 
-use chrono::{
-    DateTime,
-    Utc,
-};
+use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
 use crate::commons::State;
 
@@ -25,12 +19,16 @@ use crate::commons::State;
 pub struct StatefulInfo {
     /// Optional persisted identifier.
     pub id: Option<i64>,
+
     /// Stable code for the referenced entity.
     pub code: String,
+
     /// Human-readable name for the referenced entity.
     pub name: String,
+
     /// Optional lifecycle state.
     pub state: Option<State>,
+
     /// Optional UTC soft-deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,

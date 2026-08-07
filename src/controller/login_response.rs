@@ -9,38 +9,32 @@
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::Token,
-    mixin::StatefulInfo,
-    person::UserInfo,
-    system::Session,
-};
+use crate::{commons::Token, mixin::StatefulInfo, person::UserInfo, system::Session};
 
 /// User, organization, token, privilege, and role data returned after login.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]
 #[serde(default)]
 pub struct LoginResponse {
     /// Logged-in user information.
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<UserInfo>,
+
     /// Optional organization information.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub organization: Option<StatefulInfo>,
+
     /// User access token.
     #[redact(nested)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub token: Option<Token>,
+
     /// Effective privileges.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub privileges: Vec<String>,
+
     /// Assigned role codes.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub roles: Vec<String>,
