@@ -34,7 +34,6 @@ impl EnterpriseOwnership {
     /// # Returns
     ///
     /// The immutable source-domain code for this ownership classification.
-    #[inline(always)]
     #[must_use]
     pub const fn code(self) -> &'static str {
         match self {
@@ -50,7 +49,6 @@ impl EnterpriseOwnership {
     /// # Returns
     ///
     /// The immutable display description associated with this ownership.
-    #[inline(always)]
     #[must_use]
     pub const fn description(self) -> &'static str {
         match self {

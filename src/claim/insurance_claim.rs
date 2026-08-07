@@ -151,7 +151,6 @@ impl InsuranceClaim {
     ///
     /// `true` for an unsubmitted claim or a claim rejected by the system or
     /// insurer.
-    #[inline(always)]
     #[must_use]
     pub const fn allow_client_operation(&self) -> bool {
         matches!(
@@ -168,7 +167,6 @@ impl InsuranceClaim {
     ///
     /// `true` while the claim application is awaiting, passed, or temporarily
     /// saved for audit.
-    #[inline(always)]
     #[must_use]
     pub const fn allow_system_reject(&self) -> bool {
         matches!(
@@ -184,7 +182,6 @@ impl InsuranceClaim {
     /// # Returns
     ///
     /// `true` after application audit or while the claim is temporarily saved.
-    #[inline(always)]
     #[must_use]
     pub const fn allow_system_accept(&self) -> bool {
         matches!(

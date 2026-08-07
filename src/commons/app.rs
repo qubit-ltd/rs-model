@@ -25,8 +25,9 @@ use serde::{
     Deserialize,
     Serialize,
 };
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+
 /// Represents the App domain type.
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Redact, Serialize)]
 pub struct App {
     #[model(identifier)]
     /// The id value associated with this model.
