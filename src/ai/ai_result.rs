@@ -7,8 +7,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -17,19 +17,21 @@ use crate::ai::AiResultType;
 use crate::upload::Attachment;
 
 /// An AI engine's result for an uploaded attachment.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct AiResult {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Kind of generated result.
     #[model(index)]
     pub r#type: AiResultType,
 
     /// Identifier of the processed attachment.
-    #[model(reference(target = Attachment, target_field = id))]
-    pub attachment_id: i64,
+    #[model(reference(target = Attachment, target_field = id), opaque)]
+    pub attachment_id: Id,
 
     /// Generated content.
     pub content: String,

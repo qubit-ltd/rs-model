@@ -9,7 +9,6 @@
 //! Client environment snapshots.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
@@ -20,38 +19,32 @@ use crate::contact::Location;
 use crate::system::Platform;
 
 /// Network, location, platform, and device context captured for a request.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Environment {
     /// Optional ASCII client IP address.
     #[model(index, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub ip: Option<String>,
 
     /// Optional geographic location.
     #[model(index)]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 
     /// Optional operating-system platform.
     #[model(index)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub platform: Option<Platform>,
 
     /// Optional unique device identifier.
     #[model(index, sensitive(token), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub udid: Option<String>,
 
     /// Optional push-notification token.
     #[model(index, sensitive(token), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub push_token: Option<String>,
 }
 

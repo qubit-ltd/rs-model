@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 use crate::upload::MediaType;
 
 /// Metadata describing an independently referenced media resource.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Eq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct MediaInfo {
     /// Media classification.
     pub r#type: MediaType,

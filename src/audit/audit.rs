@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -19,11 +20,12 @@ use crate::audit::AuditStatus;
 use crate::organization::EmployeeInfo;
 
 /// Describes a request to audit a persisted objective.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Audit {
     /// Persistent audit identifier when assigned.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Source type of the audited objective.
     #[model(text(min_chars=1,max_chars=64,repertoire=ascii))]
@@ -31,7 +33,8 @@ pub struct Audit {
 
     /// Persistent identifier of the audited objective when assigned.
     #[model(identifier)]
-    pub objective_id: Option<i64>,
+    #[model(opaque)]
+    pub objective_id: Id,
 
     /// Current lifecycle state of the request.
     pub status: AuditStatus,

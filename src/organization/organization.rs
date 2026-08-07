@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::InfoWithEntity;
@@ -31,9 +31,8 @@ use crate::product::Seller;
 
 /// A company, medical institution, school, government body, or other
 /// organization.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 #[model(
     unique(name = "organization_code", fields(code), ignore_case(code)),
@@ -42,8 +41,8 @@ use crate::product::Seller;
 pub struct Organization {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique ASCII code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
@@ -55,12 +54,10 @@ pub struct Organization {
 
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), index, opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
 
     /// Optional parent-organization information.
     #[model(reference(target = Organization, target_field = info), index, opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub parent: Option<StatefulInfo>,
 
     /// Lifecycle state.
@@ -69,49 +66,40 @@ pub struct Organization {
 
     /// Optional ASCII icon path or URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub icon: Option<String>,
 
     /// Optional user-facing description.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
     /// Optional administrator comment.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,
 
     /// Optional contact details.
     #[model(index, opaque)]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub contact: Option<Contact>,
 
     /// Optional primary identity credential.
     #[model(reference(target = Credential, target_field = info, must_exist = false), opaque)]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub credential: Option<CredentialInfo>,
 
     /// Optional qualification credentials.
     #[model(reference(target = Credential, target_field = info, must_exist = false), opaque)]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub licenses: Option<Vec<CredentialInfo>>,
 
     /// Optional legal representative or responsible person.
     #[model(index, opaque)]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub principal: Option<PersonInfo>,
 
     /// Optional tax-payer classification.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_payer_type: Option<TaxPayerType>,
 
     /// Optional ASCII tax number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_number: Option<String>,
 
     /// Optional extension payloads.
@@ -119,7 +107,6 @@ pub struct Organization {
         reference(target = Payload, target_field = id, must_exist = false),
         sequence(max_items = 10)
     )]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub payloads: Option<Vec<Payload>>,
 
     /// Whether this is predefined reference data.
@@ -132,17 +119,14 @@ pub struct Organization {
 
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 

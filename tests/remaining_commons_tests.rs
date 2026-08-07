@@ -76,8 +76,7 @@ fn test_field_and_faq_preserve_source_values_and_defaults() {
         "actual_credential_number"
     );
     assert_eq!(
-        serde_json::to_string(&Field::MedicalChargeName)
-            .expect("serialize field"),
+        serde_json::to_string(&Field::MedicalChargeName).expect("serialize field"),
         "\"MEDICAL_CHARGE_NAME\""
     );
 

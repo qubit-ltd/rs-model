@@ -11,6 +11,7 @@
 use chrono::DateTime;
 use chrono::NaiveDateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -27,11 +28,12 @@ use crate::product::Quality;
 use crate::upload::Attachment;
 
 /// A product together with its purchasable item specifications.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Product {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// App-scoped unique product code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

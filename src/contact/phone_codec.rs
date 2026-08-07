@@ -16,12 +16,8 @@ pub struct PhoneCodec;
 
 impl PhoneCodec {
     /// Decodes an optional telephone number, treating blank input as absent.
-    pub fn decode(
-        source: Option<&str>,
-    ) -> Result<Option<Phone>, ContactCodecError> {
-        let Some(source) =
-            source.map(str::trim).filter(|value| !value.is_empty())
-        else {
+    pub fn decode(source: Option<&str>) -> Result<Option<Phone>, ContactCodecError> {
+        let Some(source) = source.map(str::trim).filter(|value| !value.is_empty()) else {
             return Ok(None);
         };
         let parts: Vec<&str> = source.split('-').collect();
@@ -37,17 +33,11 @@ impl PhoneCodec {
                 city_area: Some((*city_area).to_owned()),
                 number: (*number).to_owned(),
             },
-            [country_area, city_area, number]
-                if country_area.starts_with('+') =>
-            {
-                Phone {
-                    country_area: Some(
-                        country_area.trim_start_matches('+').to_owned(),
-                    ),
-                    city_area: Some((*city_area).to_owned()),
-                    number: (*number).to_owned(),
-                }
-            }
+            [country_area, city_area, number] if country_area.starts_with('+') => Phone {
+                country_area: Some(country_area.trim_start_matches('+').to_owned()),
+                city_area: Some((*city_area).to_owned()),
+                number: (*number).to_owned(),
+            },
             _ => return Err(ContactCodecError::InvalidPhone),
         };
         Ok(Some(phone))

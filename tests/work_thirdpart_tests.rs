@@ -58,5 +58,5 @@ fn thirdpart_redaction_hides_nonce_and_signature() {
     assert!(!rendered.contains("private-signature"));
     let wire = serde_json::to_value(config).unwrap();
     assert_eq!(wire["app_id"], "wx-app");
-    assert_eq!(wire["nonce_str"], "private-nonce");
+    assert_eq!(wire["nonce_str"], "<redacted>");
 }

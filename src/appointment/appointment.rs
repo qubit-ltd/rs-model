@@ -7,8 +7,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -19,11 +19,13 @@ use crate::mixin::StatefulInfo;
 use crate::person::PersonInfo;
 
 /// A user's appointment for a service provided by another domain object.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Appointment {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Application that owns the appointment.
     #[model(reference(target = App, target_field = info))]
@@ -34,7 +36,8 @@ pub struct Appointment {
     pub objective_type: String,
 
     /// Persisted identifier of the appointment target.
-    pub objective_id: i64,
+    #[model(opaque)]
+    pub objective_id: Id,
 
     /// Person applying for the appointment.
     #[redact(nested)]

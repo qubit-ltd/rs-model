@@ -67,11 +67,7 @@ impl SettingRandomizer {
     /// # Panics
     ///
     /// Panics when `minimum` is greater than `maximum`.
-    pub fn set_collection_size_range(
-        &mut self,
-        minimum: usize,
-        maximum: usize,
-    ) {
+    pub fn set_collection_size_range(&mut self, minimum: usize, maximum: usize) {
         assert!(
             minimum <= maximum,
             "minimum collection size exceeds maximum"
@@ -158,9 +154,7 @@ impl SettingRandomizer {
             DataType::Byte => (self.next_u64() as i8).to_string(),
             DataType::Short => (self.next_u64() as i16).to_string(),
             DataType::Int => (self.next_u64() as i32).to_string(),
-            DataType::Long | DataType::BigInteger => {
-                (self.next_u64() as i64).to_string()
-            }
+            DataType::Long | DataType::BigInteger => (self.next_u64() as i64).to_string(),
             DataType::Float => {
                 format!("{:.3}", self.next_u64() as f32 / 1_000.0)
             }
@@ -194,11 +188,7 @@ impl SettingRandomizer {
             ),
             DataType::Instant => self.random_timestamp().to_rfc3339(),
             DataType::BigDecimal => {
-                format!(
-                    "{}.{:06}",
-                    self.next_u64(),
-                    self.next_u64() % 1_000_000
-                )
+                format!("{}.{:06}", self.next_u64(), self.next_u64() % 1_000_000)
             }
             DataType::Timestamp
             | DataType::ByteArray
@@ -213,10 +203,8 @@ impl SettingRandomizer {
 
     /// Generates a stable timestamp for deterministic seeded output.
     fn random_timestamp(&mut self) -> DateTime<Utc> {
-        let seconds =
-            1_700_000_000 + (self.next_u64() % (10 * 365 * 86_400)) as i64;
-        DateTime::from_timestamp(seconds, 0)
-            .expect("generated timestamp is in range")
+        let seconds = 1_700_000_000 + (self.next_u64() % (10 * 365 * 86_400)) as i64;
+        DateTime::from_timestamp(seconds, 0).expect("generated timestamp is in range")
     }
 }
 
@@ -224,9 +212,7 @@ impl Default for SettingRandomizer {
     fn default() -> Self {
         let seed = SystemTime::now()
             .duration_since(UNIX_EPOCH)
-            .map_or(0x9E37_79B9_7F4A_7C15, |duration| {
-                duration.as_nanos() as u64
-            });
+            .map_or(0x9E37_79B9_7F4A_7C15, |duration| duration.as_nanos() as u64);
         Self::with_seed(seed)
     }
 }

@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -20,11 +20,13 @@ use crate::contact::Phone;
 use crate::person::Gender;
 
 /// A compact user-information snapshot.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct UserInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique ASCII user name.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
@@ -68,7 +70,7 @@ pub struct UserInfo {
 impl Default for UserInfo {
     fn default() -> Self {
         Self {
-            id: None,
+            id: Id::default(),
             username: String::new(),
             name: None,
             nickname: None,

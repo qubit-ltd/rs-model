@@ -8,7 +8,6 @@
 //! Structured error information stored in system logs.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -16,9 +15,8 @@ use qubit_redact_derive::Redact;
 use crate::security::KeyValuePair;
 
 /// Error type, code, message, and optional formatting parameters.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct ErrorInfo {
     /// Stable error type.
@@ -30,11 +28,9 @@ pub struct ErrorInfo {
     pub code: String,
 
     /// Optional user-facing error message.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
 
     /// Optional message parameters.
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub params: Option<Vec<KeyValuePair>>,
 }

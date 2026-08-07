@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 use super::StatsItem;
 
 /// A named two-dimensional statistics dataset.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct StatsDataset {
     /// Optional dataset name.
     pub name: Option<String>,

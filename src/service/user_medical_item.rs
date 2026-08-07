@@ -8,6 +8,7 @@
 
 //! User medical-service item entitlements.
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -16,14 +17,16 @@ use qubit_model_derive::Model;
 use crate::service::UserServiceState;
 
 /// A user's remaining quantity and state for one medical service item.
-#[derive(Clone, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct UserMedicalItem {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted medical-item identifier.
-    pub medical_item_id: i64,
+    #[model(opaque)]
+    pub medical_item_id: Id,
 
     /// Remaining number of uses.
     pub count: i32,

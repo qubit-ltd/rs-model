@@ -6,8 +6,8 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -17,11 +17,13 @@ use crate::contact::Phone;
 use crate::device::DataNetworkType;
 use crate::device::SimCardStatus;
 /// Represents the SimCard domain type.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct SimCard {
     /// The id value associated with this model.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// The iccid value associated with this model.
     #[redact(level = "secret")]

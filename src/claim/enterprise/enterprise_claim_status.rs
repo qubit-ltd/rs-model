@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 use crate::claim::enterprise::EnterpriseClaimStatusGroup;
 
 /// Describes the detailed processing state of an enterprise insurance claim.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum EnterpriseClaimStatus {
     /// The claim has not been submitted.
@@ -47,18 +47,12 @@ impl EnterpriseClaimStatus {
     pub const fn status_group(self) -> EnterpriseClaimStatusGroup {
         match self {
             Self::NotSubmitted => EnterpriseClaimStatusGroup::NotSubmitted,
-            Self::ClaimApplicationWaitAudit => {
-                EnterpriseClaimStatusGroup::Register
-            }
+            Self::ClaimApplicationWaitAudit => EnterpriseClaimStatusGroup::Register,
             Self::SystemRejected => EnterpriseClaimStatusGroup::Reject,
             Self::ClaimApplicationAudited
             | Self::TemporarySaved
-            | Self::WaitInsuranceCompanyAudited => {
-                EnterpriseClaimStatusGroup::Audit
-            }
-            Self::InsuranceCompanyCompleted => {
-                EnterpriseClaimStatusGroup::Complete
-            }
+            | Self::WaitInsuranceCompanyAudited => EnterpriseClaimStatusGroup::Audit,
+            Self::InsuranceCompanyCompleted => EnterpriseClaimStatusGroup::Complete,
             Self::Canceled => EnterpriseClaimStatusGroup::Cancel,
         }
     }

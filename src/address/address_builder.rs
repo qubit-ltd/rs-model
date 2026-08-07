@@ -18,7 +18,8 @@ use crate::contact::Address;
 use crate::contact::Location;
 
 /// Builds an address from independently supplied administrative components.
-#[derive(Clone, Debug, Default, Model, Redact)]
+#[derive(Model, Redact, Clone, Default)]
+#[redact(debug, display, serde)]
 pub struct AddressBuilder {
     address: AddressParts,
     longitude: Option<BigDecimal>,
@@ -26,7 +27,8 @@ pub struct AddressBuilder {
 }
 
 /// Mutable values accumulated by [`AddressBuilder`].
-#[derive(Clone, Debug, Default, Model, Redact)]
+#[derive(Model, Redact, Clone, Default)]
+#[redact(debug, display, serde)]
 struct AddressParts {
     #[model(opaque)]
     country: Info,

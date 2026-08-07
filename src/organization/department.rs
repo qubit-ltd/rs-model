@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -22,11 +23,12 @@ use crate::contact::Contact;
 use crate::mixin::StatefulInfo;
 
 /// An organizational department and its hierarchy, contact, and payload data.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Department {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique ASCII department code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

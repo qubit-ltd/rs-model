@@ -12,6 +12,7 @@ use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::NaiveDateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -19,17 +20,20 @@ use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
 /// A product-item price supplied by a particular source.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductPrice {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted product identifier.
-    pub product_id: i64,
+    #[model(opaque)]
+    pub product_id: Id,
 
     /// Persisted product-item identifier.
-    pub product_item_id: i64,
+    #[model(opaque)]
+    pub product_item_id: Id,
 
     /// Globally unique product price code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

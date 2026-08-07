@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::InfoWithEntity;
@@ -25,16 +25,15 @@ use super::Scope;
 use crate::commons::State;
 
 /// A dictionary carrying its complete entry collection.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 #[model(unique(name = "dict_code", fields(code), ignore_case(code)))]
 pub struct FullDict {
     /// Persisted identifier inherited from `Dict` in the source model.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique stable code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
@@ -46,36 +45,29 @@ pub struct FullDict {
 
     /// Ownership scope.
     #[model(index)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub scope: Option<Scope>,
 
     /// Optional governing standards document.
     #[model(index, text(min_chars = 1, max_chars = 128))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub standard_doc: Option<String>,
 
     /// Optional code in the governing standard.
     #[model(index, text(min_chars = 1, max_chars = 64))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub standard_code: Option<String>,
 
     /// Optional documentation URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
 
     /// Optional description.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
     /// Optional comment.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,
 
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
 
     /// Lifecycle state.
@@ -89,23 +81,19 @@ pub struct FullDict {
 
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 
     /// Embedded entries, or `None` when they were not loaded.
     #[model(reference(target = DictEntry, target_field = id, must_exist = false))]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub entries: Option<Vec<DictEntry>>,
 }
 
@@ -123,9 +111,9 @@ impl FullDict {
                 .find(|entry| entry.code.eq_ignore_ascii_case(candidate))
                 .map(|entry| entry.name.clone())
                 .or_else(|| {
-                    entries.iter().find_map(|entry| {
-                        entry.match_code_and_format_name(candidate)
-                    })
+                    entries
+                        .iter()
+                        .find_map(|entry| entry.match_code_and_format_name(candidate))
                 })
         };
         exact(value).or_else(|| {
@@ -143,7 +131,7 @@ impl FullDict {
     /// Returns whether all dictionary and entry fields are empty.
     #[must_use]
     pub fn is_empty(&self) -> bool {
-        self.id.is_none()
+        self.id == Id::default()
             && self.code.is_empty()
             && self.name.is_empty()
             && self.scope.is_none()

@@ -11,8 +11,8 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
@@ -25,20 +25,24 @@ use crate::payment::PaymentType;
 use crate::system::Environment;
 
 /// The provider-side execution and outcome of a payment transaction.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Payment {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Payment business classification.
     pub r#type: PaymentType,
 
     /// Persisted order identifier.
-    pub order_id: i64,
+    #[model(opaque)]
+    pub order_id: Id,
 
     /// Persisted transaction identifier.
-    pub transaction_id: i64,
+    #[model(opaque)]
+    pub transaction_id: Id,
 
     /// Payment provider application information.
     #[model(opaque)]

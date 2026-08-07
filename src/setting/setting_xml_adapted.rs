@@ -10,7 +10,6 @@
 use chrono::DateTime;
 use chrono::Utc;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -22,9 +21,8 @@ use crate::setting::data_type_source_name;
 use crate::setting::parse_data_type_name;
 
 /// XML-oriented setting value with default-valued attributes omitted.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(rename_all = "camelCase")]
 pub struct SettingXmlAdapted {
     /// Stable setting name.
@@ -35,38 +33,30 @@ pub struct SettingXmlAdapted {
     pub type_name: Option<String>,
 
     /// Optional non-default read-only flag.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub readonly: Option<bool>,
 
     /// Optional non-default nullable flag.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub nullable: Option<bool>,
 
     /// Optional non-default multiple-value flag.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub multiple: Option<bool>,
 
     /// Optional non-default encrypted flag.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub encrypted: Option<bool>,
 
     /// Optional human-readable description.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
     /// Optional UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional source-order setting values.
-    #[redact(skip)]
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[redact(plain)]
     pub values: Option<Vec<String>>,
 }
 
@@ -76,22 +66,17 @@ impl SettingXmlAdapted {
     pub fn from_setting(setting: &Setting) -> Self {
         Self {
             name: setting.name.clone(),
-            type_name: (setting.data_type != DataType::default()).then(|| {
-                data_type_source_name(setting.data_type).to_ascii_lowercase()
-            }),
-            readonly: (setting.readonly != Setting::DEFAULT_READONLY)
-                .then_some(setting.readonly),
-            nullable: (setting.nullable != Setting::DEFAULT_NULLABLE)
-                .then_some(setting.nullable),
-            multiple: (setting.multiple != Setting::DEFAULT_MULTIPLE)
-                .then_some(setting.multiple),
+            type_name: (setting.data_type != DataType::default())
+                .then(|| data_type_source_name(setting.data_type).to_ascii_lowercase()),
+            readonly: (setting.readonly != Setting::DEFAULT_READONLY).then_some(setting.readonly),
+            nullable: (setting.nullable != Setting::DEFAULT_NULLABLE).then_some(setting.nullable),
+            multiple: (setting.multiple != Setting::DEFAULT_MULTIPLE).then_some(setting.multiple),
             encrypted: (setting.encrypted != Setting::DEFAULT_ENCRYPTED)
                 .then_some(setting.encrypted),
             description: setting.description.clone(),
             create_time: setting.create_time,
             modify_time: setting.modify_time,
-            values: (!setting.values.is_empty())
-                .then(|| setting.values.clone()),
+            values: (!setting.values.is_empty()).then(|| setting.values.clone()),
         }
     }
 
@@ -101,9 +86,8 @@ impl SettingXmlAdapted {
             .type_name
             .as_deref()
             .map(|name| {
-                parse_data_type_name(name).ok_or_else(|| {
-                    SettingAdapterError::InvalidDataType(name.to_owned())
-                })
+                parse_data_type_name(name)
+                    .ok_or_else(|| SettingAdapterError::InvalidDataType(name.to_owned()))
             })
             .transpose()?
             .unwrap_or_default();

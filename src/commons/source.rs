@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -19,11 +20,12 @@ use qubit_model_derive::Model;
 use crate::mixin::StatefulInfo;
 
 /// Source-system metadata for an imported record.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct Source {
     /// Persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Importing application information.
     pub app: StatefulInfo,

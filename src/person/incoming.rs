@@ -14,7 +14,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Source-domain Incoming classification.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Incoming {
     /// Source variant `ANNUAL_25K_BELOW`.

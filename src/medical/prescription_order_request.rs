@@ -17,7 +17,7 @@ use crate::medical::Prescription;
 use crate::order::Order;
 
 /// A prescription and the order submitted for its products.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionOrderRequest {
     /// Prescription content and workflow record.
     pub prescription: Prescription,

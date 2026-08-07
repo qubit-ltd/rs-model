@@ -8,8 +8,8 @@
 
 //! Shared records used across the migrated model domains.
 
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -18,13 +18,13 @@ use super::CredentialType;
 use super::VerifyState;
 
 /// Lightweight credential information.
-#[derive(
-    Clone, Debug, Deserialize, Model, PartialEq, Eq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq, Eq)]
+#[redact(debug, display, serde)]
 pub struct CredentialInfo {
     /// Persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Credential classification.
     pub r#type: CredentialType,

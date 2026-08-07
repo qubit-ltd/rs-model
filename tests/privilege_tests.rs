@@ -7,6 +7,7 @@
 // =============================================================================
 
 use chrono::Utc;
+use qubit_id::Id;
 
 use qubit_model::commons::State;
 use qubit_model::mixin::StatefulInfo;
@@ -16,17 +17,14 @@ use qubit_model::privilege::Role;
 
 fn role(privileges: &[&str]) -> Role {
     Role {
-        id: Some(7),
+        id: Id::from(7),
         app: StatefulInfo::default(),
         code: "administrator".to_owned(),
         name: "Administrator".to_owned(),
         description: None,
         guest: Some(false),
         basic: Some(true),
-        privileges: privileges
-            .iter()
-            .map(|value| (*value).to_owned())
-            .collect(),
+        privileges: privileges.iter().map(|value| (*value).to_owned()).collect(),
         state: State::Normal,
         create_time: Utc::now(),
         modify_time: None,

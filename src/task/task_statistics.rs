@@ -14,9 +14,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Aggregate counters for a task executor.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize,
-)]
+#[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct TaskStatistics {
     /// Number of currently active tasks.
     pub active_count: i32,

@@ -9,9 +9,9 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use regex::RegexBuilder;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
@@ -23,24 +23,18 @@ use super::DictEntryInfo;
 use crate::mixin::StatefulInfo;
 
 /// An entry belonging to a data dictionary.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
-#[model(unique(
-    name = "dict_entry_dict_code",
-    fields(dict, code),
-    ignore_case(code)
-))]
+#[model(unique(name = "dict_entry_dict_code", fields(dict, code), ignore_case(code)))]
 pub struct DictEntry {
     /// Persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Owning dictionary information.
     #[model(reference(target = Dict, target_field = info))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub dict: Option<StatefulInfo>,
 
     /// Case-insensitive code unique within the dictionary.
@@ -52,32 +46,26 @@ pub struct DictEntry {
     pub name: String,
 
     /// Optional description.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
     /// Optional comment.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub comment: Option<String>,
 
     /// Optional parent-entry information.
     #[model(reference(target = DictEntry, target_field = info))]
-    #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[redact(plain)]
     pub parent: Option<DictEntryInfo>,
 
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
@@ -99,7 +87,7 @@ impl DictEntry {
             id: self.id,
             code: self.code.clone(),
             name: self.name.clone(),
-            dict_id: self.dict.as_ref().and_then(|dict| dict.id),
+            dict_id: self.dict.as_ref().map_or_else(Id::default, |dict| dict.id),
             params: None,
             delete_time: self.delete_time,
         }
@@ -110,9 +98,9 @@ impl DictEntry {
         self.id = info.id;
         self.code.clone_from(&info.code);
         self.name.clone_from(&info.name);
-        if let Some(dict_id) = info.dict_id {
-            self.dict.get_or_insert_with(StatefulInfo::default).id =
-                Some(dict_id);
+        if info.dict_id != Id::default() {
+            let dict_id = info.dict_id;
+            self.dict.get_or_insert_with(StatefulInfo::default).id = dict_id;
         }
         self.delete_time = info.delete_time;
     }
@@ -170,7 +158,7 @@ impl DictEntry {
     /// Returns whether all identifying fields are empty.
     #[must_use]
     pub fn is_empty(&self) -> bool {
-        self.id.is_none()
+        self.id == Id::default()
             && self.dict.as_ref().is_none_or(stateful_info_is_empty)
             && self.code.is_empty()
             && self.name.is_empty()
@@ -212,7 +200,7 @@ impl Normalizable for DictEntry {
 
 /// Reports whether a stateful projection carries no source value.
 fn stateful_info_is_empty(info: &StatefulInfo) -> bool {
-    info.id.is_none()
+    info.id == Id::default()
         && info.code.is_empty()
         && info.name.is_empty()
         && info.state.is_none()
@@ -220,22 +208,17 @@ fn stateful_info_is_empty(info: &StatefulInfo) -> bool {
 }
 
 /// Replaces numbered placeholders in `template` with the supplied parameters.
-pub(super) fn format_with_params<T: AsRef<str>>(
-    template: &str,
-    params: &[T],
-) -> String {
-    params.iter().enumerate().fold(
-        template.to_owned(),
-        |result, (index, value)| {
+pub(super) fn format_with_params<T: AsRef<str>>(template: &str, params: &[T]) -> String {
+    params
+        .iter()
+        .enumerate()
+        .fold(template.to_owned(), |result, (index, value)| {
             result.replace(&format!("{{{index}}}"), value.as_ref())
-        },
-    )
+        })
 }
 
 /// Locates well-formed numbered placeholders within a template.
-fn placeholder_ranges(
-    value: &str,
-) -> impl Iterator<Item = (usize, usize)> + '_ {
+fn placeholder_ranges(value: &str) -> impl Iterator<Item = (usize, usize)> + '_ {
     value.match_indices('{').filter_map(|(start, _)| {
         let suffix = &value[start + 1..];
         let close = suffix.find('}')?;

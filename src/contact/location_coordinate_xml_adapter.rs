@@ -18,9 +18,7 @@ pub struct LocationCoordinateXmlAdapter;
 
 impl LocationCoordinateXmlAdapter {
     /// Decodes an optional XML text value.
-    pub fn unmarshal(
-        value: Option<&str>,
-    ) -> Result<Option<BigDecimal>, ContactCodecError> {
+    pub fn unmarshal(value: Option<&str>) -> Result<Option<BigDecimal>, ContactCodecError> {
         LocationCoordinateCodec::decode(value)
     }
 

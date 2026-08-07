@@ -9,8 +9,8 @@
 //! Product recipient snapshots.
 
 use chrono::NaiveDate;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
@@ -25,11 +25,13 @@ use crate::person::Gender;
 use crate::person::PersonInfo;
 
 /// Identity, benefits, guardian, and return information for a product client.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Client {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Client name.
     #[model(text(min_chars = 1, max_chars = 128))]

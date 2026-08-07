@@ -8,20 +8,24 @@
 
 //! Employee medical-item assignments.
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
 /// Assigns a medical service item to an employee within an organization.
-#[derive(Clone, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct EmployeeMedicalItem {
     /// Persisted organization identifier.
-    pub organization_id: i64,
+    #[model(opaque)]
+    pub organization_id: Id,
 
     /// Persisted employee identifier.
-    pub employee_id: i64,
+    #[model(opaque)]
+    pub employee_id: Id,
 
     /// Persisted medical-item identifier.
-    pub medical_item_id: i64,
+    #[model(opaque)]
+    pub medical_item_id: Id,
 }

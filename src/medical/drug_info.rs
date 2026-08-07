@@ -8,6 +8,7 @@
 
 //! Lightweight drug information.
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -17,11 +18,12 @@ use qubit_model_derive::Model;
 use crate::commons::DictEntryInfo;
 
 /// A compact drug snapshot embedded in prescriptions and products.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DrugInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique drug code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

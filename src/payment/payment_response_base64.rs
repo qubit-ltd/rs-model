@@ -9,13 +9,13 @@
 //! Base64-encoded payment responses.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// A payment gateway response serialized as a Base64 string.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct PaymentResponseBase64 {
     /// Base64-encoded response payload.
     #[model(sensitive(token), text(min_chars = 1, repertoire = ascii))]

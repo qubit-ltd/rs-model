@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -22,25 +22,24 @@ use super::SignedInfo;
 use crate::commons::State;
 
 /// Versioned asymmetric key material owned by a domain entity.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct KeyPair {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Owner entity type.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub owner_type: String,
 
     /// Owner entity identifier.
-    pub owner_id: i64,
+    #[model(opaque)]
+    pub owner_id: Id,
 
     /// Optional owner code.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub owner_code: Option<String>,
 
     /// Signature algorithm.
@@ -60,7 +59,6 @@ pub struct KeyPair {
     /// Optional encoded private key.
     #[model(text(min_chars = 1, max_chars = 4096))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub private_key: Option<String>,
 
     /// Lifecycle state.
@@ -69,17 +67,14 @@ pub struct KeyPair {
 
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 

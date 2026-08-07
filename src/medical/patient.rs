@@ -11,8 +11,8 @@
 use chrono::DateTime;
 use chrono::NaiveDate;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
@@ -25,17 +25,21 @@ use crate::person::Gender;
 use crate::person::PersonInfo;
 
 /// A hospital patient with identity, insurance, contact, and lifecycle data.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Patient {
     /// Optional persisted patient identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional registered-user identifier.
-    pub user_id: Option<i64>,
+    #[model(opaque)]
+    pub user_id: Id,
 
     /// Optional complete personal-record identifier.
-    pub person_id: Option<i64>,
+    #[model(opaque)]
+    pub person_id: Id,
 
     /// Owning hospital information.
     #[model(opaque)]

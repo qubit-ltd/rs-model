@@ -17,7 +17,7 @@ use qubit_model_derive::Model;
 use crate::product::PersonConstraint;
 
 /// Optional rules that constrain who can purchase a product and how often.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct ProductConstraint {
     /// Date against which an age restriction is evaluated.
     pub age_epoch: Option<NaiveDate>,

@@ -8,6 +8,7 @@
 
 //! Medical diagnoses.
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -17,17 +18,19 @@ use qubit_model_derive::Model;
 use crate::Entity;
 
 /// A ranked western or traditional-Chinese diagnosis owned by a medical record.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Diagnosis {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Entity classification of the owning record.
     pub owner_type: Entity,
 
     /// Persisted identifier of the owning record.
-    pub owner_id: i64,
+    #[model(opaque)]
+    pub owner_id: Id,
 
     /// Optional western-medicine disease information.
     #[model(opaque)]

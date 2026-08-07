@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -21,11 +22,12 @@ use crate::organization::EmployeeInfo;
 
 /// A prescription and the clinicians, signatures, order, and lifecycle around
 /// it.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Prescription {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Signable prescription content.
     pub content: PrescriptionContent,
@@ -56,7 +58,8 @@ pub struct Prescription {
     pub status: PrescriptionStatus,
 
     /// Optional identifier of the corresponding order.
-    pub order_id: Option<i64>,
+    #[model(opaque)]
+    pub order_id: Id,
 
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]

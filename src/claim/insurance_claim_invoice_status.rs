@@ -14,7 +14,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Describes how an invoice was handled during quick-compensation ingestion.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InsuranceClaimInvoiceStatus {
     /// The invoice was saved.

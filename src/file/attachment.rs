@@ -9,6 +9,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 use serde::Serializer;
@@ -24,18 +25,18 @@ use crate::metadata::AggregateRef;
 use crate::metadata::Category;
 
 /// A categorized attachment belonging to an aggregate root.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display)]
 #[serde(default)]
 pub struct Attachment {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Owning aggregate-root reference.
     #[model(index)]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub aggregate_ref: Option<AggregateRef>,
 
     /// Attachment classification.
@@ -44,7 +45,6 @@ pub struct Attachment {
 
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
 
     /// Zero-based order within the aggregate property.
@@ -55,11 +55,9 @@ pub struct Attachment {
     /// Optional title.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
 
     /// Optional description.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
     /// Stored upload.
@@ -78,17 +76,14 @@ pub struct Attachment {
 
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
@@ -146,45 +141,24 @@ impl Attachment {
 /// Borrowed JSON-wire projection for an [`Attachment`].
 #[derive(Serialize)]
 struct AttachmentWire<'a> {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    id: Option<i64>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
+    id: Id,
     aggregate_ref: Option<&'a AggregateRef>,
 
     #[serde(rename = "type")]
     r#type: &'a AttachmentType,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     category: Option<&'a InfoWithEntity>,
     index: i32,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<&'a str>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<&'a str>,
     upload: &'a Upload,
     state: &'a State,
     visible: bool,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     create_time: Option<&'a DateTime<Utc>>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     modify_time: Option<&'a DateTime<Utc>>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     delete_time: Option<&'a DateTime<Utc>>,
     file_path: &'a str,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     screenshot_path: Option<&'a str>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     large_thumbnail_path: Option<&'a str>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     small_thumbnail_path: Option<&'a str>,
 }
 
@@ -220,7 +194,7 @@ impl Serialize for Attachment {
 impl Default for Attachment {
     fn default() -> Self {
         Self {
-            id: None,
+            id: Id::default(),
             aggregate_ref: None,
             r#type: AttachmentType::default(),
             category: None,

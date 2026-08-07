@@ -11,7 +11,6 @@
 use chrono::DateTime;
 use chrono::Utc;
 use serde::Deserialize;
-use serde::Serialize;
 use std::cmp::Ordering;
 
 use qubit_model_derive::Model;
@@ -20,9 +19,8 @@ use qubit_redact_derive::Redact;
 use super::DataType;
 
 /// A named system setting containing zero, one, or multiple textual values.
-#[derive(
-    Clone, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(rename_all = "camelCase")]
 pub struct Setting {
     /// Stable setting name.
@@ -34,7 +32,7 @@ pub struct Setting {
 
     /// Values represented in the source model's canonical string form.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    #[redact(skip)]
+    #[redact(plain)]
     pub values: Vec<String>,
 
     /// Whether callers may modify this setting.
@@ -50,17 +48,14 @@ pub struct Setting {
     pub encrypted: bool,
 
     /// Optional human-readable description.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
     /// Optional UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC last-modification timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 }
 
@@ -100,8 +95,7 @@ impl Setting {
     /// Returns whether the nullability and cardinality constraints are met.
     #[must_use]
     pub fn is_valid(&self) -> bool {
-        (self.nullable || !self.values.is_empty())
-            && (self.multiple || self.values.len() <= 1)
+        (self.nullable || !self.values.is_empty()) && (self.multiple || self.values.len() <= 1)
     }
 
     /// Encodes all values into the source database representation.

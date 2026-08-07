@@ -19,7 +19,8 @@ use crate::contact::Phone;
 use crate::error::ErrorType;
 
 /// An expected and actual mobile number do not match.
-#[derive(Clone, Debug, Error, Model, PartialEq, Redact)]
+#[derive(Model, Redact, Clone, Error, PartialEq)]
+#[redact(debug, serde)]
 #[error("mobile number mismatch for {name}")]
 pub struct MismatchMobileException {
     /// Entity name or description associated with the mismatch.
@@ -37,11 +38,7 @@ pub struct MismatchMobileException {
 impl MismatchMobileException {
     /// Creates a mismatch error with its template values.
     #[must_use]
-    pub fn new(
-        name: &str,
-        expected_mobile: Phone,
-        actual_mobile: Phone,
-    ) -> Self {
+    pub fn new(name: &str, expected_mobile: Phone, actual_mobile: Phone) -> Self {
         Self {
             name: name.to_owned(),
             expected_mobile,

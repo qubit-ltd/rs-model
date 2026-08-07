@@ -11,6 +11,7 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -29,7 +30,7 @@ use crate::payment::PaymentMode;
 use crate::product::ProductInfo;
 
 /// Order and refund data projected for one client.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ClientOrder {
     /// Client projection owner.
     pub client: Client,
@@ -39,23 +40,28 @@ pub struct ClientOrder {
     pub app: Info,
 
     /// Persisted order identifier.
-    pub order_id: i64,
+    #[model(opaque)]
+    pub order_id: Id,
 
     /// Optional ordered payload entries.
     #[model(opaque)]
     pub payload: Option<Vec<(String, String)>>,
 
     /// Persisted order-item identifier.
-    pub order_item_id: i64,
+    #[model(opaque)]
+    pub order_item_id: Id,
 
     /// Optional persisted return identifier.
-    pub return_id: Option<i64>,
+    #[model(opaque)]
+    pub return_id: Id,
 
     /// Persisted payment transaction identifier.
-    pub pay_transaction_id: i64,
+    #[model(opaque)]
+    pub pay_transaction_id: Id,
 
     /// Persisted refund transaction identifier.
-    pub refund_transaction_id: i64,
+    #[model(opaque)]
+    pub refund_transaction_id: Id,
 
     /// Order lifecycle state.
     pub order_status: OrderStatus,

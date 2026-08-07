@@ -8,7 +8,6 @@
 //! Compact media metadata.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -16,9 +15,8 @@ use qubit_redact_derive::Redact;
 use super::MediaType;
 
 /// Metadata describing an independently referenced media resource.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct MediaInfo {
     /// Media classification.

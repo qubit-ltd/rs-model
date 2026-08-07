@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -17,11 +18,12 @@ use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
 /// A relationship between a hospital and one of its dispensing drugstores.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct HospitalDrugstore {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Hospital information.
     #[model(opaque)]

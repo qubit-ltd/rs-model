@@ -9,7 +9,6 @@
 //! Error codes emitted by the notification domain.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -17,9 +16,8 @@ use qubit_redact_derive::Redact;
 use crate::error::ErrorType;
 
 /// A stable notification-module error code.
-#[derive(
-    Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum NotificationErrorCode {
     /// Sending an SMS through a third-party provider failed.

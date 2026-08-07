@@ -11,26 +11,31 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
 /// A named medical charge extracted from a claim invoice.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimInvoiceCost {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted claim identifier.
-    pub claim_id: i64,
+    #[model(opaque)]
+    pub claim_id: Id,
 
     /// Persisted medical-record identifier within the claim.
-    pub claim_medical_id: i64,
+    #[model(opaque)]
+    pub claim_medical_id: Id,
 
     /// Persisted invoice identifier within the claim.
-    pub claim_invoice_id: i64,
+    #[model(opaque)]
+    pub claim_invoice_id: Id,
 
     /// Medical charge name.
     pub medical_charge_name: String,

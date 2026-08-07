@@ -8,7 +8,6 @@
 //! Employee-binding parameters.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -17,9 +16,8 @@ use crate::contact::Phone;
 use crate::mixin::StatefulInfo;
 
 /// Identifying information used to bind a user to an employee record.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct BindEmployeeParams {
     /// Username to bind.
@@ -35,12 +33,10 @@ pub struct BindEmployeeParams {
 
     /// Optional mobile number.
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub mobile: Option<Phone>,
 
     /// Optional email address.
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub email: Option<String>,
 
     /// Verification code.

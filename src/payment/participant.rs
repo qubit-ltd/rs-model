@@ -8,8 +8,8 @@
 
 //! Payment participant snapshots.
 
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
@@ -22,11 +22,13 @@ use crate::payment::ParticipantType;
 
 /// Identifying, contact, account, and category information for a payer or
 /// payee.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Participant {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Participant classification.
     pub r#type: Option<ParticipantType>,

@@ -9,15 +9,13 @@
 //! Errors produced by domain-model operations.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// Broad category assigned to a platform error code.
-#[derive(
-    Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ErrorType {
     /// The request itself is invalid.

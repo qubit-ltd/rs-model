@@ -8,8 +8,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
@@ -22,11 +22,13 @@ use crate::mixin::StatefulInfo;
 use crate::person::UserInfo;
 
 /// Represents the App domain type.
-#[derive(Model, Clone, Debug, Deserialize, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct App {
     /// The id value associated with this model.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// The code value associated with this model.
     pub code: String,

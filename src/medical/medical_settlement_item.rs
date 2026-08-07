@@ -9,6 +9,7 @@
 //! Medical settlement line items.
 
 use bigdecimal::BigDecimal;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -18,14 +19,16 @@ use crate::commons::DictEntryInfo;
 use crate::medical::MedicareItemType;
 
 /// A charged medical item and its insurance reimbursement breakdown.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalSettlementItem {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted identifier of the owning medical settlement.
-    pub settlement_id: i64,
+    #[model(opaque)]
+    pub settlement_id: Id,
 
     /// Zero-based position in the settlement item list.
     pub index: i32,

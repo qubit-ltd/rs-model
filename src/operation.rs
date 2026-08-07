@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 use crate::Module;
 
 /// Identifies a domain operation that can be authorized independently.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Operation {
     /// Registers an account.
@@ -49,9 +49,7 @@ impl Operation {
     #[must_use]
     pub const fn module(self) -> Module {
         match self {
-            Self::Register | Self::Login | Self::Logout => {
-                Module::BasicOperation
-            }
+            Self::Register | Self::Login | Self::Logout => Module::BasicOperation,
             Self::ListSetting => Module::SystemManagement,
             Self::ListUser => Module::UserManagement,
             Self::ListProduct => Module::ProductManagement,

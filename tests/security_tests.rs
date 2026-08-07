@@ -6,6 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+use qubit_id::Id;
 use qubit_model::commons::State;
 use qubit_model::security::KeyFormat;
 use qubit_model::security::KeyPair;
@@ -55,7 +56,7 @@ fn signature_payload_and_key_matching_preserve_source_behavior() {
     signature.set_message("approve");
     signature.set_payload("tenant", "qubit");
     signature.signer_type = "USER".into();
-    signature.signer_id = 7;
+    signature.signer_id = Id::from(7);
     signature.signed_info.algorithm = SignatureAlgorithm::Sha256WithRsa;
     signature.signed_info.key_version = "v1".into();
     signature.signed_info.public_key = "public-material".into();
@@ -69,7 +70,7 @@ fn signature_payload_and_key_matching_preserve_source_behavior() {
 
     let key_pair = KeyPair {
         owner_type: "USER".into(),
-        owner_id: 7,
+        owner_id: Id::from(7),
         algorithm: SignatureAlgorithm::Sha256WithRsa,
         format: KeyFormat::X509,
         version: "v1".into(),

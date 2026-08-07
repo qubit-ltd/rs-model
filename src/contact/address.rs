@@ -6,7 +6,6 @@
 //! Postal-address values.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::Info;
@@ -18,9 +17,8 @@ use crate::contact::Location;
 
 /// A postal address linked to each administrative level and an optional
 /// location.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Address {
     /// Basic information for the country.
     #[model(opaque)]

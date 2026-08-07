@@ -8,24 +8,13 @@
 //! Audited operation actions.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// Common action recorded by an operation log.
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    Default,
-    Deserialize,
-    Eq,
-    Model,
-    PartialEq,
-    Redact,
-    Serialize,
-)]
+#[derive(Model, Redact, Clone, Copy, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Action {
     /// Logs a user in.

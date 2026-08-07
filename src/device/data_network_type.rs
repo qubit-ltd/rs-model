@@ -14,7 +14,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Mobile data-radio protocol classification.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum DataNetworkType {
     /// The Gprs classification.
@@ -69,12 +69,7 @@ impl DataNetworkType {
             Self::Lte => 4,
             Self::Nr => 5,
             Self::Unknown => 0,
-            Self::Gprs
-            | Self::Cdma
-            | Self::Edge
-            | Self::OneXRtt
-            | Self::Iden
-            | Self::Gsm => 2,
+            Self::Gprs | Self::Cdma | Self::Edge | Self::OneXRtt | Self::Iden | Self::Gsm => 2,
             _ => 3,
         }
     }

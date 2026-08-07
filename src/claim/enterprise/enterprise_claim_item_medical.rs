@@ -10,23 +10,27 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
 /// Links an enterprise claim calculation item to a medical encounter.
-#[derive(Clone, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct EnterpriseClaimItemMedical {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted claim-item identifier.
-    pub claim_item_id: i64,
+    #[model(opaque)]
+    pub claim_item_id: Id,
 
     /// Persisted claim-medical identifier.
-    pub claim_medical_id: i64,
+    #[model(opaque)]
+    pub claim_medical_id: Id,
 
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]

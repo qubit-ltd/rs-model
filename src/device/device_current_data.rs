@@ -8,22 +8,25 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 /// Represents the DeviceCurrentData domain type.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DeviceCurrentData {
     /// The id value associated with this model.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// The device_code value associated with this model.
     pub device_code: String,
 
     /// The msg_id value associated with this model.
-    pub msg_id: Option<i64>,
+    #[model(opaque)]
+    pub msg_id: Id,
 
     /// The ack value associated with this model.
     pub ack: Option<i32>,

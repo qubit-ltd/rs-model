@@ -9,20 +9,23 @@
 //! Invoice line items.
 
 use bigdecimal::BigDecimal;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
 /// A billed item with discounts, tax, and final payment amounts.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InvoiceItem {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted identifier of the owning invoice.
-    pub invoice_id: i64,
+    #[model(opaque)]
+    pub invoice_id: Id,
 
     /// Zero-based position in the invoice line-item list.
     pub index: i32,

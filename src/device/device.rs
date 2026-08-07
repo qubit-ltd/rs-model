@@ -8,6 +8,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -24,11 +25,12 @@ use crate::mixin::StatefulInfo;
 use crate::person::PersonInfo;
 use crate::person::UserInfo;
 /// Represents the Device domain type.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Device {
     /// The id value associated with this model.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// The code value associated with this model.
     #[model(text(min_chars=1,max_chars=64,repertoire=ascii))]

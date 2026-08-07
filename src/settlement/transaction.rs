@@ -11,6 +11,7 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -28,18 +29,20 @@ use crate::settlement::TransactionType;
 use crate::system::Environment;
 
 /// A purchase or refund transaction and its payment participants.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Transaction {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional transaction classification, omitted in filtered gateway
     /// requests.
     pub r#type: Option<TransactionType>,
 
     /// Optional identifier of the originating transaction.
-    pub origin_id: Option<i64>,
+    #[model(opaque)]
+    pub origin_id: Id,
 
     /// Optional transaction state, omitted in filtered gateway requests.
     pub status: Option<TransactionStatus>,
@@ -56,10 +59,12 @@ pub struct Transaction {
     pub category: Option<InfoWithEntity>,
 
     /// Persisted order identifier.
-    pub order_id: i64,
+    #[model(opaque)]
+    pub order_id: Id,
 
     /// Optional persisted return identifier.
-    pub return_id: Option<i64>,
+    #[model(opaque)]
+    pub return_id: Id,
 
     /// Optional party that initiated a return.
     pub return_issuer: Option<ReturnIssuer>,

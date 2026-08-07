@@ -8,8 +8,8 @@
 
 //! Seller information values.
 
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -19,11 +19,13 @@ use crate::contact::Address;
 use crate::contact::Phone;
 
 /// Contact and identifying information for a product seller.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Seller {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique seller code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

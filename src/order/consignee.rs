@@ -10,8 +10,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -21,14 +21,17 @@ use crate::contact::Address;
 use crate::contact::Phone;
 
 /// A saved recipient and delivery address for an order.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Consignee {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional persisted owning-user identifier.
-    pub user_id: Option<i64>,
+    #[model(opaque)]
+    pub user_id: Id,
 
     /// Optional saved-address title.
     #[model(text(min_chars = 1, max_chars = 128))]

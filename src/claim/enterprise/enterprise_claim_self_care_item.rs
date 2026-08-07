@@ -11,20 +11,23 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
 /// A partially self-paid charge extracted from an enterprise claim invoice.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimSelfCareItem {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted enterprise claim-invoice identifier.
-    pub claim_invoice_id: i64,
+    #[model(opaque)]
+    pub claim_invoice_id: Id,
 
     /// Charge name.
     pub name: String,

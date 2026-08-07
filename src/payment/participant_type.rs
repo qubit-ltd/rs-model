@@ -14,7 +14,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Identifies whether a payment participant is a person or organization.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ParticipantType {
     /// A natural person.

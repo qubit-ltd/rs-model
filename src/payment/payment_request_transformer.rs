@@ -8,12 +8,13 @@
 
 //! Payment-request transaction filtering.
 
+use qubit_id::Id;
 use qubit_model_derive::Model;
 
 use crate::settlement::Transaction;
 
 /// Removes internal settlement data before a transaction leaves the service.
-#[derive(Clone, Copy, Debug, Default, Eq, Model, PartialEq)]
+#[derive(Model, Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct PaymentRequestTransformer;
 
 impl PaymentRequestTransformer {
@@ -26,8 +27,8 @@ impl PaymentRequestTransformer {
     /// * `transaction` - Transaction to filter in place.
     pub fn transform(transaction: &mut Transaction) {
         transaction.r#type = None;
-        transaction.origin_id = None;
-        transaction.return_id = None;
+        transaction.origin_id = Id::default();
+        transaction.return_id = Id::default();
         transaction.status = None;
         transaction.app = None;
         transaction.source = None;
@@ -43,7 +44,7 @@ impl PaymentRequestTransformer {
         transaction.modify_time = None;
         transaction.delete_time = None;
 
-        transaction.payer.id = None;
+        transaction.payer.id = Id::default();
         transaction.payer.r#type = None;
         transaction.payer.phone = None;
         transaction.payer.email = None;

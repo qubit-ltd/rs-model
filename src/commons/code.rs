@@ -8,7 +8,6 @@
 //! External-standard codes.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
@@ -18,19 +17,16 @@ use qubit_redact_derive::Redact;
 use crate::mixin::StatefulInfo;
 
 /// A code supplied by an application under an optional external standard.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Code {
     /// Optional owning application information.
     #[model(opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub app: Option<StatefulInfo>,
 
     /// Optional coding standard.
     #[model(text(min_chars = 1, max_chars = 128))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub standard: Option<String>,
 
     /// Code value.

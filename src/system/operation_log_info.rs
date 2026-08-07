@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -18,35 +18,30 @@ use qubit_redact_derive::Redact;
 use super::Action;
 
 /// Compact information derived from a full operation log.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct OperationLogInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Audited action.
     pub action: Action,
 
     /// Optional resource name.
     #[model(text(min_chars = 1, max_chars = 256, repertoire = ascii))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub resource: Option<String>,
 
     /// Optional resource property.
     #[model(text(min_chars = 1, max_chars = 256, repertoire = ascii))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub property: Option<String>,
 
     /// Optional username.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub username: Option<String>,
 
     /// Optional application name.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub app: Option<String>,
 
     /// Client IP address.
@@ -54,19 +49,15 @@ pub struct OperationLogInfo {
     pub client_ip: String,
 
     /// Optional operation outcome.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub success: Option<bool>,
 
     /// Optional error code.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub error_code: Option<String>,
 
     /// Optional error message.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub error_message: Option<String>,
 
     /// Optional UTC request timestamp.
     #[model(time(precision = millisecond, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub timestamp: Option<DateTime<Utc>>,
 }

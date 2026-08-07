@@ -6,7 +6,6 @@
 //! Contact-method values.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
@@ -17,9 +16,8 @@ use crate::contact::Address;
 use crate::contact::Phone;
 
 /// Contact methods and their independent verification states.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Contact {
     /// Optional landline number.
     #[model(index)]
@@ -100,8 +98,7 @@ impl Contact {
         self.phone_verified = self.phone.as_ref().map(|_| VerifyState::None);
         self.mobile_verified = self.mobile.as_ref().map(|_| VerifyState::None);
         self.email_verified = self.email.as_ref().map(|_| VerifyState::None);
-        self.address_verified =
-            self.address.as_ref().map(|_| VerifyState::None);
+        self.address_verified = self.address.as_ref().map(|_| VerifyState::None);
     }
 
     /// Copies verification states for values that are unchanged from `other`.
@@ -109,27 +106,14 @@ impl Contact {
     /// Absent values receive no state, and changed present values are reset to
     /// [`VerifyState::None`].
     pub fn copy_verify_state(&mut self, other: &Self) {
-        self.phone_verified = copied_verify_state(
-            &self.phone,
-            &other.phone,
-            other.phone_verified,
-        );
-        self.mobile_verified = copied_verify_state(
-            &self.mobile,
-            &other.mobile,
-            other.mobile_verified,
-        );
-        self.email_verified = copied_verify_state(
-            &self.email,
-            &other.email,
-            other.email_verified,
-        );
+        self.phone_verified = copied_verify_state(&self.phone, &other.phone, other.phone_verified);
+        self.mobile_verified =
+            copied_verify_state(&self.mobile, &other.mobile, other.mobile_verified);
+        self.email_verified = copied_verify_state(&self.email, &other.email, other.email_verified);
         self.address_verified = match &self.address {
             None => None,
             Some(current) => match &other.address {
-                Some(previous) if current.is_same(previous) => {
-                    other.address_verified
-                }
+                Some(previous) if current.is_same(previous) => other.address_verified,
                 _ => Some(VerifyState::None),
             },
         };

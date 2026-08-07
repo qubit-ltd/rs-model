@@ -14,7 +14,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Selects who pays an eligible charge.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PaymentOption {
     /// The customer pays the charge.

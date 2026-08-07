@@ -15,7 +15,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// One named row in a two-dimensional statistics dataset.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct StatsItem {
     /// Item name.
     pub name: String,

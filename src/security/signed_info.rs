@@ -10,7 +10,6 @@
 use chrono::DateTime;
 use chrono::Utc;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -19,9 +18,8 @@ use super::KeyValuePair;
 use super::SignatureAlgorithm;
 
 /// Message, signer identity, key material, and payload covered by a signature.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct SignedInfo {
     /// Message to sign.
@@ -53,11 +51,9 @@ pub struct SignedInfo {
     /// Optional string payload entries.
     #[model(sequence(max_items = 16))]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub payload: Vec<KeyValuePair>,
 
     /// UTC signing timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub timestamp: Option<DateTime<Utc>>,
 }

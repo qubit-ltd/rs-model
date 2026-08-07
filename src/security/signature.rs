@@ -7,8 +7,8 @@
 // =============================================================================
 //! Persisted digital signatures.
 
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -17,28 +17,29 @@ use super::KeyValuePair;
 use super::SignedInfo;
 
 /// A signature, its owner, signer, covered information, and encoded value.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Signature {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Owner entity type.
     pub owner_type: String,
 
     /// Owner entity identifier.
-    pub owner_id: i64,
+    #[model(opaque)]
+    pub owner_id: Id,
 
     /// Signer entity type.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub signer_type: String,
 
     /// Signer entity identifier.
-    pub signer_id: i64,
+    #[model(opaque)]
+    pub signer_id: Id,
 
     /// Signer entity code.
     pub signer_code: String,

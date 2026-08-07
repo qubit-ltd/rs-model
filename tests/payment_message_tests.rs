@@ -10,6 +10,7 @@
 
 use bigdecimal::BigDecimal;
 use chrono::Utc;
+use qubit_id::Id;
 
 use qubit_model::commons::Currency;
 use qubit_model::invoice::InvoiceStatus;
@@ -51,10 +52,10 @@ fn test_payment_message_structs_expose_all_source_fields() {
 fn test_payment_request_filter_removes_internal_fields() {
     let now = Utc::now();
     let account = Account {
-        id: Some(11),
+        id: Id::from(11),
         app: StatefulInfo::default(),
         owner_type: "customer".to_owned(),
-        owner_id: 12,
+        owner_id: Id::from(12),
         r#type: AccountType::Change,
         name: "wallet".to_owned(),
         number: Some("account-number".to_owned()),
@@ -64,7 +65,7 @@ fn test_payment_request_filter_removes_internal_fields() {
         delete_time: Some(now),
     };
     let payer = Participant {
-        id: Some(21),
+        id: Id::from(21),
         r#type: Some(ParticipantType::Person),
         name: "buyer".to_owned(),
         credential: None,
@@ -75,15 +76,15 @@ fn test_payment_request_filter_removes_internal_fields() {
         category: None,
     };
     let transaction = Transaction {
-        id: Some(31),
+        id: Id::from(31),
         r#type: Some(TransactionType::Buy),
-        origin_id: Some(32),
+        origin_id: Id::from(32),
         status: Some(TransactionStatus::Submitted),
         app: Some(StatefulInfo::default()),
         source: None,
         category: None,
-        order_id: 33,
-        return_id: Some(34),
+        order_id: Id::from(33),
+        return_id: Id::from(34),
         return_issuer: Some(ReturnIssuer::Buyer),
         currency: Currency::Cny,
         payable: BigDecimal::from(100),
@@ -111,12 +112,12 @@ fn test_payment_request_filter_removes_internal_fields() {
     request.filter();
 
     let filtered = &request.data;
-    assert_eq!(filtered.id, Some(31));
-    assert_eq!(filtered.order_id, 33);
+    assert_eq!(filtered.id, Id::from(31));
+    assert_eq!(filtered.order_id, Id::from(33));
     assert_eq!(filtered.return_issuer, Some(ReturnIssuer::Buyer));
     assert!(filtered.r#type.is_none());
-    assert!(filtered.origin_id.is_none());
-    assert!(filtered.return_id.is_none());
+    assert_eq!(filtered.origin_id, Id::default());
+    assert_eq!(filtered.return_id, Id::default());
     assert!(filtered.status.is_none());
     assert!(filtered.app.is_none());
     assert!(filtered.discount.is_none());
@@ -128,7 +129,7 @@ fn test_payment_request_filter_removes_internal_fields() {
     assert!(filtered.comment.is_none());
     assert!(filtered.modify_time.is_none());
     assert!(filtered.delete_time.is_none());
-    assert!(filtered.payer.id.is_none());
+    assert_eq!(filtered.payer.id, Id::default());
     assert!(filtered.payer.r#type.is_none());
     assert!(filtered.payer.email.is_none());
     assert!(filtered.payer.account.is_none());

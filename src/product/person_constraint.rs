@@ -17,7 +17,7 @@ use qubit_model_derive::Model;
 use crate::person::Gender;
 
 /// Optional eligibility restrictions for a buyer or client.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct PersonConstraint {
     /// Inclusive minimum age, expressed as a calendar-like elapsed duration.
     #[model(opaque)]

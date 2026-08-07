@@ -9,7 +9,6 @@
 //! Signed payment gateway responses.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -17,7 +16,8 @@ use qubit_redact_derive::Redact;
 use crate::payment::Payment;
 
 /// A payment provider response together with callback URLs and its signature.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct PaymentResponse {
     /// Provider-side payment record.
     pub data: Payment,

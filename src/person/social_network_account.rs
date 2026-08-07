@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
@@ -23,7 +23,8 @@ use crate::controller::RegisterUserParams;
 use crate::security::KeyValuePair;
 
 /// A user's account identity within one social-network application.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 #[model(unique(
     name = "social_network_account_identity",
@@ -33,8 +34,8 @@ use crate::security::KeyValuePair;
 pub struct SocialNetworkAccount {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Owning platform username.
     #[model(
@@ -59,18 +60,15 @@ pub struct SocialNetworkAccount {
 
     /// Optional provider nickname.
     #[model(text(min_chars = 1, max_chars = 128))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub nickname: Option<String>,
 
     /// Optional provider avatar URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub avatar: Option<String>,
 
     /// Optional provider profile properties.
     #[model(sequence(min_items = 1, max_items = 10))]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub profiles: Option<Vec<KeyValuePair>>,
 
     /// Optional extension payloads.
@@ -78,29 +76,25 @@ pub struct SocialNetworkAccount {
         reference(target = Payload, target_field = id, must_exist = false),
         sequence(min_items = 1, max_items = 10)
     )]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub payloads: Option<Vec<Payload>>,
 
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
 impl Default for SocialNetworkAccount {
     fn default() -> Self {
         Self {
-            id: None,
+            id: Id::default(),
             username: String::new(),
             social_network: SocialNetwork::Wechat,
             app_id: String::new(),
@@ -122,9 +116,7 @@ impl SocialNetworkAccount {
     pub fn from_register_params(params: &RegisterUserParams) -> Self {
         Self {
             username: params.username.clone(),
-            social_network: params
-                .social_network
-                .unwrap_or(SocialNetwork::Wechat),
+            social_network: params.social_network.unwrap_or(SocialNetwork::Wechat),
             app_id: params.app_id.clone().unwrap_or_default(),
             open_id: params.open_id.clone().unwrap_or_default(),
             nickname: params.nickname.clone(),

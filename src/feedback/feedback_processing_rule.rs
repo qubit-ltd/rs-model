@@ -15,7 +15,8 @@ use crate::feedback::FeedbackAction;
 use crate::feedback::FeedbackStatus;
 
 /// Evaluates the fixed feedback lifecycle defined by the Java source model.
-#[derive(Clone, Copy, Debug, Default, Model, Redact)]
+#[derive(Model, Redact, Clone, Copy, Default)]
+#[redact(debug, display, serde)]
 pub struct FeedbackProcessingRule;
 
 impl FeedbackProcessingRule {
@@ -35,10 +36,7 @@ impl FeedbackProcessingRule {
     ///
     /// `None` means that the Java transition table does not permit the pair.
     #[must_use]
-    pub const fn next(
-        status: FeedbackStatus,
-        action: FeedbackAction,
-    ) -> Option<FeedbackStatus> {
+    pub const fn next(status: FeedbackStatus, action: FeedbackAction) -> Option<FeedbackStatus> {
         match (status, action) {
             (FeedbackStatus::Submitted, FeedbackAction::UserWithdraw) => {
                 Some(FeedbackStatus::Withdrawn)
@@ -56,10 +54,9 @@ impl FeedbackProcessingRule {
             (FeedbackStatus::Processing, FeedbackAction::AdminResolve) => {
                 Some(FeedbackStatus::Resolved)
             }
-            (
-                FeedbackStatus::Rejected | FeedbackStatus::Resolved,
-                FeedbackAction::UserApprove,
-            ) => Some(FeedbackStatus::Closed),
+            (FeedbackStatus::Rejected | FeedbackStatus::Resolved, FeedbackAction::UserApprove) => {
+                Some(FeedbackStatus::Closed)
+            }
             (
                 FeedbackStatus::Rejected | FeedbackStatus::Resolved,
                 FeedbackAction::UserDisapprove,

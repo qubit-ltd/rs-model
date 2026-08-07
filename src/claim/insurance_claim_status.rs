@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 use crate::claim::InsuranceClaimStatusGroup;
 
 /// Describes the detailed processing state of an individual insurance claim.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InsuranceClaimStatus {
     /// The claim has not been submitted.
@@ -60,19 +60,12 @@ impl InsuranceClaimStatus {
             | Self::TemporarySaved => InsuranceClaimStatusGroup::PendingCase,
             Self::SystemAudited => InsuranceClaimStatusGroup::Unreached,
             Self::SystemRejected => InsuranceClaimStatusGroup::Rejected,
-            Self::WaitInsuranceCompanyAudited => {
-                InsuranceClaimStatusGroup::Registed
-            }
-            Self::InsuranceCompanyAccepted => {
-                InsuranceClaimStatusGroup::UnderReview
-            }
-            Self::InsuranceCompanyRejected
-            | Self::InsuranceCompanyAnnulOrRefused => {
+            Self::WaitInsuranceCompanyAudited => InsuranceClaimStatusGroup::Registed,
+            Self::InsuranceCompanyAccepted => InsuranceClaimStatusGroup::UnderReview,
+            Self::InsuranceCompanyRejected | Self::InsuranceCompanyAnnulOrRefused => {
                 InsuranceClaimStatusGroup::AuditRejection
             }
-            Self::InsuranceCompanyCompleted => {
-                InsuranceClaimStatusGroup::Completed
-            }
+            Self::InsuranceCompanyCompleted => InsuranceClaimStatusGroup::Completed,
             Self::Canceled => InsuranceClaimStatusGroup::Canceld,
         }
     }

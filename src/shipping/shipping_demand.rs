@@ -19,7 +19,7 @@ use crate::commons::DayType;
 use crate::shipping::Packing;
 
 /// Optional scheduling, packing, and comment requirements for delivery.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ShippingDemand {
     /// Optional accepted day classification.
     pub day_type: Option<DayType>,

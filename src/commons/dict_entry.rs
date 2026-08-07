@@ -8,6 +8,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -16,11 +17,12 @@ use qubit_model_derive::Model;
 use super::DictEntryInfo;
 use crate::mixin::StatefulInfo;
 /// Represents the DictEntry domain type.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DictEntry {
     /// The id value associated with this model.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// The dict value associated with this model.
     pub dict: StatefulInfo,

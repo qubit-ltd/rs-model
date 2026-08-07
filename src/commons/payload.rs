@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -18,11 +19,12 @@ use qubit_model_derive::Model;
 use super::Owner;
 
 /// A named payload belonging to an owner.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Payload {
     /// Persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Payload key.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]

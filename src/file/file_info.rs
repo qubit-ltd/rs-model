@@ -9,7 +9,6 @@
 
 use bigdecimal::BigDecimal;
 use serde::Deserialize;
-use serde::Serialize;
 use std::path::PathBuf;
 
 use qubit_mixin::Emptyful;
@@ -17,9 +16,8 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// Storage metadata for a file, image, video, or audio asset.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 #[model(unique(name = "file_info_path", fields(path), ignore_case(path)))]
 pub struct FileInfo {
@@ -40,20 +38,16 @@ pub struct FileInfo {
     pub size: i64,
 
     /// Optional image or video width in pixels.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub width: Option<i32>,
 
     /// Optional image or video height in pixels.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub height: Option<i32>,
 
     /// Optional audio or video duration in seconds.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<i32>,
 
     /// Optional compression quality percentage with two fractional digits.
     #[model(decimal(scale = 2))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub quality: Option<BigDecimal>,
 }
 

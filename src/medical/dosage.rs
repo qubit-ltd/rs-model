@@ -17,7 +17,7 @@ use qubit_model_derive::Model;
 use crate::commons::DictEntryInfo;
 
 /// Instructions describing how and for how long to administer medication.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Dosage {
     /// Optional administration method or usage dictionary entry.
     pub usage: Option<DictEntryInfo>,

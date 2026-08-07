@@ -8,6 +8,7 @@
 
 use chrono::TimeZone;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Serialize;
 use std::io;
 
@@ -74,8 +75,7 @@ impl io::Write for FailingWriter {
 /// Verifies that every serializer write boundary propagates its I/O error.
 fn assert_serializer_propagates_each_write_error<T: Serialize>(value: &T) {
     for failure_at in 1..=4_096 {
-        let mut serializer =
-            serde_json::Serializer::new(FailingWriter::new(failure_at));
+        let mut serializer = serde_json::Serializer::new(FailingWriter::new(failure_at));
         if value.serialize(&mut serializer).is_ok() {
             return;
         }
@@ -85,8 +85,7 @@ fn assert_serializer_propagates_each_write_error<T: Serialize>(value: &T) {
 
 /// Serializes a value through the public JSON text representation.
 fn json_value<T: Serialize>(value: &T) -> serde_json::Value {
-    let text = serde_json::to_string(value)
-        .expect("value should serialize to JSON text");
+    let text = serde_json::to_string(value).expect("value should serialize to JSON text");
     serde_json::from_str(&text).expect("JSON text should parse into a value")
 }
 
@@ -178,12 +177,11 @@ fn system_enums_and_session_helpers_preserve_source_behavior() {
 }
 
 #[test]
-fn session_thread_local_accessors_normalize_values_and_serialize_present_fields()
- {
+fn session_thread_local_accessors_normalize_values_and_serialize_present_fields() {
     Session::reset();
     assert_eq!(Session::current_session(), Session::default());
     let app = StatefulInfo {
-        id: Some(1),
+        id: Id::from(1),
         code: "APP".into(),
         name: "Application".into(),
         ..StatefulInfo::default()
@@ -213,7 +211,7 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
         session.roles = vec![" ADMIN ".into(), "USER".into()];
         session.privileges = vec![" READ ".into()];
         session.set_roles_and_privileges(&[Role {
-            id: None,
+            id: Id::default(),
             app: StatefulInfo::default(),
             code: "ADMIN".into(),
             name: "Administrator".into(),
@@ -232,7 +230,7 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
     assert_eq!(count, 1);
 
     let session = Session {
-        id: Some(1),
+        id: Id::from(1),
         app: Some(app),
         user: Some(user),
         organization: Some(StatefulInfo::default()),
@@ -276,9 +274,9 @@ fn session_thread_local_accessors_normalize_values_and_serialize_present_fields(
 #[test]
 fn session_serialization_propagates_every_writer_failure() {
     let session = Session {
-        id: Some(1),
+        id: Id::from(1),
         app: Some(StatefulInfo {
-            id: Some(2),
+            id: Id::from(2),
             ..StatefulInfo::default()
         }),
         user: Some(UserInfo {
@@ -286,7 +284,7 @@ fn session_serialization_propagates_every_writer_failure() {
             ..UserInfo::default()
         }),
         organization: Some(StatefulInfo {
-            id: Some(3),
+            id: Id::from(3),
             ..StatefulInfo::default()
         }),
         token: Some(Token {
@@ -347,7 +345,7 @@ fn system_normalization_preserves_source_empty_and_text_behavior() {
 fn operation_log_projects_and_assigns_compact_info() {
     let request_time = Utc.timestamp_opt(1_700_000_000, 0).unwrap();
     let mut log = OperationLog {
-        id: Some(5),
+        id: Id::from(5),
         action: Action::Update,
         resource: Some("USER".into()),
         property: Some("status".into()),

@@ -6,6 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -13,11 +14,12 @@ use qubit_model_derive::Model;
 
 use crate::system::Platform;
 /// Represents the Software domain type.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Software {
     /// The id value associated with this model.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// The code value associated with this model.
     pub code: String,

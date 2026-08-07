@@ -8,7 +8,6 @@
 //! Null placement in sorted query results.
 
 use serde::Deserialize;
-use serde::Serialize;
 use std::cmp::Ordering;
 
 use qubit_model_derive::Model;
@@ -17,18 +16,8 @@ use qubit_redact_derive::Redact;
 use super::SortOrder;
 
 /// Policy controlling how null values compare with non-null values.
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    Default,
-    Deserialize,
-    Eq,
-    Model,
-    PartialEq,
-    Redact,
-    Serialize,
-)]
+#[derive(Model, Redact, Clone, Copy, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum NullSortOption {
     /// Null values always sort first.
@@ -51,12 +40,7 @@ impl NullSortOption {
     ///
     /// Panics when neither operand is null, matching the Java source error.
     #[must_use]
-    pub fn compare_none(
-        self,
-        lhs_none: bool,
-        rhs_none: bool,
-        order: SortOrder,
-    ) -> Ordering {
+    pub fn compare_none(self, lhs_none: bool, rhs_none: bool, order: SortOrder) -> Ordering {
         assert!(lhs_none || rhs_none, "either operand must be null");
         if !lhs_none {
             return self.compare_none(true, false, order).reverse();

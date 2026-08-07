@@ -8,7 +8,6 @@
 //! Basic information carrying an access token.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
@@ -18,14 +17,12 @@ use crate::commons::Token;
 use crate::mixin::WithToken;
 
 /// Basic identifying information together with an optional access token.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct InfoWithToken {
     /// Basic identifying information.
     #[model(opaque)]
-    #[redact(skip)]
-    #[serde(flatten)]
+    #[redact(plain)]
     pub info: Info,
 
     /// Optional access token.

@@ -9,15 +9,13 @@
 //! Optional parameters controlling an upload operation.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// User-supplied upload hints and hash verification material.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct UploadParams {
     /// Optional original filename.
     pub filename: Option<String>,

@@ -24,7 +24,7 @@ use crate::medical::PrescriptionItem;
 use crate::organization::EmployeeInfo;
 
 /// The stable clinical content signed and carried by a prescription.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionContent {
     /// Prescription sequence number within the issuing organization.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]

@@ -12,6 +12,7 @@ use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::NaiveDate;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -25,14 +26,16 @@ use crate::commons::DictEntryInfo;
 
 /// A calculated enterprise claim partition for one medical category and insured
 /// type.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimItem {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted claim identifier.
-    pub claim_id: i64,
+    #[model(opaque)]
+    pub claim_id: Id,
 
     /// Medical-category dictionary entry.
     pub medical_category: DictEntryInfo,
@@ -168,7 +171,6 @@ impl EnterpriseClaimItem {
                 .filter_map(|item| item.hospital_level)
                 .max();
         }
-        self.disease_code =
-            first.disease.as_ref().map(|disease| disease.code.clone());
+        self.disease_code = first.disease.as_ref().map(|disease| disease.code.clone());
     }
 }

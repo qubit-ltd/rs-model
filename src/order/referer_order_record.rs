@@ -10,8 +10,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -20,11 +20,13 @@ use crate::order::OpenidType;
 use crate::order::RefererOrderRecordStatus;
 
 /// Referral ancestry and payment state for one order item and client.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct RefererOrderRecord {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Direct referral identifier namespace.
     pub openid_type: OpenidType,
@@ -44,19 +46,23 @@ pub struct RefererOrderRecord {
     pub root_level: i32,
 
     /// Persisted order identifier.
-    pub order_id: i64,
+    #[model(opaque)]
+    pub order_id: Id,
 
     /// Persisted order-item identifier.
-    pub order_item_id: i64,
+    #[model(opaque)]
+    pub order_item_id: Id,
 
     /// Persisted client identifier.
-    pub client_id: i64,
+    #[model(opaque)]
+    pub client_id: Id,
 
     /// Product code.
     pub product_code: String,
 
     /// Persisted product-item identifier.
-    pub product_item_id: i64,
+    #[model(opaque)]
+    pub product_item_id: Id,
 
     /// Referral order state.
     pub status: RefererOrderRecordStatus,

@@ -9,7 +9,6 @@
 //! Errors returned when an SMS provider rejects a send operation.
 
 use serde::Deserialize;
-use serde::Serialize;
 use std::collections::BTreeMap;
 use thiserror::Error;
 
@@ -21,9 +20,8 @@ use crate::error::ErrorType;
 use crate::notification::NotificationErrorCode;
 
 /// A failed single-recipient or batch SMS operation.
-#[derive(
-    Clone, Debug, Deserialize, Error, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Deserialize, Error, PartialEq)]
+#[redact(debug, serde)]
 #[error("failed to send SMS: {third_party_message}")]
 pub struct SendSmsException {
     /// Single destination, or `None` for a batch operation.
@@ -46,11 +44,7 @@ pub struct SendSmsException {
 impl SendSmsException {
     /// Creates an error for a single destination phone number.
     #[must_use]
-    pub fn for_phone(
-        phone: Phone,
-        third_party_code: String,
-        third_party_message: String,
-    ) -> Self {
+    pub fn for_phone(phone: Phone, third_party_code: String, third_party_message: String) -> Self {
         Self {
             phone: Some(phone),
             phones: None,

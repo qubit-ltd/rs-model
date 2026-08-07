@@ -88,8 +88,7 @@ fn setting_round_trips_non_string_values_and_validates_cardinality() {
 fn setting_uses_source_json_shape_and_case_insensitive_ordering() {
     let mut setting = Setting::new("Beta", DataType::Bool);
     setting.values.push("true".into());
-    setting.create_time =
-        Some(Utc.with_ymd_and_hms(2025, 1, 2, 3, 4, 5).unwrap());
+    setting.create_time = Some(Utc.with_ymd_and_hms(2025, 1, 2, 3, 4, 5).unwrap());
 
     let json = serde_json::to_value(&setting).unwrap();
     assert_eq!(json["type"], "BOOL");
@@ -118,10 +117,9 @@ fn setting_names_match_the_java_contract() {
 #[test]
 fn setting_json_deserialization_applies_defaults_and_reports_invalid_inputs() {
     assert_eq!(SettingJsonDeserializer, SettingJsonDeserializer);
-    let setting = SettingJsonDeserializer::deserialize(
-        r#"{"name":"limit","values":[1,true,null,"three"]}"#,
-    )
-    .expect("a JSON object with omitted optional fields is valid");
+    let setting =
+        SettingJsonDeserializer::deserialize(r#"{"name":"limit","values":[1,true,null,"three"]}"#)
+            .expect("a JSON object with omitted optional fields is valid");
     assert_eq!(setting.name, "limit");
     assert_eq!(setting.data_type, DataType::String);
     assert_eq!(setting.values, ["1", "true", "three"]);

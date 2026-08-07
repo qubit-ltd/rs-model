@@ -25,7 +25,7 @@ pub trait Task {
 
     /// Returns the persisted task identifier, or `None` before persistence.
     fn id(&self) -> Option<i64> {
-        self.info().id
+        Some(self.info().id.value() as i64)
     }
 
     /// Returns the source task name derived from its category.
@@ -40,7 +40,10 @@ pub trait Task {
 
     /// Returns the target entity name and optional identifier.
     fn target(&self) -> (&str, Option<i64>) {
-        (self.info().target_entity.as_str(), self.info().target_id)
+        (
+            self.info().target_entity.as_str(),
+            Some(self.info().target_id.value() as i64),
+        )
     }
 
     /// Returns the optional result entity name and identifier.
@@ -48,7 +51,7 @@ pub trait Task {
         self.info()
             .result_entity
             .as_deref()
-            .map(|entity| (entity, self.info().result_id))
+            .map(|entity| (entity, Some(self.info().result_id.value() as i64)))
     }
 
     /// Executes the task's domain work.

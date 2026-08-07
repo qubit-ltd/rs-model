@@ -7,8 +7,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -18,11 +18,12 @@ use crate::product::Product;
 use crate::product::ProductInfo;
 
 /// One indexed product entry within an activity.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct ActivityProductItem {
     /// Identifier of the owning activity.
-    #[model(reference(target = Activity, target_field = id))]
-    pub activity_id: i64,
+    #[model(reference(target = Activity, target_field = id), opaque)]
+    pub activity_id: Id,
 
     /// Zero-based position within the activity's product list.
     pub index: i32,

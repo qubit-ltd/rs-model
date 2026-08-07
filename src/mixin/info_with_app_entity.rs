@@ -8,7 +8,6 @@
 //! Basic entity information associated with an application.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
@@ -18,14 +17,12 @@ use crate::mixin::StatefulInfo;
 use crate::mixin::WithApp;
 
 /// Basic information for an entity that belongs to an application.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct InfoWithAppEntity {
     /// Basic identifying information and entity discriminator.
     #[model(opaque)]
-    #[redact(skip)]
-    #[serde(flatten)]
+    #[redact(plain)]
     pub info: InfoWithEntity,
 
     /// Optional application that owns the entity.

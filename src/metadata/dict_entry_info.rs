@@ -9,6 +9,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 use serde::Serializer;
@@ -23,13 +24,14 @@ use super::Dict;
 use super::dict_entry::format_with_params;
 
 /// Compact information for a dictionary entry.
-#[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display)]
 #[serde(default)]
 pub struct DictEntryInfo {
     /// Persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Entry code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
@@ -40,34 +42,27 @@ pub struct DictEntryInfo {
     pub name: String,
 
     /// Owning dictionary identifier.
-    #[model(reference(target = Dict, target_field = id))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub dict_id: Option<i64>,
+    #[model(reference(target = Dict, target_field = id), opaque)]
+    pub dict_id: Id,
 
     /// Values substituted into numbered placeholders.
     #[model(sequence(min_items = 1, max_items = 5))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub params: Option<Vec<String>>,
 
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
 impl DictEntryInfo {
     /// Creates an info value unless every supplied identity field is absent.
     #[must_use]
-    pub fn create(
-        id: Option<i64>,
-        code: Option<&str>,
-        name: Option<&str>,
-    ) -> Option<Self> {
+    pub fn create(id: Option<i64>, code: Option<&str>, name: Option<&str>) -> Option<Self> {
         if id.is_none() && code.is_none() && name.is_none() {
             None
         } else {
             Some(Self {
-                id,
+                id: id.map_or_else(Id::default, |value| Id::from(value as u64)),
                 code: code.unwrap_or_default().to_owned(),
                 name: name.unwrap_or_default().to_owned(),
                 ..Self::default()
@@ -96,10 +91,10 @@ impl DictEntryInfo {
     /// Returns whether all identifying fields are empty.
     #[must_use]
     pub fn is_empty(&self) -> bool {
-        self.id.is_none()
+        self.id == Id::default()
             && self.code.is_empty()
             && self.name.is_empty()
-            && self.dict_id.is_none()
+            && self.dict_id == Id::default()
             && self.params.as_ref().is_none_or(Vec::is_empty)
             && self.delete_time.is_none()
     }
@@ -130,12 +125,14 @@ impl Serialize for DictEntryInfo {
         S: Serializer,
     {
         let mut state = serializer.serialize_struct("DictEntryInfo", 8)?;
-        if let Some(id) = self.id {
+        if self.id != Id::default() {
+            let id = self.id;
             state.serialize_field("id", &id)?;
         }
         state.serialize_field("code", &self.code)?;
         state.serialize_field("name", &self.name)?;
-        if let Some(dict_id) = self.dict_id {
+        if self.dict_id != Id::default() {
+            let dict_id = self.dict_id;
             state.serialize_field("dict_id", &dict_id)?;
         }
         if let Some(params) = &self.params {

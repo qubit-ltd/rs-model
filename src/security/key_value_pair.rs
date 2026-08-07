@@ -8,15 +8,13 @@
 //! String payload entries carried by signatures.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// A string key and optional string value.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct KeyValuePair {
     /// Payload key.
@@ -24,6 +22,5 @@ pub struct KeyValuePair {
 
     /// Optional payload value.
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
 }

@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -27,11 +28,12 @@ use crate::product::Product;
 use crate::upload::Attachment;
 
 /// An enterprise claim with insured parties, workflow events, and attachments.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaim {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Insurance product being claimed.
     pub product: Product,
@@ -100,8 +102,7 @@ impl EnterpriseClaim {
     pub const fn allow_client_operation(&self) -> bool {
         matches!(
             self.status,
-            EnterpriseClaimStatus::NotSubmitted
-                | EnterpriseClaimStatus::SystemRejected
+            EnterpriseClaimStatus::NotSubmitted | EnterpriseClaimStatus::SystemRejected
         )
     }
 
@@ -131,8 +132,7 @@ impl EnterpriseClaim {
     pub const fn allow_admin_operation(&self) -> bool {
         matches!(
             self.status,
-            EnterpriseClaimStatus::ClaimApplicationAudited
-                | EnterpriseClaimStatus::TemporarySaved
+            EnterpriseClaimStatus::ClaimApplicationAudited | EnterpriseClaimStatus::TemporarySaved
         )
     }
 }

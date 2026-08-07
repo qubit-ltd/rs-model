@@ -6,6 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+use qubit_id::Id;
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
 use qubit_model::contact::Phone;
@@ -70,20 +71,20 @@ fn test_organization_metadata_preserves_uniques_references_and_indexes() {
 #[test]
 fn test_employee_projects_and_assigns_source_info() {
     let mut employee = Employee {
-        id: Some(7),
+        id: Id::from(7),
         code: "EMP-7".into(),
         name: "Ada".into(),
         ..Employee::default()
     };
     let info = employee.info();
-    assert_eq!(info.id, Some(7));
+    assert_eq!(info.id, Id::from(7));
     assert_eq!(info.code, "EMP-7");
 
     let mut replacement = info;
-    replacement.id = Some(8);
+    replacement.id = Id::from(8);
     replacement.name = "Grace".into();
     employee.assign_info(&replacement);
-    assert_eq!(employee.id, Some(8));
+    assert_eq!(employee.id, Id::from(8));
     assert_eq!(employee.name, "Grace");
 }
 
@@ -116,7 +117,7 @@ fn test_employee_and_organization_empty_checks_and_normalization() {
 #[test]
 fn test_organization_assigns_seller_source_view() {
     let seller = Seller {
-        id: Some(3),
+        id: Id::from(3),
         code: "SELLER".into(),
         name: "Seller Name".into(),
         phone: Some(Phone::from("010-123")),
@@ -128,7 +129,7 @@ fn test_organization_assigns_seller_source_view() {
     };
     let mut organization = Organization::default();
     organization.assign_seller(&seller);
-    assert_eq!(organization.id, Some(3));
+    assert_eq!(organization.id, Id::from(3));
     assert_eq!(organization.code, "SELLER");
     assert_eq!(
         organization

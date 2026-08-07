@@ -8,15 +8,14 @@
 
 //! Shared records used across the migrated model domains.
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
 /// Identifies the owner of a domain object.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize,
-)]
+#[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Owner {
     /// Owning entity name.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
@@ -24,5 +23,6 @@ pub struct Owner {
 
     /// Owner's persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 }

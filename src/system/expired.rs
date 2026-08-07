@@ -10,7 +10,6 @@
 use chrono::DateTime;
 use chrono::Utc;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -18,14 +17,12 @@ use qubit_redact_derive::Redact;
 use super::ExpiredReason;
 
 /// Timestamp and reason for session expiration.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Expired {
     /// UTC expiration timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub time: Option<DateTime<Utc>>,
 
     /// Expiration reason.

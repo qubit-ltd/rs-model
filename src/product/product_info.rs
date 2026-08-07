@@ -12,6 +12,7 @@ use bigdecimal::BigDecimal;
 use chrono::NaiveDate;
 use chrono::NaiveDateTime;
 use chrono::TimeDelta;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -24,14 +25,16 @@ use crate::product::Quality;
 use crate::upload::Attachment;
 
 /// A value snapshot of the product and item selected for a purchase.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductInfo {
     /// Optional persisted product identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted identifier of the selected product item.
-    pub item_id: i64,
+    #[model(opaque)]
+    pub item_id: Id,
 
     /// Product name.
     #[model(text(min_chars = 1, max_chars = 128))]

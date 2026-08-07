@@ -10,8 +10,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -23,15 +23,18 @@ use crate::person::UserInfo;
 use crate::upload::Attachment;
 
 /// An immutable-in-purpose record of one operation applied to feedback.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct FeedbackTrack {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Identifier of the feedback record being tracked.
     #[model(identifier)]
-    pub feedback_id: i64,
+    #[model(opaque)]
+    pub feedback_id: Id,
 
     /// Operation that produced this event.
     pub action: FeedbackAction,

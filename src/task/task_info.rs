@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
@@ -22,11 +22,13 @@ use crate::person::UserInfo;
 use crate::task::TaskStatus;
 
 /// Metadata describing a task's target, result, lifecycle, and creator.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct TaskInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Category that classifies the task.
     #[model(reference(target = Category, target_field = info, must_exist = true), index, opaque)]
@@ -37,16 +39,16 @@ pub struct TaskInfo {
     pub target_entity: String,
 
     /// Persisted target identifier.
-    #[model(index)]
-    pub target_id: Option<i64>,
+    #[model(index, opaque)]
+    pub target_id: Id,
 
     /// Optional ASCII entity name of the result.
     #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub result_entity: Option<String>,
 
     /// Optional persisted result identifier.
-    #[model(index)]
-    pub result_id: Option<i64>,
+    #[model(index, opaque)]
+    pub result_id: Id,
 
     /// Optional task description.
     pub description: Option<String>,

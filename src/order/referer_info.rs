@@ -10,8 +10,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -19,11 +19,13 @@ use qubit_redact_derive::Redact;
 use crate::order::OpenidType;
 
 /// A referral identity linked to another domain entity.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct RefererInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Referral identifier namespace.
     pub openid_type: OpenidType,
@@ -36,7 +38,8 @@ pub struct RefererInfo {
     pub referer_type: String,
 
     /// Persisted identifier of the referring object.
-    pub referer_id: i64,
+    #[model(opaque)]
+    pub referer_id: Id,
 
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]

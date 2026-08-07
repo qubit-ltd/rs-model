@@ -9,15 +9,13 @@
 //! Feedback classification vocabularies.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// A user's satisfaction rating for a feedback outcome.
-#[derive(
-    Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum FeedbackRating {
     /// The user is satisfied.

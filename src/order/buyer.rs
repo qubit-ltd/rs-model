@@ -9,8 +9,8 @@
 //! Buyer snapshots.
 
 use chrono::NaiveDate;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -20,16 +20,17 @@ use crate::contact::Phone;
 use crate::person::Gender;
 
 /// Identifying and contact information for the person placing an order.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct Buyer {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional persisted user identifier.
-    pub user_id: Option<i64>,
+    #[model(opaque)]
+    pub user_id: Id,
 
     /// Buyer name.
     #[model(text(min_chars = 1, max_chars = 128))]

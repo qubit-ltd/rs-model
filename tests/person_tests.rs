@@ -9,6 +9,7 @@
 //! Integration tests for migrated person-domain classifications.
 
 use chrono::Utc;
+use qubit_id::Id;
 
 use qubit_mixin::Normalizable;
 use qubit_model::commons::AuthorizeRecord;
@@ -38,7 +39,7 @@ fn test_person_classification_enums_preserve_source_variants() {
 #[test]
 fn test_user_redacts_the_source_password_field() {
     let user = User {
-        id: Some(7),
+        id: Id::from(7),
         username: "ada".to_owned(),
         password: "raw-password".to_owned(),
         name: None,
@@ -80,13 +81,13 @@ fn test_user_redacts_the_source_password_field() {
 fn test_person_compact_info_updates_and_checks_benefit_coverage() {
     let mut person = Person::default();
     person.set_info(&PersonInfo {
-        id: Some(7),
+        id: Id::from(7),
         name: "Ada".into(),
         mobile: Some(Phone::from("13800138000")),
         email: Some("ada@example.test".into()),
         ..PersonInfo::default()
     });
-    assert_eq!(person.id, Some(7));
+    assert_eq!(person.id, Id::from(7));
     assert_eq!(person.info().email.as_deref(), Some("ada@example.test"));
 
     person.has_medicare = Some(false);
@@ -99,11 +100,9 @@ fn test_person_compact_info_updates_and_checks_benefit_coverage() {
 }
 
 #[test]
-fn test_social_network_account_uses_registration_defaults_and_normalizes_text()
-{
-    let default_account = SocialNetworkAccount::from_register_params(
-        &RegisterUserParams::default(),
-    );
+fn test_social_network_account_uses_registration_defaults_and_normalizes_text() {
+    let default_account =
+        SocialNetworkAccount::from_register_params(&RegisterUserParams::default());
     assert_eq!(default_account.social_network, SocialNetwork::Wechat);
     assert_eq!(default_account.app_id, "");
     assert_eq!(default_account.open_id, "");

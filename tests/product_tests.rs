@@ -9,6 +9,7 @@
 //! Integration coverage for product-domain model migrations.
 
 use chrono::TimeDelta;
+use qubit_id::Id;
 
 use qubit_model::person::Gender;
 use qubit_model::product::Coupon;
@@ -43,13 +44,11 @@ fn test_product_structs_expose_all_source_fields() {
 #[test]
 fn test_product_enums_preserve_java_wire_values() {
     assert_eq!(
-        serde_json::to_string(&CouponType::DirectDiscount)
-            .expect("coupon type should serialize"),
+        serde_json::to_string(&CouponType::DirectDiscount).expect("coupon type should serialize"),
         "\"DIRECT_DISCOUNT\""
     );
     assert_eq!(
-        serde_json::to_string(&Quality::BrandNew)
-            .expect("quality should serialize"),
+        serde_json::to_string(&Quality::BrandNew).expect("quality should serialize"),
         "\"BRAND_NEW\""
     );
 }
@@ -84,7 +83,7 @@ fn test_person_constraint_clone_owns_city_lists() {
 #[test]
 fn test_seller_redacts_email() {
     let seller = Seller {
-        id: Some(7),
+        id: Id::from(7),
         code: "SELLER-7".to_owned(),
         name: "Example Seller".to_owned(),
         phone: None,

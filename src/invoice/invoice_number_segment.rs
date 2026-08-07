@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -20,11 +21,12 @@ use crate::invoice::InvoiceStockStatus;
 use crate::mixin::StatefulInfo;
 
 /// A contiguous invoice-number segment allocated for use by an organization.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InvoiceNumberSegment {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Application that owns this segment.
     pub app: StatefulInfo,
@@ -33,7 +35,8 @@ pub struct InvoiceNumberSegment {
     pub organization: StatefulInfo,
 
     /// Persisted identifier of the allocation application.
-    pub apply_id: i64,
+    #[model(opaque)]
+    pub apply_id: Id,
 
     /// Provincial-platform allocation application number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

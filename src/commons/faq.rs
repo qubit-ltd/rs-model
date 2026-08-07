@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::Info;
@@ -25,29 +25,25 @@ use super::State;
 use crate::mixin::StatefulInfo;
 
 /// A frequently asked question associated with an application and product.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Faq {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Owning application information.
     #[model(reference(target = App, target_field = info), opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub app: Option<StatefulInfo>,
 
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<InfoWithEntity>,
 
     /// Product information.
     #[model(opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub product: Option<Info>,
 
     /// Question text.
@@ -64,17 +60,14 @@ pub struct Faq {
 
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
@@ -82,7 +75,7 @@ impl Faq {
     /// Returns whether every source property has its empty representation.
     #[must_use]
     pub fn is_empty(&self) -> bool {
-        self.id.is_none()
+        self.id == Id::default()
             && self.app.is_none()
             && self.category.is_none()
             && self.product.is_none()

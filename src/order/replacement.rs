@@ -14,7 +14,5 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Source-compatible marker for a replacement workflow.
-#[derive(
-    Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize,
-)]
+#[derive(Model, Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Replacement;

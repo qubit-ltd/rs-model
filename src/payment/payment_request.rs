@@ -9,7 +9,6 @@
 //! Messages submitted to payment gateways.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -18,7 +17,8 @@ use crate::payment::PaymentRequestTransformer;
 use crate::settlement::Transaction;
 
 /// A signed transaction request submitted to a payment gateway.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct PaymentRequest {
     /// Transaction data to submit after filtering.
     pub data: Transaction,

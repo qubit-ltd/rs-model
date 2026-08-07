@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
@@ -20,15 +20,14 @@ use qubit_redact_derive::Redact;
 use super::Code;
 
 /// Maps a source-system code to a platform code for one entity type.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct CodeMap {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Entity type owning the mapping.
     #[model(text(min_chars = 1, max_chars = 64))]
@@ -36,7 +35,6 @@ pub struct CodeMap {
 
     /// Source-system code.
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub source: Option<Code>,
 
     /// Platform code value.
@@ -45,17 +43,14 @@ pub struct CodeMap {
 
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC modification timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
@@ -63,7 +58,7 @@ impl CodeMap {
     /// Returns whether every source property is absent or empty.
     #[must_use]
     pub fn is_empty(&self) -> bool {
-        self.id.is_none()
+        self.id == Id::default()
             && self.entity.is_empty()
             && self.source.as_ref().is_none_or(Code::is_empty)
             && self.platform_code.is_empty()

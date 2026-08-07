@@ -11,6 +11,7 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -26,20 +27,24 @@ use crate::product::ProductInfo;
 use crate::system::Environment;
 
 /// A return request and its refund, shipping, and lifecycle state.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Return {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted order identifier.
-    pub order_id: i64,
+    #[model(opaque)]
+    pub order_id: Id,
 
     /// Persisted order-item identifier.
-    pub order_item_id: i64,
+    #[model(opaque)]
+    pub order_item_id: Id,
 
     /// Optional persisted refund-transaction identifier.
-    pub transaction_id: Option<i64>,
+    #[model(opaque)]
+    pub transaction_id: Id,
 
     /// Party that initiated the return.
     pub issuer: ReturnIssuer,
@@ -77,7 +82,8 @@ pub struct Return {
     pub reject_reason: Option<String>,
 
     /// Optional persisted return-shipment identifier.
-    pub shipping_id: Option<i64>,
+    #[model(opaque)]
+    pub shipping_id: Id,
 
     /// Optional return-shipment tracking number.
     pub shipping_number: Option<String>,

@@ -18,7 +18,7 @@ use crate::order::Return;
 use crate::settlement::Transaction;
 
 /// An order together with optional related transactions and returns.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct OrderDetail {
     /// Order aggregate.
     pub order: Order,

@@ -11,6 +11,7 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -21,20 +22,24 @@ use crate::claim::enterprise::EnterpriseClaimSelfCareItem;
 use crate::claim::enterprise::SaveStatus;
 
 /// A medical invoice imported into an enterprise insurance claim.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimInvoice {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted claim identifier.
-    pub claim_id: i64,
+    #[model(opaque)]
+    pub claim_id: Id,
 
     /// Persisted medical-record identifier within the claim.
-    pub claim_medical_id: i64,
+    #[model(opaque)]
+    pub claim_medical_id: Id,
 
     /// Persisted attachment identifier for the source invoice image.
-    pub attachment_id: i64,
+    #[model(opaque)]
+    pub attachment_id: Id,
 
     /// Invoice number.
     pub number: String,

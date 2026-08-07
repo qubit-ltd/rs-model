@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -17,13 +18,12 @@ use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
 /// A common category record.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize,
-)]
+#[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Category {
     /// Persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Entity discriminator.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -19,11 +20,12 @@ use crate::upload::AttachmentType;
 use crate::upload::FileInfo;
 
 /// A file received by the upload subsystem and its generated renditions.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Upload {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional user-facing original filename.
     #[model(text(min_chars = 1, max_chars = 128))]

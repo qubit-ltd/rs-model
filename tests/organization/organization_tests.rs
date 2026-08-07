@@ -8,6 +8,7 @@
 
 //! Behavioral coverage for organization aggregate roots.
 
+use qubit_id::Id;
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
 use qubit_model::contact::Address;
@@ -23,7 +24,7 @@ fn test_organization_assigns_seller_and_normalizes_text() {
     assert!(Emptyful::is_empty(&organization));
 
     let seller = Seller {
-        id: Some(7),
+        id: Id::from(7),
         code: "SELLER".into(),
         name: "Seller name".into(),
         phone: Some(Phone::from("010-123")),

@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -18,10 +19,11 @@ use qubit_model_derive::Model;
 use crate::commons::State;
 
 /// Basic identifying information together with a lifecycle state.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct StatefulInfo {
     /// Optional persisted identifier.
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Stable code for the referenced entity.
     pub code: String,
@@ -60,7 +62,7 @@ impl StatefulInfo {
         delete_time: Option<DateTime<Utc>>,
     ) -> Self {
         Self {
-            id,
+            id: id.map_or_else(Id::default, |value| Id::from(value as u64)),
             code,
             name,
             state,

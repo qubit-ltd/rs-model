@@ -158,10 +158,7 @@ fn test_location_codecs_preserve_wire_contracts() {
     );
 
     let overridden = codec
-        .decode_with_coordinate_system(
-            Some("1,2"),
-            Some(CoordinateSystem::Bd09),
-        )
+        .decode_with_coordinate_system(Some("1,2"), Some(CoordinateSystem::Bd09))
         .expect("the coordinate pair should decode")
         .expect("a nonempty coordinate pair should produce a location");
     assert_eq!(overridden.coordinate_system, Some(CoordinateSystem::Bd09));

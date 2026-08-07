@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 use crate::order::Order;
 
 /// An order and the callback URLs used during submission.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct OrderSubmitRequest {
     /// Order being submitted.
     pub order: Order,

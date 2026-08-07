@@ -9,6 +9,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 use serde::Serializer;
@@ -35,62 +36,53 @@ thread_local! {
 }
 
 /// An application session with caller identity, permissions, and expiration.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display)]
 #[serde(default)]
 pub struct Session {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional application information.
     #[model(reference(target = App, target_field = info), opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub app: Option<StatefulInfo>,
 
     /// Optional user information.
     #[model(reference(target = User, target_field = info), opaque)]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<UserInfo>,
 
     /// Optional organization information.
     #[model(reference(target = Organization, target_field = info), opaque)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub organization: Option<StatefulInfo>,
 
     /// Optional user access token.
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub token: Option<Token>,
 
     /// Assigned role codes.
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub roles: Vec<String>,
 
     /// Effective privilege names.
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub privileges: Vec<String>,
 
     /// Optional client environment.
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub environment: Option<Environment>,
 
     /// Optional UTC last-active timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub last_active_time: Option<DateTime<Utc>>,
 
     /// Optional expiration information.
     #[model(index)]
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub expired: Option<Expired>,
 
     /// Optional UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 }
 
@@ -150,9 +142,7 @@ impl Session {
     }
 
     /// Mutates this thread's current session and returns the closure result.
-    pub fn with_current_session<R>(
-        operation: impl FnOnce(&mut Self) -> R,
-    ) -> R {
+    pub fn with_current_session<R>(operation: impl FnOnce(&mut Self) -> R) -> R {
         CURRENT_SESSION.with(|session| {
             let mut session = session.borrow_mut();
             operation(session.get_or_insert_with(Self::default))
@@ -195,8 +185,7 @@ impl Session {
 
     /// Replaces role codes and effective privileges from role models.
     pub fn set_roles_and_privileges(&mut self, roles: &[Role]) {
-        let role_codes: HashSet<_> =
-            roles.iter().map(|role| role.code.clone()).collect();
+        let role_codes: HashSet<_> = roles.iter().map(|role| role.code.clone()).collect();
         let privileges: HashSet<_> = roles
             .iter()
             .flat_map(|role| role.privileges.iter().cloned())
@@ -213,42 +202,45 @@ impl Normalizable for Session {
     }
 }
 
+/// Returns whether an identifier is the default identifier.
+///
+/// # Parameters
+///
+/// * `id` - Identifier to compare with the default value.
+///
+/// # Returns
+///
+/// `true` when `id` is the default identifier.
+#[must_use]
+fn is_default_id(id: &Id) -> bool {
+    *id == Id::default()
+}
+
 /// Borrowed JSON-wire projection for a [`Session`].
 #[derive(Serialize)]
 struct SessionWire<'a> {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    id: Option<i64>,
-
+    #[serde(skip_serializing_if = "is_default_id")]
+    id: Id,
     #[serde(skip_serializing_if = "Option::is_none")]
     app: Option<&'a StatefulInfo>,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     user: Option<&'a UserInfo>,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     organization: Option<&'a StatefulInfo>,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     token: Option<&'a Token>,
-
     #[serde(skip_serializing_if = "Vec::is_empty")]
     roles: &'a Vec<String>,
-
     #[serde(skip_serializing_if = "Vec::is_empty")]
     privileges: &'a Vec<String>,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     environment: Option<&'a Environment>,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     last_active_time: Option<&'a DateTime<Utc>>,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     expired: Option<&'a Expired>,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     create_time: Option<&'a DateTime<Utc>>,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     username: Option<&'a str>,
 }

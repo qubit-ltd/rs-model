@@ -8,6 +8,7 @@
 
 //! Medical service usage records.
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -19,11 +20,12 @@ use crate::service::MedicalItem;
 use crate::service::MedicalPackage;
 
 /// Records a patient's use of one item from a medical service package.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalItemUseRecord {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Medical package from which the item was consumed.
     pub medical_package: MedicalPackage,
@@ -32,7 +34,8 @@ pub struct MedicalItemUseRecord {
     pub medical_item: MedicalItem,
 
     /// Persisted identifier of the user's item entitlement.
-    pub user_medical_item_id: i64,
+    #[model(opaque)]
+    pub user_medical_item_id: Id,
 
     /// Patient who used the service.
     pub patient: PersonInfo,

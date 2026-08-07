@@ -7,6 +7,7 @@
 // =============================================================================
 
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Serialize;
 use std::io;
 
@@ -61,8 +62,7 @@ impl io::Write for FailingWriter {
 /// Verifies that every serializer write boundary propagates its I/O error.
 fn assert_serializer_propagates_each_write_error<T: Serialize>(value: &T) {
     for failure_at in 1..=2_048 {
-        let mut serializer =
-            serde_json::Serializer::new(FailingWriter::new(failure_at));
+        let mut serializer = serde_json::Serializer::new(FailingWriter::new(failure_at));
         if value.serialize(&mut serializer).is_ok() {
             return;
         }
@@ -72,8 +72,7 @@ fn assert_serializer_propagates_each_write_error<T: Serialize>(value: &T) {
 
 /// Serializes a value through the public JSON text representation.
 fn json_value<T: Serialize>(value: &T) -> serde_json::Value {
-    let text = serde_json::to_string(value)
-        .expect("value should serialize to JSON text");
+    let text = serde_json::to_string(value).expect("value should serialize to JSON text");
     serde_json::from_str(&text).expect("JSON text should parse into a value")
 }
 
@@ -275,8 +274,7 @@ fn file_emptiness_observes_every_source_field() {
 
 #[test]
 fn upload_create_populates_file_and_verification_metadata() {
-    let path =
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
     let params = UploadParams {
         filename: None,
         content_type: Some("application/toml".into()),
@@ -296,16 +294,15 @@ fn upload_create_populates_file_and_verification_metadata() {
     assert_eq!(upload.hash_value.as_deref(), Some("expected-hash"));
 
     let serialized = json_value(&upload);
-    assert!(serialized.get("original_filename").is_none());
+    assert!(serialized["original_filename"].is_null());
     assert!(serialized.get("originalFilename").is_none());
-    assert!(serialized.get("id").is_none());
+    assert_eq!(serialized["id"], "0");
     assert_eq!(serialized["hash_algorithm"], "SHA-256");
 }
 
 #[test]
 fn upload_create_rejects_the_source_invalid_missing_content_type() {
-    let path =
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml");
     let error = Upload::create(&path, &UploadParams::default()).unwrap_err();
 
     assert_eq!(error.kind(), std::io::ErrorKind::InvalidInput);
@@ -315,10 +312,7 @@ fn upload_create_rejects_the_source_invalid_missing_content_type() {
 fn upload_file_info_supports_relative_paths_and_missing_files() {
     let mut upload = Upload::default();
     let file = upload
-        .set_file_info(
-            std::path::Path::new("missing-upload-file"),
-            "text/plain",
-        )
+        .set_file_info(std::path::Path::new("missing-upload-file"), "text/plain")
         .expect("relative paths are resolved against the working directory");
     assert!(file.path.ends_with("missing-upload-file"));
     assert_eq!(file.size, 0);
@@ -356,7 +350,7 @@ fn file_redaction_hides_paths_filenames_and_hashes_recursively() {
 fn attachment_serialization_preserves_every_present_optional_property() {
     let now = Utc::now();
     let attachment = Attachment {
-        id: Some(7),
+        id: Id::from(7),
         aggregate_ref: Some(AggregateRef::default()),
         category: Some(InfoWithEntity::default()),
         index: 2,
@@ -411,7 +405,7 @@ fn attachment_serialization_preserves_every_present_optional_property() {
 #[test]
 fn attachment_serialization_propagates_every_writer_failure() {
     let attachment = Attachment {
-        id: Some(7),
+        id: Id::from(7),
         aggregate_ref: Some(AggregateRef::default()),
         category: Some(InfoWithEntity::default()),
         title: Some("private title".into()),

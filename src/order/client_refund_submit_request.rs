@@ -9,7 +9,6 @@
 //! Client refund submission messages.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -17,7 +16,8 @@ use qubit_redact_derive::Redact;
 use crate::order::Client;
 
 /// Verification and callback data submitted for a client refund.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct ClientRefundSubmitRequest {
     /// One-time refund verification code.
     #[model(sensitive(token))]

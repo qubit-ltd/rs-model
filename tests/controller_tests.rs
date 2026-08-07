@@ -7,6 +7,7 @@
 // =============================================================================
 
 use chrono::Utc;
+use qubit_id::Id;
 use qubit_model::commons::AuthorizeRecord;
 use qubit_model::commons::State;
 use qubit_model::controller::AppAuthenticateParams;
@@ -111,8 +112,7 @@ fn test_controller_authentication_material_is_redacted() {
 }
 
 #[test]
-fn test_register_login_response_and_social_account_preserve_source_projections()
-{
+fn test_register_login_response_and_social_account_preserve_source_projections() {
     let register = RegisterUserParams {
         username: "alice".into(),
         social_network: Some(SocialNetwork::Wechat),
@@ -143,7 +143,7 @@ fn test_register_login_response_and_social_account_preserve_source_projections()
 #[test]
 fn test_register_user_params_projects_users_and_desensitizes_credentials() {
     let user = User {
-        id: None,
+        id: Id::default(),
         username: "alice".into(),
         password: "secret".into(),
         name: Some("Alice".into()),

@@ -9,8 +9,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 use std::path::Path;
 use uuid::Uuid;
 
@@ -23,20 +23,18 @@ use super::FileInfo;
 use super::UploadParams;
 
 /// A received file and its generated image renditions.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Upload {
     /// Optional persisted identifier.
     #[model(identifier)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional user-facing original filename.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub original_filename: Option<String>,
 
     /// Type inferred for the uploaded file.
@@ -49,38 +47,31 @@ pub struct Upload {
 
     /// Optional screenshot rendition.
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub screenshot: Option<FileInfo>,
 
     /// Optional small-thumbnail rendition.
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub small_thumbnail: Option<FileInfo>,
 
     /// Optional large-thumbnail rendition.
     #[redact(nested)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub large_thumbnail: Option<FileInfo>,
 
     /// Optional hash algorithm name.
     #[model(text(min_chars = 1, max_chars = 64))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub hash_algorithm: Option<String>,
 
     /// Optional content hash value.
     #[model(text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub hash_value: Option<String>,
 
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub create_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
     #[model(index, time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
@@ -102,7 +93,7 @@ impl Upload {
     /// representation.
     #[must_use]
     pub fn is_empty(&self) -> bool {
-        self.id.is_none()
+        self.id == Id::default()
             && self.original_filename.as_ref().is_none_or(String::is_empty)
             && self.r#type == AttachmentType::Document
             && self.file.is_empty()
@@ -149,11 +140,7 @@ impl Upload {
     ///
     /// Returns an I/O error when a relative path cannot be made absolute.
     /// A nonexistent source path has size zero, matching `File.length()`.
-    pub fn set_file_info(
-        &mut self,
-        path: &Path,
-        content_type: &str,
-    ) -> std::io::Result<&FileInfo> {
+    pub fn set_file_info(&mut self, path: &Path, content_type: &str) -> std::io::Result<&FileInfo> {
         let absolute_path = if path.is_absolute() {
             path.to_path_buf()
         } else {
@@ -189,8 +176,7 @@ impl Upload {
 
     /// Creates and stores small-thumbnail metadata in the temporary directory.
     pub fn set_small_thumbnail_info(&mut self) -> &FileInfo {
-        self.small_thumbnail =
-            Some(self.rendition(Self::SMALL_THUMBNAIL_SUFFIX));
+        self.small_thumbnail = Some(self.rendition(Self::SMALL_THUMBNAIL_SUFFIX));
         self.small_thumbnail
             .as_ref()
             .expect("small thumbnail was just stored")
@@ -198,8 +184,7 @@ impl Upload {
 
     /// Creates and stores large-thumbnail metadata in the temporary directory.
     pub fn set_large_thumbnail_info(&mut self) -> &FileInfo {
-        self.large_thumbnail =
-            Some(self.rendition(Self::LARGE_THUMBNAIL_SUFFIX));
+        self.large_thumbnail = Some(self.rendition(Self::LARGE_THUMBNAIL_SUFFIX));
         self.large_thumbnail
             .as_ref()
             .expect("large thumbnail was just stored")

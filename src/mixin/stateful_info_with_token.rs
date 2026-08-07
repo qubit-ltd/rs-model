@@ -17,7 +17,7 @@ use crate::commons::Token;
 use crate::mixin::StatefulInfo;
 
 /// Couples a stateful information snapshot with an optional access token.
-#[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct StatefulInfoWithToken {
     /// Stateful identity and lifecycle information.
     pub info: StatefulInfo,

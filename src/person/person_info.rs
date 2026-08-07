@@ -8,8 +8,8 @@
 use chrono::DateTime;
 use chrono::NaiveDate;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -21,13 +21,13 @@ use crate::person::User;
 use crate::upload::Attachment;
 
 /// A compact person snapshot used by references outside the person domain.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct PersonInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Person's name.
     #[model(index, text(min_chars = 1, max_chars = 128))]

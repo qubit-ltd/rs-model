@@ -15,7 +15,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// A complete breakdown of patient, insurer, fund, and prepayment amounts.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalPayment {
     /// Patient self-care amount for partially covered items.
     #[model(money(scale = 4))]

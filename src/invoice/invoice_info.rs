@@ -10,6 +10,7 @@
 
 use bigdecimal::BigDecimal;
 use chrono::NaiveDate;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -19,11 +20,12 @@ use crate::commons::Currency;
 use crate::invoice::InvoiceStatus;
 
 /// A compact invoice snapshot used by related-invoice references.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InvoiceInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Invoice code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

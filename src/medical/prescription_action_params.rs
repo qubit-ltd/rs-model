@@ -19,7 +19,7 @@ use crate::Entity;
 use crate::medical::PrescriptionAction;
 
 /// Actor, timestamp, description, and payload for a prescription action.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionActionParams {
     /// Action applied to the prescription.
     pub action: PrescriptionAction,

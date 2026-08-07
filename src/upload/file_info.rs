@@ -15,7 +15,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Storage metadata for a file, image, video, or audio asset.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct FileInfo {
     /// ASCII filesystem path or storage URL.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]

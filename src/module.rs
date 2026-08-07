@@ -14,9 +14,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Identifies a functional module in the domain system.
-#[derive(
-    Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize,
-)]
+#[derive(Model, Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Module {
     /// Basic account and profile operations.

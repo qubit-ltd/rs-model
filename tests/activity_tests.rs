@@ -6,6 +6,7 @@
 
 use bigdecimal::BigDecimal;
 use chrono::Utc;
+use qubit_id::Id;
 
 use qubit_mixin::Info;
 use qubit_mixin::Normalizable;
@@ -77,7 +78,7 @@ fn test_activity_model_metadata_preserves_source_constraints() {
 fn test_activity_defaults_missing_state_to_normal() {
     let now = Utc::now();
     let activity = Activity {
-        id: None,
+        id: Id::default(),
         code: "summer".into(),
         name: "Summer".into(),
         app: Info::default(),
@@ -266,7 +267,7 @@ fn test_contact_redacts_email_and_nested_phone_number() {
 fn test_activity_coupon_redacts_nested_person_contact() {
     let person = Person {
         credential: Some(CredentialInfo {
-            id: Some(1),
+            id: Id::from(1),
             r#type: CredentialType::IdentityCard,
             number: "320101199001010011".into(),
             verified: Some(VerifyState::Valid),
@@ -286,17 +287,17 @@ fn test_activity_coupon_redacts_nested_person_contact() {
     };
     let now = Utc::now();
     let coupon = ActivityCoupon {
-        id: None,
+        id: Id::default(),
         activity: Info::default(),
         coupon_code: "CODE".into(),
         person,
         order: OrderInfo {
-            id: None,
-            user_id: None,
+            id: Id::default(),
+            user_id: Id::default(),
             app: StatefulInfo::default(),
             buyer: Buyer {
-                id: None,
-                user_id: None,
+                id: Id::default(),
+                user_id: Id::default(),
                 name: String::new(),
                 credential: None,
                 gender: None,
@@ -305,7 +306,7 @@ fn test_activity_coupon_redacts_nested_person_contact() {
                 email: None,
             },
             seller: Seller {
-                id: None,
+                id: Id::default(),
                 code: String::new(),
                 name: String::new(),
                 phone: None,

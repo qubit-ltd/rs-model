@@ -9,15 +9,13 @@
 //! Task lifecycle vocabularies and errors.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// The execution status of a task pipeline.
-#[derive(
-    Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TaskPipelineStatus {
     /// The Idle classification.

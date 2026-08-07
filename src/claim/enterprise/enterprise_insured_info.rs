@@ -10,8 +10,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
@@ -22,11 +22,13 @@ use crate::claim::enterprise::EnterpriseInsuredType;
 use crate::claim::enterprise::EnterpriseOwnership;
 
 /// An enterprise insured person and their linked employee and claim history.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct EnterpriseInsuredInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Insurance product information.
     #[model(opaque)]

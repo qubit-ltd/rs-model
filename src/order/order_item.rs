@@ -9,6 +9,7 @@
 //! Order line-item records.
 
 use bigdecimal::BigDecimal;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -18,14 +19,16 @@ use crate::order::Client;
 use crate::product::ProductInfo;
 
 /// Quantity, pricing, fulfillment, and client data for one order line.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct OrderItem {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted owning-order identifier.
-    pub order_id: i64,
+    #[model(opaque)]
+    pub order_id: Id,
 
     /// Position within the order.
     pub index: i32,
@@ -56,7 +59,8 @@ pub struct OrderItem {
     pub payable: BigDecimal,
 
     /// Optional linked service identifier.
-    pub service_id: Option<i64>,
+    #[model(opaque)]
+    pub service_id: Id,
 
     /// Optional clients receiving the product or service.
     pub clients: Option<Vec<Client>>,

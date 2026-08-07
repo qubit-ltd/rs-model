@@ -7,8 +7,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
@@ -18,12 +18,14 @@ use crate::activity::ActivityProductItem;
 use crate::commons::State;
 
 /// A marketing activity and the products participating in it.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[model(unique(fields(code)))]
 pub struct Activity {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique stable code.
     #[model(text(min_chars = 1, max_chars = 64))]

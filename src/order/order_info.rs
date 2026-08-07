@@ -11,6 +11,7 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -25,13 +26,15 @@ use crate::order::PayType;
 use crate::product::Seller;
 
 /// A compact order summary used by transaction and query results.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct OrderInfo {
     /// Optional persisted identifier.
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional persisted owning-user identifier.
-    pub user_id: Option<i64>,
+    #[model(opaque)]
+    pub user_id: Id,
 
     /// Owning application.
     pub app: StatefulInfo,

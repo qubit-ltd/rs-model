@@ -7,16 +7,15 @@
 // =============================================================================
 //! Device-binding parameters.
 
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// Associates a device identifier with a patient identifier.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct BindDeviceParams {
     /// Device identifier.
@@ -24,6 +23,6 @@ pub struct BindDeviceParams {
     pub udid: String,
 
     /// Optional patient identifier.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub patient_id: Option<i64>,
+    #[model(opaque)]
+    pub patient_id: Id,
 }

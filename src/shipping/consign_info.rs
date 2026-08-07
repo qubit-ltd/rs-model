@@ -9,7 +9,6 @@
 //! Consignor and consignee values.
 
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -19,7 +18,8 @@ use crate::contact::Address;
 use crate::contact::Phone;
 
 /// Identifying and contact information for one side of a shipment.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct ConsignInfo {
     /// Person or organization name.
     pub name: String,

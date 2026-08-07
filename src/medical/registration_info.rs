@@ -17,7 +17,7 @@ use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
 /// Hospital-system information for a registration event.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct RegistrationInfo {
     /// Source-system business sequence number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

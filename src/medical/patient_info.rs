@@ -9,8 +9,8 @@
 //! Lightweight patient information.
 
 use chrono::NaiveDate;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -20,11 +20,13 @@ use crate::contact::Phone;
 use crate::person::Gender;
 
 /// A compact patient snapshot embedded in medical records.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct PatientInfo {
     /// Optional persisted patient identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique patient code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

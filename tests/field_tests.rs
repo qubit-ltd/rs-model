@@ -312,8 +312,7 @@ fn test_field_wire_values_round_trip_for_every_declared_field() {
         let decoded: Field = serde_json::from_str(&encoded)
             .expect("every declared field wire value must deserialize");
         assert_eq!(
-            serde_json::to_string(&decoded)
-                .expect("every field must serialize"),
+            serde_json::to_string(&decoded).expect("every field must serialize"),
             encoded,
             "field {wire_value} must preserve its source wire value"
         );

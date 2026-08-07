@@ -4,6 +4,7 @@
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
 
+use qubit_id::Id;
 use qubit_model::commons::CredentialInfo;
 use qubit_model::commons::CredentialType;
 use qubit_model::commons::VerifyState;
@@ -18,7 +19,7 @@ use qubit_model::person::Person;
 use qubit_model::person::PersonInfo;
 use qubit_model_metadata::metadata_of;
 
-fn credential(id: Option<i64>) -> CredentialInfo {
+fn credential(id: Id) -> CredentialInfo {
     CredentialInfo {
         id,
         r#type: CredentialType::IdentityCard,
@@ -30,11 +31,11 @@ fn credential(id: Option<i64>) -> CredentialInfo {
 #[test]
 fn person_projects_and_assigns_person_info_like_the_source() {
     let mut person = Person {
-        id: Some(7),
+        id: Id::from(7),
         name: "Ada".into(),
         username: Some("ada".into()),
         gender: Some(Gender::Female),
-        credential: Some(credential(Some(21))),
+        credential: Some(credential(Id::from(21))),
         contact: Contact::create(
             None,
             Some(Phone::from("13800138000")),
@@ -47,13 +48,13 @@ fn person_projects_and_assigns_person_info_like_the_source() {
     };
 
     let info = person.info();
-    assert_eq!(info.id, Some(7));
+    assert_eq!(info.id, Id::from(7));
     assert_eq!(info.username.as_deref(), Some("ada"));
     assert_eq!(info.mobile.as_ref().unwrap().number, "13800138000");
     assert_eq!(info.email.as_deref(), Some("ada@example.test"));
 
     person.assign_info(&PersonInfo {
-        id: Some(8),
+        id: Id::from(8),
         name: "Grace".into(),
         username: Some("ignored-by-source-assign".into()),
         gender: None,
@@ -65,7 +66,7 @@ fn person_projects_and_assigns_person_info_like_the_source() {
         test: false,
         delete_time: None,
     });
-    assert_eq!(person.id, Some(8));
+    assert_eq!(person.id, Id::from(8));
     assert_eq!(person.name, "Grace");
     assert_eq!(person.username.as_deref(), Some("ada"));
     assert_eq!(person.contact, None);
@@ -75,9 +76,9 @@ fn person_projects_and_assigns_person_info_like_the_source() {
 fn person_assigns_client_buyer_and_consignee_views() {
     let mut person = Person::default();
     let client = Client {
-        id: Some(1),
+        id: Id::from(1),
         name: "Client".into(),
-        credential: Some(credential(None)),
+        credential: Some(credential(Id::default())),
         gender: Some(Gender::Female),
         birthday: None,
         mobile: Some(Phone::from("13900000000")),
@@ -95,13 +96,13 @@ fn person_assigns_client_buyer_and_consignee_views() {
         payload: None,
     };
     person.assign_client(&client);
-    assert_eq!(person.id, Some(1));
+    assert_eq!(person.id, Id::from(1));
     assert_eq!(person.contact.as_ref().unwrap().email, client.email);
     assert!(person.has_medicare_or_social_security());
 
     let buyer = Buyer {
-        id: Some(2),
-        user_id: Some(20),
+        id: Id::from(2),
+        user_id: Id::from(20),
         name: "Buyer".into(),
         credential: None,
         gender: None,
@@ -110,12 +111,12 @@ fn person_assigns_client_buyer_and_consignee_views() {
         email: None,
     };
     person.assign_buyer(&buyer);
-    assert_eq!(person.id, Some(2));
+    assert_eq!(person.id, Id::from(2));
     assert_eq!(person.name, "Buyer");
 
     let consignee = Consignee {
-        id: Some(3),
-        user_id: Some(30),
+        id: Id::from(3),
+        user_id: Id::from(30),
         title: None,
         name: "Consignee".into(),
         mobile: Phone::from("13700000000"),
@@ -128,7 +129,7 @@ fn person_assigns_client_buyer_and_consignee_views() {
         delete_time: None,
     };
     person.assign_consignee(&consignee);
-    assert_eq!(person.id, Some(3));
+    assert_eq!(person.id, Id::from(3));
     assert_eq!(
         person
             .contact
@@ -145,19 +146,19 @@ fn person_assigns_client_buyer_and_consignee_views() {
 
 #[test]
 fn person_identity_prefers_ids_then_falls_back_to_credential() {
-    let identity = credential(Some(1));
+    let identity = credential(Id::from(1));
     let person = Person {
-        id: Some(7),
+        id: Id::from(7),
         credential: Some(identity.clone()),
         ..Person::default()
     };
     let same_id = Buyer {
-        id: Some(7),
+        id: Id::from(7),
         credential: None,
         ..Buyer::default()
     };
     let different_id_same_credential = Buyer {
-        id: Some(8),
+        id: Id::from(8),
         credential: Some(identity.clone()),
         ..Buyer::default()
     };
@@ -169,7 +170,7 @@ fn person_identity_prefers_ids_then_falls_back_to_credential() {
         ..Person::default()
     };
     let same_credential = PersonInfo {
-        credential: Some(credential(None)),
+        credential: Some(credential(Id::default())),
         ..PersonInfo::default()
     };
     assert!(person_without_id.is_same(&same_credential));

@@ -8,6 +8,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 
 use qubit_model::contact::Phone;
 use qubit_model::error::ErrorType;
@@ -23,7 +24,7 @@ fn assert_redact<T: Redact>() {}
 
 fn verify_code(code: &str) -> VerifyCode {
     VerifyCode {
-        id: Some(11),
+        id: Id::from(11),
         tenant: StatefulInfo::default(),
         app: StatefulInfo::default(),
         mobile: None,
@@ -49,8 +50,7 @@ fn test_notification_public_types_expose_model_and_redact_contracts() {
 #[test]
 fn test_verify_scene_preserves_java_wire_names() {
     assert_eq!(
-        serde_json::to_string(&VerifyScene::ResetPassword)
-            .expect("verify scene should serialize"),
+        serde_json::to_string(&VerifyScene::ResetPassword).expect("verify scene should serialize"),
         "\"RESET_PASSWORD\""
     );
     assert_eq!(

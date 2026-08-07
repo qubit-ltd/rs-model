@@ -15,7 +15,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Historical claim base, deductible, and pooled-fund totals.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct HistoryClaimAmount {
     /// Historical claim base.
     #[model(money(scale = 4))]

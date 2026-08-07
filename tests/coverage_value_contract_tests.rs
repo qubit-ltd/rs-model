@@ -8,6 +8,7 @@
 
 //! External behavior coverage for value-object codes and ordering policies.
 
+use qubit_id::Id;
 use std::cmp::Ordering;
 
 use qubit_mixin::Normalizable;
@@ -179,8 +180,7 @@ fn test_null_sort_options_cover_all_null_comparisons() {
 #[test]
 #[should_panic(expected = "either operand must be null")]
 fn test_null_sort_options_reject_two_present_operands() {
-    let _ =
-        NullSortOption::NullFirst.compare_none(false, false, SortOrder::Asc);
+    let _ = NullSortOption::NullFirst.compare_none(false, false, SortOrder::Asc);
 }
 
 /// Exercises code normalization, emptiness, and every supported telephone form.
@@ -231,7 +231,7 @@ fn test_code_models_and_phone_codec_preserve_source_forms() {
     assert!(CodeMap::default().is_empty());
     assert!(
         !CodeMap {
-            id: Some(1),
+            id: Id::from(1),
             ..CodeMap::default()
         }
         .is_empty()

@@ -9,8 +9,8 @@ use chrono::DateTime;
 use chrono::NaiveDate;
 use chrono::NaiveTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Info;
 use qubit_mixin::InfoWithEntity;
@@ -46,9 +46,8 @@ use crate::person::PersonInfo;
 use crate::upload::Attachment;
 
 /// A person's complete demographic, contact, and administrative record.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[model(
     unique(name = "person_username", fields(username)),
     unique(name = "person_credential", fields(credential))
@@ -56,7 +55,8 @@ use crate::upload::Attachment;
 pub struct Person {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional data-source information.
     #[model(reference(target = Source, target_field = info), index, opaque)]
@@ -249,13 +249,7 @@ impl Person {
         self.gender = info.gender;
         self.birthday = info.birthday;
         self.credential = info.credential.clone();
-        self.contact = Contact::create(
-            None,
-            info.mobile.clone(),
-            info.email.clone(),
-            None,
-            None,
-        );
+        self.contact = Contact::create(None, info.mobile.clone(), info.email.clone(), None, None);
         self.test = info.test;
         self.delete_time = info.delete_time;
     }
@@ -280,13 +274,7 @@ impl Person {
         self.credential = buyer.credential.clone();
         self.gender = buyer.gender;
         self.birthday = buyer.birthday;
-        self.contact = Contact::create(
-            None,
-            buyer.mobile.clone(),
-            buyer.email.clone(),
-            None,
-            None,
-        );
+        self.contact = Contact::create(None, buyer.mobile.clone(), buyer.email.clone(), None, None);
     }
 
     /// Returns this person's compact information projection.
@@ -321,8 +309,7 @@ impl Person {
     /// Reports whether either benefit-coverage flag is explicitly true.
     #[must_use]
     pub fn has_medicare_or_social_security(&self) -> bool {
-        self.has_medicare.unwrap_or(false)
-            || self.has_social_security.unwrap_or(false)
+        self.has_medicare.unwrap_or(false) || self.has_social_security.unwrap_or(false)
     }
 
     /// Reports whether another projection identifies the same person.
@@ -332,7 +319,7 @@ impl Person {
     #[must_use]
     pub fn is_same<T: PersonIdentity + ?Sized>(&self, other: &T) -> bool {
         match (self.id, other.person_id()) {
-            (Some(id), Some(other_id)) => id == other_id,
+            (id, Some(other_id)) => id.value() as i64 == other_id,
             _ => self
                 .credential
                 .as_ref()
@@ -347,7 +334,7 @@ macro_rules! impl_person_identity {
         $(
             impl PersonIdentity for $type {
                 fn person_id(&self) -> Option<i64> {
-                    self.id
+                    Some(self.id.value() as i64)
                 }
 
                 fn person_credential(&self) -> Option<&CredentialInfo> {

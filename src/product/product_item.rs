@@ -14,6 +14,7 @@ use chrono::NaiveDate;
 use chrono::NaiveDateTime;
 use chrono::TimeDelta;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -23,14 +24,16 @@ use crate::Entity;
 use crate::upload::Attachment;
 
 /// A priced specification belonging to a product.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductItem {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted identifier of the owning product.
-    pub product_id: i64,
+    #[model(opaque)]
+    pub product_id: Id,
 
     /// Position in the owning product's item list.
     pub index: i32,
@@ -89,7 +92,8 @@ pub struct ProductItem {
     pub service_type: Option<Entity>,
 
     /// Optional persisted identifier of the linked service.
-    pub service_id: Option<i64>,
+    #[model(opaque)]
+    pub service_id: Id,
 
     /// UTC creation timestamp.
     #[model(time(precision = second, normalization = utc))]

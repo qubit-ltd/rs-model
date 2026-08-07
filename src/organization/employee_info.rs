@@ -11,8 +11,8 @@
 use chrono::DateTime;
 use chrono::NaiveDate;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -25,11 +25,13 @@ use crate::person::Gender;
 use crate::upload::Attachment;
 
 /// An employee snapshot including organization and department references.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct EmployeeInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique ASCII employee code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

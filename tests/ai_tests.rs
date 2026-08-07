@@ -63,8 +63,7 @@ fn test_ai_result_preserves_indexes_reference_and_single_primary_key() {
 #[test]
 fn test_ai_result_type_preserves_java_wire_values() {
     assert_eq!(
-        serde_json::to_string(&AiResultType::Description)
-            .expect("AI result type should serialize"),
+        serde_json::to_string(&AiResultType::Description).expect("AI result type should serialize"),
         "\"DESCRIPTION\""
     );
     assert_eq!(
@@ -73,13 +72,11 @@ fn test_ai_result_type_preserves_java_wire_values() {
         "\"TRANSCRIPTION\""
     );
     assert_eq!(
-        serde_json::to_string(&AiResultType::Summary)
-            .expect("AI result type should serialize"),
+        serde_json::to_string(&AiResultType::Summary).expect("AI result type should serialize"),
         "\"SUMMARY\""
     );
     assert_eq!(
-        serde_json::to_string(&AiResultType::Analysis)
-            .expect("AI result type should serialize"),
+        serde_json::to_string(&AiResultType::Analysis).expect("AI result type should serialize"),
         "\"ANALYSIS\""
     );
 }

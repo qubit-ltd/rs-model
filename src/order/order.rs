@@ -11,6 +11,7 @@
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -31,14 +32,16 @@ use crate::shipping::ShippingMode;
 use crate::system::Environment;
 
 /// A submitted order with line items, pricing, delivery, and lifecycle data.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Order {
     /// Optional persisted identifier and order number.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional persisted owning-user identifier.
-    pub user_id: Option<i64>,
+    #[model(opaque)]
+    pub user_id: Id,
 
     /// Owning application.
     pub app: StatefulInfo,
@@ -104,7 +107,8 @@ pub struct Order {
     pub shipping_demand: Option<ShippingDemand>,
 
     /// Optional persisted shipment identifier.
-    pub shipping_id: Option<i64>,
+    #[model(opaque)]
+    pub shipping_id: Id,
 
     /// Optional shipment tracking number.
     pub shipping_number: Option<String>,

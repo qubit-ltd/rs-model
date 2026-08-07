@@ -9,23 +9,19 @@
 
 use chrono::NaiveTime;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// A half-open interval from `start` inclusive to `end` exclusive.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct LocalTimeRange {
     /// Optional inclusive start time.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub start: Option<NaiveTime>,
 
     /// Optional exclusive end time.
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub end: Option<NaiveTime>,
 }
 
@@ -39,7 +35,6 @@ impl LocalTimeRange {
     /// Reports whether `time` lies within the half-open interval.
     #[must_use]
     pub fn contains(&self, time: NaiveTime) -> bool {
-        self.start.is_none_or(|start| time >= start)
-            && self.end.is_none_or(|end| time < end)
+        self.start.is_none_or(|start| time >= start) && self.end.is_none_or(|end| time < end)
     }
 }

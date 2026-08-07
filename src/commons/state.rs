@@ -14,9 +14,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 /// Describes the lifecycle state of an entity.
-#[derive(
-    Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize,
-)]
+#[derive(Model, Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum State {
     /// The entity has not been activated.

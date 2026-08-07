@@ -10,8 +10,8 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -20,14 +20,17 @@ use crate::claim::InsuranceClaimStatus;
 use crate::claim::InsuranceClaimStatusGroup;
 
 /// A state transition recorded for an individual insurance claim.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
+#[derive(Model, Redact, Clone, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 pub struct InsuranceClaimEvent {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted claim identifier.
-    pub claim_id: i64,
+    #[model(opaque)]
+    pub claim_id: Id,
 
     /// Detailed claim state recorded by this event.
     pub status: InsuranceClaimStatus,

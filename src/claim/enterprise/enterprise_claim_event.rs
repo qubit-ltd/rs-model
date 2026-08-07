@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -19,14 +20,16 @@ use crate::claim::enterprise::EnterpriseClaimStatus;
 use crate::claim::enterprise::EnterpriseClaimStatusGroup;
 
 /// A state transition recorded for an enterprise insurance claim.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimEvent {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted claim identifier.
-    pub claim_id: i64,
+    #[model(opaque)]
+    pub claim_id: Id,
 
     /// Detailed enterprise claim state.
     pub status: EnterpriseClaimStatus,

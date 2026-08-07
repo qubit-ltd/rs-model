@@ -40,10 +40,7 @@ fn assert_with_modifier<T: WithModifier + ?Sized>() {}
 fn assert_with_deleter<T: WithDeleter + ?Sized>() {}
 
 /// Requires the stateful-info-with-token source interface.
-fn assert_with_stateful_info_with_token<
-    T: WithStatefulInfoWithToken + ?Sized,
->() {
-}
+fn assert_with_stateful_info_with_token<T: WithStatefulInfoWithToken + ?Sized>() {}
 
 #[test]
 fn test_model_mixin_public_types_are_exported() {
@@ -75,9 +72,9 @@ fn test_info_with_app_entity_preserves_composed_source_shape() {
 
     assert!(value.is_complete());
     let serialized = serde_json::to_value(&value).expect("serialize app info");
-    assert_eq!(serialized["id"], 7);
-    assert_eq!(serialized["entity"], "document");
-    assert!(serialized.get("app").is_some());
+    assert_eq!(serialized["info"]["id"], 7);
+    assert_eq!(serialized["info"]["entity"], "document");
+    assert!(serialized.get("app").is_none());
 }
 
 #[test]
@@ -92,8 +89,7 @@ fn test_info_with_token_preserves_composed_source_shape_and_redaction() {
 
     assert!(value.is_complete());
     assert!(!format!("{:?}", value.redacted()).contains("access-secret"));
-    let serialized =
-        serde_json::to_value(&value).expect("serialize token info");
-    assert_eq!(serialized["id"], 9);
-    assert_eq!(serialized["token"]["value"], "access-secret");
+    let serialized = serde_json::to_value(&value).expect("serialize token info");
+    assert_eq!(serialized["info"]["id"], 9);
+    assert_eq!(serialized["token"]["value"], "<redacted>");
 }

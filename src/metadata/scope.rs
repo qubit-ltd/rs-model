@@ -7,8 +7,8 @@
 // =============================================================================
 //! Metadata ownership scopes.
 
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -16,9 +16,8 @@ use qubit_redact_derive::Redact;
 use super::ScopeType;
 
 /// A scope classification and its optional owner identifier.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Scope {
     /// Scope classification.
@@ -26,7 +25,6 @@ pub struct Scope {
     pub r#type: ScopeType,
 
     /// Tenant or application identifier for a non-system scope.
-    #[model(index)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(index, opaque)]
+    pub id: Id,
 }

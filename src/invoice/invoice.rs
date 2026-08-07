@@ -12,6 +12,7 @@ use bigdecimal::BigDecimal;
 use chrono::DateTime;
 use chrono::NaiveDate;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -29,11 +30,12 @@ use crate::payment::PaymentMode;
 use crate::settlement::Settlement;
 
 /// An issued invoice with payment parties, amounts, items, and lifecycle data.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Invoice {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Application that owns this invoice.
     pub app: StatefulInfo,

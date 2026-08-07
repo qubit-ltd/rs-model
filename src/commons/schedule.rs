@@ -10,7 +10,6 @@
 use chrono::DateTime;
 use chrono::Utc;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
@@ -18,24 +17,20 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// A bounded schedule described by Spring-style cron expressions.
-#[derive(
-    Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Schedule {
     /// UTC schedule start timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub start_time: Option<DateTime<Utc>>,
 
     /// Optional UTC schedule end timestamp.
     #[model(time(precision = second, normalization = utc))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub end_time: Option<DateTime<Utc>>,
 
     /// Optional list of one to ten cron expressions.
     #[model(sequence(min_items = 1, max_items = 10))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub crontabs: Option<Vec<String>>,
 }
 

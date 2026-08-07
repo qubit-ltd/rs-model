@@ -50,14 +50,13 @@ fn test_his_info_serializes_existing_property_discriminator() {
         visit_time: Utc::now(),
     });
 
-    let value =
-        serde_json::to_value(info).expect("HIS information should serialize");
+    let value = serde_json::to_value(info).expect("HIS information should serialize");
 
     assert_eq!(value["type"], "CLINIC");
     assert_eq!(value["number"], "visit-1");
     assert_eq!(value["record_number"], "record-1");
 
-    let decoded: HisInfo = serde_json::from_value(value)
-        .expect("tagged HIS information should deserialize");
+    let decoded: HisInfo =
+        serde_json::from_value(value).expect("tagged HIS information should deserialize");
     assert!(matches!(decoded, HisInfo::Clinic(_)));
 }

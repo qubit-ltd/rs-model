@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -24,11 +25,12 @@ use crate::medical::PatientInfo;
 use crate::mixin::StatefulInfo;
 
 /// A settlement augmented with patient, insurance, HIS, and charge details.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalSettlement {
     /// Optional persisted identifier inherited from the settlement model.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Application that owns this settlement.
     pub app: StatefulInfo,

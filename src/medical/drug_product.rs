@@ -17,7 +17,7 @@ use crate::medical::DrugInfo;
 use crate::product::ProductInfo;
 
 /// Associates a medical drug snapshot with a sellable product snapshot.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DrugProduct {
     /// Medical drug information.
     pub drug: DrugInfo,

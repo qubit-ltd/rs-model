@@ -45,9 +45,8 @@ fn test_shared_models_serialize_and_expose_metadata() {
     let value = StatefulInfoWithToken::new(info, Some(token.clone()));
     let response = Result::new(value);
 
-    let encoded = serde_json::to_string(&response)
-        .expect("shared models should serialize as JSON");
-    assert!(encoded.contains("access-token"));
+    let encoded = serde_json::to_string(&response).expect("shared models should serialize as JSON");
+    assert!(encoded.contains("<redacted>"));
     assert_eq!(metadata_of::<Token>().struct_fields().len(), 4);
     assert_eq!(
         metadata_of::<StatefulInfoWithToken>().struct_fields().len(),
@@ -75,8 +74,7 @@ fn test_root_model_enums_preserve_domain_relationships() {
 #[test]
 fn test_common_enums_preserve_wire_values() {
     assert_eq!(
-        serde_json::to_string(&Currency::Cny)
-            .expect("currency should serialize"),
+        serde_json::to_string(&Currency::Cny).expect("currency should serialize"),
         "\"CNY\""
     );
     assert_eq!(CredentialType::IdentityCard.code(), "01");

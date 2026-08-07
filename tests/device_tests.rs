@@ -23,13 +23,11 @@ fn test_data_network_type_reports_source_generation() {
 #[test]
 fn test_device_enums_preserve_java_wire_values() {
     assert_eq!(
-        serde_json::to_string(&DeviceType::IotBox)
-            .expect("device type serializes"),
+        serde_json::to_string(&DeviceType::IotBox).expect("device type serializes"),
         "\"IOT_BOX\""
     );
     assert_eq!(
-        serde_json::to_string(&SimCardStatus::CardIoError)
-            .expect("SIM status serializes"),
+        serde_json::to_string(&SimCardStatus::CardIoError).expect("SIM status serializes"),
         "\"CARD_IO_ERROR\""
     );
     assert_eq!(

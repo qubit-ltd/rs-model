@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -18,17 +19,20 @@ use qubit_model_derive::Model;
 use crate::service::UserMedicalItem;
 
 /// A time-bounded medical package assigned to a user.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct UserMedicalPackage {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted user identifier.
-    pub user_id: i64,
+    #[model(opaque)]
+    pub user_id: Id,
 
     /// Persisted medical-package identifier.
-    pub medical_package_id: i64,
+    #[model(opaque)]
+    pub medical_package_id: Id,
 
     /// Optional per-item entitlement state.
     pub user_medical_items: Option<Vec<UserMedicalItem>>,

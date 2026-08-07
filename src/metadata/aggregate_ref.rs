@@ -7,8 +7,8 @@
 // =============================================================================
 //! Aggregate-root references.
 
+use qubit_id::Id;
 use serde::Deserialize;
-use serde::Serialize;
 
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
@@ -16,9 +16,8 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 /// Identifies an aggregate root and an optional property on it.
-#[derive(
-    Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize,
-)]
+#[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
+#[redact(debug, display, serde)]
 #[serde(default)]
 #[model(key(name = "aggregate_ref", fields(type, id, property)))]
 pub struct AggregateRef {
@@ -27,12 +26,11 @@ pub struct AggregateRef {
     pub r#type: String,
 
     /// Aggregate-root identifier.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Optional property name within the aggregate root.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub property: Option<String>,
 }
 
@@ -57,6 +55,6 @@ impl AggregateRef {
     /// Returns whether this reference contains no aggregate identity.
     #[must_use]
     pub fn is_empty(&self) -> bool {
-        self.r#type.is_empty() && self.id.is_none() && self.property.is_none()
+        self.r#type.is_empty() && self.id == Id::default() && self.property.is_none()
     }
 }

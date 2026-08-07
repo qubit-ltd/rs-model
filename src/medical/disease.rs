@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -17,11 +18,12 @@ use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
 /// A coded disease definition used by diagnoses and medical catalogs.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Disease {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Globally unique institutional or ICD-10 code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]

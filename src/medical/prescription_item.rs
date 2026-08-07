@@ -8,6 +8,7 @@
 
 //! Prescription line items.
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -17,14 +18,16 @@ use crate::medical::Dosage;
 use crate::medical::DrugInfo;
 
 /// A prescribed drug together with quantity and dosage instructions.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionItem {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// Persisted identifier of the owning prescription.
-    pub prescription_id: i64,
+    #[model(opaque)]
+    pub prescription_id: Id,
 
     /// Prescribed drug information.
     pub drug: DrugInfo,

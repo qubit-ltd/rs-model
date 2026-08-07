@@ -10,6 +10,7 @@
 
 use chrono::DateTime;
 use chrono::Utc;
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -20,11 +21,12 @@ use crate::mixin::StatefulInfo;
 use crate::product::CouponRule;
 
 /// A seller coupon and the interval in which it can be used.
-#[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
+#[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Coupon {
     /// Optional persisted identifier.
     #[model(identifier)]
-    pub id: Option<i64>,
+    #[model(opaque)]
+    pub id: Id,
 
     /// App-scoped unique coupon code.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
@@ -38,7 +40,8 @@ pub struct Coupon {
     pub app: StatefulInfo,
 
     /// Persisted identifier of the owning seller.
-    pub seller_id: i64,
+    #[model(opaque)]
+    pub seller_id: Id,
 
     /// Optional owning-seller name.
     #[model(text(min_chars = 1, max_chars = 128))]

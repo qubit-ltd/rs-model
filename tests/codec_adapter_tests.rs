@@ -28,10 +28,9 @@ use qubit_model::privilege::PrivilegesCodec;
 
 #[test]
 fn test_credential_info_codec_round_trips_source_format() {
-    let credential =
-        CredentialInfoCodec::decode(Some(" IDENTITY_CARD-320103198807625364 "))
-            .expect("decode credential")
-            .expect("credential value");
+    let credential = CredentialInfoCodec::decode(Some(" IDENTITY_CARD-320103198807625364 "))
+        .expect("decode credential")
+        .expect("credential value");
     assert_eq!(credential.r#type, CredentialType::IdentityCard);
     assert_eq!(credential.number, "320103198807625364");
     assert_eq!(
@@ -44,10 +43,9 @@ fn test_credential_info_codec_round_trips_source_format() {
 
 #[test]
 fn test_location_coordinate_codec_normalizes_and_adapters_delegate() {
-    let normalized = LocationCoordinateCodec::normalize(Some(
-        BigDecimal::from_str("540.1").expect("decimal"),
-    ))
-    .expect("coordinate");
+    let normalized =
+        LocationCoordinateCodec::normalize(Some(BigDecimal::from_str("540.1").expect("decimal")))
+            .expect("coordinate");
     assert_eq!(normalized.to_string(), "-179.900000");
 
     let serialized = LocationCoordinateSerializer::serialize(&normalized);
@@ -66,11 +64,9 @@ fn test_location_coordinate_codec_normalizes_and_adapters_delegate() {
     );
     assert_eq!(LocationCoordinateCodec::normalize(None), None);
     assert_eq!(
-        LocationCoordinateCodec::normalize(Some(
-            BigDecimal::from_str("-540.1").expect("decimal"),
-        ))
-        .expect("coordinate")
-        .to_string(),
+        LocationCoordinateCodec::normalize(Some(BigDecimal::from_str("-540.1").expect("decimal"),))
+            .expect("coordinate")
+            .to_string(),
         "179.900000"
     );
     assert_eq!(
@@ -106,10 +102,7 @@ fn test_location_codec_round_trips_coordinates_and_coordinate_system() {
     assert_eq!(codec.encode(None), None);
     assert!(codec.decode(Some("1,2,3")).is_err());
     let overridden = codec
-        .decode_with_coordinate_system(
-            Some("1,2"),
-            Some(CoordinateSystem::Bd09),
-        )
+        .decode_with_coordinate_system(Some("1,2"), Some(CoordinateSystem::Bd09))
         .expect("decode with coordinate system")
         .expect("location");
     assert_eq!(overridden.coordinate_system, Some(CoordinateSystem::Bd09));
@@ -132,8 +125,7 @@ fn test_phone_codec_and_wire_adapters_preserve_string_shape() {
         Some("+86-025-84507781".into())
     );
 
-    let json =
-        PhoneJsonSerializer::serialize(Some(&phone)).expect("JSON phone");
+    let json = PhoneJsonSerializer::serialize(Some(&phone)).expect("JSON phone");
     assert_eq!(json, "\"+86-025-84507781\"");
     assert_eq!(
         PhoneJsonDeserializer::deserialize(&json).unwrap(),
@@ -167,8 +159,7 @@ fn test_phone_type_register_exposes_all_wire_components() {
 
 #[test]
 fn test_privileges_codec_is_a_public_source_compatible_adapter() {
-    let privileges = PrivilegesCodec::decode(Some(" read, ,write "))
-        .expect("privileges value");
+    let privileges = PrivilegesCodec::decode(Some(" read, ,write ")).expect("privileges value");
     assert_eq!(privileges.0, ["read", "write"]);
     assert_eq!(
         PrivilegesCodec::encode(Some(&privileges)),
