@@ -9,16 +9,19 @@
 //! Product snapshots embedded in purchase records.
 
 use bigdecimal::BigDecimal;
-use chrono::{NaiveDate, NaiveDateTime, TimeDelta};
+use chrono::NaiveDate;
+use chrono::NaiveDateTime;
+use chrono::TimeDelta;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::Currency,
-    product::{ProductConstraint, Quality},
-    upload::Attachment,
-};
+use crate::commons::Currency;
+use crate::product::ProductConstraint;
+use crate::product::Quality;
+use crate::upload::Attachment;
 
 /// A value snapshot of the product and item selected for a purchase.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

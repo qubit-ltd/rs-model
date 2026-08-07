@@ -7,9 +7,11 @@
 // =============================================================================
 //! Optional upload-operation parameters.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 /// User-supplied upload hints and hash-verification material.
 #[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]

@@ -8,9 +8,12 @@
 
 //! Assignment of a user to an application role.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 use crate::mixin::StatefulInfo;
 use crate::person::UserInfo;

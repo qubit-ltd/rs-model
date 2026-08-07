@@ -7,10 +7,13 @@
 // =============================================================================
 //! Access-token model values.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 /// Represents a token together with its issuance and lifetime metadata.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

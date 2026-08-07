@@ -7,10 +7,15 @@
 // =============================================================================
 //! JSON deserializer for settings.
 
-use chrono::{DateTime, Utc};
-use serde_json::{Map, Value};
+use chrono::DateTime;
+use chrono::Utc;
+use serde_json::Map;
+use serde_json::Value;
 
-use crate::setting::{DataType, Setting, SettingAdapterError, parse_data_type_name};
+use crate::setting::DataType;
+use crate::setting::Setting;
+use crate::setting::SettingAdapterError;
+use crate::setting::parse_data_type_name;
 
 /// Deserializes settings while applying the Java model's defaults.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

@@ -7,9 +7,11 @@
 // =============================================================================
 //! Compact media metadata.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 use super::MediaType;
 

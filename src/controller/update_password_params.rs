@@ -7,9 +7,11 @@
 // =============================================================================
 //! Password-update parameters.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 /// Old and new credentials supplied to a password-update operation.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

@@ -8,17 +8,11 @@
 
 //! Device classification types.
 
-#[allow(unused_imports)]
-use super::{
-    DataNetworkType,
-    DeviceType,
-};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+
 
 /// SIM-card availability and lock state.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

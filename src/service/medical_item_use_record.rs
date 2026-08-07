@@ -8,14 +8,15 @@
 
 //! Medical service usage records.
 
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    organization::EmployeeInfo,
-    person::PersonInfo,
-    service::{MedicalItem, MedicalPackage},
-};
+use qubit_model_derive::Model;
+
+use crate::organization::EmployeeInfo;
+use crate::person::PersonInfo;
+use crate::service::MedicalItem;
+use crate::service::MedicalPackage;
 
 /// Records a patient's use of one item from a medical service package.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

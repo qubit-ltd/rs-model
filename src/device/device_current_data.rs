@@ -6,9 +6,12 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 /// Represents the DeviceCurrentData domain type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct DeviceCurrentData {

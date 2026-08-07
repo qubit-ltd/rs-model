@@ -8,24 +8,6 @@
 
 //! Rust traits for shared Java model mixins.
 
-#[allow(unused_imports)]
-use super::{
-    Expirable,
-    HasStatefulInfo,
-    Stateful,
-    WithApp,
-    WithCategory,
-    WithContact,
-    WithCredential,
-    WithLocation,
-    WithMobile,
-    WithOrganization,
-    WithOwner,
-    WithPayloads,
-    WithSource,
-    WithToken,
-};
-
 use crate::contact::Address;
 
 /// Provides a postal address.

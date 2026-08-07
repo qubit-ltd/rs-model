@@ -8,8 +8,10 @@
 
 //! Compact metadata for a media asset.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 use crate::upload::MediaType;
 

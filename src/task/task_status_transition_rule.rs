@@ -8,10 +8,9 @@
 
 //! The complete legal task-state transition table.
 
-#[allow(unused_imports)]
-use super::{
-    TaskAction, TaskExecutionError, TaskPipelineStatus, TaskStatus, TaskStatusTransitionError,
-};
+use super::TaskAction;
+use super::TaskStatus;
+use super::TaskStatusTransitionError;
 
 /// Evaluates the fixed task lifecycle transition table.
 #[derive(Clone, Copy, Debug, Default)]

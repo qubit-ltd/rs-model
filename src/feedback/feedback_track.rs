@@ -8,12 +8,17 @@
 
 //! Persisted feedback lifecycle events.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::feedback::{FeedbackAction, FeedbackRating, FeedbackStatus};
+use crate::feedback::FeedbackAction;
+use crate::feedback::FeedbackRating;
+use crate::feedback::FeedbackStatus;
 use crate::person::UserInfo;
 use crate::upload::Attachment;
 

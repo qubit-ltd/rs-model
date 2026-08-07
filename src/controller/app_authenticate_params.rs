@@ -7,11 +7,14 @@
 // =============================================================================
 //! Application-authentication parameters.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{contact::Location, system::Platform};
+use crate::contact::Location;
+use crate::system::Platform;
 
 /// Credentials and client environment used to authenticate an application.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

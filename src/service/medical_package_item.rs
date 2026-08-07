@@ -8,8 +8,10 @@
 
 //! Medical package line items.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 use crate::service::MedicalItem;
 

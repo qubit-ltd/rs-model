@@ -8,11 +8,16 @@
 
 //! Coupon domain models.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{commons::State, mixin::StatefulInfo, product::CouponRule};
+use qubit_model_derive::Model;
+
+use crate::commons::State;
+use crate::mixin::StatefulInfo;
+use crate::product::CouponRule;
 
 /// A seller coupon and the interval in which it can be used.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

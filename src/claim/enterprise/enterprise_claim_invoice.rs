@@ -9,12 +9,16 @@
 //! Enterprise claim invoices.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::claim::enterprise::{EnterpriseClaimSelfCareItem, SaveStatus};
+use crate::claim::enterprise::EnterpriseClaimSelfCareItem;
+use crate::claim::enterprise::SaveStatus;
 
 /// A medical invoice imported into an enterprise insurance claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

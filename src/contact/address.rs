@@ -5,10 +5,14 @@
 // =============================================================================
 //! Postal-address values.
 
-use qubit_mixin::{Emptyful, Info, Normalizable};
+use serde::Deserialize;
+use serde::Serialize;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::Info;
+use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 use crate::contact::Location;
 

@@ -8,11 +8,10 @@
 
 //! Invoice issuance states.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Describes whether and how an invoice was issued.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

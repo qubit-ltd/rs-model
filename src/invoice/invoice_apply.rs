@@ -8,13 +8,17 @@
 
 //! Invoice-number applications.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    commons::DictEntryInfo, invoice::InvoiceApplyStatus, mixin::StatefulInfo, person::UserInfo,
-};
+use qubit_model_derive::Model;
+
+use crate::commons::DictEntryInfo;
+use crate::invoice::InvoiceApplyStatus;
+use crate::mixin::StatefulInfo;
+use crate::person::UserInfo;
 
 /// An application for an invoice-number allocation from a provincial platform.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

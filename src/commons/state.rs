@@ -8,11 +8,10 @@
 
 //! Lifecycle state values shared by domain models.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Describes the lifecycle state of an entity.
 #[derive(

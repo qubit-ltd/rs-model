@@ -9,18 +9,24 @@
 //! Complete invoice records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::Currency,
-    invoice::{InvoiceInfo, InvoiceItem, InvoiceStatus},
-    mixin::StatefulInfo,
-    payment::{Participant, PaymentChannel, PaymentMode},
-    settlement::Settlement,
-};
+use crate::commons::Currency;
+use crate::invoice::InvoiceInfo;
+use crate::invoice::InvoiceItem;
+use crate::invoice::InvoiceStatus;
+use crate::mixin::StatefulInfo;
+use crate::payment::Participant;
+use crate::payment::PaymentChannel;
+use crate::payment::PaymentMode;
+use crate::settlement::Settlement;
 
 /// An issued invoice with payment parties, amounts, items, and lifecycle data.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

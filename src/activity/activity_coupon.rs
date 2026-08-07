@@ -5,11 +5,14 @@
 // =============================================================================
 //! Coupons issued by marketing activities.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 use crate::order::OrderInfo;
 use crate::person::Person;

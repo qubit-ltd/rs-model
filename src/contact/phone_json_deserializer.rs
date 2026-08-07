@@ -7,7 +7,9 @@
 // =============================================================================
 //! JSON deserializer for telephone-number wire values.
 
-use crate::contact::{ContactCodecError, Phone, PhoneCodec};
+use crate::contact::ContactCodecError;
+use crate::contact::Phone;
+use crate::contact::PhoneCodec;
 
 /// Deserializes a telephone number from a JSON string or null.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

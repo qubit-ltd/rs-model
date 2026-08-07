@@ -7,7 +7,10 @@
 // =============================================================================
 //! String codec for geographic locations.
 
-use crate::contact::{ContactCodecError, CoordinateSystem, Location, LocationCoordinateCodec};
+use crate::contact::ContactCodecError;
+use crate::contact::CoordinateSystem;
+use crate::contact::Location;
+use crate::contact::LocationCoordinateCodec;
 
 /// Converts locations to and from comma-separated longitude and latitude
 /// values.

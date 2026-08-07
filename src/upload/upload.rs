@@ -8,11 +8,15 @@
 
 //! Persisted upload metadata.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::upload::{AttachmentType, FileInfo};
+use qubit_model_derive::Model;
+
+use crate::upload::AttachmentType;
+use crate::upload::FileInfo;
 
 /// A file received by the upload subsystem and its generated renditions.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

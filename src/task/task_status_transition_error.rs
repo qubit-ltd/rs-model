@@ -8,12 +8,10 @@
 
 //! The complete legal task-state transition table.
 
-#[allow(unused_imports)]
-use super::{
-    TaskAction, TaskExecutionError, TaskPipelineStatus, TaskStatus, TaskStatusTransitionRule,
-};
-
 use thiserror::Error;
+
+use super::TaskAction;
+use super::TaskStatus;
 
 /// An attempted task transition that the lifecycle does not permit.
 #[derive(Clone, Copy, Debug, Error, PartialEq, Eq)]

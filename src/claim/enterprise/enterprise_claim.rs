@@ -8,18 +8,23 @@
 
 //! Enterprise insurance claims.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    claim::enterprise::{EnterpriseClaimEvent, EnterpriseClaimStatus, EnterpriseClaimStatusGroup},
-    claim::{AccidentReason, InsuredStatus, QuickCompensationState},
-    commons::Kinship,
-    order::Client,
-    product::Product,
-    upload::Attachment,
-};
+use qubit_model_derive::Model;
+
+use crate::claim::AccidentReason;
+use crate::claim::InsuredStatus;
+use crate::claim::QuickCompensationState;
+use crate::claim::enterprise::EnterpriseClaimEvent;
+use crate::claim::enterprise::EnterpriseClaimStatus;
+use crate::claim::enterprise::EnterpriseClaimStatusGroup;
+use crate::commons::Kinship;
+use crate::order::Client;
+use crate::product::Product;
+use crate::upload::Attachment;
 
 /// An enterprise claim with insured parties, workflow events, and attachments.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

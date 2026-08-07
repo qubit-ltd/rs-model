@@ -8,12 +8,12 @@
 
 //! Statistics value objects.
 
-#[allow(unused_imports)]
-use super::{CategoryValue, StatsDataset, TimeDimension};
-
 use bigdecimal::BigDecimal;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+
 
 /// One named row in a two-dimensional statistics dataset.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

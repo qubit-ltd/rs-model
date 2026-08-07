@@ -9,8 +9,10 @@
 //! Invoice line items.
 
 use bigdecimal::BigDecimal;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// A billed item with discounts, tax, and final payment amounts.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

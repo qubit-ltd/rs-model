@@ -5,12 +5,15 @@
 // =============================================================================
 //! Telephone number value objects.
 
-use std::fmt::{self, Display, Formatter};
+use serde::Deserialize;
+use serde::Serialize;
+use std::fmt;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 /// A telephone number split into its source-domain country, city, and local
 /// parts.

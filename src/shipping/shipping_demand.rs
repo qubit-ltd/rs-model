@@ -8,11 +8,15 @@
 
 //! Recipient delivery requirements.
 
-use chrono::{NaiveDate, NaiveTime};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::NaiveDate;
+use chrono::NaiveTime;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{commons::DayType, shipping::Packing};
+use qubit_model_derive::Model;
+
+use crate::commons::DayType;
+use crate::shipping::Packing;
 
 /// Optional scheduling, packing, and comment requirements for delivery.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

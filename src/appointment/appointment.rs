@@ -5,12 +5,18 @@
 // =============================================================================
 //! Appointment model.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{audit::AuditStatus, commons::App, mixin::StatefulInfo, person::PersonInfo};
+use crate::audit::AuditStatus;
+use crate::commons::App;
+use crate::mixin::StatefulInfo;
+use crate::person::PersonInfo;
 
 /// A user's appointment for a service provided by another domain object.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

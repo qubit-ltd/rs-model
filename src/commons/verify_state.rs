@@ -8,29 +8,11 @@
 
 //! Shared enumerations from the Java commons model package.
 
-#[allow(unused_imports)]
-use super::{
-    AuthorizeRecord,
-    Category,
-    Credential,
-    CredentialInfo,
-    CredentialType,
-    Currency,
-    DayType,
-    Kinship,
-    MqType,
-    Owner,
-    Owners,
-    Payload,
-    RequestStatus,
-    Source,
-};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+
 
 /// Describes a verification lifecycle state.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

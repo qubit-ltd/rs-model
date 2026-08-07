@@ -9,18 +9,20 @@
 //! Product recipient snapshots.
 
 use chrono::NaiveDate;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::{CredentialInfo, Kinship},
-    contact::Phone,
-    medical::MedicareType,
-    order::ReturnStatus,
-    person::{Gender, PersonInfo},
-};
+use crate::commons::CredentialInfo;
+use crate::commons::Kinship;
+use crate::contact::Phone;
+use crate::medical::MedicareType;
+use crate::order::ReturnStatus;
+use crate::person::Gender;
+use crate::person::PersonInfo;
 
 /// Identity, benefits, guardian, and return information for a product client.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

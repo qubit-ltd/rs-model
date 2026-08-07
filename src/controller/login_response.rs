@@ -7,11 +7,16 @@
 // =============================================================================
 //! Successful-login responses.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{commons::Token, mixin::StatefulInfo, person::UserInfo, system::Session};
+use crate::commons::Token;
+use crate::mixin::StatefulInfo;
+use crate::person::UserInfo;
+use crate::system::Session;
 
 /// User, organization, token, privilege, and role data returned after login.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

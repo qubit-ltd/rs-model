@@ -7,12 +7,11 @@
 // =============================================================================
 //! Supported signature algorithms.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// JDK-compatible digital-signature algorithm.
 #[derive(

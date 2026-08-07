@@ -8,9 +8,12 @@
 
 //! Medical service items.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// A coded medical service entitlement or procedure.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

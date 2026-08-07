@@ -6,9 +6,12 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// Represents the DictEntryInfo domain type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Eq, Serialize)]

@@ -8,12 +8,16 @@
 
 //! Client environment snapshots.
 
-use qubit_mixin::{Emptyful, Normalizable};
+use serde::Deserialize;
+use serde::Serialize;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{contact::Location, system::Platform};
+use crate::contact::Location;
+use crate::system::Platform;
 
 /// Network, location, platform, and device context captured for a request.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

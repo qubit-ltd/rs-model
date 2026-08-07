@@ -7,11 +7,15 @@
 // =============================================================================
 //! Login-operation parameters.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{contact::Phone, person::SocialNetwork, system::Environment};
+use crate::contact::Phone;
+use crate::person::SocialNetwork;
+use crate::system::Environment;
 
 /// Credentials and client environment accepted by the login operation.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

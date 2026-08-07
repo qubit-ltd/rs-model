@@ -8,17 +8,23 @@
 
 //! Product aggregate models.
 
-use chrono::{DateTime, NaiveDateTime, Utc};
-use qubit_mixin::{Info, InfoWithEntity};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::NaiveDateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    commons::{Currency, State},
-    mixin::StatefulInfo,
-    product::{ProductConstraint, ProductItem, Quality},
-    upload::Attachment,
-};
+use qubit_mixin::Info;
+use qubit_mixin::InfoWithEntity;
+use qubit_model_derive::Model;
+
+use crate::commons::Currency;
+use crate::commons::State;
+use crate::mixin::StatefulInfo;
+use crate::product::ProductConstraint;
+use crate::product::ProductItem;
+use crate::product::Quality;
+use crate::upload::Attachment;
 
 /// A product together with its purchasable item specifications.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

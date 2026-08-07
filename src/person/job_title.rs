@@ -8,28 +8,11 @@
 
 //! Demographic and social classification values.
 
-#[allow(unused_imports)]
-use super::{
-    Blood,
-    Education,
-    Ethnic,
-    Gender,
-    Incoming,
-    Industry,
-    Marriage,
-    Person,
-    PersonIdentity,
-    Politics,
-    Religion,
-    SexOrientation,
-    SocialNetwork,
-};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+
 
 /// Source-domain JobTitle classification.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

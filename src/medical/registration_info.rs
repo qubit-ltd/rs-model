@@ -8,10 +8,13 @@
 
 //! Hospital registration information.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// Hospital-system information for a registration event.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

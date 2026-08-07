@@ -7,16 +7,20 @@
 // =============================================================================
 //! Data-dictionary entries and parameter matching.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, Normalizable};
+use chrono::DateTime;
+use chrono::Utc;
+use regex::RegexBuilder;
+use serde::Deserialize;
+use serde::Serialize;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use regex::RegexBuilder;
-use serde::{Deserialize, Serialize};
 
 use crate::mixin::StatefulInfo;
-
-use super::{Dict, DictEntryInfo};
+use super::Dict;
+use super::DictEntryInfo;
 
 /// An entry belonging to a data dictionary.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

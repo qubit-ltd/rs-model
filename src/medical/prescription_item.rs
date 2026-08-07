@@ -8,10 +8,13 @@
 
 //! Prescription line items.
 
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::medical::{Dosage, DrugInfo};
+use qubit_model_derive::Model;
+
+use crate::medical::Dosage;
+use crate::medical::DrugInfo;
 
 /// A prescribed drug together with quantity and dosage instructions.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

@@ -8,17 +8,15 @@
 
 //! Address-domain error codes and exceptions.
 
-#[allow(unused_imports)]
-use super::AddressErrorCode;
-
 use std::collections::BTreeMap;
+use thiserror::Error;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use thiserror::Error;
 
 use crate::contact::Phone;
 use crate::error::ErrorType;
+use super::AddressErrorCode;
 
 /// An expected and actual mobile number do not match.
 #[derive(Clone, Debug, Error, Model, PartialEq, Redact)]

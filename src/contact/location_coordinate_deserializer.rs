@@ -9,7 +9,8 @@
 
 use bigdecimal::BigDecimal;
 
-use crate::contact::{ContactCodecError, LocationCoordinateCodec};
+use crate::contact::ContactCodecError;
+use crate::contact::LocationCoordinateCodec;
 
 /// Deserializes a coordinate from the source decimal representation.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

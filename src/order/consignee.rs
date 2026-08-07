@@ -8,15 +8,17 @@
 
 //! Saved order consignee records.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::CredentialInfo,
-    contact::{Address, Phone},
-};
+use crate::commons::CredentialInfo;
+use crate::contact::Address;
+use crate::contact::Phone;
 
 /// A saved recipient and delivery address for an order.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

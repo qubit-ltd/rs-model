@@ -5,23 +5,6 @@
 // =============================================================================
 //! Complete person records.
 
-#[allow(unused_imports)]
-use super::{
-    Blood,
-    Education,
-    Ethnic,
-    Gender,
-    Incoming,
-    Industry,
-    JobTitle,
-    Marriage,
-    Person,
-    Politics,
-    Religion,
-    SexOrientation,
-    SocialNetwork,
-};
-
 use crate::commons::CredentialInfo;
 
 /// Supplies the identity fields used to compare people across projections.

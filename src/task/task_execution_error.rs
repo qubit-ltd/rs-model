@@ -10,10 +10,6 @@
 
 use thiserror::Error;
 
-#[allow(unused_imports)]
-use super::{
-    TaskAction, TaskPipelineStatus, TaskStatus, TaskStatusTransitionError, TaskStatusTransitionRule,
-};
 
 /// An execution failure reported by a task implementation.
 #[derive(Clone, Debug, Error, PartialEq, Eq)]

@@ -8,8 +8,10 @@
 
 //! Replacement marker records.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// Source-compatible marker for a replacement workflow.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize)]

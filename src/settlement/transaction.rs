@@ -9,20 +9,23 @@
 //! Settlement transaction records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::Currency,
-    invoice::InvoiceStatus,
-    mixin::StatefulInfo,
-    order::ReturnIssuer,
-    payment::{Participant, Payment},
-    settlement::{TransactionStatus, TransactionType},
-    system::Environment,
-};
+use crate::commons::Currency;
+use crate::invoice::InvoiceStatus;
+use crate::mixin::StatefulInfo;
+use crate::order::ReturnIssuer;
+use crate::payment::Participant;
+use crate::payment::Payment;
+use crate::settlement::TransactionStatus;
+use crate::settlement::TransactionType;
+use crate::system::Environment;
 
 /// A purchase or refund transaction and its payment participants.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

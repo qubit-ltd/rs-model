@@ -8,19 +8,12 @@
 
 //! Feedback classification vocabularies.
 
-#[allow(unused_imports)]
-use super::{
-    FeedbackAction,
-    FeedbackStatus,
-    FeedbackType,
-};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+
 
 /// A user's satisfaction rating for a feedback outcome.
 #[derive(

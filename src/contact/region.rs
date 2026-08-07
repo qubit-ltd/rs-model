@@ -8,12 +8,11 @@
 
 //! Administrative-region hierarchy values.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Distinguishes each level of the source administrative hierarchy.
 #[derive(

@@ -8,10 +8,13 @@
 
 //! Hospital invoice-platform registrations.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 /// Hospital registration and payment credentials for an invoice platform.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

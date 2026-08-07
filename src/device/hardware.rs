@@ -6,10 +6,13 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use crate::device::SimCard;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+
+use crate::device::SimCard;
 /// Represents the Hardware domain type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct Hardware {

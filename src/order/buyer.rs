@@ -9,11 +9,15 @@
 //! Buyer snapshots.
 
 use chrono::NaiveDate;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{commons::CredentialInfo, contact::Phone, person::Gender};
+use crate::commons::CredentialInfo;
+use crate::contact::Phone;
+use crate::person::Gender;
 
 /// Identifying and contact information for the person placing an order.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

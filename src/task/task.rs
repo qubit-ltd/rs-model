@@ -9,13 +9,11 @@
 
 use qubit_mixin::InfoWithEntity;
 
-use super::{
-    TaskAction,
-    TaskExecutionError,
-    TaskInfo,
-    TaskStatusTransitionError,
-    TaskStatusTransitionRule,
-};
+use super::TaskAction;
+use super::TaskExecutionError;
+use super::TaskInfo;
+use super::TaskStatusTransitionError;
+use super::TaskStatusTransitionRule;
 
 /// Behaviour required from an executable task.
 pub trait Task {

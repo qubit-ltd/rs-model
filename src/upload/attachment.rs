@@ -8,14 +8,19 @@
 
 //! Persisted attachment metadata.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::commons::{Owner, State};
+use crate::commons::Owner;
+use crate::commons::State;
 use crate::person::UserInfo;
-use crate::upload::{AttachmentType, Upload};
+use crate::upload::AttachmentType;
+use crate::upload::Upload;
 
 /// A categorized attachment owned by a domain object.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

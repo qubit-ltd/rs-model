@@ -5,12 +5,16 @@
 // =============================================================================
 //! Persisted AI processing results.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{ai::AiResultType, upload::Attachment};
+use crate::ai::AiResultType;
+use crate::upload::Attachment;
 
 /// An AI engine's result for an uploaded attachment.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

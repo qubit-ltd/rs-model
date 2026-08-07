@@ -8,11 +8,10 @@
 
 //! Payment responsibility options.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Selects who pays an eligible charge.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

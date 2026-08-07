@@ -7,11 +7,14 @@
 // =============================================================================
 //! Person-binding parameters.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{commons::CredentialInfo, contact::Phone};
+use crate::commons::CredentialInfo;
+use crate::contact::Phone;
 
 /// Identifying information used to bind a user to a person record.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

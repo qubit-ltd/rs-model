@@ -8,25 +8,8 @@
 
 //! Rust traits for shared Java model mixins.
 
-#[allow(unused_imports)]
-use super::{
-    Expirable,
-    HasStatefulInfo,
-    Stateful,
-    WithAddress,
-    WithApp,
-    WithCategory,
-    WithContact,
-    WithCredential,
-    WithLocation,
-    WithMobile,
-    WithOrganization,
-    WithOwner,
-    WithPayloads,
-    WithToken,
-};
-
 use qubit_mixin::InfoWithEntity;
+
 
 /// Provides source information.
 pub trait WithSource {

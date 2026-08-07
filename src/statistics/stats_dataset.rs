@@ -8,11 +8,12 @@
 
 //! Statistics value objects.
 
-#[allow(unused_imports)]
-use super::{CategoryValue, StatsItem, TimeDimension};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+
+use super::StatsItem;
 
 /// A named two-dimensional statistics dataset.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

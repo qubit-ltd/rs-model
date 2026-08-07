@@ -55,10 +55,8 @@ pub mod work;
 
 pub use commons::*;
 pub use entity::Entity;
-pub use error::{
-    ModelError,
-    ValidationViolation,
-};
+pub use error::ModelError;
+pub use error::ValidationViolation;
 pub use field::Field;
 pub use module::Module;
 pub use operation::Operation;

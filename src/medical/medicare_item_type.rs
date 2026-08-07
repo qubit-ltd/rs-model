@@ -8,11 +8,10 @@
 
 //! Medicare item classifications.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Identifies the kind of item submitted to medical insurance.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

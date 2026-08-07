@@ -33,17 +33,11 @@ pub use operation_log_info::OperationLogInfo;
 pub use platform::Platform;
 pub use session::Session;
 
-pub use crate::{
-    notification::{
-        VerifyCode,
-        VerifyScene,
-    },
-    setting::{
-        Setting,
-        SettingJsonDeserializer,
-        SettingJsonSerializer,
-        SettingRandomizer,
-        SettingXmlAdapted,
-        SettingXmlAdapter,
-    },
-};
+pub use crate::notification::VerifyCode;
+pub use crate::notification::VerifyScene;
+pub use crate::setting::Setting;
+pub use crate::setting::SettingJsonDeserializer;
+pub use crate::setting::SettingJsonSerializer;
+pub use crate::setting::SettingRandomizer;
+pub use crate::setting::SettingXmlAdapted;
+pub use crate::setting::SettingXmlAdapter;

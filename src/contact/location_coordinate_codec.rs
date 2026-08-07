@@ -7,9 +7,9 @@
 // =============================================================================
 //! Decimal codec and normalization for location coordinates.
 
+use bigdecimal::BigDecimal;
+use bigdecimal::RoundingMode;
 use std::str::FromStr;
-
-use bigdecimal::{BigDecimal, RoundingMode};
 
 use crate::contact::ContactCodecError;
 

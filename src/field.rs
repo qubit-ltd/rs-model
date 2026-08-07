@@ -7,12 +7,11 @@
 // =============================================================================
 //! Domain field identifiers.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Identifies a field that can appear in a model or validation message.
 #[derive(

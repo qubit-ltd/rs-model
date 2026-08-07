@@ -8,11 +8,15 @@
 
 //! Audit request model.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{audit::AuditStatus, organization::EmployeeInfo};
+use qubit_model_derive::Model;
+
+use crate::audit::AuditStatus;
+use crate::organization::EmployeeInfo;
 
 /// Describes a request to audit a persisted objective.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

@@ -8,8 +8,10 @@
 
 //! Order submission messages.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 use crate::order::Order;
 

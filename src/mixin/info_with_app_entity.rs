@@ -7,12 +7,15 @@
 // =============================================================================
 //! Basic entity information associated with an application.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::mixin::{StatefulInfo, WithApp};
+use crate::mixin::StatefulInfo;
+use crate::mixin::WithApp;
 
 /// Basic information for an entity that belongs to an application.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

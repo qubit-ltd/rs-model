@@ -7,18 +7,22 @@
 // =============================================================================
 //! Detailed HTTP operation audit logs.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::App,
-    mixin::StatefulInfo,
-    person::{User, UserInfo},
-};
-
-use super::{Action, ErrorInfo, LogicRelation, OperationLogInfo};
+use crate::commons::App;
+use crate::mixin::StatefulInfo;
+use crate::person::User;
+use crate::person::UserInfo;
+use super::Action;
+use super::ErrorInfo;
+use super::LogicRelation;
+use super::OperationLogInfo;
 
 /// A complete audited request, response, caller, service, and trace record.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

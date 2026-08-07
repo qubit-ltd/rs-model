@@ -7,12 +7,11 @@
 // =============================================================================
 //! Metadata ownership-scope classifications.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Identifies the ownership boundary of a metadata record.
 #[derive(

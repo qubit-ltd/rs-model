@@ -8,11 +8,15 @@
 
 //! Invoice-issuing locations.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{commons::State, mixin::StatefulInfo};
+use qubit_model_derive::Model;
+
+use crate::commons::State;
+use crate::mixin::StatefulInfo;
 
 /// A coded invoice-issuing location within an organization.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

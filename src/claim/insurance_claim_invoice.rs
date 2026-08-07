@@ -9,13 +9,16 @@
 //! Individual claim invoices.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::claim::{
-    InsuranceClaimInvoiceCost, InsuranceClaimInvoiceStatus, InsuranceClaimInvoiceType,
-};
+use qubit_model_derive::Model;
+
+use crate::claim::InsuranceClaimInvoiceCost;
+use crate::claim::InsuranceClaimInvoiceStatus;
+use crate::claim::InsuranceClaimInvoiceType;
 
 /// A medical invoice imported into an individual insurance claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

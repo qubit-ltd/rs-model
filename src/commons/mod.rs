@@ -66,7 +66,5 @@ pub use state::State;
 pub use token::Token;
 pub use verify_state::VerifyState;
 
-pub use crate::metadata::{
-    Dict,
-    FullDict,
-};
+pub use crate::metadata::Dict;
+pub use crate::metadata::FullDict;

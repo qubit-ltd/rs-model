@@ -9,17 +9,20 @@
 //! Compact order snapshots.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::Currency,
-    mixin::StatefulInfo,
-    order::{Buyer, OrderStatus, PayType},
-    product::Seller,
-};
+use crate::commons::Currency;
+use crate::mixin::StatefulInfo;
+use crate::order::Buyer;
+use crate::order::OrderStatus;
+use crate::order::PayType;
+use crate::product::Seller;
 
 /// A compact order summary used by transaction and query results.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

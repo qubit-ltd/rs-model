@@ -8,11 +8,10 @@
 
 //! Entity classifications used by shared model references.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Identifies a domain entity category.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

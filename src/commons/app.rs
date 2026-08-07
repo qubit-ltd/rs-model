@@ -6,13 +6,20 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use super::{AuthorizeRecord, State, Token};
-use crate::{mixin::StatefulInfo, person::UserInfo};
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+
+use crate::mixin::StatefulInfo;
+use crate::person::UserInfo;
+use super::AuthorizeRecord;
+use super::State;
+use super::Token;
 
 /// Represents the App domain type.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Redact, Serialize)]

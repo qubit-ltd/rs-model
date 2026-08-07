@@ -8,24 +8,6 @@
 
 //! Rust traits for shared Java model mixins.
 
-#[allow(unused_imports)]
-use super::{
-    Expirable,
-    HasStatefulInfo,
-    Stateful,
-    WithAddress,
-    WithApp,
-    WithCategory,
-    WithContact,
-    WithCredential,
-    WithLocation,
-    WithMobile,
-    WithOrganization,
-    WithPayloads,
-    WithSource,
-    WithToken,
-};
-
 use crate::commons::Owner;
 
 /// Provides an owner.

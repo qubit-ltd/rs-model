@@ -7,16 +7,20 @@
 // =============================================================================
 //! Persisted upload metadata and generated renditions.
 
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 use std::path::Path;
+use uuid::Uuid;
 
-use chrono::{DateTime, Utc};
 use qubit_mixin::Emptyful;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
-use super::{AttachmentType, FileInfo, UploadParams};
+use super::AttachmentType;
+use super::FileInfo;
+use super::UploadParams;
 
 /// A received file and its generated image renditions.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

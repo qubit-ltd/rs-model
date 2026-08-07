@@ -8,14 +8,11 @@
 
 //! Upload classification vocabularies.
 
-#[allow(unused_imports)]
-use super::AttachmentType;
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+
 
 /// Classification of independently described media.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

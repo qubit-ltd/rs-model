@@ -8,17 +8,11 @@
 
 //! Device classification types.
 
-#[allow(unused_imports)]
-use super::{
-    DataNetworkType,
-    SimCardStatus,
-};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+
 
 /// Device categories and radio-network classifications are kept together
 /// because they form the compact vocabulary used by device telemetry.

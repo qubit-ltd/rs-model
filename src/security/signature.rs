@@ -7,11 +7,14 @@
 // =============================================================================
 //! Persisted digital signatures.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use super::{KeyValuePair, SignedInfo};
+use super::KeyValuePair;
+use super::SignedInfo;
 
 /// A signature, its owner, signer, covered information, and encoded value.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

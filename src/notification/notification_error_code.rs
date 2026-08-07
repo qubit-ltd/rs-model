@@ -8,12 +8,11 @@
 
 //! Error codes emitted by the notification domain.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 use crate::error::ErrorType;
 

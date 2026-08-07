@@ -6,11 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use super::DictEntryInfo;
-use crate::mixin::StatefulInfo;
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+
+use crate::mixin::StatefulInfo;
+use super::DictEntryInfo;
 /// Represents the DictEntry domain type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct DictEntry {

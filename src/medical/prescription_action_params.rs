@@ -8,11 +8,15 @@
 
 //! Prescription workflow action parameters.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{Entity, medical::PrescriptionAction};
+use qubit_model_derive::Model;
+
+use crate::Entity;
+use crate::medical::PrescriptionAction;
 
 /// Actor, timestamp, description, and payload for a prescription action.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

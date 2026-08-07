@@ -9,17 +9,21 @@
 //! Order return records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    commons::Currency,
-    invoice::InvoiceStatus,
-    order::{Client, ReturnIssuer, ReturnReason, ReturnStatus},
-    product::ProductInfo,
-    system::Environment,
-};
+use qubit_model_derive::Model;
+
+use crate::commons::Currency;
+use crate::invoice::InvoiceStatus;
+use crate::order::Client;
+use crate::order::ReturnIssuer;
+use crate::order::ReturnReason;
+use crate::order::ReturnStatus;
+use crate::product::ProductInfo;
+use crate::system::Environment;
 
 /// A return request and its refund, shipping, and lifecycle state.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

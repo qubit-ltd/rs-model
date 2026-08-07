@@ -7,7 +7,9 @@
 // =============================================================================
 //! String codec for credential information.
 
-use crate::commons::{CredentialInfo, CredentialInfoCodecError, CredentialType};
+use crate::commons::CredentialInfo;
+use crate::commons::CredentialInfoCodecError;
+use crate::commons::CredentialType;
 
 /// Converts credential information to and from its Java-compatible wire format.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

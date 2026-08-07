@@ -8,14 +8,18 @@
 
 //! Enterprise claim medical encounters.
 
-use chrono::{DateTime, NaiveDate, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    claim::enterprise::{EnterpriseClaimInvoice, EnterpriseInsuredType, SaveStatus},
-    commons::DictEntryInfo,
-};
+use qubit_model_derive::Model;
+
+use crate::claim::enterprise::EnterpriseClaimInvoice;
+use crate::claim::enterprise::EnterpriseInsuredType;
+use crate::claim::enterprise::SaveStatus;
+use crate::commons::DictEntryInfo;
 
 /// A medical encounter imported for an enterprise insurance claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

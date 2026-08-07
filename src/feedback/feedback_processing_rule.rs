@@ -11,7 +11,8 @@
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-use crate::feedback::{FeedbackAction, FeedbackStatus};
+use crate::feedback::FeedbackAction;
+use crate::feedback::FeedbackStatus;
 
 /// Evaluates the fixed feedback lifecycle defined by the Java source model.
 #[derive(Clone, Copy, Debug, Default, Model, Redact)]

@@ -9,17 +9,19 @@
 //! Enterprise claim calculation items.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    claim::enterprise::{
-        EnterpriseClaimItemStatus, EnterpriseClaimMedical, EnterpriseHistoryClaimAmount,
-        EnterpriseInsuredType,
-    },
-    commons::DictEntryInfo,
-};
+use qubit_model_derive::Model;
+
+use crate::claim::enterprise::EnterpriseClaimItemStatus;
+use crate::claim::enterprise::EnterpriseClaimMedical;
+use crate::claim::enterprise::EnterpriseHistoryClaimAmount;
+use crate::claim::enterprise::EnterpriseInsuredType;
+use crate::commons::DictEntryInfo;
 
 /// A calculated enterprise claim partition for one medical category and insured
 /// type.

@@ -8,11 +8,11 @@
 
 //! China administrative-data markers and resident identity-card utilities.
 
-#[allow(unused_imports)]
-use super::{ChinaCities, ChinaDistricts, IdentityCardUtils};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+
 
 /// Marker for the source China province dataset.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize)]

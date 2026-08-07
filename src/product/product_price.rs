@@ -9,10 +9,14 @@
 //! Source-specific product prices.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDateTime, Utc};
+use chrono::DateTime;
+use chrono::NaiveDateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// A product-item price supplied by a particular source.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

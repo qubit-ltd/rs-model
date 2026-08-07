@@ -8,12 +8,13 @@
 
 //! Errors returned when an SMS provider rejects a send operation.
 
+use serde::Deserialize;
+use serde::Serialize;
 use std::collections::BTreeMap;
+use thiserror::Error;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
-use thiserror::Error;
 
 use crate::contact::Phone;
 use crate::error::ErrorType;

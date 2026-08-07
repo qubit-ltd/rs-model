@@ -7,11 +7,9 @@
 // =============================================================================
 //! Projection of stateful information with an access token.
 
-use crate::mixin::{
-    HasStatefulInfo,
-    StatefulInfoWithToken,
-    WithToken,
-};
+use crate::mixin::HasStatefulInfo;
+use crate::mixin::StatefulInfoWithToken;
+use crate::mixin::WithToken;
 
 /// Provides a stateful information projection carrying the current token.
 pub trait WithStatefulInfoWithToken: HasStatefulInfo + WithToken {

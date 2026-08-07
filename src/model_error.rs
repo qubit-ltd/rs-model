@@ -8,9 +8,9 @@
 
 //! Errors produced by domain-model operations.
 
-use super::ValidationViolation;
-
 use thiserror::Error;
+
+use super::ValidationViolation;
 
 /// Describes a failure encountered while constructing, converting, or
 /// validating a model.

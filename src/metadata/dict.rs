@@ -7,15 +7,20 @@
 // =============================================================================
 //! Data-dictionary definitions.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::InfoWithEntity;
+use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 use crate::commons::State;
-
-use super::{Category, Scope};
+use super::Category;
+use super::Scope;
 
 /// A data dictionary without its entry collection.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

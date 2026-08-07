@@ -8,7 +8,8 @@
 
 //! Permission collections.
 
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
 use crate::privilege::PrivilegesCodecError;
 

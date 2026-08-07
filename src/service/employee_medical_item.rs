@@ -8,8 +8,10 @@
 
 //! Employee medical-item assignments.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// Assigns a medical service item to an employee within an organization.
 #[derive(Clone, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

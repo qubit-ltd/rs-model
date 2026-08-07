@@ -8,8 +8,10 @@
 
 //! Order submission responses.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// Redirect target and encoded parameters returned after order submission.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

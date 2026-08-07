@@ -6,12 +6,18 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use crate::{
-    commons::State, contact::Location, device::DeviceType, mixin::StatefulInfo, person::PersonInfo,
-};
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+
+use crate::commons::State;
+use crate::contact::Location;
+use crate::device::DeviceType;
+use crate::mixin::StatefulInfo;
+use crate::person::PersonInfo;
 /// Represents the DeviceInfo domain type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct DeviceInfo {

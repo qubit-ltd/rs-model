@@ -8,18 +8,12 @@
 
 //! Setting values and stable setting names.
 
-#[allow(unused_imports)]
-use super::{
-    Setting,
-    SettingName,
-};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+
 
 /// The value type declared by a setting.
 #[derive(

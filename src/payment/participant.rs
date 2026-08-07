@@ -8,16 +8,17 @@
 
 //! Payment participant snapshots.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::CredentialInfo,
-    contact::Phone,
-    payment::{Account, ParticipantType},
-};
+use crate::commons::CredentialInfo;
+use crate::contact::Phone;
+use crate::payment::Account;
+use crate::payment::ParticipantType;
 
 /// Identifying, contact, account, and category information for a payer or
 /// payee.

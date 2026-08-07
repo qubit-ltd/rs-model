@@ -9,10 +9,13 @@
 //! Medical settlement line items.
 
 use bigdecimal::BigDecimal;
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{commons::DictEntryInfo, medical::MedicareItemType};
+use qubit_model_derive::Model;
+
+use crate::commons::DictEntryInfo;
+use crate::medical::MedicareItemType;
 
 /// A charged medical item and its insurance reimbursement breakdown.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

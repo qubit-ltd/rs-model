@@ -7,10 +7,12 @@
 // =============================================================================
 //! Values bundled with their digital signature.
 
+use serde::Deserialize;
+use serde::Serialize;
+use serde_json::Value;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 use super::Signature;
 

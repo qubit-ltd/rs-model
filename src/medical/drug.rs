@@ -8,10 +8,14 @@
 
 //! Complete drug catalog records.
 
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 use crate::commons::DictEntryInfo;
 

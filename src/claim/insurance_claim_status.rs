@@ -8,11 +8,10 @@
 
 //! Detailed individual claim workflow states.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 use crate::claim::InsuranceClaimStatusGroup;
 

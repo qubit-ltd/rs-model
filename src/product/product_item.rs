@@ -9,11 +9,18 @@
 //! Individually purchasable product specifications.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate, NaiveDateTime, TimeDelta, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::NaiveDateTime;
+use chrono::TimeDelta;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{Entity, upload::Attachment};
+use qubit_model_derive::Model;
+
+use crate::Entity;
+use crate::upload::Attachment;
 
 /// A priced specification belonging to a product.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

@@ -7,14 +7,19 @@
 // =============================================================================
 //! XML transfer representation for settings.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::setting::{
-    DataType, Setting, SettingAdapterError, data_type_source_name, parse_data_type_name,
-};
+use crate::setting::DataType;
+use crate::setting::Setting;
+use crate::setting::SettingAdapterError;
+use crate::setting::data_type_source_name;
+use crate::setting::parse_data_type_name;
 
 /// XML-oriented setting value with default-valued attributes omitted.
 #[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]

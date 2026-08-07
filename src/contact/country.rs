@@ -8,13 +8,14 @@
 
 //! Administrative-region model values.
 
-#[allow(unused_imports)]
-use super::{City, District, Province, Street};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+
 
 /// A country in the administrative hierarchy.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

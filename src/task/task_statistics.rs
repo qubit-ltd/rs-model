@@ -8,8 +8,10 @@
 
 //! Counters summarizing task execution.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// Aggregate counters for a task executor.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize)]

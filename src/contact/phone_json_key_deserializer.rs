@@ -7,7 +7,9 @@
 // =============================================================================
 //! JSON object-key deserializer for telephone numbers.
 
-use crate::contact::{ContactCodecError, Phone, PhoneCodec};
+use crate::contact::ContactCodecError;
+use crate::contact::Phone;
+use crate::contact::PhoneCodec;
 
 /// Deserializes a telephone number used as a JSON object key.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

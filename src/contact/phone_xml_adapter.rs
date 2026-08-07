@@ -7,7 +7,9 @@
 // =============================================================================
 //! XML adapter for telephone-number text values.
 
-use crate::contact::{ContactCodecError, Phone, PhoneCodec};
+use crate::contact::ContactCodecError;
+use crate::contact::Phone;
+use crate::contact::PhoneCodec;
 
 /// Marshals and unmarshals optional telephone numbers as XML text.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

@@ -5,13 +5,16 @@
 // =============================================================================
 //! Contact-method values.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 use crate::commons::VerifyState;
-use crate::contact::{Address, Phone};
+use crate::contact::Address;
+use crate::contact::Phone;
 
 /// Contact methods and their independent verification states.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

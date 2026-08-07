@@ -8,14 +8,14 @@
 
 //! Administrative-region model values.
 
-#[allow(unused_imports)]
-use super::{City, Country, Province, Street};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use chrono::{DateTime, Utc};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 use crate::contact::Location;
 

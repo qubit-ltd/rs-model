@@ -9,8 +9,10 @@
 //! Medical payment breakdowns.
 
 use bigdecimal::BigDecimal;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// A complete breakdown of patient, insurer, fund, and prepayment amounts.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

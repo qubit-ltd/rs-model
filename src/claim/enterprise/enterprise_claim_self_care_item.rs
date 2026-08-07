@@ -9,9 +9,12 @@
 //! Enterprise claim self-care items.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// A partially self-paid charge extracted from an enterprise claim invoice.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

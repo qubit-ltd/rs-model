@@ -7,12 +7,15 @@
 // =============================================================================
 //! Basic information carrying an access token.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{commons::Token, mixin::WithToken};
+use crate::commons::Token;
+use crate::mixin::WithToken;
 
 /// Basic identifying information together with an optional access token.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

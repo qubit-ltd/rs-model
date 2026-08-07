@@ -8,9 +8,11 @@
 //! Half-open local-time ranges.
 
 use chrono::NaiveTime;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 /// A half-open interval from `start` inclusive to `end` exclusive.
 #[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]

@@ -7,21 +7,31 @@
 // =============================================================================
 //! Complete employee records.
 
-use chrono::{DateTime, NaiveDate, Utc};
-use qubit_mixin::{Emptyful, InfoWithEntity, Normalizable};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::InfoWithEntity;
+use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::{Category, Credential, CredentialInfo, State},
-    contact::Phone,
-    mixin::StatefulInfo,
-    person::{Gender, Person, User},
-    upload::Attachment,
-};
-
-use super::{Department, EmployeeInfo, Organization};
+use crate::commons::Category;
+use crate::commons::Credential;
+use crate::commons::CredentialInfo;
+use crate::commons::State;
+use crate::contact::Phone;
+use crate::mixin::StatefulInfo;
+use crate::person::Gender;
+use crate::person::Person;
+use crate::person::User;
+use crate::upload::Attachment;
+use super::Department;
+use super::EmployeeInfo;
+use super::Organization;
 
 /// A complete employee record within an organization.
 #[allow(clippy::duplicated_attributes)]

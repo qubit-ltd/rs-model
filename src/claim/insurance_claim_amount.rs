@@ -9,9 +9,13 @@
 //! Insurance-claim amount summaries.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// Submitted, covered, claimed, and actually paid amounts for a claim.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

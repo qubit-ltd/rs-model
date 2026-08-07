@@ -9,15 +9,19 @@
 //! Signable prescription content.
 
 use chrono::NaiveDateTime;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::DictEntryInfo,
-    medical::{Diagnosis, Dosage, MedicalType, Patient, PrescriptionItem},
-    organization::EmployeeInfo,
-};
+use crate::commons::DictEntryInfo;
+use crate::medical::Diagnosis;
+use crate::medical::Dosage;
+use crate::medical::MedicalType;
+use crate::medical::Patient;
+use crate::medical::PrescriptionItem;
+use crate::organization::EmployeeInfo;
 
 /// The stable clinical content signed and carried by a prescription.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

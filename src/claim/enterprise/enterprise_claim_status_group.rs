@@ -8,11 +8,10 @@
 
 //! High-level enterprise claim workflow groups.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Groups detailed enterprise claim states into reporting stages.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Model, PartialEq, Serialize)]

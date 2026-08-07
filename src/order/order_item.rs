@@ -9,10 +9,13 @@
 //! Order line-item records.
 
 use bigdecimal::BigDecimal;
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{order::Client, product::ProductInfo};
+use qubit_model_derive::Model;
+
+use crate::order::Client;
+use crate::product::ProductInfo;
 
 /// Quantity, pricing, fulfillment, and client data for one order line.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

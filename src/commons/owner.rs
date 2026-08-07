@@ -8,14 +8,11 @@
 
 //! Shared records used across the migrated model domains.
 
-#[allow(unused_imports)]
-use super::{
-    AuthorizeRecord, Category, Credential, CredentialInfo, CredentialType, Currency, DayType,
-    Kinship, MqType, Owners, Payload, RequestStatus, Source, VerifyState,
-};
+use serde::Deserialize;
+use serde::Serialize;
 
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+
 
 /// Identifies the owner of a domain object.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize)]

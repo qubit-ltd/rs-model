@@ -8,11 +8,10 @@
 
 //! Domain operations grouped by their owning module.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 use crate::Module;
 

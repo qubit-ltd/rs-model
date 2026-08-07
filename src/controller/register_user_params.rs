@@ -7,17 +7,20 @@
 // =============================================================================
 //! User-registration parameters.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    contact::Phone,
-    mixin::StatefulInfo,
-    organization::Organization,
-    person::{Gender, SocialNetwork, User, UserInfo},
-    system::Environment,
-};
+use crate::contact::Phone;
+use crate::mixin::StatefulInfo;
+use crate::organization::Organization;
+use crate::person::Gender;
+use crate::person::SocialNetwork;
+use crate::person::User;
+use crate::person::UserInfo;
+use crate::system::Environment;
 
 /// Account, profile, social identity, and client data used for registration.
 #[allow(clippy::duplicated_attributes)]

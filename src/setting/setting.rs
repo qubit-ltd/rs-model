@@ -8,15 +8,16 @@
 
 //! Setting values and stable setting names.
 
-#[allow(unused_imports)]
-use super::{DataType, SettingName};
-
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 use std::cmp::Ordering;
 
-use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+
+use super::DataType;
 
 /// A named system setting containing zero, one, or multiple textual values.
 #[derive(Clone, Debug, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]

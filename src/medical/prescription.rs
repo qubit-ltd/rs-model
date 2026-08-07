@@ -8,14 +8,16 @@
 
 //! Prescription workflow records.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    medical::{PrescriptionContent, PrescriptionStatus},
-    organization::EmployeeInfo,
-};
+use qubit_model_derive::Model;
+
+use crate::medical::PrescriptionContent;
+use crate::medical::PrescriptionStatus;
+use crate::organization::EmployeeInfo;
 
 /// A prescription and the clinicians, signatures, order, and lifecycle around
 /// it.

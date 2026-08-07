@@ -9,17 +9,20 @@
 //! Payment execution records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::Currency,
-    payment::{PaymentChannel, PaymentMode, PaymentType},
-    system::Environment,
-};
+use crate::commons::Currency;
+use crate::payment::PaymentChannel;
+use crate::payment::PaymentMode;
+use crate::payment::PaymentType;
+use crate::system::Environment;
 
 /// The provider-side execution and outcome of a payment transaction.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

@@ -9,18 +9,24 @@
 //! Client-oriented order query records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Info, InfoWithEntity};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    invoice::InvoiceStatus,
-    mixin::StatefulInfo,
-    order::{Client, OrderStatus, ReturnStatus},
-    payment::{Account, PaymentChannel, PaymentMode},
-    product::ProductInfo,
-};
+use qubit_mixin::Info;
+use qubit_mixin::InfoWithEntity;
+use qubit_model_derive::Model;
+
+use crate::invoice::InvoiceStatus;
+use crate::mixin::StatefulInfo;
+use crate::order::Client;
+use crate::order::OrderStatus;
+use crate::order::ReturnStatus;
+use crate::payment::Account;
+use crate::payment::PaymentChannel;
+use crate::payment::PaymentMode;
+use crate::product::ProductInfo;
 
 /// Order and refund data projected for one client.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

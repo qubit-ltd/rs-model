@@ -6,11 +6,16 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use crate::contact::{Location, Phone};
-use crate::device::{DataNetworkType, SimCardStatus};
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
+
+use crate::contact::Location;
+use crate::contact::Phone;
+use crate::device::DataNetworkType;
+use crate::device::SimCardStatus;
 /// Represents the SimCard domain type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]
 pub struct SimCard {

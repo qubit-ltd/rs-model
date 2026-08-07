@@ -8,24 +8,6 @@
 
 //! Rust traits for shared Java model mixins.
 
-#[allow(unused_imports)]
-use super::{
-    Expirable,
-    HasStatefulInfo,
-    Stateful,
-    WithAddress,
-    WithApp,
-    WithCategory,
-    WithContact,
-    WithCredential,
-    WithLocation,
-    WithOrganization,
-    WithOwner,
-    WithPayloads,
-    WithSource,
-    WithToken,
-};
-
 use crate::contact::Phone;
 
 /// Provides a mobile phone number.

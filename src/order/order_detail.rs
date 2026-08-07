@@ -8,13 +8,14 @@
 
 //! Expanded order query results.
 
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{
-    order::{Order, Return},
-    settlement::Transaction,
-};
+use qubit_model_derive::Model;
+
+use crate::order::Order;
+use crate::order::Return;
+use crate::settlement::Transaction;
 
 /// An order together with optional related transactions and returns.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

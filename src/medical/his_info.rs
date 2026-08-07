@@ -8,19 +8,15 @@
 
 //! Polymorphic hospital-information-system records.
 
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::medical::{
-    ClinicInfo,
-    EmergentClinicInfo,
-    ExaminationInfo,
-    HospitalizationInfo,
-    RegistrationInfo,
-    SpecificClinicInfo,
-};
+use crate::medical::ClinicInfo;
+use crate::medical::EmergentClinicInfo;
+use crate::medical::ExaminationInfo;
+use crate::medical::HospitalizationInfo;
+use crate::medical::RegistrationInfo;
+use crate::medical::SpecificClinicInfo;
 
 /// A typed hospital-information-system payload.
 ///

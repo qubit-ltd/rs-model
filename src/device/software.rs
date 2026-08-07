@@ -6,9 +6,12 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-use crate::system::Platform;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+
+use crate::system::Platform;
 /// Represents the Software domain type.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
 pub struct Software {

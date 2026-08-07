@@ -5,25 +5,45 @@
 // =============================================================================
 //! Complete person records.
 
-#[allow(unused_imports)]
-use super::{
-    Blood, Education, Ethnic, Gender, Incoming, Industry, JobTitle, Marriage, PersonIdentity,
-    Politics, Religion, SexOrientation, SocialNetwork,
-};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::NaiveTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use chrono::{DateTime, NaiveDate, NaiveTime, Utc};
-use qubit_mixin::{Info, InfoWithEntity};
+use qubit_mixin::Info;
+use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::commons::{Category, Credential, CredentialInfo, Source};
-use crate::contact::{City, Contact, Country, Province};
+use crate::commons::Category;
+use crate::commons::Credential;
+use crate::commons::CredentialInfo;
+use crate::commons::Source;
+use crate::contact::City;
+use crate::contact::Contact;
+use crate::contact::Country;
+use crate::contact::Province;
 use crate::medical::MedicareType;
 use crate::mixin::StatefulInfo;
-use crate::order::{Buyer, Client, Consignee};
+use crate::order::Buyer;
+use crate::order::Client;
+use crate::order::Consignee;
 use crate::person::PersonInfo;
 use crate::upload::Attachment;
+use super::Blood;
+use super::Education;
+use super::Ethnic;
+use super::Gender;
+use super::Incoming;
+use super::Industry;
+use super::JobTitle;
+use super::Marriage;
+use super::PersonIdentity;
+use super::Politics;
+use super::Religion;
+use super::SexOrientation;
 
 /// A person's complete demographic, contact, and administrative record.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

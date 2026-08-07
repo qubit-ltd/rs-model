@@ -8,12 +8,16 @@
 
 //! Persisted user feedback records.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::feedback::{FeedbackStatus, FeedbackType};
+use crate::feedback::FeedbackStatus;
+use crate::feedback::FeedbackType;
 use crate::mixin::StatefulInfo;
 use crate::system::Environment;
 use crate::upload::Attachment;

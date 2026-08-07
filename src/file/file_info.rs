@@ -7,13 +7,14 @@
 // =============================================================================
 //! Stored-file metadata.
 
+use bigdecimal::BigDecimal;
+use serde::Deserialize;
+use serde::Serialize;
 use std::path::PathBuf;
 
-use bigdecimal::BigDecimal;
 use qubit_mixin::Emptyful;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 /// Storage metadata for a file, image, video, or audio asset.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

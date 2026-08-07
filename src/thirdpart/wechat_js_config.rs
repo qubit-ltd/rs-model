@@ -7,9 +7,11 @@
 // =============================================================================
 //! WeChat JavaScript SDK configuration.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 /// Parameters required to initialize the WeChat JavaScript SDK.
 #[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact, Serialize)]

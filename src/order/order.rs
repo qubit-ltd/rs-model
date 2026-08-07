@@ -9,20 +9,26 @@
 //! Order aggregate records.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::Currency,
-    invoice::InvoiceStatus,
-    mixin::StatefulInfo,
-    order::{Buyer, Consignee, OrderItem, OrderStatus, PayType},
-    product::Seller,
-    shipping::{ShippingDemand, ShippingMode},
-    system::Environment,
-};
+use crate::commons::Currency;
+use crate::invoice::InvoiceStatus;
+use crate::mixin::StatefulInfo;
+use crate::order::Buyer;
+use crate::order::Consignee;
+use crate::order::OrderItem;
+use crate::order::OrderStatus;
+use crate::order::PayType;
+use crate::product::Seller;
+use crate::shipping::ShippingDemand;
+use crate::shipping::ShippingMode;
+use crate::system::Environment;
 
 /// A submitted order with line items, pricing, delivery, and lifecycle data.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

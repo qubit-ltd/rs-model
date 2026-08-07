@@ -12,7 +12,5 @@ mod message_formatter;
 mod result_value;
 
 pub use message_formatter::MessageFormatter;
-pub use result_value::{
-    Result,
-    ResultValue,
-};
+pub use result_value::Result;
+pub use result_value::ResultValue;

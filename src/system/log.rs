@@ -7,15 +7,16 @@
 // =============================================================================
 //! Compact legacy system logs.
 
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 use std::cmp::Ordering;
 
-use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 use crate::person::UserInfo;
-
 use super::ErrorInfo;
 
 /// A compact operation outcome ordered by its timestamp.

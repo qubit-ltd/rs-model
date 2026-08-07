@@ -8,12 +8,11 @@
 
 //! Errors produced by domain-model operations.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Broad category assigned to a platform error code.
 #[derive(

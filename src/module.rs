@@ -8,11 +8,10 @@
 
 //! System module classifications.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 /// Identifies a functional module in the domain system.
 #[derive(

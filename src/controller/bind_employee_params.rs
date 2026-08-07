@@ -7,11 +7,14 @@
 // =============================================================================
 //! Employee-binding parameters.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{contact::Phone, mixin::StatefulInfo};
+use crate::contact::Phone;
+use crate::mixin::StatefulInfo;
 
 /// Identifying information used to bind a user to an employee record.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Redact, Serialize)]

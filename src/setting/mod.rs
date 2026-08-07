@@ -21,10 +21,8 @@ mod setting_xml_adapter;
 
 pub use data_type::DataType;
 pub use setting::Setting;
-pub(crate) use setting::{
-    data_type_source_name,
-    parse_data_type_name,
-};
+pub(crate) use setting::data_type_source_name;
+pub(crate) use setting::parse_data_type_name;
 pub use setting_adapter_error::SettingAdapterError;
 pub use setting_json_deserializer::SettingJsonDeserializer;
 pub use setting_json_serializer::SettingJsonSerializer;

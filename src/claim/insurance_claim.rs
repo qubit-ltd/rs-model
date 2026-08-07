@@ -9,25 +9,32 @@
 //! Individual insurance claims.
 
 use bigdecimal::BigDecimal;
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    claim::{
-        AccidentReason, InsuranceClaimAmount, InsuranceClaimEvent, InsuranceClaimInvoice,
-        InsuranceClaimMedical, InsuranceClaimStatus, InsuranceClaimStatusGroup, InsuredStatus,
-        QuickCompensationState,
-    },
-    commons::{Currency, Kinship},
-    contact::Address,
-    order::Client,
-    payment::Account,
-    product::Product,
-    upload::Attachment,
-};
+use crate::claim::AccidentReason;
+use crate::claim::InsuranceClaimAmount;
+use crate::claim::InsuranceClaimEvent;
+use crate::claim::InsuranceClaimInvoice;
+use crate::claim::InsuranceClaimMedical;
+use crate::claim::InsuranceClaimStatus;
+use crate::claim::InsuranceClaimStatusGroup;
+use crate::claim::InsuredStatus;
+use crate::claim::QuickCompensationState;
+use crate::commons::Currency;
+use crate::commons::Kinship;
+use crate::contact::Address;
+use crate::order::Client;
+use crate::payment::Account;
+use crate::product::Product;
+use crate::upload::Attachment;
 
 /// An individual claim with insured event, payment, documents, and workflow
 /// data.

@@ -9,11 +9,15 @@
 //! Lightweight patient information.
 
 use chrono::NaiveDate;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{commons::CredentialInfo, contact::Phone, person::Gender};
+use crate::commons::CredentialInfo;
+use crate::contact::Phone;
+use crate::person::Gender;
 
 /// A compact patient snapshot embedded in medical records.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

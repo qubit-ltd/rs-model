@@ -9,8 +9,10 @@
 //! Metadata for a stored file.
 
 use bigdecimal::BigDecimal;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
 /// Storage metadata for a file, image, video, or audio asset.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]

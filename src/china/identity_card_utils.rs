@@ -8,17 +8,20 @@
 
 //! China administrative-data markers and resident identity-card utilities.
 
-#[allow(unused_imports)]
-use super::{ChinaCities, ChinaDistricts, ChinaProvinces};
+use chrono::DateTime;
+use chrono::Datelike;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+use std::collections::HashMap;
+use std::sync::LazyLock;
 
-use std::{collections::HashMap, sync::LazyLock};
-
-use chrono::{DateTime, Datelike, NaiveDate, Utc};
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
 
-use crate::{contact::District, person::Gender};
+use crate::contact::District;
+use crate::person::Gender;
 
 /// Utilities for 18-character Chinese resident identity-card numbers.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Model, PartialEq, Serialize)]

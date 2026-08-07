@@ -7,7 +7,8 @@
 // =============================================================================
 //! JSON serializer for telephone-number wire values.
 
-use crate::contact::{Phone, PhoneCodec};
+use crate::contact::Phone;
+use crate::contact::PhoneCodec;
 
 /// Serializes a telephone number as a JSON string instead of an object.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

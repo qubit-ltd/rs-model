@@ -7,7 +7,8 @@
 // =============================================================================
 //! String codec for telephone numbers.
 
-use crate::contact::{ContactCodecError, Phone};
+use crate::contact::ContactCodecError;
+use crate::contact::Phone;
 
 /// Converts telephone numbers to and from their Java-compatible textual form.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

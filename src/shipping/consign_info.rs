@@ -8,14 +8,15 @@
 
 //! Consignor and consignee values.
 
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::CredentialInfo,
-    contact::{Address, Phone},
-};
+use crate::commons::CredentialInfo;
+use crate::contact::Address;
+use crate::contact::Phone;
 
 /// Identifying and contact information for one side of a shipment.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

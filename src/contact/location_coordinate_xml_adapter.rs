@@ -9,7 +9,8 @@
 
 use bigdecimal::BigDecimal;
 
-use crate::contact::{ContactCodecError, LocationCoordinateCodec};
+use crate::contact::ContactCodecError;
+use crate::contact::LocationCoordinateCodec;
 
 /// Marshals and unmarshals optional coordinates as XML text values.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

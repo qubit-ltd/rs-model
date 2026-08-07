@@ -7,13 +7,20 @@
 // =============================================================================
 //! Compact dictionary-entry information.
 
-use chrono::{DateTime, Utc};
-use qubit_mixin::{Emptyful, Normalizable};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+use serde::Serializer;
+use serde::ser::SerializeStruct;
+
+use qubit_mixin::Emptyful;
+use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize, Serializer, ser::SerializeStruct};
 
-use super::{Dict, dict_entry::format_with_params};
+use super::Dict;
+use super::dict_entry::format_with_params;
 
 /// Compact information for a dictionary entry.
 #[derive(Clone, Debug, Default, Deserialize, Eq, Model, PartialEq, Redact)]

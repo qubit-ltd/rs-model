@@ -8,10 +8,13 @@
 
 //! Persisted mobile and email verification codes.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
 use crate::contact::Phone;
 use crate::mixin::StatefulInfo;

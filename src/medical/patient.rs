@@ -8,17 +8,21 @@
 
 //! Complete patient records.
 
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::DateTime;
+use chrono::NaiveDate;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
-use crate::{
-    commons::{CredentialInfo, State},
-    contact::Phone,
-    person::{Gender, PersonInfo},
-};
+use crate::commons::CredentialInfo;
+use crate::commons::State;
+use crate::contact::Phone;
+use crate::person::Gender;
+use crate::person::PersonInfo;
 
 /// A hospital patient with identity, insurance, contact, and lifecycle data.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

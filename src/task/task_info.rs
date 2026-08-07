@@ -7,17 +7,19 @@
 // =============================================================================
 //! Persistable metadata for one task.
 
-use chrono::{DateTime, Utc};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
+
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
-use serde::{Deserialize, Serialize};
 
+use crate::commons::Category;
+use crate::person::User;
+use crate::person::UserInfo;
 use crate::task::TaskStatus;
-use crate::{
-    commons::Category,
-    person::{User, UserInfo},
-};
 
 /// Metadata describing a task's target, result, lifecycle, and creator.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Redact, Serialize)]

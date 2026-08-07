@@ -8,28 +8,9 @@
 
 //! Rust traits for shared Java model mixins.
 
-#[allow(unused_imports)]
-use super::{
-    HasStatefulInfo,
-    Stateful,
-    WithAddress,
-    WithApp,
-    WithCategory,
-    WithContact,
-    WithCredential,
-    WithLocation,
-    WithMobile,
-    WithOrganization,
-    WithOwner,
-    WithPayloads,
-    WithSource,
-    WithToken,
-};
+use chrono::DateTime;
+use chrono::Utc;
 
-use chrono::{
-    DateTime,
-    Utc,
-};
 
 /// Provides an optional expiration timestamp.
 pub trait Expirable {

@@ -8,10 +8,13 @@
 
 //! Stateful information snapshots that carry an access token.
 
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{commons::Token, mixin::StatefulInfo};
+use qubit_model_derive::Model;
+
+use crate::commons::Token;
+use crate::mixin::StatefulInfo;
 
 /// Couples a stateful information snapshot with an optional access token.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Serialize)]

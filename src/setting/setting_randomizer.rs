@@ -7,11 +7,13 @@
 // =============================================================================
 //! Seedable setting fixture generator.
 
-use std::time::{SystemTime, UNIX_EPOCH};
+use chrono::DateTime;
+use chrono::Utc;
+use std::time::SystemTime;
+use std::time::UNIX_EPOCH;
 
-use chrono::{DateTime, Utc};
-
-use crate::setting::{DataType, Setting};
+use crate::setting::DataType;
+use crate::setting::Setting;
 
 /// Generates valid settings across the source model's supported scalar types.
 #[derive(Clone, Debug)]

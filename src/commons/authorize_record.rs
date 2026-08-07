@@ -8,15 +8,13 @@
 
 //! Shared records used across the migrated model domains.
 
-#[allow(unused_imports)]
-use super::{
-    Category, Credential, CredentialInfo, CredentialType, Currency, DayType, Kinship, MqType,
-    Owner, Owners, Payload, RequestStatus, Source, VerifyState,
-};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use chrono::{DateTime, Utc};
 use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+
 
 /// Records failures and the last authorization time.
 #[derive(Clone, Debug, Default, Deserialize, Model, PartialEq, Eq, Serialize)]

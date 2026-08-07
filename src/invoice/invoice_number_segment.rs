@@ -8,11 +8,16 @@
 
 //! Allocated invoice-number segments.
 
-use chrono::{DateTime, Utc};
-use qubit_model_derive::Model;
-use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use chrono::Utc;
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{commons::DictEntryInfo, invoice::InvoiceStockStatus, mixin::StatefulInfo};
+use qubit_model_derive::Model;
+
+use crate::commons::DictEntryInfo;
+use crate::invoice::InvoiceStockStatus;
+use crate::mixin::StatefulInfo;
 
 /// A contiguous invoice-number segment allocated for use by an organization.
 #[derive(Clone, Debug, Deserialize, Model, PartialEq, Serialize)]
