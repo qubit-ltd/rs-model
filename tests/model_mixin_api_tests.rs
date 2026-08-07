@@ -73,7 +73,7 @@ fn test_info_with_app_entity_preserves_composed_source_shape() {
             "SOURCE".into(),
             "Source".into(),
             None,
-            Some("document".into()),
+            "document".into(),
         ),
         Some(qubit_model::mixin::StatefulInfo::default()),
     );

@@ -243,12 +243,15 @@ fn test_individual_claim_statuses_drive_operation_permissions() {
     let status_group: Box<
         dyn Fn(InsuranceClaimStatus) -> InsuranceClaimStatusGroup,
     > = Box::new(InsuranceClaimStatus::status_group);
-    let allow_client: Box<dyn Fn(&InsuranceClaim) -> bool> =
-        Box::new(InsuranceClaim::allow_client_operation);
-    let allow_reject: Box<dyn Fn(&InsuranceClaim) -> bool> =
-        Box::new(InsuranceClaim::allow_system_reject);
-    let allow_accept: Box<dyn Fn(&InsuranceClaim) -> bool> =
-        Box::new(InsuranceClaim::allow_system_accept);
+    let allow_client = std::hint::black_box(
+        InsuranceClaim::allow_client_operation as fn(&InsuranceClaim) -> bool,
+    );
+    let allow_reject = std::hint::black_box(
+        InsuranceClaim::allow_system_reject as fn(&InsuranceClaim) -> bool,
+    );
+    let allow_accept = std::hint::black_box(
+        InsuranceClaim::allow_system_accept as fn(&InsuranceClaim) -> bool,
+    );
     let cases = [
         (InsuranceClaimStatus::NotSubmitted, true, false, false),
         (

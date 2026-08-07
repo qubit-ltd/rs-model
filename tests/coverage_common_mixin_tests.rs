@@ -267,7 +267,7 @@ fn test_composed_information_mixins_mutate_and_project_public_values() {
             "ENTITY".into(),
             "Entity".into(),
             None,
-            Some("claim".into()),
+            "claim".into(),
         ),
         None,
     );

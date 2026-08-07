@@ -151,6 +151,21 @@ fn test_enterprise_classifications_preserve_source_codes() {
         assert_eq!(insured_type_code(insured_type), code);
         assert_eq!(insured_type_description(insured_type), description);
     }
-    assert_eq!(EnterpriseOwnership::Yangtze.code(), "1");
-    assert_eq!(EnterpriseOwnership::Test.description(), "测试");
+    let code = std::hint::black_box(
+        EnterpriseOwnership::code as fn(EnterpriseOwnership) -> &'static str,
+    );
+    let description = std::hint::black_box(
+        EnterpriseOwnership::description
+            as fn(EnterpriseOwnership) -> &'static str,
+    );
+    let ownerships = [
+        (EnterpriseOwnership::Yangtze, "1", "扬子"),
+        (EnterpriseOwnership::Reform, "0", "改制"),
+        (EnterpriseOwnership::CoSolution, "2", "协解"),
+        (EnterpriseOwnership::Test, "z", "测试"),
+    ];
+    for (ownership, expected_code, expected_description) in ownerships {
+        assert_eq!(code(ownership), expected_code);
+        assert_eq!(description(ownership), expected_description);
+    }
 }
