@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Domain operations grouped by their owning module.
+//! Independently authorizable operations and their owning functional modules.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -15,37 +15,34 @@ use qubit_model_derive::Model;
 
 use crate::Module;
 
-/// Identifies a domain operation that can be authorized independently.
+/// Identifies a business action that can be granted as an individual permission.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Operation {
-    /// Registers an account.
+    /// Creates a new account.
     Register,
-    /// Authenticates an account.
+    /// Authenticates an account and starts a session.
     Login,
-    /// Ends the current account session.
+    /// Ends the caller's current authenticated session.
     Logout,
-    /// Lists system settings.
+    /// Retrieves system settings.
     ListSetting,
-    /// Lists users.
+    /// Retrieves user accounts.
     ListUser,
-    /// Lists products.
+    /// Retrieves catalog products.
     ListProduct,
-    /// Lists orders.
+    /// Retrieves orders.
     ListOrder,
-    /// Lists prescriptions.
+    /// Retrieves prescriptions.
     ListPrescription,
-    /// Lists appointments.
+    /// Retrieves appointments.
     ListAppointment,
-    /// Lists work schedules.
+    /// Retrieves work schedules.
     ListWorkSchedule,
 }
 
 impl Operation {
-    /// Returns the system module that owns this operation.
-    ///
-    /// # Returns
-    /// The owning functional module.
+    /// Returns the functional module responsible for this operation.
     #[must_use]
     pub const fn module(self) -> Module {
         match self {
