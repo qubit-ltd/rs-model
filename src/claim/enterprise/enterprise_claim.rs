@@ -31,7 +31,7 @@ use crate::upload::Attachment;
 /// records, calculation items, and its processing history.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaim {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise claim is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

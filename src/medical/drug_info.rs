@@ -22,7 +22,7 @@ use crate::commons::DictEntryInfo;
 /// monograph.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DrugInfo {
-    /// Optional persisted identifier.
+    /// Typed identifier carried by this drug snapshot when available upstream.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -69,15 +69,15 @@ pub struct DrugInfo {
     /// Whether the medicine is classified as a single or compound herbal drug.
     pub herbal_compound: bool,
 
-    /// Optional brand.
+    /// Brand name carried from the catalogue, absent when none is recorded.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub brand: Option<String>,
 
-    /// Optional place of origin.
+    /// Place of origin carried from the catalogue, absent when none is recorded.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub origin: Option<String>,
 
-    /// Optional manufacturer information.
+    /// Manufacturer identity carried from the catalogue, absent when unknown.
     #[model(opaque)]
     pub manufacturer: Option<Info>,
 }

@@ -24,7 +24,7 @@ use crate::claim::InsuranceClaimStatusGroup;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct InsuranceClaimEvent {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this claim event is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

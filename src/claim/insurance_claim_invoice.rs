@@ -24,7 +24,7 @@ use crate::claim::InsuranceClaimInvoiceType;
 /// A medical invoice imported as financial evidence for an individual claim.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimInvoice {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this claim invoice is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -64,19 +64,19 @@ pub struct InsuranceClaimInvoice {
     #[model(money(scale = 4))]
     pub medicare_amount: BigDecimal,
 
-    /// Optional serious-illness fund payment.
+    /// Serious-illness assistance payment, when the invoice received one.
     #[model(money(scale = 4))]
     pub serious_illness_paid: Option<BigDecimal>,
 
-    /// Optional serious-illness insurance payment.
+    /// Serious-illness insurance payment, when the invoice received one.
     #[model(money(scale = 4))]
     pub serious_illness_insurance_paid: Option<BigDecimal>,
 
-    /// Optional civil-affairs subsidy payment.
+    /// Civil-affairs subsidy allocated to this invoice, when applicable.
     #[model(money(scale = 4))]
     pub civil_affair_subsidy_paid: Option<BigDecimal>,
 
-    /// Optional total personal amount.
+    /// Total patient-borne amount, when the invoice source provides it.
     #[model(money(scale = 4))]
     pub self_amount: Option<BigDecimal>,
 
@@ -97,7 +97,7 @@ pub struct InsuranceClaimInvoice {
     /// invoice.
     pub inaccurate_reason: String,
 
-    /// Optional supplemental personal amount.
+    /// Supplemental patient-borne amount, when supplied by the import source.
     #[model(money(scale = 4))]
     pub self_amount_supply: Option<BigDecimal>,
 

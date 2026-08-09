@@ -24,7 +24,7 @@ use crate::commons::DictEntryInfo;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct EnterpriseHistoryClaimAmount {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this historical amount record is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

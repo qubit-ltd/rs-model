@@ -20,7 +20,7 @@ use qubit_model_derive::Model;
 /// A charge for which the insured person bears a defined self-care share.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimSelfCareItem {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this self-care charge is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -39,8 +39,8 @@ pub struct EnterpriseClaimSelfCareItem {
     #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
-    /// Patient-borne share of `amount`, expressed as an inclusive ratio from
-    /// zero to one.
+    /// Expected patient-borne share of `amount`; invoice validation checks that
+    /// imported values lie between zero and one.
     pub ratio: f64,
 
     /// UTC creation timestamp.

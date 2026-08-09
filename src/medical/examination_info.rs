@@ -23,7 +23,7 @@ pub struct ExaminationInfo {
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub number: String,
 
-    /// Optional remark.
+    /// Source-system note, absent when the examination carried no remark.
     pub remark: Option<String>,
 
     /// Department that performed the examination.

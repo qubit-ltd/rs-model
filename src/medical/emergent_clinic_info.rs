@@ -23,14 +23,14 @@ pub struct EmergentClinicInfo {
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub number: String,
 
-    /// Optional remark.
+    /// Source-system note, absent when the emergency visit has no remark.
     pub remark: Option<String>,
 
     /// Department visited by the patient.
     #[model(opaque)]
     pub department: Info,
 
-    /// Optional outpatient record number.
+    /// Emergency outpatient record number, absent when the HIS source omitted it.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub record_number: Option<String>,
 

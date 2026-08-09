@@ -24,7 +24,7 @@ use crate::person::Gender;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct PatientInfo {
-    /// Optional persisted patient identifier.
+    /// Typed identifier carried by this patient snapshot when available upstream.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

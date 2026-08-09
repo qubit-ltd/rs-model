@@ -28,7 +28,7 @@ use crate::commons::DictEntryInfo;
 /// covered-person type.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimItem {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise claim allocation is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -40,7 +40,8 @@ pub struct EnterpriseClaimItem {
     /// Medical-category dictionary entry.
     pub medical_category: DictEntryInfo,
 
-    /// Optional insured-person classification.
+    /// Insured-person classification used by this allocation, absent when the
+    /// source does not distinguish it.
     pub insured_type: Option<EnterpriseInsuredType>,
 
     /// Total submitted amount.
@@ -91,29 +92,30 @@ pub struct EnterpriseClaimItem {
     #[model(money(scale = 4))]
     pub yangzi_supply: BigDecimal,
 
-    /// Optional derived hospital name.
+    /// Hospital summary derived from attached medicals; absent when none exist.
     pub hospital_name: Option<String>,
 
-    /// Optional derived hospital level.
+    /// Hospital grade derived from attached medicals; absent when none is known.
     pub hospital_level: Option<i32>,
 
-    /// Optional derived disease code.
+    /// Disease code from the first recorded medical; absent when it has no
+    /// disease.
     pub disease_code: Option<String>,
 
     /// Actual transferred amount.
     #[model(money(scale = 4))]
     pub actual_paid_amount: BigDecimal,
 
-    /// Optional payment date.
+    /// Benefit payment date, absent until the enterprise claim is paid.
     pub paid_date: Option<NaiveDate>,
 
-    /// Optional case-closing date.
+    /// Enterprise case-closing date, absent while the allocation remains open.
     pub endcase_date: Option<NaiveDate>,
 
-    /// Optional operator name.
+    /// Operator associated with the payment outcome, if supplied by the source.
     pub operator_name: Option<String>,
 
-    /// Optional payment description.
+    /// Source description of the payment outcome, if the source provided one.
     pub description: Option<String>,
 
     /// Calculation state.
@@ -148,8 +150,8 @@ impl EnterpriseClaimItem {
     ///
     /// An empty list leaves existing summaries unchanged. A single hospital
     /// keeps its name and level; multiple hospitals use the source label `其他`
-    /// and the greatest available level. The first available disease supplies
-    /// the disease code.
+    /// and the greatest available level. The first recorded medical supplies
+    /// the disease code, including clearing it when that record has no disease.
     pub fn init_hospital_and_disease(&mut self) {
         let Some(first) = self.medicals.first() else {
             return;

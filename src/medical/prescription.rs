@@ -24,7 +24,7 @@ use crate::organization::EmployeeInfo;
 /// dispensing, and order-fulfillment state.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Prescription {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this prescription is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

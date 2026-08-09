@@ -26,7 +26,7 @@ use crate::commons::DictEntryInfo;
 /// and eligibility attributes.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimMedical {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise treatment record is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -41,26 +41,27 @@ pub struct EnterpriseClaimMedical {
     /// Final date of the treatment episode represented by this record.
     pub treatment_end_date: NaiveDate,
 
-    /// Optional medical encounter sequence number.
+    /// Source encounter sequence number, absent when the import does not
+    /// provide one.
     pub number: Option<String>,
 
     /// Insurer-assigned application identifier, if this encounter was sent to
     /// the insurer.
     pub claim_apply_id: Option<String>,
 
-    /// Optional medical-category dictionary entry.
+    /// Medical category used for benefit calculation, absent when unclassified.
     pub medical_category: Option<DictEntryInfo>,
 
-    /// Optional disease dictionary entry.
+    /// Disease recorded for the treatment episode, absent when not supplied.
     pub disease: Option<DictEntryInfo>,
 
-    /// Optional hospital dictionary entry.
+    /// Treating hospital, absent when the import cannot identify one.
     pub hospital: Option<DictEntryInfo>,
 
     /// Hospital grade used by the enterprise reimbursement rules, if supplied.
     pub hospital_level: Option<i32>,
 
-    /// Optional operator name.
+    /// Name of the source operator, absent when the import has no operator data.
     pub operator_name: Option<String>,
 
     /// Enterprise insured-person classification.

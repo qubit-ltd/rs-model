@@ -20,7 +20,7 @@ use qubit_model_derive::Model;
 /// A coded disease reference used to classify diagnoses and medical records.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Disease {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this disease reference is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -33,18 +33,19 @@ pub struct Disease {
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional national-standard disease category.
+    /// National-standard category, absent when the reference has not been
+    /// classified.
     #[model(opaque)]
     pub category: Option<InfoWithEntity>,
 
-    /// Optional description.
+    /// Explanatory clinical description, absent when the name and code suffice.
     pub description: Option<String>,
 
-    /// Optional detail URL.
+    /// Link to supporting disease detail, absent when no external reference exists.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub url: Option<String>,
 
-    /// Optional remark.
+    /// Maintainer note, absent when the reference needs no qualification.
     pub comment: Option<String>,
 
     /// Whether this disease is predefined reference data.

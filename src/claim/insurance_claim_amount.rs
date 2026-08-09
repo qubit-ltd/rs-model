@@ -22,7 +22,7 @@ use qubit_model_derive::Model;
 /// claim case.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimAmount {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this claim-amount snapshot is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -36,31 +36,34 @@ pub struct InsuranceClaimAmount {
     #[model(money(scale = 4))]
     pub total_amount: Option<BigDecimal>,
 
-    /// Optional expense within medical-insurance coverage.
+    /// Expense classified within medical-insurance coverage, when settlement
+    /// data supplies that allocation.
     #[model(money(scale = 4))]
     pub medicare_amount: Option<BigDecimal>,
 
-    /// Optional self-paid expense.
+    /// Expense the patient paid outside coverage, when reported by settlement
+    /// data.
     #[model(money(scale = 4))]
     pub self_paid_amount: Option<BigDecimal>,
 
-    /// Optional self-care expense.
+    /// Expense the patient must bear for partially covered items, when known.
     #[model(money(scale = 4))]
     pub self_care_amount: Option<BigDecimal>,
 
-    /// Optional medical-insurance fund payment.
+    /// Payment from the medical-insurance fund, when supplied by settlement
+    /// data.
     #[model(money(scale = 4))]
     pub fund_paid_amount: Option<BigDecimal>,
 
-    /// Optional serious-illness fund payment.
+    /// Serious-illness assistance payment, when the applicable program paid.
     #[model(money(scale = 4))]
     pub serious_illness_paid: Option<BigDecimal>,
 
-    /// Optional serious-illness insurance payment.
+    /// Serious-illness insurance payment, when the applicable program paid.
     #[model(money(scale = 4))]
     pub serious_illness_insurance_paid: Option<BigDecimal>,
 
-    /// Optional civil-affairs subsidy payment.
+    /// Civil-affairs subsidy payment, when a subsidy was applied.
     #[model(money(scale = 4))]
     pub civil_affair_subsidy_paid: Option<BigDecimal>,
 
@@ -72,15 +75,16 @@ pub struct InsuranceClaimAmount {
     #[model(money(scale = 4))]
     pub self_care_claim_amount: Option<BigDecimal>,
 
-    /// Optional total claimed amount.
+    /// Aggregate amount requested from the insurer, once the claim split is
+    /// calculated.
     #[model(money(scale = 4))]
     pub total_claim_amount: Option<BigDecimal>,
 
-    /// Optional actual self-paid amount.
+    /// Final reimbursement of the self-paid portion, once payment is settled.
     #[model(money(scale = 4))]
     pub actual_self_paid_amount: Option<BigDecimal>,
 
-    /// Optional actual self-care amount.
+    /// Final reimbursement of the self-care portion, once payment is settled.
     #[model(money(scale = 4))]
     pub actual_self_care_amount: Option<BigDecimal>,
 
@@ -92,10 +96,10 @@ pub struct InsuranceClaimAmount {
     /// reconciled after calculation.
     pub paid_amount_calibration: bool,
 
-    /// Optional payment date.
+    /// Date on which the insurer paid the benefit; absent before payment.
     pub pay_time: Option<NaiveDate>,
 
-    /// Optional case-closing date.
+    /// Date on which the claim case was closed; absent while it remains open.
     pub endcase_date: Option<NaiveDate>,
 
     /// Opaque upstream payload retained with the calculated amounts.

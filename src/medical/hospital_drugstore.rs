@@ -21,7 +21,7 @@ use qubit_model_derive::Model;
 /// prescriptions.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct HospitalDrugstore {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this hospital-drugstore association is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

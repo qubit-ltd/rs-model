@@ -26,7 +26,7 @@ use crate::medical::MedicalType;
 /// its costs.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimMedical {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this claim treatment record is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

@@ -23,7 +23,7 @@ pub struct RegistrationInfo {
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub number: String,
 
-    /// Optional remark.
+    /// Source-system registration note, absent when no remark was recorded.
     pub remark: Option<String>,
 
     /// Registered department.

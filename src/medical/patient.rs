@@ -28,16 +28,18 @@ use crate::person::PersonInfo;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Patient {
-    /// Optional persisted patient identifier.
+    /// Typed identifier used when this patient record is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Optional registered-user identifier.
+    /// Linked registered-user identifier, absent when the patient has no user
+    /// account.
     #[model(opaque)]
     pub user_id: Id,
 
-    /// Optional complete personal-record identifier.
+    /// Linked full person-record identifier, absent when no person record is
+    /// associated.
     #[model(opaque)]
     pub person_id: Id,
 
@@ -63,31 +65,32 @@ pub struct Patient {
     /// Patient's date of birth.
     pub birthday: NaiveDate,
 
-    /// Optional verified identity credential.
+    /// Verified identity credential, absent when it has not been collected.
     pub credential: Option<CredentialInfo>,
 
     /// Patient's mobile telephone number.
     pub mobile: Phone,
 
-    /// Optional email address.
+    /// Contact email address, absent when the patient has not supplied one.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 
-    /// Optional guardian information.
+    /// Guardian or legal representative, absent for an unaccompanied adult.
     pub guardian: Option<PersonInfo>,
 
-    /// Optional indication that the patient has medical insurance.
+    /// Insurance-coverage indicator, absent when eligibility has not been
+    /// determined.
     pub has_medicare: Option<bool>,
 
-    /// Optional medical-insurance credential.
+    /// Medical-insurance card credential, absent when no card was presented.
     pub medicare_card: Option<CredentialInfo>,
 
-    /// Optional medical-insurance city.
+    /// City administering the patient's coverage, absent when not applicable.
     #[model(opaque)]
     pub medicare_city: Option<Info>,
 
-    /// Optional remark.
+    /// Administrative or clinical note, absent when no extra context is needed.
     pub comment: Option<String>,
 
     /// Current lifecycle state.

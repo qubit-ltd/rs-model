@@ -20,7 +20,7 @@ use qubit_model_derive::Model;
 /// A product-scoped key-value rule consumed by the claim-processing domain.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceProductRule {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this product rule is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

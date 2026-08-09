@@ -21,7 +21,7 @@ use crate::medical::MedicareItemType;
 /// A billed service or medicine together with its patient and insurer liability.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalSettlementItem {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this settlement line is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -47,11 +47,11 @@ pub struct MedicalSettlementItem {
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional item specification.
+    /// Source item specification, absent when the billed item has none.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub specification: Option<String>,
 
-    /// Optional billing unit.
+    /// Billing unit, absent when the source reports an amount without one.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub unit: Option<String>,
 
@@ -71,7 +71,7 @@ pub struct MedicalSettlementItem {
     #[model(money(scale = 4))]
     pub self_paid: BigDecimal,
 
-    /// Fraction of the line charge assigned to the patient as self-pay.
+    /// Source-provided self-pay rate used to allocate this line to the patient.
     #[model(decimal(scale = 4))]
     pub self_paid_rate: BigDecimal,
 
@@ -83,6 +83,6 @@ pub struct MedicalSettlementItem {
     #[model(money(scale = 4))]
     pub payable: BigDecimal,
 
-    /// Optional remark.
+    /// Source line-item note, absent when no clarification accompanies the charge.
     pub remark: Option<String>,
 }

@@ -28,7 +28,7 @@ use crate::mixin::StatefulInfo;
 /// encounter, payment allocation, and itemized charges that support it.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalSettlement {
-    /// Optional persisted identifier inherited from the settlement model.
+    /// Typed identifier inherited from the persisted settlement record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

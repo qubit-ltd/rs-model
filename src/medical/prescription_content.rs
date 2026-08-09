@@ -112,7 +112,8 @@ pub struct PrescriptionContent {
     /// medicines.
     pub dosage: Option<Dosage>,
 
-    /// Optional notes.
+    /// Additional prescribing notes, absent when the structured instructions are
+    /// sufficient.
     pub notes: Option<String>,
 
     /// Hospital physician who issued the prescription.

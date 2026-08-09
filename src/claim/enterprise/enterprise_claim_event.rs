@@ -22,7 +22,7 @@ use crate::claim::enterprise::EnterpriseClaimStatusGroup;
 /// An auditable transition that records progress through an enterprise claim.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimEvent {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise claim event is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

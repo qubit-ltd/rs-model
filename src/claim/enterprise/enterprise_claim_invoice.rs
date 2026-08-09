@@ -24,7 +24,7 @@ use crate::claim::enterprise::SaveStatus;
 /// A medical invoice imported as evidence for an enterprise claim.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimInvoice {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise claim invoice is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

@@ -19,7 +19,7 @@ use qubit_model_derive::Model;
 /// Links one enterprise-claim allocation item to an encounter it accounts for.
 #[derive(Model, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct EnterpriseClaimItemMedical {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this claim-item encounter link is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

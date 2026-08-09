@@ -20,7 +20,7 @@ use qubit_model_derive::Model;
 /// One extracted medical charge within a claim invoice's billed-cost breakdown.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimInvoiceCost {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this invoice charge line is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

@@ -67,7 +67,8 @@ pub struct InsuranceClaim {
     /// Insured person.
     pub insured: Client,
 
-    /// Optional insured-person address.
+    /// Insured person's address when it was supplied with the claim; `None`
+    /// means the report did not include one.
     pub insured_address: Option<Address>,
 
     /// Reported outcome of the insured person's treatment; absent until known.
@@ -79,7 +80,8 @@ pub struct InsuranceClaim {
     /// Claimant information.
     pub claimant: Client,
 
-    /// Optional claimant address.
+    /// Claimant's address when it differs from or is supplied separately from
+    /// the insured person's address.
     pub claimant_address: Option<Address>,
 
     /// Date of the insured event.
@@ -91,20 +93,22 @@ pub struct InsuranceClaim {
     /// Description of the insured event.
     pub accident_description: String,
 
-    /// Optional treating hospital.
+    /// Treating hospital when the reported event involved medical care; `None`
+    /// covers non-medical claims or unavailable hospital data.
     #[model(opaque)]
     pub hospital: Option<Info>,
 
-    /// Optional treatment start date.
+    /// Start of the latest treatment, visit, or admission period, if reported.
     pub treatment_start_date: Option<NaiveDate>,
 
-    /// Optional treatment end date.
+    /// End of the latest treatment, visit, or admission period, if known.
     pub treatment_end_date: Option<NaiveDate>,
 
     /// Quick-compensation retrieval state.
     pub quick_compensation_state: QuickCompensationState,
 
-    /// Optional claim currency.
+    /// Currency of the reported invoice amounts; absent when the source does
+    /// not identify one.
     pub currency: Option<Currency>,
 
     /// Total amount reported with the claim, before the insurer calculates a
@@ -144,7 +148,8 @@ pub struct InsuranceClaim {
     /// Claim notes.
     pub notes: String,
 
-    /// Optional source-order key-value payload.
+    /// Additional source-order attributes; absent when no upstream payload was
+    /// supplied.
     #[model(opaque)]
     pub payload: Option<Vec<(String, String)>>,
 
