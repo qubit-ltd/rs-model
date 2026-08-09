@@ -21,7 +21,7 @@ use crate::mixin::StatefulInfo;
 /// Shared persisted fields carried by concrete settlement records.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Settlement {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -35,12 +35,12 @@ pub struct Settlement {
     /// Optional settlement remark.
     pub remark: Option<String>,
 
-    /// UTC creation timestamp.
+    /// UTC instant at which this record was created.
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent update, or `None` when no update has occurred.
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the record remains active.
     pub delete_time: Option<DateTime<Utc>>,
 }

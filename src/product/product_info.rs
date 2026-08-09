@@ -27,7 +27,7 @@ use crate::upload::Attachment;
 /// A value snapshot of the product and item selected for a purchase.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductInfo {
-    /// Optional persisted product identifier.
+    /// Identifier of the product; its default value means that no related record is stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

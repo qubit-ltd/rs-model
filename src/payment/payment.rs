@@ -28,7 +28,7 @@ use crate::system::Environment;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Payment {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -95,7 +95,7 @@ pub struct Payment {
     #[model(opaque)]
     pub error: Option<serde_json::Value>,
 
-    /// UTC creation timestamp.
+    /// UTC instant at which this record was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
@@ -107,7 +107,7 @@ pub struct Payment {
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: DateTime<Utc>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the record remains active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

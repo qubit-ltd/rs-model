@@ -29,7 +29,7 @@ use crate::system::Environment;
 /// A return request and its refund, shipping, and lifecycle state.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Return {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -42,7 +42,7 @@ pub struct Return {
     #[model(opaque)]
     pub order_item_id: Id,
 
-    /// Optional persisted refund-transaction identifier.
+    /// Identifier of the refund-transaction; its default value means that no related record is stored.
     #[model(opaque)]
     pub transaction_id: Id,
 
@@ -81,7 +81,7 @@ pub struct Return {
     /// Optional rejection reason.
     pub reject_reason: Option<String>,
 
-    /// Optional persisted return-shipment identifier.
+    /// Identifier of the return-shipment; its default value means that no related record is stored.
     #[model(opaque)]
     pub shipping_id: Id,
 
@@ -98,31 +98,31 @@ pub struct Return {
     #[model(time(precision = second, normalization = utc))]
     pub expired_time: DateTime<Utc>,
 
-    /// Optional UTC refund timestamp.
+    /// UTC instant at which the refund completed, or `None` before it succeeds.
     #[model(time(precision = second, normalization = utc))]
     pub refund_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC shipment timestamp.
+    /// UTC instant at which the goods were handed to the carrier, or `None` before dispatch.
     #[model(time(precision = second, normalization = utc))]
     pub ship_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC completion timestamp.
+    /// UTC instant at which processing completed, or `None` until it completes.
     #[model(time(precision = second, normalization = utc))]
     pub complete_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC cancellation timestamp.
+    /// UTC instant at which it was cancelled, or `None` unless cancellation occurred.
     #[model(time(precision = second, normalization = utc))]
     pub cancel_time: Option<DateTime<Utc>>,
 
-    /// UTC creation timestamp.
+    /// UTC instant at which this record was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent update, or `None` when no update has occurred.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the record remains active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

@@ -51,7 +51,7 @@ pub struct ClientOrder {
     #[model(opaque)]
     pub order_item_id: Id,
 
-    /// Optional persisted return identifier.
+    /// Identifier of the return; its default value means that no related record is stored.
     #[model(opaque)]
     pub return_id: Id,
 
@@ -98,11 +98,11 @@ pub struct ClientOrder {
     #[model(time(precision = second, normalization = utc))]
     pub order_time: DateTime<Utc>,
 
-    /// Optional UTC payment timestamp.
+    /// UTC instant at which payment completed, or `None` before successful payment.
     #[model(time(precision = second, normalization = utc))]
     pub pay_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC refund timestamp.
+    /// UTC instant at which the refund completed, or `None` before it succeeds.
     #[model(time(precision = second, normalization = utc))]
     pub refund_time: Option<DateTime<Utc>>,
 

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Task execution models and transition rules.
+//! Task metadata, execution contracts, pipeline state, and lifecycle transitions.
 
 #[allow(clippy::module_inception)]
 mod task;

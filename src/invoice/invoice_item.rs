@@ -18,7 +18,7 @@ use qubit_model_derive::Model;
 /// A billed item with discounts, tax, and final payment amounts.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InvoiceItem {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

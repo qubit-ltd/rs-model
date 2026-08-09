@@ -6,30 +6,30 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Task lifecycle vocabularies and errors.
+//! States through which an executable task progresses.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// A task lifecycle state.
+/// The persisted lifecycle state of an executable task.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TaskStatus {
-    /// The Created classification.
+    /// Created locally but not yet submitted for processing.
     Created,
-    /// The Submitted classification.
+    /// Queued and awaiting initialization.
     Submitted,
-    /// The Initializing classification.
+    /// Being prepared to execute.
     Initializing,
-    /// The Running classification.
+    /// Actively performing its domain work.
     Running,
-    /// The Failed classification.
+    /// Ended because initialization or execution failed.
     Failed,
-    /// The Completed classification.
+    /// Ended successfully.
     Completed,
-    /// The Cancelled classification.
+    /// Ended by cancellation before successful completion.
     Cancelled,
 }

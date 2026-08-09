@@ -25,7 +25,7 @@ use crate::task::TaskStatus;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct TaskInfo {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -46,7 +46,7 @@ pub struct TaskInfo {
     #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub result_entity: Option<String>,
 
-    /// Optional persisted result identifier.
+    /// Identifier of the result; its default value means that no related record is stored.
     #[model(index, opaque)]
     pub result_id: Id,
 
@@ -60,19 +60,19 @@ pub struct TaskInfo {
     /// Optional status message.
     pub message: Option<String>,
 
-    /// Optional UTC submission timestamp.
+    /// UTC instant at which it was submitted, or `None` before submission.
     #[model(index, time(precision = second, normalization = utc))]
     pub submit_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC start timestamp.
+    /// UTC instant at which execution started, or `None` before it starts.
     #[model(index, time(precision = second, normalization = utc))]
     pub start_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC cancellation timestamp.
+    /// UTC instant at which it was cancelled, or `None` unless cancellation occurred.
     #[model(index, time(precision = second, normalization = utc))]
     pub cancel_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC finish timestamp.
+    /// UTC instant at which execution finished, or `None` until it reaches a terminal state.
     #[model(index, time(precision = second, normalization = utc))]
     pub finish_time: Option<DateTime<Utc>>,
 
@@ -81,11 +81,11 @@ pub struct TaskInfo {
     #[redact(nested)]
     pub creator: Option<UserInfo>,
 
-    /// UTC creation timestamp.
+    /// UTC instant at which this record was created.
     #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent update, or `None` when no update has occurred.
     #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 }

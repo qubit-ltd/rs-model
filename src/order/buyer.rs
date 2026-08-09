@@ -23,12 +23,12 @@ use crate::person::Gender;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Buyer {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Optional persisted user identifier.
+    /// Identifier of the user; its default value means that no related record is stored.
     #[model(opaque)]
     pub user_id: Id,
 

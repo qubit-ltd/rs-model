@@ -21,7 +21,7 @@ use crate::service::UserMedicalItem;
 /// A time-bounded medical package assigned to a user.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct UserMedicalPackage {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
