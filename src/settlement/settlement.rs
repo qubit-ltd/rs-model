@@ -16,7 +16,9 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
+use crate::commons::App;
 use crate::mixin::StatefulInfo;
+use crate::organization::Organization;
 
 /// Shared persisted fields carried by concrete settlement records.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -27,9 +29,11 @@ pub struct Settlement {
     pub id: Id,
 
     /// Application that owns this settlement.
+    #[model(reference(target = App, target_field = info))]
     pub app: StatefulInfo,
 
     /// Organization that owns this settlement.
+    #[model(reference(target = Organization, target_field = info))]
     pub organization: StatefulInfo,
 
     /// Optional settlement remark.

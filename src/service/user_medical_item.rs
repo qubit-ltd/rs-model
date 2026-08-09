@@ -14,6 +14,7 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
+use crate::service::MedicalItem;
 use crate::service::UserServiceState;
 
 /// A user's remaining quantity and state for one medical service item.
@@ -25,7 +26,7 @@ pub struct UserMedicalItem {
     pub id: Id,
 
     /// Persisted medical-item identifier.
-    #[model(opaque)]
+    #[model(reference(target = MedicalItem, target_field = id), opaque)]
     pub medical_item_id: Id,
 
     /// Remaining number of uses.

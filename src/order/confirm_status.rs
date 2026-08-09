@@ -21,4 +21,6 @@ pub enum ConfirmStatus {
     Expired,
     /// The requested confirmation was accepted in time.
     Accepted,
+    /// The requested confirmation was rejected in time.
+    Rejected,
 }

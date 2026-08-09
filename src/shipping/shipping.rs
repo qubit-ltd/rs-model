@@ -17,6 +17,7 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
+use crate::organization::Organization;
 use crate::shipping::ConsignInfo;
 
 /// A carrier shipment from a consignor to a consignee.
@@ -28,7 +29,7 @@ pub struct Shipping {
     pub id: Id,
 
     /// Carrier organization information.
-    #[model(opaque)]
+    #[model(reference(target = Organization, target_field = info), opaque)]
     pub organization: Info,
 
     /// Carrier tracking number.

@@ -17,6 +17,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 use crate::mixin::StatefulInfo;
+use crate::organization::Organization;
 use crate::service::MedicalPackageItem;
 
 /// A named package of medical service items belonging to an organization.
@@ -28,7 +29,7 @@ pub struct MedicalPackage {
     pub id: Id,
 
     /// Globally unique package code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Package name.
@@ -42,6 +43,7 @@ pub struct MedicalPackage {
     pub items: Option<Vec<MedicalPackageItem>>,
 
     /// Organization that owns the package.
+    #[model(reference(target = Organization, target_field = info))]
     pub organization: StatefulInfo,
 
     /// UTC instant at which this record was created.

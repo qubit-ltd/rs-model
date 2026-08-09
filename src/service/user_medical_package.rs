@@ -16,6 +16,8 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
+use crate::person::User;
+use crate::service::MedicalPackage;
 use crate::service::UserMedicalItem;
 
 /// A time-bounded medical package assigned to a user.
@@ -27,11 +29,11 @@ pub struct UserMedicalPackage {
     pub id: Id,
 
     /// Persisted user identifier.
-    #[model(opaque)]
+    #[model(reference(target = User, target_field = id), opaque)]
     pub user_id: Id,
 
     /// Persisted medical-package identifier.
-    #[model(opaque)]
+    #[model(reference(target = MedicalPackage, target_field = id), opaque)]
     pub medical_package_id: Id,
 
     /// Optional per-item entitlement state.
