@@ -27,7 +27,7 @@ pub enum ModelError {
     ValidationFailed {
         /// A caller-defined summary stored verbatim, or `None` when unavailable.
         message: Option<String>,
-        /// All detected field-level violations supplied by the caller.
+        /// Caller-supplied field-level violations.
         violations: Vec<ValidationViolation>,
     },
 }
