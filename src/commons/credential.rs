@@ -19,6 +19,7 @@ use qubit_model_derive::Model;
 use super::CredentialType;
 use super::Owner;
 use super::VerifyState;
+use crate::upload::Attachment;
 
 /// A credential with ownership and audit fields.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -59,6 +60,13 @@ pub struct Credential {
 
     /// Optional explanation of the credential's purpose or provenance.
     pub description: Option<String>,
+
+    /// Optional attachments associated with this credential.
+    #[model(
+        reference(target = Attachment, target_field = id, must_exist = false),
+        sequence(min_items = 1, max_items = 16)
+    )]
+    pub attachments: Option<Vec<Attachment>>,
 
     /// UTC creation timestamp.
     #[model(index, time(precision = second, normalization = utc))]
