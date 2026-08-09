@@ -76,7 +76,8 @@ pub struct Hardware {
     pub serial: Option<String>,
 
     /// Derived unique device identifier, if one has been calculated.
-    #[model(unique, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
+    #[model(unique)]
+    #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
     pub udid: Option<String>,
 }

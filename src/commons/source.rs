@@ -17,6 +17,8 @@ use serde::Serialize;
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
+use super::App;
+use super::Category;
 use crate::mixin::StatefulInfo;
 use crate::organization::Organization;
 

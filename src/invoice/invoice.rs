@@ -23,6 +23,7 @@ use crate::commons::App;
 use crate::commons::Currency;
 use crate::invoice::InvoiceInfo;
 use crate::invoice::InvoiceItem;
+use crate::invoice::InvoicePlace;
 use crate::invoice::InvoiceStatus;
 use crate::mixin::StatefulInfo;
 use crate::organization::Organization;

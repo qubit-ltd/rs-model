@@ -150,7 +150,7 @@ pub struct InsuranceClaim {
 
     /// Additional source-order attributes; absent when no upstream payload was
     /// supplied.
-    #[model(sequence(min_items = 1, max_items = 8), opaque)]
+    #[model(sequence(min_items = 1, max_items = 8))]
     pub payload: Option<Vec<(String, String)>>,
 
     /// Supporting attachments.
