@@ -13,18 +13,18 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Blood classification.
+/// ABO blood group recorded for a person.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Blood {
-    /// Source variant `TYPE_A`.
+    /// Type A.
     TypeA,
-    /// Source variant `TYPE_B`.
+    /// Type B.
     TypeB,
-    /// Source variant `TYPE_AB`.
+    /// Type AB.
     TypeAb,
-    /// Source variant `TYPE_O`.
+    /// Type O.
     TypeO,
-    /// Source variant `UNKNOWN`.
+    /// The blood group is unknown.
     Unknown,
 }

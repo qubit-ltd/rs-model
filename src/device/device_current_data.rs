@@ -5,6 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
+//! Latest telemetry samples received from a registered device.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -13,60 +14,60 @@ use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
-/// Represents the DeviceCurrentData domain type.
+/// Current physiological and occupancy telemetry associated with a device.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DeviceCurrentData {
-    /// The id value associated with this model.
+    /// Persisted telemetry-record identifier; the default value denotes no record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// The device_code value associated with this model.
+    /// Code of the device that emitted this telemetry.
     pub device_code: String,
 
-    /// The msg_id value associated with this model.
+    /// Identifier of the source telemetry message.
     #[model(opaque)]
     pub msg_id: Id,
 
-    /// The ack value associated with this model.
+    /// Optional acknowledgement value supplied by the device protocol.
     pub ack: Option<i32>,
 
-    /// The keep_push value associated with this model.
+    /// Optional protocol flag controlling retained push delivery.
     pub keep_push: Option<i32>,
 
-    /// The gettime value associated with this model.
+    /// Optional source acquisition time in the device protocol's unit.
     pub gettime: Option<i64>,
 
-    /// The heart_rate value associated with this model.
+    /// Heart-rate samples reported by the device; empty when no sample was reported.
     pub heart_rate: Vec<i32>,
 
-    /// The respiratory_rate value associated with this model.
+    /// Respiratory-rate samples reported by the device; empty when unavailable.
     pub respiratory_rate: Vec<i32>,
 
-    /// The body_movement value associated with this model.
+    /// Body-movement samples reported by the device; empty when unavailable.
     pub body_movement: Vec<i32>,
 
-    /// The move_state value associated with this model.
+    /// Movement-state samples in the device protocol's encoding.
     pub move_state: Vec<i32>,
 
-    /// The body_status value associated with this model.
+    /// Body-status samples in the device protocol's encoding.
     pub body_status: Vec<i32>,
 
-    /// The body_position value associated with this model.
+    /// Body-position samples in the device protocol's encoding.
     pub body_position: Vec<i32>,
 
-    /// The onbed_status value associated with this model.
+    /// Optional on-bed state in the device protocol's encoding.
     pub onbed_status: Option<i32>,
 
-    /// The create_time value associated with this model.
+    /// UTC time at which this telemetry record was created.
     #[model(time(precision=second,normalization=utc))]
     pub create_time: DateTime<Utc>,
 
-    /// The modify_time value associated with this model.
+    /// UTC time of the latest update, if the record was modified.
     #[model(time(precision=second,normalization=utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// The delete_time value associated with this model.
+    /// UTC soft-deletion time, if the telemetry record was deleted.
     #[model(time(precision=second,normalization=utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

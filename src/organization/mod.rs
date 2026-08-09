@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Organization domain models.
+//! Organizations, departments, employees, and tax classifications.
 
 mod department;
 mod employee;

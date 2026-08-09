@@ -13,28 +13,28 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Education classification.
+/// Highest education level reported for a person.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Education {
-    /// Source variant `NONE`.
+    /// No formal education.
     None,
-    /// Source variant `ELEMENTARY_SCHOOL`.
+    /// Elementary school.
     ElementarySchool,
-    /// Source variant `JUNIOR_HIGH_SCHOOL`.
+    /// Junior high school.
     JuniorHighSchool,
-    /// Source variant `SENIOR_HIGH_SCHOOL`.
+    /// Senior high school.
     SeniorHighSchool,
-    /// Source variant `VOCATIONAL_SENIOR_HIGH_SCHOOL`.
+    /// Vocational senior high school.
     VocationalSeniorHighSchool,
-    /// Source variant `SECONDARY_VOCATIONAL_SCHOOL`.
+    /// Secondary vocational school.
     SecondaryVocationalSchool,
-    /// Source variant `COLLEGE`.
+    /// College or associate degree.
     College,
-    /// Source variant `BACHELOR`.
+    /// Bachelor's degree.
     Bachelor,
-    /// Source variant `MASTER`.
+    /// Master's degree.
     Master,
-    /// Source variant `DOCTOR`.
+    /// Doctoral degree.
     Doctor,
 }

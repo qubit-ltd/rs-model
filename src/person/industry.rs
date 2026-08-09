@@ -13,48 +13,48 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Industry classification.
+/// Industry in which a person works.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Industry {
-    /// Source variant `AGRICULTURE_FORESTRY_PASTORAL_FISHERY`.
+    /// Agriculture, forestry, animal husbandry, or fishery.
     AgricultureForestryPastoralFishery,
-    /// Source variant `MINING`.
+    /// Mining.
     Mining,
-    /// Source variant `MANUFACTURING`.
+    /// Manufacturing.
     Manufacturing,
-    /// Source variant `ELECTRICITY_HEAT_GAS_AND_WATER`.
+    /// Electricity, heat, gas, or water supply.
     ElectricityHeatGasAndWater,
-    /// Source variant `CONSTRUCTION`.
+    /// Construction.
     Construction,
-    /// Source variant `SALES`.
+    /// Wholesale or retail sales.
     Sales,
-    /// Source variant `TRANSPORTATION_WAREHOUSING_AND_POSTAL`.
+    /// Transportation, warehousing, or postal services.
     TransportationWarehousingAndPostal,
-    /// Source variant `ACCOMMODATION_AND_CATERING`.
+    /// Accommodation or food services.
     AccommodationAndCatering,
-    /// Source variant `INFORMATION`.
+    /// Information services.
     Information,
-    /// Source variant `FINANCE`.
+    /// Financial services.
     Finance,
-    /// Source variant `REAL_ESTATE`.
+    /// Real estate.
     RealEstate,
-    /// Source variant `LEASING_AND_BUSINESS_SERVICES`.
+    /// Leasing or business services.
     LeasingAndBusinessServices,
-    /// Source variant `RESEARCH_AND_TECHNOLOGY`.
+    /// Scientific research or technical services.
     ResearchAndTechnology,
-    /// Source variant `CONSERVANCY_ENVIRONMENT_AND_PUBLIC_FACILITIES`.
+    /// Water conservancy, environmental, or public-facility management.
     ConservancyEnvironmentAndPublicFacilities,
-    /// Source variant `RESIDENTIAL_SERVICES`.
+    /// Residential or other personal services.
     ResidentialServices,
-    /// Source variant `EDUCATION`.
+    /// Education.
     Education,
-    /// Source variant `HEALTH_AND_SOCIAL_WORK`.
+    /// Health care or social work.
     HealthAndSocialWork,
-    /// Source variant `CULTURE_SPORTS_AND_ENTERTAINMENT`.
+    /// Culture, sports, or entertainment.
     CultureSportsAndEntertainment,
-    /// Source variant `PUBLIC_ADMIN_SOCIAL_SECURITY_AND_SOCIAL_ORGANIZATIONS`.
+    /// Public administration, social security, or social organizations.
     PublicAdminSocialSecurityAndSocialOrganizations,
-    /// Source variant `INTERNATIONAL_ORGANIZATIONS`.
+    /// International organizations.
     InternationalOrganizations,
 }

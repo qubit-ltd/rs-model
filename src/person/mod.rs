@@ -3,7 +3,7 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! Person, user, and demographic domain models.
+//! Person profiles, user accounts, and demographic reference values.
 
 mod blood;
 mod education;

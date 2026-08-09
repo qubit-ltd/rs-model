@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Device inventory and telemetry models.
+//! Registered-device inventory, hardware details, and telemetry models.
 
 mod data_network_type;
 #[allow(clippy::module_inception)]

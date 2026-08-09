@@ -4,7 +4,7 @@
 //    SPDX-License-Identifier: Apache-2.0
 //
 //    Licensed under the Apache License, Version 2.0.
-// =============================================================================
+//! Software inventory entries reported by a device.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -13,38 +13,38 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 use crate::system::Platform;
-/// Represents the Software domain type.
+/// Identifies an installed operating system, application, or other software component.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Software {
-    /// The id value associated with this model.
+    /// Persisted software-record identifier; the default value denotes no record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// The code value associated with this model.
+    /// Software code, usually its package or bundle name; it need not be unique.
     pub code: String,
 
-    /// The name value associated with this model.
+    /// Product display name; it need not be unique.
     pub name: String,
 
-    /// The platform value associated with this model.
+    /// Operating-system platform on which the software runs.
     pub platform: Platform,
 
-    /// The version value associated with this model.
+    /// Released software version.
     pub version: String,
 
-    /// The build value associated with this model.
+    /// Optional build identifier.
     pub build: Option<String>,
 
-    /// The patch value associated with this model.
+    /// Optional patch-level identifier.
     pub patch: Option<String>,
 
-    /// The code_name value associated with this model.
+    /// Optional internal code name.
     pub code_name: Option<String>,
 
-    /// The manufacturer value associated with this model.
+    /// Optional software vendor name.
     pub manufacturer: Option<String>,
 
-    /// The description value associated with this model.
+    /// Optional descriptive text.
     pub description: Option<String>,
 }
