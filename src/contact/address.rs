@@ -13,7 +13,12 @@ use qubit_mixin::Normalizable;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use crate::contact::City;
+use crate::contact::Country;
+use crate::contact::District;
 use crate::contact::Location;
+use crate::contact::Province;
+use crate::contact::Street;
 
 /// A postal address linked to each administrative level and an optional
 /// location.
@@ -21,36 +26,37 @@ use crate::contact::Location;
 #[redact(debug, display, serde)]
 pub struct Address {
     /// Basic information for the country.
-    #[model(opaque)]
+    #[model(reference(target = Country, target_field = info), index, opaque)]
     pub country: Info,
 
     /// Basic information for the province.
-    #[model(opaque)]
+    #[model(reference(target = Province, target_field = info), index, opaque)]
     pub province: Info,
 
     /// Basic information for the city.
-    #[model(opaque)]
+    #[model(reference(target = City, target_field = info), index, opaque)]
     pub city: Info,
 
     /// Basic information for the district.
-    #[model(opaque)]
+    #[model(reference(target = District, target_field = info), index, opaque)]
     pub district: Info,
 
     /// Basic information for the street.
-    #[model(opaque)]
+    #[model(reference(target = Street, target_field = info), index, opaque)]
     pub street: Info,
 
     /// Detailed street address or house number.
-    #[model(text(min_chars = 1, max_chars = 4096))]
+    #[model(index, text(min_chars = 1, max_chars = 4096))]
     #[redact(level = "secret")]
     pub detail: String,
 
     /// Optional ASCII postal code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub postalcode: Option<String>,
 
     /// Optional geographic location for the address.
+    #[model(index)]
     #[redact(skip)]
     pub location: Option<Location>,
 }

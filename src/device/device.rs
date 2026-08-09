@@ -20,7 +20,6 @@ use crate::commons::Payload;
 use crate::commons::State;
 use crate::contact::Address;
 use crate::contact::Location;
-use crate::contact::Street;
 use crate::device::DeviceType;
 use crate::device::Hardware;
 use crate::device::Software;
@@ -69,9 +68,10 @@ pub struct Device {
     /// Last known geographic location, if the device reported one.
     pub location: Option<Location>,
 
-    /// Physical deployment address, if assigned. Its nested administrative
-    /// references identify the terminal street entity.
-    #[model(reference(target = Street, target_field = info), index, opaque)]
+    /// Physical deployment address, if assigned. The Java source marks this as
+    /// an indirect reference; the derive metadata keeps the indexed opaque
+    /// value while its nested address fields retain direct references.
+    #[model(index, opaque)]
     pub deploy_address: Option<Address>,
 
     /// Current network IP address, if known.

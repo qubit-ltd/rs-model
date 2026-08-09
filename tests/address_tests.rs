@@ -17,9 +17,15 @@ use qubit_model::address::AddressErrorCode;
 use qubit_model::address::MismatchMobileException;
 use qubit_model::address::Region;
 use qubit_model::commons::VerifyState;
+use qubit_model::contact::City;
 use qubit_model::contact::Contact;
+use qubit_model::contact::Country;
+use qubit_model::contact::District;
 use qubit_model::contact::Phone;
+use qubit_model::contact::Province;
+use qubit_model::contact::Street;
 use qubit_model::error::ErrorType;
+use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
 
 fn assert_redact<T: Redact>() {}
@@ -31,6 +37,29 @@ fn test_address_public_types_expose_redact_contracts() {
     assert_redact::<AddressErrorCode>();
     assert_redact::<MismatchMobileException>();
     assert_redact::<Region>();
+}
+
+#[test]
+fn test_address_metadata_preserves_nested_references_and_indexes() {
+    let address = metadata_of::<Address>();
+    for (field, target) in [
+        ("country", std::any::type_name::<Country>()),
+        ("province", std::any::type_name::<Province>()),
+        ("city", std::any::type_name::<City>()),
+        ("district", std::any::type_name::<District>()),
+        ("street", std::any::type_name::<Street>()),
+    ] {
+        let reference = address
+            .field(field)
+            .expect("address reference field")
+            .reference()
+            .expect("address nested reference");
+        assert_eq!(reference.target().identity().type_name(), target);
+        assert!(address.indexes().any(|index| index.contains(field)));
+    }
+    for field in ["detail", "postalcode", "location"] {
+        assert!(address.indexes().any(|index| index.contains(field)));
+    }
 }
 
 #[test]
