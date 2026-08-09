@@ -96,7 +96,7 @@ pub use commons::*;
 pub use entity::Entity;
 /// Error returned when model construction, conversion, or validation fails.
 pub use error::ModelError;
-/// A single validation constraint failure without the rejected value.
+/// A validation constraint failure; callers must redact sensitive rejected values.
 pub use error::ValidationViolation;
 /// Field classification used by validation and localized messages.
 pub use field::Field;

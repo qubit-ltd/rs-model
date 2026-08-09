@@ -19,5 +19,5 @@ mod validation_violation;
 pub use error_type::ErrorType;
 /// Failure raised while constructing, converting, or validating a model.
 pub use model_error::ModelError;
-/// One field-level constraint failure, excluding the rejected value.
+/// One field-level constraint failure; callers must redact sensitive rejected values.
 pub use validation_violation::ValidationViolation;
