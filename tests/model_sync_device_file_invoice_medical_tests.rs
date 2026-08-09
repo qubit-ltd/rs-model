@@ -43,7 +43,7 @@ fn test_scoped_models_preserve_java_metadata_constraints() {
             .comparison_of("code"),
         Some(UniqueComparison::Exact)
     );
-    for field in ["app", "owner", "binder", "deploy_address", "payloads"] {
+    for field in ["app", "owner", "binder", "payloads"] {
         assert!(
             device
                 .field(field)
@@ -53,6 +53,11 @@ fn test_scoped_models_preserve_java_metadata_constraints() {
             "missing device reference for {field}"
         );
     }
+    assert!(
+        device
+            .indexes()
+            .any(|index| index.contains("deploy_address"))
+    );
     for field in ["name", "device_type", "state", "create_time"] {
         assert!(
             device.indexes().any(|index| index.contains(field)),
