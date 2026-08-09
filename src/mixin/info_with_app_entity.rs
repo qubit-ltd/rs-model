@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Basic entity information associated with an application.
+//! Entity identity projections that retain application ownership.
 
 use serde::Deserialize;
 
@@ -16,29 +16,28 @@ use qubit_redact_derive::Redact;
 use crate::mixin::StatefulInfo;
 use crate::mixin::WithApp;
 
-/// Basic information for an entity that belongs to an application.
+/// Entity identity information paired with its optional owning application.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct InfoWithAppEntity {
-    /// Basic identifying information and entity discriminator.
+    /// Compact identity of the referenced entity, including its entity discriminator.
     #[model(opaque)]
     #[redact(plain)]
     pub info: InfoWithEntity,
 
-    /// Optional application that owns the entity.
+    /// Owning application snapshot, or `None` when ownership is unknown.
     #[redact(skip)]
     pub app: Option<StatefulInfo>,
 }
 
 impl InfoWithAppEntity {
-    /// Creates a composed information value.
+    /// Creates an entity-and-application identity projection.
     #[must_use]
     pub const fn new(info: InfoWithEntity, app: Option<StatefulInfo>) -> Self {
         Self { info, app }
     }
 
-    /// Reports whether both the identifying information and application are
-    /// present.
+    /// Returns `true` only when entity information is complete and ownership is present.
     #[must_use]
     pub fn is_complete(&self) -> bool {
         self.info.is_complete() && self.app.is_some()

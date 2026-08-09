@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Contact-detail contracts.
 
 use crate::contact::Contact;
 
-/// Provides contact details.
+/// Gives a model optional communication and address details.
 pub trait WithContact {
-    /// Returns the contact details.
+    /// Returns the contact bundle, or `None` when no contact details are recorded.
     fn contact(&self) -> Option<&Contact>;
 
-    /// Replaces the contact details.
+    /// Sets the contact bundle; `None` removes all recorded contact details.
     fn set_contact(&mut self, contact: Option<Contact>);
 }

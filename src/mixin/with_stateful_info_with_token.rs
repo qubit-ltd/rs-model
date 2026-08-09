@@ -5,15 +5,15 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Projection of stateful information with an access token.
+//! Projections that combine stateful identity information with an access token.
 
 use crate::mixin::HasStatefulInfo;
 use crate::mixin::StatefulInfoWithToken;
 use crate::mixin::WithToken;
 
-/// Provides a stateful information projection carrying the current token.
+/// Projects a model into stateful identity information plus its current token.
 pub trait WithStatefulInfoWithToken: HasStatefulInfo + WithToken {
-    /// Returns the composed stateful information and token projection.
+    /// Returns a value snapshot; the token is cloned and is `None` when the model has none.
     fn stateful_info_with_token(&self) -> StatefulInfoWithToken {
         StatefulInfoWithToken::new(self.stateful_info(), self.token().cloned())
     }

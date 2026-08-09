@@ -9,11 +9,11 @@
 
 use crate::upload::Attachment;
 
-/// Provides an optional attachment.
+/// Gives a model one optional attachment.
 pub trait WithAttachment {
-    /// Returns the current attachment.
+    /// Returns the attachment, or `None` when no file is associated.
     fn attachment(&self) -> Option<&Attachment>;
 
-    /// Replaces the current attachment.
+    /// Sets the attachment; `None` removes the association.
     fn set_attachment(&mut self, attachment: Option<Attachment>);
 }

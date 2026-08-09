@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! China administrative-data and resident identity-card utilities.
+//! Chinese administrative-area reference markers and resident identity-card utilities.
 
 mod china_cities;
 mod china_districts;

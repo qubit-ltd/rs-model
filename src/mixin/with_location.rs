@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Geographic-location contracts.
 
 use crate::contact::Location;
 
-/// Provides a geographic location.
+/// Gives a model an optional geographic coordinate.
 pub trait WithLocation {
-    /// Returns the location.
+    /// Returns the location, or `None` when its position is unknown.
     fn location(&self) -> Option<&Location>;
 
-    /// Replaces the location.
+    /// Sets the location; `None` explicitly records an unknown position.
     fn set_location(&mut self, location: Option<Location>);
 }

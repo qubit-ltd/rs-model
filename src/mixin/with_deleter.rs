@@ -9,11 +9,11 @@
 
 use crate::person::UserInfo;
 
-/// Provides optional information about the user that deleted an object.
+/// Gives a model the optional user identity that performed its soft deletion.
 pub trait WithDeleter {
-    /// Returns the deleter information.
+    /// Returns the deleter snapshot, or `None` when no soft deletion is recorded.
     fn deleter(&self) -> Option<&UserInfo>;
 
-    /// Replaces the deleter information.
+    /// Sets the deleter snapshot; `None` clears the soft-deletion actor.
     fn set_deleter(&mut self, deleter: Option<UserInfo>);
 }

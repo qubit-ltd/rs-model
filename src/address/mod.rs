@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Address-domain models, builders, mixins, and errors.
+//! Postal-address models, hierarchical builders, and address-specific validation errors.
 
 mod address_builder;
 mod address_error_code;
