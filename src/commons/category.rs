@@ -19,10 +19,7 @@ use qubit_model_derive::Model;
 
 /// A common category record.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
-#[model(
-    unique(name = "category_code", fields(code), ignore_case(code)),
-    unique(name = "category_entity_name", fields(entity, name), ignore_case(name))
-)]
+#[model(unique(name = "category_entity_name", fields(entity, name), ignore_case(name)))]
 pub struct Category {
     /// Platform-assigned identifier of this common category.
     #[model(identifier)]
@@ -34,7 +31,7 @@ pub struct Category {
     pub entity: String,
 
     /// Globally unique category code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Category name.

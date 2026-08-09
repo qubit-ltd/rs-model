@@ -22,11 +22,6 @@ use crate::person::Gender;
 /// A compact user-information snapshot.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "user_info_username", fields(username), ignore_case(username)),
-    unique(name = "user_info_mobile", fields(mobile)),
-    unique(name = "user_info_email", fields(email), ignore_case(email))
-)]
 pub struct UserInfo {
     /// Database identifier of the referenced user; default denotes an unsaved user.
     #[model(identifier)]
@@ -34,7 +29,7 @@ pub struct UserInfo {
     pub id: Id,
 
     /// Globally unique ASCII user name.
-    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub username: String,
 
     /// Real name suitable for compact profile displays.
@@ -54,12 +49,12 @@ pub struct UserInfo {
     pub avatar: Option<String>,
 
     /// Mobile contact channel included when the projection must contact the user.
-    #[model(index)]
+    #[model(index, unique)]
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
     /// Email contact channel included when the projection must contact the user.
-    #[model(index, sensitive(redact), text(min_chars = 1, max_chars = 512))]
+    #[model(index, unique(ignore_case), sensitive(redact), text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 

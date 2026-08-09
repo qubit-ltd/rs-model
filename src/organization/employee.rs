@@ -39,7 +39,6 @@ use crate::upload::Attachment;
 #[redact(debug, display, serde)]
 #[serde(default)]
 #[model(
-    unique(name = "employee_code", fields(code), ignore_case(code)),
     unique(
         name = "employee_organization_internal_code",
         fields(organization, internal_code),
@@ -71,7 +70,7 @@ pub struct Employee {
     pub person_id: Id,
 
     /// Globally unique employee code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Optional organization-local employee code.

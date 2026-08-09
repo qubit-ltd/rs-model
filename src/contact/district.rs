@@ -24,10 +24,7 @@ use super::City;
 /// A district in the administrative hierarchy.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "district_code", fields(code), ignore_case(code)),
-    unique(name = "district_city_name", fields(city, name), ignore_case(name))
-)]
+#[model(unique(name = "district_city_name", fields(city, name), ignore_case(name)))]
 pub struct District {
     /// Platform-assigned identifier of this district reference record.
     #[model(identifier)]
@@ -35,7 +32,7 @@ pub struct District {
     pub id: Id,
 
     /// Globally unique ASCII district code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// District name, unique within its city.

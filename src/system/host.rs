@@ -17,7 +17,6 @@ use qubit_redact_derive::Redact;
 #[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
-#[model(unique(name = "host_udid", fields(udid)))]
 pub struct Host {
     /// Optional persisted identifier.
     #[model(identifier)]
@@ -29,7 +28,7 @@ pub struct Host {
     pub provider: String,
 
     /// Exact case-sensitive device identifier.
-    #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
+    #[model(unique, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
     pub udid: String,
 }

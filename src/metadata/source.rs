@@ -25,7 +25,6 @@ use super::Scope;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
-#[model(unique(name = "source_code", fields(code), ignore_case(code)))]
 pub struct Source {
     /// Platform-assigned identifier of this metadata source.
     #[model(identifier)]
@@ -33,7 +32,7 @@ pub struct Source {
     pub id: Id,
 
     /// Globally unique ASCII code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Source name.

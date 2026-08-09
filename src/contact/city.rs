@@ -24,10 +24,6 @@ use super::Province;
 /// A city in the administrative hierarchy.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "city_code", fields(code), ignore_case(code)),
-    unique(name = "city_name", fields(name), ignore_case(name))
-)]
 pub struct City {
     /// Platform-assigned identifier of this city reference record.
     #[model(identifier)]
@@ -35,11 +31,11 @@ pub struct City {
     pub id: Id,
 
     /// Globally unique ASCII city code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Globally unique city name.
-    #[model(index, text(min_chars = 1, max_chars = 128))]
+    #[model(index, unique(ignore_case), text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Basic information for the province.

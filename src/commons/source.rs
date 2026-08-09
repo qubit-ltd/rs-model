@@ -24,14 +24,11 @@ use crate::organization::Organization;
 
 /// Source-system metadata for an imported record.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
-#[model(
-    unique(name = "source_code", fields(code), ignore_case(code)),
-    unique(
-        name = "source_app_entity_name",
-        fields(app, entity, name),
-        ignore_case(name)
-    )
-)]
+#[model(unique(
+    name = "source_app_entity_name",
+    fields(app, entity, name),
+    ignore_case(name)
+))]
 pub struct Source {
     /// Platform-assigned identifier of this import-source record.
     #[model(identifier)]
@@ -47,7 +44,7 @@ pub struct Source {
     pub entity: String,
 
     /// Source code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Source name.

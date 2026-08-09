@@ -19,10 +19,6 @@ use qubit_redact_derive::Redact;
 /// A country in the administrative hierarchy.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "country_code", fields(code), ignore_case(code)),
-    unique(name = "country_name", fields(name), ignore_case(name))
-)]
 pub struct Country {
     /// Platform-assigned identifier of this country reference record.
     #[model(identifier)]
@@ -30,11 +26,11 @@ pub struct Country {
     pub id: Id,
 
     /// Globally unique ASCII country code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Globally unique country name.
-    #[model(index, text(min_chars = 1, max_chars = 128))]
+    #[model(index, unique(ignore_case), text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Telephone area code.
