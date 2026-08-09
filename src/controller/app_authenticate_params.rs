@@ -27,18 +27,18 @@ pub struct AppAuthenticateParams {
     #[redact(level = "secret")]
     pub security_key: String,
 
-    /// Optional client platform.
+    /// Operating-system platform reported by the application requesting authentication.
     pub platform: Option<Platform>,
 
-    /// Optional device identifier.
+    /// Stable device identifier used to recognize the requesting application installation.
     #[redact(level = "secret")]
     pub udid: Option<String>,
 
-    /// Optional push-notification token.
+    /// Provider token used to deliver push notifications to this application instance.
     #[redact(level = "secret")]
     pub push_token: Option<String>,
 
-    /// Optional client location.
+    /// Geographic location reported by the application at authentication time.
     #[redact(nested)]
     pub location: Option<Location>,
 }

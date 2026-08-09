@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Digital-signature and asymmetric-key domain models.
+//! Asymmetric key material, signatures, and signed-payload wire models.
 
 mod key_format;
 mod key_pair;

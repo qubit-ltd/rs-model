@@ -6,20 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Device classification types.
+//! Device categories used by inventory and telemetry records.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Device categories and radio-network classifications are kept together
-/// because they form the compact vocabulary used by device telemetry.
+/// Physical device category recorded by the platform.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum DeviceType {
-    /// The IotBox classification.
+    /// Internet-of-Things gateway or control box.
     IotBox,
-    /// The RadarBedMonitor classification.
+    /// Radar-based bed-monitoring device.
     RadarBedMonitor,
 }

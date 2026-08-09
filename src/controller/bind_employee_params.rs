@@ -31,11 +31,11 @@ pub struct BindEmployeeParams {
     /// Employer information.
     pub organization: StatefulInfo,
 
-    /// Optional mobile number.
+    /// Mobile contact channel to associate with the employee record.
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
-    /// Optional email address.
+    /// Email contact channel to associate with the employee record.
     #[redact(level = "secret")]
     pub email: Option<String>,
 

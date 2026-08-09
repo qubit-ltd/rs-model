@@ -24,7 +24,7 @@ use crate::mixin::StatefulInfo;
 use crate::person::Gender;
 use crate::upload::Attachment;
 
-/// An employee snapshot including organization and department references.
+/// Represents an employee snapshot including organization and department references.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct EmployeeInfo {

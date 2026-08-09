@@ -6,63 +6,65 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Device classification types.
+//! Mobile device inventory and telemetry classifications.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Mobile data-radio protocol classification.
+/// Radio-access technology reported for a SIM card's mobile data connection.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum DataNetworkType {
-    /// The Gprs classification.
+    /// General Packet Radio Service (2G).
     Gprs,
-    /// The Cdma classification.
+    /// Code Division Multiple Access (2G).
     Cdma,
-    /// The Edge classification.
+    /// Enhanced Data rates for GSM Evolution (2G).
     Edge,
-    /// The OneXRtt classification.
+    /// CDMA2000 1xRTT (2G).
     OneXRtt,
-    /// The Iden classification.
+    /// Integrated Digital Enhanced Network (2G).
     Iden,
-    /// The Gsm classification.
+    /// Global System for Mobile Communications (2G).
     Gsm,
-    /// The TdScdma classification.
+    /// TD-SCDMA (3G).
     TdScdma,
-    /// The Cdma2000 classification.
+    /// CDMA2000 (3G).
     Cdma2000,
-    /// The EvdoA classification.
+    /// EV-DO revision A (3G).
     EvdoA,
-    /// The Umts classification.
+    /// Universal Mobile Telecommunications System (3G).
     Umts,
-    /// The Evdo0 classification.
+    /// EV-DO revision 0 (3G).
     Evdo0,
-    /// The Hsdpa classification.
+    /// High-Speed Downlink Packet Access (3G).
     Hsdpa,
-    /// The Hsupa classification.
+    /// High-Speed Uplink Packet Access (3G).
     Hsupa,
-    /// The Hspa classification.
+    /// High-Speed Packet Access (3G).
     Hspa,
-    /// The EvdoB classification.
+    /// EV-DO revision B (3G).
     EvdoB,
-    /// The Ehrpd classification.
+    /// Evolved High Rate Packet Data (3G).
     Ehrpd,
-    /// The Hspap classification.
+    /// HSPA+ (3G).
     Hspap,
-    /// The Iwlan classification.
+    /// IWLAN; reported as a 3G-era technology by the source model.
     Iwlan,
-    /// The Lte classification.
+    /// Long-Term Evolution (4G).
     Lte,
-    /// The Nr classification.
+    /// New Radio (5G).
     Nr,
-    /// The Unknown classification.
+    /// The radio technology was not reported or is not recognized.
     Unknown,
 }
 
 impl DataNetworkType {
-    /// Returns the cellular-network generation represented by this value.
+    /// Returns the source model's cellular-generation number: 2, 3, 4, or 5.
+    ///
+    /// Returns `0` when the technology is [`Self::Unknown`].
     #[must_use]
     pub const fn generation(self) -> i32 {
         match self {

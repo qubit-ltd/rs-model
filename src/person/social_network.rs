@@ -13,18 +13,18 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain SocialNetwork classification.
+/// Third-party social platform used to authenticate or identify a user.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SocialNetwork {
-    /// Source variant `WECHAT`.
+    /// WeChat identity issued by Tencent's messaging and social platform.
     Wechat,
-    /// Source variant `SINA`.
+    /// Sina Weibo.
     Sina,
-    /// Source variant `ZHIHU`.
+    /// Zhihu identity issued by the knowledge-sharing platform.
     Zhihu,
-    /// Source variant `DOUYIN`.
+    /// Douyin identity issued by ByteDance's short-video platform.
     Douyin,
-    /// Source variant `BILIBILI`.
+    /// Bilibili identity issued by the video-community platform.
     Bilibili,
 }

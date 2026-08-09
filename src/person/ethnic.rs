@@ -13,124 +13,124 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Ethnic classification.
+/// Ethnic group recorded for a person, including China's recognized groups.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Ethnic {
-    /// Source variant `HAN`.
+    /// Han Chinese.
     Han,
-    /// Source variant `MONGOL`.
+    /// Mongol.
     Mongol,
-    /// Source variant `HUI`.
+    /// Hui.
     Hui,
-    /// Source variant `TIBETAN`.
+    /// Tibetan.
     Tibetan,
-    /// Source variant `UYGHUR`.
+    /// Uyghur.
     Uyghur,
-    /// Source variant `MIAO`.
+    /// Miao.
     Miao,
-    /// Source variant `YI`.
+    /// Yi.
     Yi,
-    /// Source variant `ZHUANG`.
+    /// Zhuang.
     Zhuang,
-    /// Source variant `BUYEI`.
+    /// Buyei.
     Buyei,
-    /// Source variant `CHOSEN`.
+    /// Korean (Chaoxian).
     Chosen,
-    /// Source variant `MAN`.
+    /// Manchu.
     Man,
-    /// Source variant `DONG`.
+    /// Dong.
     Dong,
-    /// Source variant `YAO`.
+    /// Yao.
     Yao,
-    /// Source variant `BAI`.
+    /// Bai.
     Bai,
-    /// Source variant `TUJIA`.
+    /// Tujia.
     Tujia,
-    /// Source variant `HANI`.
+    /// Hani.
     Hani,
-    /// Source variant `KAZAK`.
+    /// Kazak.
     Kazak,
-    /// Source variant `DAI`.
+    /// Dai.
     Dai,
-    /// Source variant `LI`.
+    /// Li.
     Li,
-    /// Source variant `LISU`.
+    /// Lisu.
     Lisu,
-    /// Source variant `VA`.
+    /// Va.
     Va,
-    /// Source variant `SHE`.
+    /// She.
     She,
-    /// Source variant `LAHU`.
+    /// Lahu.
     Lahu,
-    /// Source variant `SUI`.
+    /// Sui.
     Sui,
-    /// Source variant `DONGXIANG`.
+    /// Dongxiang.
     Dongxiang,
-    /// Source variant `NAXI`.
+    /// Naxi.
     Naxi,
-    /// Source variant `JINGPO`.
+    /// Jingpo.
     Jingpo,
-    /// Source variant `KIRGIZ`.
+    /// Kirgiz.
     Kirgiz,
-    /// Source variant `TU`.
+    /// Tu.
     Tu,
-    /// Source variant `DAUR`.
+    /// Daur.
     Daur,
-    /// Source variant `MULAO`.
+    /// Mulao.
     Mulao,
-    /// Source variant `QIANG`.
+    /// Qiang.
     Qiang,
-    /// Source variant `BLANG`.
+    /// Blang.
     Blang,
-    /// Source variant `SALAR`.
+    /// Salar.
     Salar,
-    /// Source variant `MAONAN`.
+    /// Maonan.
     Maonan,
-    /// Source variant `GELAO`.
+    /// Gelao.
     Gelao,
-    /// Source variant `XIBE`.
+    /// Xibe.
     Xibe,
-    /// Source variant `ACHANG`.
+    /// Achang.
     Achang,
-    /// Source variant `PUMI`.
+    /// Pumi.
     Pumi,
-    /// Source variant `TAJIK`.
+    /// Tajik.
     Tajik,
-    /// Source variant `NU`.
+    /// Nu.
     Nu,
-    /// Source variant `UZBEK`.
+    /// Uzbek.
     Uzbek,
-    /// Source variant `RUSS`.
+    /// Russian.
     Russ,
-    /// Source variant `EWENKI`.
+    /// Ewenki.
     Ewenki,
-    /// Source variant `DEANG`.
+    /// De'ang.
     Deang,
-    /// Source variant `BONAN`.
+    /// Bonan.
     Bonan,
-    /// Source variant `YUGUR`.
+    /// Yugur.
     Yugur,
-    /// Source variant `GIN`.
+    /// Gin.
     Gin,
-    /// Source variant `TATAR`.
+    /// Tatar.
     Tatar,
-    /// Source variant `DERUNG`.
+    /// Derung.
     Derung,
-    /// Source variant `OROQEN`.
+    /// Oroqen.
     Oroqen,
-    /// Source variant `HEZHEN`.
+    /// Hezhen.
     Hezhen,
-    /// Source variant `MONBA`.
+    /// Monba.
     Monba,
-    /// Source variant `LHOBA`.
+    /// Lhoba.
     Lhoba,
-    /// Source variant `JINO`.
+    /// Jino.
     Jino,
-    /// Source variant `GAOSHAN`.
+    /// Gaoshan.
     Gaoshan,
-    /// Source variant `FOREIGNER`.
+    /// Person of a foreign nationality or ethnicity.
     Foreigner,
-    /// Source variant `OTHER`.
+    /// Ethnic group not otherwise represented here.
     Other,
 }

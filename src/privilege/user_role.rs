@@ -19,7 +19,7 @@ use qubit_model_derive::Model;
 use crate::mixin::StatefulInfo;
 use crate::person::UserInfo;
 
-/// A user's role assignment in a specific application.
+/// Represents a user's role assignment in a specific application.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct UserRole {
     /// Optional persisted identifier.

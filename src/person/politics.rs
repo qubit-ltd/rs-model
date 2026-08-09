@@ -13,34 +13,34 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Politics classification.
+/// Political affiliation recorded for a person in the Chinese context.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Politics {
-    /// Source variant `COMMUNIST_PARTY_MEMBER`.
+    /// Full member of the Communist Party of China.
     CommunistPartyMember,
-    /// Source variant `COMMUNIST_PARTY_PROBATIONARY_MEMBER`.
+    /// Probationary member of the Communist Party of China.
     CommunistPartyProbationaryMember,
-    /// Source variant `COMMUNIST_YOUTH_LEAGUE_MEMBER`.
+    /// Member of the Communist Youth League of China.
     CommunistYouthLeagueMember,
-    /// Source variant `KUOMINTANG_MEMBER`.
+    /// Member of the Revolutionary Committee of the Chinese Kuomintang.
     KuomintangMember,
-    /// Source variant `DEMOCRATIC_LEAGUE_MEMBER`.
+    /// Member of the China Democratic League.
     DemocraticLeagueMember,
-    /// Source variant `NATIONAL_DEMOCRATIC_CONSTRUCTION_ASSOCIATION_MEMBER`.
+    /// Member of the China National Democratic Construction Association.
     NationalDemocraticConstructionAssociationMember,
-    /// Source variant `PROMOTING_DEMOCRACY_ASSOCIATION_MEMBER`.
+    /// Member of the China Association for Promoting Democracy.
     PromotingDemocracyAssociationMember,
-    /// Source variant `PEASANTS_WORKERS_DEMOCRATIC_PARTY_MEMBER`.
+    /// Member of the Chinese Peasants' and Workers' Democratic Party.
     PeasantsWorkersDemocraticPartyMember,
-    /// Source variant `ZHI_GONG_PARTY_MEMBER`.
+    /// Member of the China Zhi Gong Party.
     ZhiGongPartyMember,
-    /// Source variant `NINE_THREE_ACADEMIC_SOCIETY_MEMBER`.
+    /// Member of the Jiusan Society.
     NineThreeAcademicSocietyMember,
-    /// Source variant `TAIWAN_DEMOCRATIC_SELF_GOVERNMENT_LEAGUE_MEMBER`.
+    /// Member of the Taiwan Democratic Self-Government League.
     TaiwanDemocraticSelfGovernmentLeagueMember,
-    /// Source variant `INDEPENDENT_POLITICIAN`.
+    /// Politically independent person.
     IndependentPolitician,
-    /// Source variant `MASSES`.
+    /// Person with no party affiliation.
     Masses,
 }

@@ -5,6 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
+//! Hardware identity and network-interface inventory for devices.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -13,56 +14,56 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 use crate::device::SimCard;
-/// Represents the Hardware domain type.
+/// Hardware attributes used to identify and describe a physical device.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Hardware {
-    /// The id value associated with this model.
+    /// Persisted hardware-record identifier; the default value denotes no record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// The name value associated with this model.
+    /// Marketing or device-reported hardware name, if available.
     pub name: Option<String>,
 
-    /// The model value associated with this model.
+    /// Manufacturer model designation, if reported.
     pub model: Option<String>,
 
-    /// The brand value associated with this model.
+    /// Device brand, if reported.
     pub brand: Option<String>,
 
-    /// The manufacturer value associated with this model.
+    /// Hardware manufacturer, if reported.
     pub manufacturer: Option<String>,
 
-    /// The product value associated with this model.
+    /// Product designation, if reported.
     pub product: Option<String>,
 
-    /// The firmware value associated with this model.
+    /// Firmware version or build, if reported.
     pub firmware: Option<String>,
 
-    /// The board value associated with this model.
+    /// Mainboard identifier, if reported.
     pub board: Option<String>,
 
-    /// The hardware value associated with this model.
+    /// Low-level hardware platform name, if reported.
     pub hardware: Option<String>,
 
-    /// The supported_abis value associated with this model.
+    /// CPU application binary interfaces supported by the device.
     pub supported_abis: Vec<String>,
 
-    /// The ethernet_mac_addresses value associated with this model.
+    /// Ethernet MAC addresses reported by the device; empty when none are known.
     pub ethernet_mac_addresses: Vec<String>,
 
-    /// The wifi_mac_addresses value associated with this model.
+    /// Wi-Fi MAC addresses reported by the device; empty when none are known.
     pub wifi_mac_addresses: Vec<String>,
 
-    /// The sim_cards value associated with this model.
+    /// SIM cards or slots discovered on the device; empty when none are reported.
     pub sim_cards: Vec<SimCard>,
 
-    /// The serial value associated with this model.
+    /// Manufacturer serial number, if reported.
     #[redact(level = "secret")]
     pub serial: Option<String>,
 
-    /// The udid value associated with this model.
+    /// Derived unique device identifier, if one has been calculated.
     #[redact(level = "secret")]
     pub udid: Option<String>,
 }

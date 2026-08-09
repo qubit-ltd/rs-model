@@ -48,12 +48,12 @@ pub struct SignedInfo {
     #[redact(level = "secret")]
     pub credential_number: String,
 
-    /// Optional string payload entries.
+    /// Application-defined key-value claims protected together with the signature.
     #[model(sequence(max_items = 16))]
     #[redact(nested)]
     pub payload: Vec<KeyValuePair>,
 
-    /// UTC signing timestamp.
+    /// UTC instant at which the signer produced this signed-information envelope.
     #[model(time(precision = second, normalization = utc))]
     pub timestamp: Option<DateTime<Utc>>,
 }

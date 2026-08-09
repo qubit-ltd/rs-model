@@ -26,17 +26,17 @@ pub struct LoginResponse {
     #[redact(nested)]
     pub user: Option<UserInfo>,
 
-    /// Optional organization information.
+    /// Organization context selected or resolved for the authenticated session.
     pub organization: Option<StatefulInfo>,
 
     /// User access token.
     #[redact(nested)]
     pub token: Option<Token>,
 
-    /// Effective privileges.
+    /// Deduplicated privilege names granted to the authenticated session.
     pub privileges: Vec<String>,
 
-    /// Assigned role codes.
+    /// Role codes from which the effective privileges were derived.
     pub roles: Vec<String>,
 }
 
