@@ -15,7 +15,7 @@ use qubit_redact_derive::Redact;
 
 use super::Signature;
 
-/// A domain value and the signature covering it.
+/// Represents a domain value and the signature covering it.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]

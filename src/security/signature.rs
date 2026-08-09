@@ -16,7 +16,7 @@ use qubit_redact_derive::Redact;
 use super::KeyValuePair;
 use super::SignedInfo;
 
-/// A signature, its owner, signer, covered information, and encoded value.
+/// Represents a signature, its owner, signer, covered information, and encoded value.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]

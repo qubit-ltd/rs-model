@@ -22,7 +22,7 @@ use crate::commons::State;
 use crate::contact::Contact;
 use crate::mixin::StatefulInfo;
 
-/// An organizational department and its hierarchy, contact, and payload data.
+/// Represents an organizational department and its hierarchy, contact, and payload data.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Department {
     /// Optional persisted identifier.

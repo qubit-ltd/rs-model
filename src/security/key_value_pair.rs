@@ -12,7 +12,7 @@ use serde::Deserialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// A string key and optional string value.
+/// Represents a string key and optional string value.
 #[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]

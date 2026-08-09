@@ -35,7 +35,7 @@ thread_local! {
     static SUPER_ADMIN_SESSION: RefCell<Option<Session>> = const { RefCell::new(None) };
 }
 
-/// An application session with caller identity, permissions, and expiration.
+/// Represents an application session with caller identity, permissions, and expiration.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display)]
 #[serde(default)]
@@ -202,7 +202,7 @@ impl Normalizable for Session {
     }
 }
 
-/// Returns whether an identifier is the default identifier.
+/// Produces whether an identifier is the default identifier.
 ///
 /// # Parameters
 ///

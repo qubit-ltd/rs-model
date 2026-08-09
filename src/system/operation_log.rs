@@ -24,7 +24,7 @@ use crate::mixin::StatefulInfo;
 use crate::person::User;
 use crate::person::UserInfo;
 
-/// A complete audited request, response, caller, service, and trace record.
+/// Represents a complete audited request, response, caller, service, and trace record.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]

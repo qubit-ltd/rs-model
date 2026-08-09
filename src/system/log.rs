@@ -19,7 +19,7 @@ use qubit_redact_derive::Redact;
 use super::ErrorInfo;
 use crate::person::UserInfo;
 
-/// A compact operation outcome ordered by its timestamp.
+/// Represents a compact operation outcome ordered by its timestamp.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]

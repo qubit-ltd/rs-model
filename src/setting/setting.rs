@@ -18,7 +18,7 @@ use qubit_redact_derive::Redact;
 
 use super::DataType;
 
-/// A named system setting containing zero, one, or multiple textual values.
+/// Represents a named system setting containing zero, one, or multiple textual values.
 #[derive(Model, Redact, Clone, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "camelCase")]
@@ -158,7 +158,7 @@ pub(crate) fn parse_data_type_name(name: &str) -> Option<DataType> {
     serde_json::from_value(serde_json::Value::String(normalized)).ok()
 }
 
-/// Returns the source enumeration name for a data type.
+/// Produces the source enumeration name for a data type.
 pub(crate) fn data_type_source_name(data_type: DataType) -> &'static str {
     match data_type {
         DataType::Bool => "BOOL",
