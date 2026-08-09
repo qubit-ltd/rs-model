@@ -6,25 +6,25 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Upload classification vocabularies.
+//! Categories for independently described media resources.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Classification of independently described media.
+/// Presentation category assigned to a media resource.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum MediaType {
-    /// The Image classification.
+    /// Still-image media.
     Image,
-    /// The Music classification.
+    /// Music track.
     Music,
-    /// The Record classification.
+    /// Spoken voice recording.
     Record,
-    /// The Audio classification.
+    /// Generic audio content.
     Audio,
-    /// The Video classification.
+    /// Video content.
     Video,
 }

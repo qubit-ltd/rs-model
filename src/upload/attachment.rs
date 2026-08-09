@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Persisted attachment metadata.
+//! Attachment records owned by a domain object.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -23,55 +23,55 @@ use crate::person::UserInfo;
 use crate::upload::AttachmentType;
 use crate::upload::Upload;
 
-/// A categorized attachment owned by a domain object.
+/// A classified upload attached to an owning domain object.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Attachment {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value denotes an attachment not yet persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Object that owns this attachment.
+    /// Domain object that owns this attachment.
     pub owner: Owner,
 
-    /// Attachment type.
+    /// Content classification of the attachment.
     pub r#type: AttachmentType,
 
-    /// Optional attachment category.
+    /// Category reference, or `None` when the attachment is uncategorized.
     #[model(opaque)]
     pub category: Option<InfoWithEntity>,
 
-    /// Zero-based ordering within the owner's attachment list.
+    /// Zero-based position in the owner's attachment list.
     pub index: i32,
 
-    /// Optional title.
+    /// User-facing title, or `None` when no title is set.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub title: Option<String>,
 
-    /// Optional description.
+    /// Additional descriptive text, or `None` when absent.
     pub description: Option<String>,
 
-    /// Stored upload.
+    /// Upload record containing the stored original file and its renditions.
     pub upload: Upload,
 
-    /// Lifecycle state.
+    /// Lifecycle state governing this attachment.
     pub state: State,
 
-    /// Whether this attachment is visible.
+    /// Visibility flag, or `None` when visibility is unspecified.
     pub visible: Option<bool>,
 
-    /// Optional creator information.
+    /// Creator reference, or `None` when the creator was not captured.
     pub creator: Option<UserInfo>,
 
-    /// UTC creation timestamp.
+    /// UTC creation instant, rounded to seconds.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the latest update, or `None` when unchanged.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while retained.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

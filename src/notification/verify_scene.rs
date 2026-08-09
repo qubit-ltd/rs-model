@@ -6,50 +6,50 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Verification-code usage scenarios.
+//! Operations for which a verification token may be issued.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// The operation for which a verification code was issued.
+/// Business operation that a verification token authorizes.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum VerifyScene {
-    /// Account registration.
+    /// Creates a new account.
     Register,
-    /// Password reset.
+    /// Resets an account password.
     ResetPassword,
-    /// Payment confirmation.
+    /// Confirms a payment.
     Pay,
-    /// Refund confirmation.
+    /// Confirms a refund.
     Refund,
-    /// Mobile-number verification.
+    /// Verifies ownership of a mobile number.
     VerifyMobile,
-    /// Email-address verification.
+    /// Verifies ownership of an email address.
     VerifyEmail,
-    /// Real-name verification.
+    /// Verifies the user's real-name identity.
     VerifyRealname,
-    /// Drug collection.
+    /// Authorizes collection of prescribed medication.
     ReceiveDrug,
-    /// Profile modification.
+    /// Confirms a profile change.
     Modify,
-    /// Account login.
+    /// Authenticates an account login.
     Login,
-    /// Employee-record binding.
+    /// Binds an employee record.
     BindEmployee,
-    /// Person-record binding.
+    /// Binds a person record.
     BindPerson,
-    /// Any other verification scenario.
+    /// Covers a verification scenario not represented by a dedicated variant.
     Other,
 }
 
 impl VerifyScene {
-    /// Parses the exact uppercase wire name used by the Java enumeration.
+    /// Parses an exact uppercase source-model wire name into a verification scene.
     ///
-    /// Returns `None` when `name` is not one of the source enumeration names.
+    /// Returns `None` when `name` is not a recognized wire-level scene name.
     #[must_use]
     pub fn from_wire_name(name: &str) -> Option<Self> {
         match name {

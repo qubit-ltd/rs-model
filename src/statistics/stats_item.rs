@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Statistics value objects.
+//! Rows used in tabular statistics datasets.
 
 use bigdecimal::BigDecimal;
 use serde::Deserialize;
@@ -14,13 +14,13 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// One named row in a two-dimensional statistics dataset.
+/// A named row of decimal values in a [`StatsDataset`].
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct StatsItem {
-    /// Item name.
+    /// Label identifying this row.
     pub name: String,
 
-    /// Values aligned by index with [`StatsDataset::series`].
+    /// Decimal cells aligned by index with [`StatsDataset::series`].
     #[model(element(decimal(scale = 2)))]
     pub values: Vec<BigDecimal>,
 }

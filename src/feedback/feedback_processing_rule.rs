@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! The complete legal feedback-state transition table.
+//! The fixed state-transition rules for feedback processing.
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
@@ -14,27 +14,27 @@ use qubit_redact_derive::Redact;
 use crate::feedback::FeedbackAction;
 use crate::feedback::FeedbackStatus;
 
-/// Evaluates the fixed feedback lifecycle defined by the Java source model.
+/// Evaluates the feedback lifecycle shared with the source-domain model.
 #[derive(Model, Redact, Clone, Copy, Default)]
 #[redact(debug, display, serde)]
 pub struct FeedbackProcessingRule;
 
 impl FeedbackProcessingRule {
-    /// Returns the lifecycle's sole initial state.
+    /// Returns the state assigned to every newly submitted feedback record.
     #[must_use]
     pub const fn initial_state() -> FeedbackStatus {
         FeedbackStatus::Submitted
     }
 
-    /// Reports whether `status` is one of the lifecycle's terminal states.
+    /// Returns whether `status` has no legal follow-up action.
     #[must_use]
     pub const fn is_final_state(status: FeedbackStatus) -> bool {
         matches!(status, FeedbackStatus::Closed | FeedbackStatus::Withdrawn)
     }
 
-    /// Returns the state reached by applying `action` to `status`.
+    /// Applies `action` to `status` according to the fixed lifecycle table.
     ///
-    /// `None` means that the Java transition table does not permit the pair.
+    /// Returns `None` when the action is not permitted from the supplied state.
     #[must_use]
     pub const fn next(status: FeedbackStatus, action: FeedbackAction) -> Option<FeedbackStatus> {
         match (status, action) {

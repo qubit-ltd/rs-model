@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! File uploads, media information, and persisted attachments.
+//! Uploads, generated media renditions, and attachments held by aggregate roots.
 
 mod attachment;
 mod attachment_type;
