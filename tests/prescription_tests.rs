@@ -40,4 +40,15 @@ fn test_prescription_structs_expose_all_source_fields() {
             .len(),
         2
     );
+
+    let payload = metadata_of::<PrescriptionActionParams>()
+        .field("payload")
+        .expect("prescription action payload field");
+    assert_eq!(
+        payload
+            .sequence_constraint()
+            .expect("prescription payload size constraint")
+            .max_items(),
+        Some(16)
+    );
 }

@@ -34,6 +34,7 @@ use crate::contact::Address;
 use crate::order::Client;
 use crate::payment::Account;
 use crate::product::Product;
+use crate::security::KeyValuePair;
 use crate::upload::Attachment;
 
 /// A personal claim case that joins the covered event, submitted evidence,
@@ -150,8 +151,8 @@ pub struct InsuranceClaim {
 
     /// Additional source-order attributes; absent when no upstream payload was
     /// supplied.
-    #[model(opaque)]
-    pub payload: Option<Vec<(String, String)>>,
+    #[model(sequence(min_items = 1, max_items = 8))]
+    pub payload: Option<Vec<KeyValuePair>>,
 
     /// Supporting attachments.
     pub attachment_list: Vec<Attachment>,

@@ -22,6 +22,6 @@ pub struct AuthorizeRecord {
     pub failures: Option<i32>,
 
     /// Optional last authorization timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub time: Option<DateTime<Utc>>,
 }

@@ -22,17 +22,18 @@ use crate::contact::CoordinateSystem;
 #[redact(debug, display, serde)]
 pub struct Location {
     /// Longitude in decimal degrees, normalized to six decimal places.
-    #[model(decimal(scale = 6))]
+    #[model(index, decimal(scale = 6))]
     pub longitude: BigDecimal,
 
     /// Latitude in decimal degrees, normalized to six decimal places.
-    #[model(decimal(scale = 6))]
+    #[model(index, decimal(scale = 6))]
     pub latitude: BigDecimal,
 
     /// Optional altitude in meters, normalized to two decimal places.
-    #[model(decimal(scale = 2))]
+    #[model(index, decimal(scale = 2))]
     pub altitude: Option<BigDecimal>,
 
     /// Optional coordinate system used by the numeric coordinates.
+    #[model(index)]
     pub coordinate_system: Option<CoordinateSystem>,
 }
