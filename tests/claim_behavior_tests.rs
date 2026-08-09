@@ -45,6 +45,7 @@ use qubit_model::payment::Account;
 use qubit_model::payment::AccountType;
 use qubit_model::product::Product;
 use qubit_model::product::Quality;
+use qubit_model_metadata::metadata_of;
 
 /// Builds a minimal client accepted by the public claim API.
 fn client(name: &str) -> Client {
@@ -610,4 +611,27 @@ fn test_claim_leaf_enumerations_round_trip_through_json() {
         assert_eq!(ownership_code(ownership), code);
         assert_eq!(ownership_description(ownership), description);
     }
+}
+
+/// Verifies claim metadata retains the Java payload-size constraint without
+/// treating an unannotated medical amount as money.
+#[test]
+fn test_claim_metadata_preserves_source_constraints() {
+    let claim = metadata_of::<InsuranceClaim>();
+    let payload = claim
+        .field("payload")
+        .expect("claim payload field")
+        .sequence_constraint()
+        .expect("claim payload sequence constraint");
+    assert_eq!(payload.min_items(), Some(1));
+    assert_eq!(payload.max_items(), Some(8));
+
+    let medical = metadata_of::<InsuranceClaimMedical>();
+    assert!(
+        medical
+            .field("amount")
+            .expect("claim medical amount field")
+            .decimal_constraint()
+            .is_none()
+    );
 }
