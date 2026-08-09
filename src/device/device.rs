@@ -15,6 +15,7 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
+use crate::commons::App;
 use crate::commons::Payload;
 use crate::commons::State;
 use crate::contact::Address;
@@ -23,7 +24,9 @@ use crate::device::DeviceType;
 use crate::device::Hardware;
 use crate::device::Software;
 use crate::mixin::StatefulInfo;
+use crate::person::Person;
 use crate::person::PersonInfo;
+use crate::person::User;
 use crate::person::UserInfo;
 /// A registered device, including its ownership, software inventory, and state.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -34,20 +37,22 @@ pub struct Device {
     pub id: Id,
 
     /// Stable ASCII code that identifies the device within the application.
-    #[model(text(min_chars=1,max_chars=64,repertoire=ascii))]
+    #[model(unique, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub code: String,
 
     /// Human-readable device name.
-    #[model(text(min_chars = 1, max_chars = 128))]
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Application that registered or manages this device.
+    #[model(reference(target = App, target_field = info))]
     pub app: StatefulInfo,
 
     /// Optional user-facing description; absent when none was supplied.
     pub description: Option<String>,
 
     /// Physical category of the device.
+    #[model(index)]
     pub device_type: DeviceType,
 
     /// Optional hardware inventory; absent when it has not been collected.
@@ -63,25 +68,31 @@ pub struct Device {
     pub location: Option<Location>,
 
     /// Physical deployment address, if assigned.
+    #[model(index)]
     pub deploy_address: Option<Address>,
 
     /// Current network IP address, if known.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub ip_address: Option<String>,
 
     /// Person currently responsible for the device, if it is bound.
+    #[model(reference(target = Person, target_field = info))]
     pub owner: Option<PersonInfo>,
 
     /// UTC time at which the current owner binding was established, if any.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub binding_time: Option<DateTime<Utc>>,
 
     /// User who established the current owner binding, if recorded.
+    #[model(reference(target = User, target_field = info, must_exist = true))]
     pub binder: Option<UserInfo>,
 
     /// Lifecycle state of this device record.
+    #[model(index)]
     pub state: State,
 
     /// Extension payloads attached to this device; empty when none are stored.
+    #[model(sequence(min_items = 1, max_items = 10))]
     pub payloads: Vec<Payload>,
 
     /// Optional administrator note.
@@ -91,26 +102,26 @@ pub struct Device {
     pub test: bool,
 
     /// UTC time at which the device was registered, if known.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub register_time: Option<DateTime<Utc>>,
 
     /// Most recent device startup time in UTC, if reported.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub last_startup_time: Option<DateTime<Utc>>,
 
     /// Most recent heartbeat time in UTC, if reported.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub last_heartbeat_time: Option<DateTime<Utc>>,
 
     /// UTC time at which this record was created.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
     /// UTC time of the most recent update, if the record has been modified.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// UTC soft-deletion time, if the device has been deleted.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

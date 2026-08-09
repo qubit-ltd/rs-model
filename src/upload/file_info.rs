@@ -18,7 +18,7 @@ use qubit_model_derive::Model;
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct FileInfo {
     /// ASCII storage path or URL whose meaning depends on the configured backend.
-    #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub path: String,
 
     /// ASCII label for the file format.
@@ -42,5 +42,6 @@ pub struct FileInfo {
     pub duration: Option<i32>,
 
     /// Compression quality percentage, or `None` when unavailable.
+    #[model(decimal(scale = 2))]
     pub quality: Option<BigDecimal>,
 }

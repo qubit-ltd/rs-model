@@ -72,7 +72,7 @@ pub struct MedicalSettlementItem {
     pub self_paid: BigDecimal,
 
     /// Source-provided self-pay rate used to allocate this line to the patient.
-    #[model(decimal(scale = 4))]
+    #[model(money(scale = 4))]
     pub self_paid_rate: BigDecimal,
 
     /// Maximum amount of this line eligible for reimbursement.

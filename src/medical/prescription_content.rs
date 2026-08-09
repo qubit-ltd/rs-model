@@ -97,7 +97,6 @@ pub struct PrescriptionContent {
     pub allergic_history: String,
 
     /// Local prescription issue timestamp.
-    #[model(time(precision = second))]
     pub issue_time: NaiveDateTime,
 
     /// Number of days for which the prescription is valid.

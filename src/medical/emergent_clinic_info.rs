@@ -35,6 +35,5 @@ pub struct EmergentClinicInfo {
     pub record_number: Option<String>,
 
     /// UTC visit timestamp.
-    #[model(time(precision = second, normalization = utc))]
     pub visit_time: DateTime<Utc>,
 }

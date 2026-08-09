@@ -44,6 +44,6 @@ pub struct PrescriptionActionParams {
     pub timestamp: DateTime<Utc>,
 
     /// Optional source-order key-value payload.
-    #[model(opaque)]
+    #[model(sequence(max_items = 16), opaque)]
     pub payload: Option<Vec<(String, String)>>,
 }

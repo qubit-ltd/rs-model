@@ -27,32 +27,40 @@ pub struct SimCard {
     pub id: Id,
 
     /// Integrated Circuit Card Identifier (ICCID) assigned to this card.
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub iccid: String,
 
     /// IMEI of the associated device slot, if reported; it identifies hardware, not the card.
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub imei: Option<String>,
 
     /// MEID of the associated device slot, if reported.
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub meid: Option<String>,
 
     /// Telephone number provisioned on the card, if known.
+    #[model(index)]
     pub phone: Option<Phone>,
 
     /// Mobile network operator name, if reported.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub operator: Option<String>,
 
     /// Country code of the issuing operator, if known.
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub country: Option<String>,
 
     /// Current card location, if the network reported one.
     pub location: Option<Location>,
 
     /// Current mobile data radio technology, if connected.
+    #[model(index)]
     pub network_type: Option<DataNetworkType>,
 
     /// Card readiness or lock state, if reported.
+    #[model(index)]
     pub status: Option<SimCardStatus>,
 }
