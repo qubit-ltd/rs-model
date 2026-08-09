@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Polymorphic-owner contracts.
 
 use crate::commons::Owner;
 
-/// Provides an owner.
+/// Gives a model an optional polymorphic owner reference.
 pub trait WithOwner {
-    /// Returns the owner.
+    /// Returns the owner reference, or `None` when ownership is unassigned.
     fn owner(&self) -> Option<&Owner>;
 
-    /// Replaces the owner.
+    /// Sets the owner reference; `None` removes ownership.
     fn set_owner(&mut self, owner: Option<Owner>);
 }

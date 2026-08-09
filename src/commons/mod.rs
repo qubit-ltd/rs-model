@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Shared domain values migrated from the Java commons package.
+//! Cross-domain application, credential, scheduling, and lifecycle value models.
 
 mod app;
 mod app_resource;

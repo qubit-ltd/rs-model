@@ -21,7 +21,7 @@ use qubit_redact_derive::Redact;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Province {
-    /// Optional persisted identifier.
+    /// Platform-assigned identifier of this province reference record.
     #[model(opaque)]
     pub id: Id,
 
@@ -52,7 +52,7 @@ pub struct Province {
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub url: Option<String>,
 
-    /// Optional description.
+    /// Optional explanatory text for the province reference record.
     pub description: Option<String>,
 
     /// Whether this is predefined reference data.

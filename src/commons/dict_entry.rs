@@ -6,6 +6,8 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+//! Complete records for entries in legacy common dictionaries.
+
 use chrono::DateTime;
 use chrono::Utc;
 use qubit_id::Id;
@@ -16,42 +18,42 @@ use qubit_model_derive::Model;
 
 use super::DictEntryInfo;
 use crate::mixin::StatefulInfo;
-/// Represents the DictEntry domain type.
+/// A selectable entry in a named data dictionary.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DictEntry {
-    /// The id value associated with this model.
+    /// Platform-assigned identifier for this entry.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// The dict value associated with this model.
+    /// Stateful reference to the dictionary that contains this entry.
     pub dict: StatefulInfo,
 
-    /// The code value associated with this model.
+    /// Stable code, unique within the owning dictionary.
     pub code: String,
 
-    /// The name value associated with this model.
+    /// Display name associated with the entry code.
     pub name: String,
 
-    /// The description value associated with this model.
+    /// Optional explanatory text for consumers of this entry.
     pub description: Option<String>,
 
-    /// The comment value associated with this model.
+    /// Optional administrator note that is separate from the description.
     pub comment: Option<String>,
 
-    /// The parent value associated with this model.
+    /// Optional parent entry for a hierarchical dictionary; `None` marks a root entry.
     #[model(opaque)]
     pub parent: Option<Box<DictEntryInfo>>,
 
-    /// The create_time value associated with this model.
+    /// Creation time in UTC, stored with second precision.
     #[model(time(precision=second,normalization=utc))]
     pub create_time: DateTime<Utc>,
 
-    /// The modify_time value associated with this model.
+    /// Most recent modification time in UTC, or `None` if unchanged.
     #[model(time(precision=second,normalization=utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// The delete_time value associated with this model.
+    /// UTC soft-deletion time, or `None` when the entry is not deleted.
     #[model(time(precision=second,normalization=utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

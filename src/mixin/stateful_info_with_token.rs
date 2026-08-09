@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Stateful information snapshots that carry an access token.
+//! Stateful identity snapshots paired with access tokens.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -16,18 +16,18 @@ use qubit_model_derive::Model;
 use crate::commons::Token;
 use crate::mixin::StatefulInfo;
 
-/// Couples a stateful information snapshot with an optional access token.
+/// Stateful identity projection paired with the entity's optional access token.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct StatefulInfoWithToken {
-    /// Stateful identity and lifecycle information.
+    /// Identity, lifecycle, and soft-deletion information for the referenced entity.
     pub info: StatefulInfo,
 
-    /// Optional access token issued for the referenced entity.
+    /// Access token issued for the entity, or `None` when no token is available.
     pub token: Option<Token>,
 }
 
 impl StatefulInfoWithToken {
-    /// Creates a stateful information value with an optional token.
+    /// Creates a stateful identity-and-token projection.
     ///
     /// # Parameters
     ///

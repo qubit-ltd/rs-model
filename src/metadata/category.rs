@@ -29,7 +29,7 @@ use super::Scope;
     unique(name = "category_entity_name", fields(entity, name), ignore_case(name))
 )]
 pub struct Category {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this metadata category.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -54,7 +54,7 @@ pub struct Category {
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub icon: Option<String>,
 
-    /// Optional description.
+    /// Optional explanatory text shown with this metadata category.
     pub description: Option<String>,
 
     /// Query-computed hierarchical title.

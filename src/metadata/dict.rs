@@ -28,7 +28,7 @@ use crate::commons::State;
 #[serde(default)]
 #[model(unique(name = "dict_code", fields(code), ignore_case(code)))]
 pub struct Dict {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this dictionary definition.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -58,10 +58,10 @@ pub struct Dict {
     #[redact(level = "secret")]
     pub url: Option<String>,
 
-    /// Optional description.
+    /// Optional user-facing explanation of the dictionary's purpose.
     pub description: Option<String>,
 
-    /// Optional comment.
+    /// Optional administrator note kept separate from the user-facing description.
     pub comment: Option<String>,
 
     /// Optional category information.

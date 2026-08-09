@@ -22,7 +22,7 @@ use super::MqType;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct MqFailedTask {
-    /// Optional persisted identifier.
+    /// Platform-assigned identifier of the retained failed message, or the neutral ID if unsaved.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

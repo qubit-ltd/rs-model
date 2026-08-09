@@ -20,7 +20,7 @@ use qubit_model_derive::Model;
 /// A common category record.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Category {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this common category.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -41,7 +41,7 @@ pub struct Category {
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub icon: Option<String>,
 
-    /// Optional description.
+    /// Optional explanatory text for users selecting this category.
     pub description: Option<String>,
 
     /// Query-computed display title.

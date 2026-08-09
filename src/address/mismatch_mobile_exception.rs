@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Address-domain error codes and exceptions.
+//! Structured error for mismatched mobile-number checks.
 
 use std::collections::BTreeMap;
 use thiserror::Error;
@@ -18,25 +18,25 @@ use super::AddressErrorCode;
 use crate::contact::Phone;
 use crate::error::ErrorType;
 
-/// An expected and actual mobile number do not match.
+/// A mobile-number validation failure that preserves both compared values.
 #[derive(Model, Redact, Clone, Error, PartialEq)]
 #[redact(debug, serde)]
 #[error("mobile number mismatch for {name}")]
 pub struct MismatchMobileException {
-    /// Entity name or description associated with the mismatch.
+    /// Name or description of the subject whose mobile number was checked.
     pub name: String,
 
-    /// Expected mobile number.
+    /// Mobile number required by the business rule.
     #[redact(nested)]
     pub expected_mobile: Phone,
 
-    /// Actual mobile number.
+    /// Mobile number supplied by the caller or external system.
     #[redact(nested)]
     pub actual_mobile: Phone,
 }
 
 impl MismatchMobileException {
-    /// Creates a mismatch error with its template values.
+    /// Creates the error for a named subject and the two values that failed comparison.
     #[must_use]
     pub fn new(name: &str, expected_mobile: Phone, actual_mobile: Phone) -> Self {
         Self {
@@ -46,19 +46,19 @@ impl MismatchMobileException {
         }
     }
 
-    /// Returns the stable address error code.
+    /// Returns the machine-readable code for this validation boundary.
     #[must_use]
     pub const fn code(&self) -> AddressErrorCode {
         AddressErrorCode::MismatchMobile
     }
 
-    /// Returns the broad logic-error category.
+    /// Returns the broad platform category for this business-rule error.
     #[must_use]
     pub const fn error_type(&self) -> ErrorType {
         self.code().error_type()
     }
 
-    /// Returns all message-template parameters used by the Java exception.
+    /// Returns message-template values under both legacy and explicit parameter names.
     #[must_use]
     pub fn parameters(&self) -> BTreeMap<&'static str, String> {
         let expected = self.expected_mobile.to_string();

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Address-domain error codes and exceptions.
+//! Stable error classification for address-domain validation failures.
 
 use serde::Deserialize;
 
@@ -15,17 +15,17 @@ use qubit_redact_derive::Redact;
 
 use crate::error::ErrorType;
 
-/// A stable address-module error code.
+/// Machine-readable code for a business-rule failure in address processing.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AddressErrorCode {
-    /// An actual mobile number differs from the expected number.
+    /// The supplied mobile number differs from the number expected for the named subject.
     MismatchMobile,
 }
 
 impl AddressErrorCode {
-    /// Returns the broad platform error category.
+    /// Returns the platform category used to report this error code.
     #[must_use]
     pub const fn error_type(self) -> ErrorType {
         ErrorType::LogicError

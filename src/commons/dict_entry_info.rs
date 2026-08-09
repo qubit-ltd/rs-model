@@ -6,6 +6,8 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+//! Lightweight dictionary-entry projections used by common-domain records.
+
 use chrono::DateTime;
 use chrono::Utc;
 use qubit_id::Id;
@@ -14,29 +16,29 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Represents the DictEntryInfo domain type.
+/// Compact identity and display data for a dictionary entry.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct DictEntryInfo {
-    /// The id value associated with this model.
+    /// Platform-assigned identifier of the referenced entry.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// The code value associated with this model.
+    /// Stable entry code in the referenced dictionary.
     pub code: String,
 
-    /// The name value associated with this model.
+    /// Human-readable entry name.
     pub name: String,
 
-    /// The dict_id value associated with this model.
+    /// Identifier of the dictionary that owns the entry.
     #[model(identifier)]
     #[model(opaque)]
     pub dict_id: Id,
 
-    /// The params value associated with this model.
+    /// Values substituted into numbered placeholders in code or name templates, in order.
     pub params: Vec<String>,
 
-    /// The delete_time value associated with this model.
+    /// UTC soft-deletion time, or `None` if the entry is still available.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

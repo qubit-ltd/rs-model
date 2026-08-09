@@ -23,7 +23,7 @@ use super::VerifyState;
 /// A credential with ownership and audit fields.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Credential {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this credential record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -48,7 +48,7 @@ pub struct Credential {
     #[model(text(min_chars = 1, max_chars = 128))]
     pub title: Option<String>,
 
-    /// Optional description.
+    /// Optional explanation of the credential's purpose or provenance.
     pub description: Option<String>,
 
     /// UTC creation timestamp.

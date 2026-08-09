@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Credential-reference contracts.
 
 use crate::commons::CredentialInfo;
 
-/// Provides credential information.
+/// Gives a model an optional identifying credential.
 pub trait WithCredential {
-    /// Returns the credential information.
+    /// Returns credential information, or `None` when no credential is attached.
     fn credential(&self) -> Option<&CredentialInfo>;
 
-    /// Replaces the credential information.
+    /// Sets credential information; `None` removes the credential reference.
     fn set_credential(&mut self, credential: Option<CredentialInfo>);
 }

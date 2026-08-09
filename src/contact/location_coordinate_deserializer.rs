@@ -17,7 +17,10 @@ use crate::contact::LocationCoordinateCodec;
 pub struct LocationCoordinateDeserializer;
 
 impl LocationCoordinateDeserializer {
-    /// Deserializes a non-null coordinate.
+    /// Deserializes a required decimal coordinate.
+    ///
+    /// Returns [`ContactCodecError::InvalidCoordinate`] when the value is blank or not a valid
+    /// decimal coordinate.
     pub fn deserialize(value: &str) -> Result<BigDecimal, ContactCodecError> {
         LocationCoordinateCodec::decode(Some(value))?.ok_or(ContactCodecError::InvalidCoordinate)
     }

@@ -60,10 +60,10 @@ pub struct FullDict {
     #[redact(level = "secret")]
     pub url: Option<String>,
 
-    /// Optional description.
+    /// Optional user-facing explanation of the dictionary's intended use.
     pub description: Option<String>,
 
-    /// Optional comment.
+    /// Optional administrator note that is distinct from the user-facing description.
     pub comment: Option<String>,
 
     /// Optional category information.

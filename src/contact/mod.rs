@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Contact and geographic domain models.
+//! Contact channels, administrative addresses, geographic coordinates, and wire codecs.
 
 mod address;
 mod city;

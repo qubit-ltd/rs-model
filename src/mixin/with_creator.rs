@@ -9,11 +9,11 @@
 
 use crate::person::UserInfo;
 
-/// Provides optional information about the user that created an object.
+/// Gives a model the optional user identity captured when it was created.
 pub trait WithCreator {
-    /// Returns the creator information.
+    /// Returns the creator snapshot, or `None` when the actor was not recorded.
     fn creator(&self) -> Option<&UserInfo>;
 
-    /// Replaces the creator information.
+    /// Sets the creator snapshot; `None` clears the audit reference.
     fn set_creator(&mut self, creator: Option<UserInfo>);
 }
