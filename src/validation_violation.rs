@@ -6,15 +6,17 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Errors produced by domain-model operations.
+//! Field-level validation failures reported while accepting domain-model data.
 
-/// Identifies one model-field constraint violation without retaining its
-/// rejected value.
+/// Describes one failed constraint without retaining the rejected value.
+///
+/// A [`crate::ModelError::ValidationFailed`] can contain several violations;
+/// each one names the affected field and explains the violated constraint.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ValidationViolation {
-    /// The field whose constraint failed.
+    /// The canonical field name whose constraint was not satisfied.
     pub field: String,
 
-    /// The constraint failure reason.
+    /// A safe explanation of the failed constraint, without the rejected value.
     pub reason: String,
 }

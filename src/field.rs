@@ -21,9 +21,9 @@ pub enum Field {
     Action,
     /// The value observed during validation.
     Actual,
-    /// The actual credential number used by the domain model.
+    /// The credential number presented for comparison.
     ActualCredentialNumber,
-    /// The actual credential type used by the domain model.
+    /// The type of credential presented for comparison.
     ActualCredentialType,
     /// The address's detail.
     AddressDetail,
@@ -31,11 +31,11 @@ pub enum Field {
     AddressLatitude,
     /// The address's longitude.
     AddressLongitude,
-    /// The address's postalcode.
+    /// The postal code within the address.
     AddressPostalcode,
-    /// The address's street id.
+    /// The identifier of the address street.
     AddressStreetId,
-    /// The address's verify.
+    /// Whether the address has been verified.
     AddressVerify,
     /// The person's age.
     Age,
@@ -57,11 +57,11 @@ pub enum Field {
     BuyerId,
     /// The identifier of the associated category.
     CategoryId,
-    /// The change password used by the domain model.
+    /// Whether the account password must be changed.
     ChangePassword,
     /// The originating business channel.
     Channel,
-    /// The channel number used by the domain model.
+    /// The business number assigned by the originating channel.
     ChannelNumber,
     /// The associated city.
     City,
@@ -73,7 +73,7 @@ pub enum Field {
     Code,
     /// Free-form explanatory text.
     Comment,
-    /// The time at which complete occurred.
+    /// The time at which the workflow completed.
     CompleteTime,
     /// A cost amount.
     Cost,
@@ -83,23 +83,23 @@ pub enum Field {
     Country,
     /// The identifier of the associated country.
     CountryId,
-    /// The time at which create occurred.
+    /// The time at which the record was created.
     CreateTime,
     /// The identifier of the associated creator.
     CreatorId,
     /// An identity credential.
     Credential,
-    /// The credential number used by the domain model.
+    /// The credential number.
     CredentialNumber,
-    /// The credential type used by the domain model.
+    /// The kind of identity credential.
     CredentialType,
-    /// The credential verify used by the domain model.
+    /// Whether the credential has been verified.
     CredentialVerify,
     /// The currency of a monetary amount.
     Currency,
     /// The identifier of the associated deleter.
     DeleterId,
-    /// The time at which delete occurred.
+    /// The time at which the record was deleted.
     DeleteTime,
     /// A human-readable description.
     Description,
@@ -107,7 +107,7 @@ pub enum Field {
     Dict,
     /// A discount amount.
     Discount,
-    /// The discount reason used by the domain model.
+    /// The reason a discount was applied.
     DiscountReason,
     /// The associated district.
     District,
@@ -117,31 +117,31 @@ pub enum Field {
     Education,
     /// An email address.
     Email,
-    /// The email verify used by the domain model.
+    /// Whether the email address has been verified.
     EmailVerify,
     /// Whether the value is encrypted.
     Encrypted,
     /// The referenced domain entity type.
     Entity,
-    /// The error code used by the domain model.
+    /// The machine-readable error code.
     ErrorCode,
-    /// The error message used by the domain model.
+    /// The human-readable error message.
     ErrorMessage,
-    /// The error params used by the domain model.
+    /// Parameters used to render the error message.
     ErrorParams,
-    /// The error type used by the domain model.
+    /// The broad category assigned to the error.
     ErrorType,
     /// The person's ethnic group.
     Ethnic,
     /// The value expected by validation.
     Expected,
-    /// The expected credential number used by the domain model.
+    /// The credential number expected for comparison.
     ExpectedCredentialNumber,
-    /// The expected credential type used by the domain model.
+    /// The type of credential expected for comparison.
     ExpectedCredentialType,
-    /// The expired reason used by the domain model.
+    /// The reason the record or credential expired.
     ExpiredReason,
-    /// The time at which expired occurred.
+    /// The time at which the record or credential expires.
     ExpiredTime,
     /// The person's full name.
     Fullname,
@@ -173,7 +173,7 @@ pub enum Field {
     Industry,
     /// The available inventory quantity.
     Inventory,
-    /// The invoice status used by the domain model.
+    /// The current invoicing status.
     InvoiceStatus,
     /// The network IP address.
     Ip,
@@ -181,19 +181,19 @@ pub enum Field {
     ItemId,
     /// The person's job description.
     Job,
-    /// The job title used by the domain model.
+    /// The person’s occupational title.
     JobTitle,
-    /// The time at which last active occurred.
+    /// The most recent time the account was active.
     LastActiveTime,
-    /// The last login failures used by the domain model.
+    /// The number of consecutive failed login attempts.
     LastLoginFailures,
-    /// The time at which last login occurred.
+    /// The most recent successful login time.
     LastLoginTime,
     /// The geographic latitude.
     Latitude,
     /// The hierarchy level.
     Level,
-    /// The time at which login occurred.
+    /// The time at which authentication succeeded.
     LoginTime,
     /// The geographic longitude.
     Longitude,
@@ -201,7 +201,7 @@ pub enum Field {
     ManufacturerId,
     /// The person's marital status.
     Marriage,
-    /// The medicare city used by the domain model.
+    /// The city administering the person’s Medicare coverage.
     MedicareCity,
     /// The identifier of the associated medicare city.
     MedicareCityId,
@@ -211,21 +211,21 @@ pub enum Field {
     MobileCityArea,
     /// The mobile number's country area.
     MobileCountryArea,
-    /// The mobile number's number.
+    /// The subscriber number portion of a mobile telephone number.
     MobileNumber,
-    /// The mobile number's verify.
+    /// Whether the mobile telephone number has been verified.
     MobileVerify,
     /// The selected operating mode.
     Mode,
     /// The identifier of the associated modifier.
     ModifierId,
-    /// The time at which modify occurred.
+    /// The time at which the record was last modified.
     ModifyTime,
     /// Whether multiple values are permitted.
     Multiple,
     /// The display name.
     Name,
-    /// The need delivery used by the domain model.
+    /// Whether the order requires delivery.
     NeedDelivery,
     /// The proposed credential number.
     NewCredentialNumber,
@@ -233,9 +233,9 @@ pub enum Field {
     NewCredentialType,
     /// The proposed email.
     NewEmail,
-    /// The proposed fullname.
+    /// The proposed replacement full name.
     NewFullname,
-    /// The proposed mobile.
+    /// The proposed replacement mobile number.
     NewMobile,
     /// The person's nickname.
     Nickname,
@@ -249,9 +249,9 @@ pub enum Field {
     OldCredentialType,
     /// The previous email.
     OldEmail,
-    /// The previous fullname.
+    /// The previous full name.
     OldFullname,
-    /// The previous mobile.
+    /// The previous mobile number.
     OldMobile,
     /// The requested authorized operation.
     Operation,
@@ -263,23 +263,23 @@ pub enum Field {
     OrderItem,
     /// The identifier of the associated order item.
     OrderItemId,
-    /// The order title used by the domain model.
+    /// The customer-facing order title.
     OrderTitle,
     /// The associated organization.
     Organization,
     /// The identifier of the associated organization.
     OrganizationId,
-    /// The organization name used by the domain model.
+    /// The organization’s display name.
     OrganizationName,
     /// The identifier of the associated origin.
     OriginId,
     /// The owning party.
     Owner,
-    /// The owner code used by the domain model.
+    /// The business code assigned to the owner.
     OwnerCode,
     /// The identifier of the associated owner.
     OwnerId,
-    /// The owner type used by the domain model.
+    /// The kind of party that owns the record.
     OwnerType,
     /// The amount already paid.
     Paid,
@@ -289,7 +289,7 @@ pub enum Field {
     Password,
     /// The amount due for payment.
     Payable,
-    /// The payee's account id for the payment.
+    /// The identifier of the payee’s receiving account.
     PayeeAccountId,
     /// The payee's altitude for the payment.
     PayeeAltitude,
@@ -299,9 +299,9 @@ pub enum Field {
     PayeeCredentialType,
     /// The payee's email for the payment.
     PayeeEmail,
-    /// The payee's id for the payment.
+    /// The identifier of the payee.
     PayeeId,
-    /// The payee's ip for the payment.
+    /// The payee’s network IP address.
     PayeeIp,
     /// The payee's latitude for the payment.
     PayeeLatitude,
@@ -315,7 +315,7 @@ pub enum Field {
     PayeePlatform,
     /// The payee's type for the payment.
     PayeeType,
-    /// The payer's account id for the payment.
+    /// The identifier of the payer’s funding account.
     PayerAccountId,
     /// The payer's altitude for the payment.
     PayerAltitude,
@@ -325,9 +325,9 @@ pub enum Field {
     PayerCredentialType,
     /// The payer's email for the payment.
     PayerEmail,
-    /// The payer's id for the payment.
+    /// The identifier of the payer.
     PayerId,
-    /// The payer's ip for the payment.
+    /// The payer’s network IP address.
     PayerIp,
     /// The payer's latitude for the payment.
     PayerLatitude,
@@ -341,21 +341,21 @@ pub enum Field {
     PayerPlatform,
     /// The payer's type for the payment.
     PayerType,
-    /// The time at which pay occurred.
+    /// The time at which payment completed.
     PayTime,
     /// The identifier of the associated person.
     PersonId,
     /// A telephone number.
     Phone,
-    /// The telephone number's area.
+    /// The telephone number’s area or extension component.
     PhoneArea,
-    /// The telephone number's city area.
+    /// The city-area component of the telephone number.
     PhoneCityArea,
-    /// The telephone number's country area.
+    /// The country calling code of the telephone number.
     PhoneCountryArea,
-    /// The telephone number's number.
+    /// The local subscriber number.
     PhoneNumber,
-    /// The telephone number's verify.
+    /// Whether the telephone number has been verified.
     PhoneVerify,
     /// The client platform.
     Platform,
@@ -383,13 +383,13 @@ pub enum Field {
     ProductCurrency,
     /// The catalog product's description.
     ProductDescription,
-    /// The catalog product's id.
+    /// The identifier of the catalog product.
     ProductId,
     /// The catalog product's image.
     ProductImage,
     /// The catalog product's item.
     ProductItem,
-    /// The catalog product's item id.
+    /// The identifier of the catalog product item.
     ProductItemId,
     /// The catalog product's name.
     ProductName,
@@ -401,7 +401,7 @@ pub enum Field {
     ProductSpecification,
     /// The catalog product's unit.
     ProductUnit,
-    /// The provider app used by the domain model.
+    /// The tenant application providing the service.
     ProviderApp,
     /// The identifier of the associated provider app.
     ProviderAppId,
@@ -413,7 +413,7 @@ pub enum Field {
     PushToken,
     /// Whether the value is read-only.
     ReadOnly,
-    /// The time at which refund occurred.
+    /// The time at which the payment was refunded.
     RefundTime,
     /// The person's religion.
     Religion,
@@ -435,17 +435,17 @@ pub enum Field {
     SellerId,
     /// The person's sexual orientation.
     SexOrientation,
-    /// The shipping cost used by the domain model.
+    /// The charge for shipping the order.
     ShippingCost,
-    /// The shipping demand used by the domain model.
+    /// The customer’s delivery requirements.
     ShippingDemand,
-    /// The shipping mode used by the domain model.
+    /// The selected shipping method.
     ShippingMode,
-    /// The shipping number used by the domain model.
+    /// The carrier tracking number.
     ShippingNumber,
-    /// The time at which ship occurred.
+    /// The time at which the order was dispatched.
     ShipTime,
-    /// The social security city used by the domain model.
+    /// The city administering the person’s social-security coverage.
     SocialSecurityCity,
     /// The identifier of the associated social security city.
     SocialSecurityCityId,
@@ -463,7 +463,7 @@ pub enum Field {
     Success,
     /// The identifier of the associated target.
     TargetId,
-    /// The target type used by the domain model.
+    /// The kind of resource targeted by the operation.
     TargetType,
     /// A timestamp supplied by the caller or system.
     Timestamp,
@@ -471,13 +471,13 @@ pub enum Field {
     Title,
     /// An authentication or authorization token.
     Token,
-    /// The time at which token create occurred.
+    /// The time at which the token was issued.
     TokenCreateTime,
-    /// The time at which token expired occurred.
+    /// The time at which the token expires.
     TokenExpiredTime,
-    /// The total discount used by the domain model.
+    /// The sum of all discounts applied.
     TotalDiscount,
-    /// The total price used by the domain model.
+    /// The total price before or after discounts, as defined by the payload.
     TotalPrice,
     /// The identifier of the associated transaction.
     TransactionId,
@@ -497,7 +497,7 @@ pub enum Field {
     Username,
     /// The identifier of the associated user.
     UserId,
-    /// The time at which valid occurred.
+    /// The time from which the record or credential is valid.
     ValidTime,
     /// The associated value.
     Value,
@@ -507,7 +507,7 @@ pub enum Field {
     VerifyCode,
     /// The person's weight.
     Weight,
-    /// The openid type used by the domain model.
+    /// The third-party platform that issued the OpenID.
     OpenidType,
     /// The third-party OpenID.
     Openid,
@@ -515,23 +515,23 @@ pub enum Field {
     Question,
     /// The identifier of the associated thirdparty insurance.
     ThirdpartyInsuranceId,
-    /// The accident reason used by the domain model.
+    /// The reported cause of the accident.
     AccidentReason,
-    /// The policy number used by the domain model.
+    /// The insurance policy number.
     PolicyNumber,
-    /// The kinship type used by the domain model.
+    /// The claimant’s relationship to the insured person.
     KinshipType,
     /// The party submitting the insurance claim.
     Claimant,
     /// The calendar date of accident.
     AccidentDate,
-    /// The accident place used by the domain model.
+    /// The location where the accident occurred.
     AccidentPlace,
-    /// The accident description used by the domain model.
+    /// A narrative description of the accident.
     AccidentDescription,
     /// The associated payment account.
     Account,
-    /// The account type used by the domain model.
+    /// The category of payment account.
     AccountType,
     /// The insured person.
     Insured,
@@ -541,33 +541,33 @@ pub enum Field {
     ClaimMedicalId,
     /// The identifier of the associated claim invoice.
     ClaimInvoiceId,
-    /// The invoice number used by the domain model.
+    /// The issuer’s invoice number.
     InvoiceNumber,
     /// The calendar date of treatment.
     TreatmentDate,
     /// A monetary amount.
     Amount,
-    /// The invoice list used by the domain model.
+    /// The collection of invoices attached to the claim.
     InvoiceList,
-    /// The fund paid amount used by the domain model.
+    /// The amount paid by the relevant fund.
     FundPaidAmount,
-    /// The self paid amount used by the domain model.
+    /// The amount paid directly by the insured person.
     SelfPaidAmount,
-    /// The self care amount used by the domain model.
+    /// The portion payable outside insurance coverage.
     SelfCareAmount,
-    /// The medicare amount used by the domain model.
+    /// The amount covered by Medicare.
     MedicareAmount,
-    /// The serious illness paid used by the domain model.
+    /// The amount paid under serious-illness coverage.
     SeriousIllnessPaid,
-    /// The serious illness insurance paid used by the domain model.
+    /// The amount paid by serious-illness insurance.
     SeriousIllnessInsurancePaid,
-    /// The civil affair subsidy paid used by the domain model.
+    /// The amount paid through a civil-affairs subsidy.
     CivilAffairSubsidyPaid,
-    /// The message key used by the domain model.
+    /// The localization key used to resolve a message.
     MessageKey,
     /// The primary medical diagnosis.
     PrimaryDiagnosis,
-    /// The medical charge name used by the domain model.
+    /// The name of the billed medical charge.
     MedicalChargeName,
 }
 
