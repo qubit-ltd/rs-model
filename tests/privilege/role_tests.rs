@@ -16,7 +16,10 @@ use qubit_model_metadata::metadata_of;
 /// exercise serialization, metadata, and redaction behavior.
 #[test]
 fn test_role_tests_mirror() {
-    assert!(!module_path!().is_empty(), "the test module path must be available");
+    assert!(
+        !module_path!().is_empty(),
+        "the test module path must be available"
+    );
 }
 
 #[test]

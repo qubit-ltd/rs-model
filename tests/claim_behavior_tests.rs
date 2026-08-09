@@ -19,6 +19,7 @@ use qubit_model::claim::InsuranceClaimAmount;
 use qubit_model::claim::InsuranceClaimInvoice;
 use qubit_model::claim::InsuranceClaimInvoiceStatus;
 use qubit_model::claim::InsuranceClaimInvoiceType;
+use qubit_model::claim::InsuranceClaimMedical;
 use qubit_model::claim::InsuranceClaimStatus;
 use qubit_model::claim::InsuranceClaimStatusGroup;
 use qubit_model::claim::InsuredStatus;
@@ -45,6 +46,7 @@ use qubit_model::payment::Account;
 use qubit_model::payment::AccountType;
 use qubit_model::product::Product;
 use qubit_model::product::Quality;
+use qubit_model_metadata::TypeShape;
 use qubit_model_metadata::metadata_of;
 
 /// Builds a minimal client accepted by the public claim API.
@@ -613,18 +615,13 @@ fn test_claim_leaf_enumerations_round_trip_through_json() {
     }
 }
 
-/// Verifies claim metadata retains the Java payload-size constraint without
+/// Verifies claim metadata keeps the unsupported tuple payload opaque without
 /// treating an unannotated medical amount as money.
 #[test]
 fn test_claim_metadata_preserves_source_constraints() {
     let claim = metadata_of::<InsuranceClaim>();
-    let payload = claim
-        .field("payload")
-        .expect("claim payload field")
-        .sequence_constraint()
-        .expect("claim payload sequence constraint");
-    assert_eq!(payload.min_items(), Some(1));
-    assert_eq!(payload.max_items(), Some(8));
+    let payload = claim.field("payload").expect("claim payload field");
+    assert!(matches!(payload.field_type().shape(), TypeShape::Opaque));
 
     let medical = metadata_of::<InsuranceClaimMedical>();
     assert!(

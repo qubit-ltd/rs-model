@@ -24,6 +24,8 @@ use crate::person::PersonInfo;
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DeviceInfo {
     /// Persisted device identifier; the default value denotes no stored device.
+    #[model(identifier)]
+    #[model(opaque)]
     pub id: Id,
 
     /// Stable device code within the managing application.

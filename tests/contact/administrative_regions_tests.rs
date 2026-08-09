@@ -19,7 +19,10 @@ use qubit_model_metadata::metadata_of;
 /// exercise serialization, metadata, and redaction behavior.
 #[test]
 fn test_administrative_regions_tests_mirror() {
-    assert!(!module_path!().is_empty(), "the test module path must be available");
+    assert!(
+        !module_path!().is_empty(),
+        "the test module path must be available"
+    );
 }
 
 #[test]
@@ -32,7 +35,11 @@ fn test_administrative_regions_preserve_java_keys_indexes_and_references() {
         metadata_of::<Street>(),
     ] {
         assert_eq!(metadata.primary_key().unwrap().fields()[0].name(), "id");
-        assert!(metadata.unique_constraints().any(|unique| unique.contains("code")));
+        assert!(
+            metadata
+                .unique_constraints()
+                .any(|unique| unique.contains("code"))
+        );
         assert!(metadata.indexes().any(|index| index.contains("name")));
         for field in ["predefined", "create_time", "modify_time", "delete_time"] {
             assert!(metadata.indexes().any(|index| index.contains(field)));
