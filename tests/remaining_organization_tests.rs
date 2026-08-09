@@ -10,7 +10,9 @@ use qubit_id::Id;
 use qubit_mixin::Emptyful;
 use qubit_mixin::Normalizable;
 use qubit_model::contact::Phone;
+use qubit_model::organization::Department;
 use qubit_model::organization::Employee;
+use qubit_model::organization::EmployeeInfo;
 use qubit_model::organization::Organization;
 use qubit_model::person::SocialNetworkAccount;
 use qubit_model::product::Seller;
@@ -56,6 +58,37 @@ fn test_organization_metadata_preserves_uniques_references_and_indexes() {
     for field in ["username", "person_id", "organization", "mobile", "state"] {
         assert!(employee.indexes().any(|index| index.contains(field)));
     }
+
+    let department = metadata_of::<Department>();
+    assert_eq!(department.unique_constraints().count(), 3);
+    for field in [
+        "internal_code",
+        "name",
+        "category",
+        "parent",
+        "organization",
+        "state",
+        "test",
+    ] {
+        assert!(
+            department.indexes().any(|index| index.contains(field)),
+            "missing department index for {field}"
+        );
+    }
+    for field in ["category", "parent", "organization"] {
+        assert!(department.field(field).unwrap().reference().is_some());
+    }
+
+    let employee_info = metadata_of::<EmployeeInfo>();
+    assert_eq!(employee_info.unique_constraints().count(), 4);
+    assert!(
+        employee_info
+            .field("username")
+            .unwrap()
+            .reference()
+            .is_some()
+    );
+    assert!(employee_info.field("photo").unwrap().reference().is_some());
 
     let session_reference = metadata_of::<Session>()
         .field("organization")
