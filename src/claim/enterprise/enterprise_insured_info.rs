@@ -27,7 +27,7 @@ use crate::claim::enterprise::EnterpriseOwnership;
 #[redact(debug, display, serde)]
 pub struct EnterpriseInsuredInfo {
     /// Typed identifier used when this enterprise insured-person record is persisted.
-    #[model(identifier)]
+    #[model(unique)]
     #[model(opaque)]
     pub id: Id,
 

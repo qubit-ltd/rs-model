@@ -29,6 +29,7 @@ use super::PersonIdentity;
 use super::Politics;
 use super::Religion;
 use super::SexOrientation;
+use super::User;
 use crate::commons::Category;
 use crate::commons::Credential;
 use crate::commons::CredentialInfo;
@@ -42,6 +43,7 @@ use crate::mixin::StatefulInfo;
 use crate::order::Buyer;
 use crate::order::Client;
 use crate::order::Consignee;
+use crate::organization::Organization;
 use crate::person::PersonInfo;
 use crate::upload::Attachment;
 
@@ -49,7 +51,7 @@ use crate::upload::Attachment;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[model(
-    unique(name = "person_username", fields(username)),
+    unique(name = "person_username", fields(username), ignore_case(username)),
     unique(name = "person_credential", fields(credential))
 )]
 pub struct Person {
@@ -71,7 +73,11 @@ pub struct Person {
     pub name: String,
 
     /// Globally unique login name when the person is associated with a user account.
-    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(
+        reference(target = User, target_field = username),
+        index,
+        text(min_chars = 1, max_chars = 64, repertoire = ascii)
+    )]
     pub username: Option<String>,
 
     /// Self-reported or source-supplied gender for demographic and service records.
@@ -182,6 +188,7 @@ pub struct Person {
     pub incoming: Option<Incoming>,
 
     /// Employer organization associated with the person's current role.
+    #[model(reference(target = Organization, target_field = info))]
     pub organization: Option<StatefulInfo>,
 
     /// Height in centimetres, when collected for clinical or service eligibility use.

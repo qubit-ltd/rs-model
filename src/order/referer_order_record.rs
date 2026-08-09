@@ -16,8 +16,13 @@ use serde::Deserialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use crate::order::Client;
 use crate::order::OpenidType;
+use crate::order::Order;
+use crate::order::OrderItem;
 use crate::order::RefererOrderRecordStatus;
+use crate::product::Product;
+use crate::product::ProductItem;
 
 /// Referral ancestry and payment state for one order item and client.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
@@ -32,6 +37,7 @@ pub struct RefererOrderRecord {
     pub openid_type: OpenidType,
 
     /// Direct referral identifier.
+    #[model(text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     pub openid: String,
 
@@ -39,6 +45,7 @@ pub struct RefererOrderRecord {
     pub root_openid_type: OpenidType,
 
     /// Root referral identifier.
+    #[model(text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     pub root_openid: String,
 
@@ -46,22 +53,23 @@ pub struct RefererOrderRecord {
     pub root_level: i32,
 
     /// Persisted order identifier.
-    #[model(opaque)]
+    #[model(reference(target = Order, target_field = id), opaque)]
     pub order_id: Id,
 
     /// Persisted order-item identifier.
-    #[model(opaque)]
+    #[model(reference(target = OrderItem, target_field = id), opaque)]
     pub order_item_id: Id,
 
     /// Persisted client identifier.
-    #[model(opaque)]
+    #[model(reference(target = Client, target_field = id), opaque)]
     pub client_id: Id,
 
     /// Product code.
+    #[model(reference(target = Product, target_field = code))]
     pub product_code: String,
 
     /// Persisted product-item identifier.
-    #[model(opaque)]
+    #[model(reference(target = ProductItem, target_field = id), opaque)]
     pub product_item_id: Id,
 
     /// Referral order state.

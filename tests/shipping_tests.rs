@@ -37,3 +37,15 @@ fn test_shipping_enums_preserve_java_wire_values() {
         "\"SELF\""
     );
 }
+
+/// Verifies the carrier organization remains a scoped Java reference.
+#[test]
+fn test_shipping_metadata_preserves_organization_reference() {
+    assert!(
+        metadata_of::<Shipping>()
+            .field("organization")
+            .expect("the organization field should exist")
+            .reference()
+            .is_some()
+    );
+}

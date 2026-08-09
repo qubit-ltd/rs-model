@@ -19,8 +19,13 @@ use qubit_redact_derive::Redact;
 /// A country in the administrative hierarchy.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
+#[model(
+    unique(name = "country_code", fields(code), ignore_case(code)),
+    unique(name = "country_name", fields(name), ignore_case(name))
+)]
 pub struct Country {
     /// Platform-assigned identifier of this country reference record.
+    #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
@@ -29,15 +34,15 @@ pub struct Country {
     pub code: String,
 
     /// Globally unique country name.
-    #[model(text(min_chars = 1, max_chars = 128))]
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Telephone area code.
-    #[model(text(min_chars = 1, max_chars = 16, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 16, repertoire = ascii))]
     pub phone_area: String,
 
     /// Optional ASCII postal code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub postalcode: Option<String>,
 
     /// Optional ASCII icon URI.
@@ -52,17 +57,18 @@ pub struct Country {
     pub description: Option<String>,
 
     /// Whether this is predefined reference data.
+    #[model(index)]
     pub predefined: bool,
 
     /// UTC creation timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
     /// Optional UTC modification timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC soft-deletion timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

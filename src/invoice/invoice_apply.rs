@@ -16,9 +16,13 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
+use crate::commons::App;
+use crate::commons::DictEntry;
 use crate::commons::DictEntryInfo;
 use crate::invoice::InvoiceApplyStatus;
 use crate::mixin::StatefulInfo;
+use crate::organization::Organization;
+use crate::person::User;
 use crate::person::UserInfo;
 
 /// An application for an invoice-number allocation from a provincial platform.
@@ -30,15 +34,19 @@ pub struct InvoiceApply {
     pub id: Id,
 
     /// Application that owns this request.
+    #[model(reference(target = App, target_field = info))]
     pub app: StatefulInfo,
 
     /// Organization that owns this request.
+    #[model(reference(target = Organization, target_field = info))]
     pub organization: StatefulInfo,
 
     /// User who submitted the request.
+    #[model(reference(target = User, target_field = info))]
     pub applicant: UserInfo,
 
     /// Application-type dictionary entry.
+    #[model(reference(target = DictEntry, target_field = info))]
     pub r#type: DictEntryInfo,
 
     /// Provincial-platform application number.

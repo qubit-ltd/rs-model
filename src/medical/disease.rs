@@ -17,6 +17,8 @@ use serde::Serialize;
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
+use crate::commons::Category;
+
 /// A coded disease reference used to classify diagnoses and medical records.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Disease {
@@ -26,7 +28,7 @@ pub struct Disease {
     pub id: Id,
 
     /// Globally unique institutional or ICD-10 code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Disease name.
@@ -35,7 +37,7 @@ pub struct Disease {
 
     /// National-standard category, absent when the reference has not been
     /// classified.
-    #[model(opaque)]
+    #[model(reference(target = Category, target_field = info), opaque)]
     pub category: Option<InfoWithEntity>,
 
     /// Explanatory clinical description, absent when the name and code suffice.

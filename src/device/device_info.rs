@@ -29,6 +29,8 @@ pub struct DeviceInfo {
     pub id: Id,
 
     /// Stable device code within the managing application.
+    #[model(unique)]
+    #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub code: String,
 
     /// Human-readable device name.
@@ -53,14 +55,13 @@ pub struct DeviceInfo {
     pub test: bool,
 
     /// UTC time at which the current owner binding was made, if any.
-    #[model(time(precision=second,normalization=utc))]
     pub binding_time: Option<DateTime<Utc>>,
 
     /// UTC device-registration time, if known.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub register_time: Option<DateTime<Utc>>,
 
     /// UTC soft-deletion time, if the device has been deleted.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

@@ -113,9 +113,11 @@ pub struct ClientOrder {
     pub pay_mode: PaymentMode,
 
     /// Platform payment number.
+    #[model(text(min_chars = 1, max_chars = 128))]
     pub pay_number: String,
 
     /// Optional provider payment number.
+    #[model(text(min_chars = 1, max_chars = 128))]
     pub pay_channel_number: Option<String>,
 
     /// Optional refund channel.
@@ -125,9 +127,11 @@ pub struct ClientOrder {
     pub refund_mode: Option<PaymentMode>,
 
     /// Optional platform refund number.
+    #[model(text(min_chars = 1, max_chars = 128))]
     pub refund_number: Option<String>,
 
     /// Optional provider refund number.
+    #[model(text(min_chars = 1, max_chars = 128))]
     pub refund_channel_number: Option<String>,
 
     /// Optional order source.

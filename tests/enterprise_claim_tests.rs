@@ -68,3 +68,16 @@ fn test_enterprise_claim_reference_structs_expose_all_source_fields() {
         17
     );
 }
+
+/// Verifies the enterprise-insured identifier is a unique business key rather
+/// than a primary key.
+#[test]
+fn test_enterprise_insured_info_uses_java_unique_identifier_metadata() {
+    let metadata = metadata_of::<EnterpriseInsuredInfo>();
+    assert!(metadata.primary_key().is_none());
+    assert!(
+        metadata
+            .unique_constraints()
+            .any(|unique| unique.contains("id"))
+    );
+}

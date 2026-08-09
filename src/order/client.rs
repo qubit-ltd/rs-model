@@ -50,6 +50,7 @@ pub struct Client {
     pub mobile: Option<Phone>,
 
     /// Optional email address.
+    #[model(text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 
