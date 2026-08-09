@@ -289,57 +289,57 @@ pub enum Field {
     Password,
     /// The amount due for payment.
     Payable,
-    /// The identifier of the payee’s receiving account.
+    /// The identifier of the receiving account held by the payment recipient.
     PayeeAccountId,
-    /// The payee's altitude for the payment.
+    /// The recipient's geographic altitude at the payment location.
     PayeeAltitude,
-    /// The payee's credential number for the payment.
+    /// The identity-credential number supplied for the payment recipient.
     PayeeCredentialNumber,
-    /// The payee's credential type for the payment.
+    /// The type of identity credential supplied for the payment recipient.
     PayeeCredentialType,
-    /// The payee's email for the payment.
+    /// The email address used to contact the payment recipient.
     PayeeEmail,
-    /// The identifier of the payee.
+    /// The identifier of the party receiving the payment.
     PayeeId,
-    /// The payee’s network IP address.
+    /// The network IP address reported for the payment recipient.
     PayeeIp,
-    /// The payee's latitude for the payment.
+    /// The recipient's geographic latitude at the payment location.
     PayeeLatitude,
-    /// The payee's longitude for the payment.
+    /// The recipient's geographic longitude at the payment location.
     PayeeLongitude,
-    /// The payee's name for the payment.
+    /// The display name of the party receiving the payment.
     PayeeName,
-    /// The payee's phone for the payment.
+    /// The telephone number used to contact the payment recipient.
     PayeePhone,
-    /// The payee's platform for the payment.
+    /// The client platform reported by the payment recipient.
     PayeePlatform,
-    /// The payee's type for the payment.
+    /// The business classification of the payment recipient.
     PayeeType,
-    /// The identifier of the payer’s funding account.
+    /// The identifier of the funding account held by the payment sender.
     PayerAccountId,
-    /// The payer's altitude for the payment.
+    /// The sender's geographic altitude at the payment location.
     PayerAltitude,
-    /// The payer's credential number for the payment.
+    /// The identity-credential number supplied for the payment sender.
     PayerCredentialNumber,
-    /// The payer's credential type for the payment.
+    /// The type of identity credential supplied for the payment sender.
     PayerCredentialType,
-    /// The payer's email for the payment.
+    /// The email address used to contact the payment sender.
     PayerEmail,
-    /// The identifier of the payer.
+    /// The identifier of the party making the payment.
     PayerId,
-    /// The payer’s network IP address.
+    /// The network IP address reported for the payment sender.
     PayerIp,
-    /// The payer's latitude for the payment.
+    /// The sender's geographic latitude at the payment location.
     PayerLatitude,
-    /// The payer's longitude for the payment.
+    /// The sender's geographic longitude at the payment location.
     PayerLongitude,
-    /// The payer's name for the payment.
+    /// The display name of the party making the payment.
     PayerName,
-    /// The payer's phone for the payment.
+    /// The telephone number used to contact the payment sender.
     PayerPhone,
-    /// The payer's platform for the payment.
+    /// The client platform reported by the payment sender.
     PayerPlatform,
-    /// The payer's type for the payment.
+    /// The business classification of the payment sender.
     PayerType,
     /// The time at which payment completed.
     PayTime,

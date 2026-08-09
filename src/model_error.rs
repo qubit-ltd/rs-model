@@ -20,12 +20,14 @@ pub enum ModelError {
     ///
     /// `violations` contains every detected field failure and can be empty
     /// when only a model-wide constraint failed. `message` is `None` when no
-    /// caller-defined summary is available; neither field preserves rejected values.
+    /// caller-defined summary is available. Callers must ensure that the
+    /// message and every violation omit sensitive rejected values before they
+    /// are stored in this error.
     #[error("{display_message}", display_message = message.as_deref().unwrap_or("model validation failed"))]
     ValidationFailed {
-        /// A caller-defined summary, or `None` when no summary is available.
+        /// A caller-defined summary stored verbatim, or `None` when unavailable.
         message: Option<String>,
-        /// All detected field-level violations; rejected values are omitted.
+        /// All detected field-level violations supplied by the caller.
         violations: Vec<ValidationViolation>,
     },
 }
