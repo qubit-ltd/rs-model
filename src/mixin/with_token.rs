@@ -15,6 +15,6 @@ pub trait WithToken {
     /// Returns the current token, or `None` when no token has been issued.
     fn token(&self) -> Option<&Token>;
 
-    /// Sets the current token; `None` revokes or clears the stored token.
+    /// Sets the current token; `None` clears the stored token reference.
     fn set_token(&mut self, token: Option<Token>);
 }
