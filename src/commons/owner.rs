@@ -16,13 +16,17 @@ use qubit_model_derive::Model;
 
 /// Identifies the owner of a domain object.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
+#[model(key(name = "owner_key", fields(type, id, property)))]
 pub struct Owner {
-    /// Owning entity name.
+    /// Owning entity type name.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
-    pub entity: String,
+    pub r#type: String,
 
     /// Owner's persisted identifier.
-    #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
+
+    /// Optional property owned on the target entity.
+    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    pub property: Option<String>,
 }

@@ -13,10 +13,12 @@ use std::fmt;
 use qubit_mixin::Normalizable;
 use qubit_model::contact::ContactCodecError;
 use qubit_model::contact::CoordinateSystem;
+use qubit_model::contact::Location;
 use qubit_model::contact::LocationCodec;
 use qubit_model::contact::LocationCoordinateDeserializer;
 use qubit_model::contact::Phone;
 use qubit_model::contact::PhoneJsonKeyDeserializer;
+use qubit_model_metadata::metadata_of;
 
 /// A formatter that returns an error for every write attempt.
 struct FailingFormatter;
@@ -38,6 +40,14 @@ fn test_phone_preserves_all_source_number_components() {
     assert_eq!(phone.country_area.as_deref(), Some("86"));
     assert_eq!(phone.city_area.as_deref(), Some("025"));
     assert_eq!(phone.number, "88273847");
+}
+
+#[test]
+fn test_location_metadata_preserves_source_indexes() {
+    let location = metadata_of::<Location>();
+    for field in ["longitude", "latitude", "altitude", "coordinate_system"] {
+        assert!(location.indexes().any(|index| index.contains(field)));
+    }
 }
 
 #[test]

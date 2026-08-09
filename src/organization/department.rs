@@ -81,6 +81,7 @@ pub struct Department {
     pub description: Option<String>,
 
     /// Contact channels for the department rather than an individual employee.
+    #[model(index, opaque)]
     pub contact: Option<Contact>,
 
     /// Application-defined extension values associated with this department.

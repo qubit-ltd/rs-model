@@ -101,10 +101,10 @@ fn metadata_public_types_preserve_source_fields_and_traits() {
     assert_redact::<Source>();
 
     assert_eq!(metadata_of::<Category>().struct_fields().len(), 13);
-    assert_eq!(metadata_of::<Dict>().struct_fields().len(), 15);
+    assert_eq!(metadata_of::<Dict>().struct_fields().len(), 16);
     assert_eq!(metadata_of::<DictEntry>().struct_fields().len(), 10);
     assert_eq!(metadata_of::<DictEntryInfo>().struct_fields().len(), 6);
-    assert_eq!(metadata_of::<FullDict>().struct_fields().len(), 16);
+    assert_eq!(metadata_of::<FullDict>().struct_fields().len(), 17);
     assert_eq!(metadata_of::<Payload>().struct_fields().len(), 7);
     assert_eq!(metadata_of::<Source>().struct_fields().len(), 11);
 }
@@ -415,6 +415,7 @@ fn full_dict_translates_exact_dirty_and_parameterized_codes() {
         url: None,
         description: None,
         comment: None,
+        app: None,
         category: None,
         state: State::Normal,
         predefined: false,

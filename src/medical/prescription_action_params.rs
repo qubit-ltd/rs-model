@@ -17,6 +17,7 @@ use qubit_model_derive::Model;
 
 use crate::Entity;
 use crate::medical::PrescriptionAction;
+use crate::security::KeyValuePair;
 
 /// Audit context for a prescription transition, including its actor and source
 /// payload.
@@ -44,6 +45,6 @@ pub struct PrescriptionActionParams {
     pub timestamp: DateTime<Utc>,
 
     /// Optional source-order key-value payload.
-    #[model(opaque)]
-    pub payload: Option<Vec<(String, String)>>,
+    #[model(sequence(max_items = 16))]
+    pub payload: Option<Vec<KeyValuePair>>,
 }

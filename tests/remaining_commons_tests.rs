@@ -10,12 +10,15 @@ use qubit_mixin::Normalizable;
 use qubit_model::Field;
 use qubit_model::commons::App;
 use qubit_model::commons::AppResource;
+use qubit_model::commons::AuthorizeRecord;
 use qubit_model::commons::Category;
 use qubit_model::commons::Code;
 use qubit_model::commons::CodeMap;
 use qubit_model::commons::Credential;
 use qubit_model::commons::Faq;
 use qubit_model::commons::MqFailedTask;
+use qubit_model::commons::Owner;
+use qubit_model::commons::Owners;
 use qubit_model::commons::Payload;
 use qubit_model::commons::Schedule;
 use qubit_model::commons::Source;
@@ -44,10 +47,35 @@ fn test_remaining_common_models_preserve_source_shapes_and_traits() {
     assert_eq!(metadata_of::<Faq>().struct_fields().len(), 11);
     assert_eq!(metadata_of::<MqFailedTask>().struct_fields().len(), 9);
     assert_eq!(metadata_of::<Schedule>().struct_fields().len(), 3);
+    assert_eq!(metadata_of::<Owner>().struct_fields().len(), 3);
+    assert_eq!(metadata_of::<Owners>().struct_fields().len(), 3);
 }
 
 #[test]
 fn test_remaining_common_metadata_preserves_source_constraints() {
+    assert!(
+        metadata_of::<AuthorizeRecord>()
+            .indexes()
+            .any(|index| index.contains("time"))
+    );
+
+    assert_eq!(
+        metadata_of::<Owner>()
+            .keys()
+            .next()
+            .expect("owner key metadata")
+            .fields(),
+        ["type", "id", "property"]
+    );
+    assert_eq!(
+        metadata_of::<Owners>()
+            .keys()
+            .next()
+            .expect("owners key metadata")
+            .fields(),
+        ["type", "ids", "property"]
+    );
+
     let resource = metadata_of::<AppResource>();
     assert_eq!(
         resource.primary_key().expect("primary key").fields()[0].name(),
@@ -186,7 +214,7 @@ fn test_common_model_metadata_preserves_java_keys_indexes_and_references() {
     ] {
         assert!(source.indexes().any(|index| index.contains(field)));
     }
-    for field in ["app", "category", "provider_app", "provider_organization"] {
+    for field in ["app", "category", "provider_app", "provider_org"] {
         assert!(source.field(field).unwrap().reference().is_some());
     }
 

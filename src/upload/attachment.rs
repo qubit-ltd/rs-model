@@ -46,6 +46,7 @@ pub struct Attachment {
     pub category: Option<InfoWithEntity>,
 
     /// Zero-based position in the owner's attachment list.
+    #[model(index)]
     pub index: i32,
 
     /// User-facing title, or `None` when no title is set.
@@ -64,6 +65,7 @@ pub struct Attachment {
     pub state: State,
 
     /// Visibility flag, or `None` when visibility is unspecified.
+    #[model(index)]
     pub visible: Option<bool>,
 
     /// Creator reference, or `None` when the creator was not captured.

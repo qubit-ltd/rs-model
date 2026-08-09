@@ -67,7 +67,7 @@ pub struct Source {
 
     /// Optional provider organization information.
     #[model(reference(target = Organization, target_field = info))]
-    pub provider_organization: Option<StatefulInfo>,
+    pub provider_org: Option<StatefulInfo>,
 
     /// Whether this source is predefined.
     #[model(index)]
