@@ -41,12 +41,12 @@ pub struct Prescription {
     /// participant, while `None` means no external inspection is recorded.
     pub inspector: Option<EmployeeInfo>,
 
-    /// Pharmacy pharmacist who prepared the medication; `Some` records the
-    /// participant after preparation, while `None` means it is not prepared.
+    /// Pharmacy pharmacist recorded for medication preparation; `None` means
+    /// no preparation participant record is present.
     pub pharmacist: Option<EmployeeInfo>,
 
-    /// Pharmacy pharmacist who reviewed prepared medication; `Some` records
-    /// that participant, while `None` means pharmacy review is not complete.
+    /// Pharmacy pharmacist recorded for review of prepared medication; `None`
+    /// means no pharmacy-review participant record is present.
     pub reviewer: Option<EmployeeInfo>,
 
     /// Pharmacy pharmacist who dispensed the medication; `Some` records the
@@ -62,7 +62,8 @@ pub struct Prescription {
     #[model(opaque)]
     pub signatures: Option<Vec<serde_json::Value>>,
 
-    /// Current prescription state.
+    /// Authoritative prescription workflow state; use this `PrescriptionStatus`
+    /// rather than participant-record presence to determine workflow progress.
     pub status: PrescriptionStatus,
 
     /// Typed identifier linking this prescription to its product order; one
