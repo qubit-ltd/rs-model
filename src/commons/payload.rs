@@ -20,6 +20,7 @@ use super::Owner;
 
 /// A named payload belonging to an owner.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[model(unique(name = "payload_owner_key", fields(owner, key), ignore_case(key)))]
 pub struct Payload {
     /// Platform-assigned identifier of this owner-scoped payload.
     #[model(identifier)]
@@ -27,10 +28,11 @@ pub struct Payload {
     pub id: Id,
 
     /// Payload key.
-    #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
+    #[model(text(min_chars = 1, max_chars = 128))]
     pub key: String,
 
     /// Optional payload value.
+    #[model(text(min_chars = 1, max_chars = 256))]
     pub value: Option<String>,
 
     /// Payload owner.

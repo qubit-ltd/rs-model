@@ -30,7 +30,7 @@ pub struct CredentialInfo {
     pub r#type: CredentialType,
 
     /// Credential number.
-    #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
+    #[model(text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     pub number: String,
 
