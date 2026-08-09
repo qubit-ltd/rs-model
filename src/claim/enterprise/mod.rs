@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise insurance-claim models and classifications.
+//! Models for employer-sponsored claim imports, calculation, and reconciliation.
 
 #[allow(clippy::module_inception)]
 mod enterprise_claim;

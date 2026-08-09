@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Individual claim medical encounters.
+//! Medical encounters supplied as evidence for an individual claim.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -22,7 +22,8 @@ use qubit_model_derive::Model;
 use crate::claim::InsuranceClaimInvoice;
 use crate::medical::MedicalType;
 
-/// A medical encounter and its invoices within an individual claim.
+/// A treatment encounter included in a claim, with the invoices substantiating
+/// its costs.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimMedical {
     /// Optional persisted identifier.

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Signable prescription content.
+//! Clinical prescription content that participants review and sign.
 
 use chrono::NaiveDateTime;
 use serde::Deserialize;
@@ -23,7 +23,8 @@ use crate::medical::Patient;
 use crate::medical::PrescriptionItem;
 use crate::organization::EmployeeInfo;
 
-/// The stable clinical content signed and carried by a prescription.
+/// The clinical facts of a prescription, separated from its mutable workflow
+/// record so they can be signed consistently.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionContent {
     /// Prescription sequence number within the issuing organization.

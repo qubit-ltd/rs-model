@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Hospitalization information.
+//! HIS data for an inpatient admission and discharge episode.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,7 +16,7 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// Hospital-system information for an inpatient stay.
+/// Source-system record of an inpatient stay, from admission through discharge.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct HospitalizationInfo {
     /// Source-system business sequence number.

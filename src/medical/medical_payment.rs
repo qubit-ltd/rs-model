@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical payment breakdowns.
+//! Payment components produced by a medical-insurance settlement.
 
 use bigdecimal::BigDecimal;
 use serde::Deserialize;
@@ -14,7 +14,8 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// A complete breakdown of patient, insurer, fund, and prepayment amounts.
+/// Allocates a settlement total across insurance funds, personal payments, and
+/// public subsidies.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalPayment {
     /// Patient self-care amount for partially covered items.

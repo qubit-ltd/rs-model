@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Polymorphic hospital-information-system records.
+//! Hospital-information-system payloads attached to a medical settlement.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -18,7 +18,7 @@ use crate::medical::HospitalizationInfo;
 use crate::medical::RegistrationInfo;
 use crate::medical::SpecificClinicInfo;
 
-/// A typed hospital-information-system payload.
+/// A tagged HIS record whose variant identifies the encounter that generated it.
 ///
 /// The enum discriminator carries the Java base class's immutable `type`
 /// property, while each payload carries the shared `number` and `remark`

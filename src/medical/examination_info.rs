@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical examination information.
+//! HIS data for physical or clinical examination appointments.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,7 +16,7 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// Hospital-system information for a medical examination.
+/// Source-system record for a medical examination encounter.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ExaminationInfo {
     /// Source-system business sequence number.

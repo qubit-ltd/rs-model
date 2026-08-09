@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Complete drug catalog records.
+//! Regulatory and clinical reference data for medicines in the drug catalog.
 
 use chrono::DateTime;
 use chrono::NaiveDate;
@@ -20,7 +20,8 @@ use qubit_model_derive::Model;
 
 use crate::commons::DictEntryInfo;
 
-/// A pharmaceutical catalog record with regulatory and administration data.
+/// A complete medicine catalog entry, including regulatory, dispensing, and
+/// administration information.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Drug {
     /// Optional persisted identifier.

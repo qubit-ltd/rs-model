@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Individual insurance claims.
+//! Individual claim cases submitted under a personal insurance policy.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -36,8 +36,8 @@ use crate::payment::Account;
 use crate::product::Product;
 use crate::upload::Attachment;
 
-/// An individual claim with insured event, payment, documents, and workflow
-/// data.
+/// A personal claim case that joins the covered event, submitted evidence,
+/// payment instructions, medical evidence, and processing history.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct InsuranceClaim {

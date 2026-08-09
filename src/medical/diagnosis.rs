@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical diagnoses.
+//! Ranked diagnoses assigned to clinical records.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -17,7 +17,8 @@ use qubit_model_derive::Model;
 
 use crate::Entity;
 
-/// A ranked western or traditional-Chinese diagnosis owned by a medical record.
+/// A prioritized Western-medicine or traditional-Chinese diagnosis for one
+/// clinical record.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Diagnosis {
     /// Optional persisted identifier.

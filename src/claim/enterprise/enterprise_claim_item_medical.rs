@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim-item medical links.
+//! Join records connecting enterprise-claim calculations to medical encounters.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,7 +16,7 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Links an enterprise claim calculation item to a medical encounter.
+/// Links one enterprise-claim allocation item to an encounter it accounts for.
 #[derive(Model, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct EnterpriseClaimItemMedical {
     /// Optional persisted identifier.

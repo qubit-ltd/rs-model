@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Lightweight patient information.
+//! Patient snapshot data embedded in settlement and clinical payloads.
 
 use chrono::NaiveDate;
 use qubit_id::Id;
@@ -19,7 +19,8 @@ use crate::commons::CredentialInfo;
 use crate::contact::Phone;
 use crate::person::Gender;
 
-/// A compact patient snapshot embedded in medical records.
+/// The identifying patient details needed by a medical record without the full
+/// patient profile.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct PatientInfo {

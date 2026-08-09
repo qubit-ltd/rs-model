@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Emergency clinic visit information.
+//! HIS data for emergency outpatient encounters.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,7 +16,7 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// Hospital-system information for an emergency outpatient visit.
+/// Source-system record for a patient's emergency outpatient visit.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EmergentClinicInfo {
     /// Source-system business sequence number.

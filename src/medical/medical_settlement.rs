@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical settlement records.
+//! Medical-insurance settlement records and their supporting details.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -24,7 +24,8 @@ use crate::medical::MedicareType;
 use crate::medical::PatientInfo;
 use crate::mixin::StatefulInfo;
 
-/// A settlement augmented with patient, insurance, HIS, and charge details.
+/// A completed medical-insurance settlement with the patient, HIS encounter,
+/// payment allocation, and billed items that support it.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalSettlement {
     /// Optional persisted identifier inherited from the settlement model.

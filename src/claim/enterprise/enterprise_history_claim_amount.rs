@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Persisted historical enterprise claim amounts.
+//! Stored prior-period claim amounts for an enterprise-insured person.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -19,8 +19,8 @@ use qubit_redact_derive::Redact;
 
 use crate::commons::DictEntryInfo;
 
-/// Historical claim totals for one insured person, product, and medical
-/// category.
+/// Historical totals for one covered person, insurance product, and medical
+/// category, retained for later enterprise-claim calculations.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct EnterpriseHistoryClaimAmount {

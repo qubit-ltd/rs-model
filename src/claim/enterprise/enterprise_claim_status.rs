@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Detailed enterprise claim workflow states.
+//! Fine-grained lifecycle states for employer-sponsored claims.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -15,7 +15,7 @@ use qubit_model_derive::Model;
 
 use crate::claim::enterprise::EnterpriseClaimStatusGroup;
 
-/// Describes the detailed processing state of an enterprise insurance claim.
+/// Captures the detailed state that controls enterprise-claim processing.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum EnterpriseClaimStatus {

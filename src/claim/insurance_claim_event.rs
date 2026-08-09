@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Individual claim workflow events.
+//! Immutable audit events for individual-claim processing.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -19,7 +19,8 @@ use qubit_redact_derive::Redact;
 use crate::claim::InsuranceClaimStatus;
 use crate::claim::InsuranceClaimStatusGroup;
 
-/// A state transition recorded for an individual insurance claim.
+/// An auditable transition that records who moved an individual claim to a
+/// particular workflow state.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct InsuranceClaimEvent {

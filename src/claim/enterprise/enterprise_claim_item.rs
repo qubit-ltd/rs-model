@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim calculation items.
+//! Per-category allocation and reimbursement calculations for enterprise claims.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -24,8 +24,8 @@ use crate::claim::enterprise::EnterpriseHistoryClaimAmount;
 use crate::claim::enterprise::EnterpriseInsuredType;
 use crate::commons::DictEntryInfo;
 
-/// A calculated enterprise claim partition for one medical category and insured
-/// type.
+/// A calculated portion of an enterprise claim for one medical category and
+/// covered-person type.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimItem {
     /// Optional persisted identifier.

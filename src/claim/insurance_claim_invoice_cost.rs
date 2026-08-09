@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Claim-invoice charge breakdowns.
+//! Named medical charges extracted from individual-claim invoices.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -17,7 +17,7 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// A named medical charge extracted from a claim invoice.
+/// One extracted medical charge within a claim invoice's billed-cost breakdown.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimInvoiceCost {
     /// Optional persisted identifier.

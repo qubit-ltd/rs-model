@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Hospital-to-drugstore relationships.
+//! Managed associations between hospitals and their dispensing drugstores.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -17,7 +17,8 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// A relationship between a hospital and one of its dispensing drugstores.
+/// A hospital's authorized relationship with a drugstore that dispenses its
+/// prescriptions.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct HospitalDrugstore {
     /// Optional persisted identifier.

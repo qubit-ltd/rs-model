@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim invoices.
+//! Invoice evidence imported for employer-sponsored claims.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -21,7 +21,7 @@ use qubit_model_derive::Model;
 use crate::claim::enterprise::EnterpriseClaimSelfCareItem;
 use crate::claim::enterprise::SaveStatus;
 
-/// A medical invoice imported into an enterprise insurance claim.
+/// A medical invoice imported as evidence for an enterprise claim.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimInvoice {
     /// Optional persisted identifier.

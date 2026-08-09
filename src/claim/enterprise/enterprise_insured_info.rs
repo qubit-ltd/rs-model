@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise insured-person information.
+//! Covered-person data imported from an enterprise insurance program.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -21,7 +21,8 @@ use crate::claim::enterprise::EnterpriseHistoryClaimAmount;
 use crate::claim::enterprise::EnterpriseInsuredType;
 use crate::claim::enterprise::EnterpriseOwnership;
 
-/// An enterprise insured person and their linked employee and claim history.
+/// A covered person with employee linkage and historical enterprise-claim
+/// amounts used for eligibility and calculation.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct EnterpriseInsuredInfo {

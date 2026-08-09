@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Special outpatient clinic visit information.
+//! HIS data recorded for special-disease outpatient visits.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,7 +16,8 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// Hospital-system information for a special outpatient visit.
+/// Source-system details for an outpatient visit handled under a special-disease
+/// program.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct SpecificClinicInfo {
     /// Source-system business sequence number.

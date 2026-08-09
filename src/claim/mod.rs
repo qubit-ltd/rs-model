@@ -6,7 +6,8 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Individual and enterprise insurance-claim models.
+//! Models for individual and employer-sponsored insurance claims, their
+//! evidence, financial outcomes, and workflow state.
 
 mod accident_reason;
 pub mod enterprise;

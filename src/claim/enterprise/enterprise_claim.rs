@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise insurance claims.
+//! Employer-sponsored claim cases and their imported evidence.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -27,7 +27,8 @@ use crate::order::Client;
 use crate::product::Product;
 use crate::upload::Attachment;
 
-/// An enterprise claim with insured parties, workflow events, and attachments.
+/// An employer-sponsored claim case containing covered parties, supporting
+/// records, calculation items, and its processing history.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaim {
     /// Optional persisted identifier.

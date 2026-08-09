@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Lightweight drug information.
+//! Drug snapshots carried in prescriptions and product mappings.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -17,7 +17,8 @@ use qubit_model_derive::Model;
 
 use crate::commons::DictEntryInfo;
 
-/// A compact drug snapshot embedded in prescriptions and products.
+/// The drug attributes needed by prescription and commerce records, without the
+/// complete catalog entry.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DrugInfo {
     /// Optional persisted identifier.

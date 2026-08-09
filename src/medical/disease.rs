@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Disease reference records.
+//! Reference records for Western and traditional-Chinese diseases.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -17,7 +17,7 @@ use serde::Serialize;
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
-/// A coded disease definition used by diagnoses and medical catalogs.
+/// A coded disease reference used to classify diagnoses and medical records.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Disease {
     /// Optional persisted identifier.

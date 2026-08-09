@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Complete patient records.
+//! Full patient records used in clinical prescription content.
 
 use chrono::DateTime;
 use chrono::NaiveDate;
@@ -24,7 +24,7 @@ use crate::contact::Phone;
 use crate::person::Gender;
 use crate::person::PersonInfo;
 
-/// A hospital patient with identity, insurance, contact, and lifecycle data.
+/// Clinical identity, coverage, and contact details for a patient receiving care.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Patient {

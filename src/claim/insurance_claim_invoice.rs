@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Individual claim invoices.
+//! Invoice evidence captured for individual insurance claims.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -21,7 +21,7 @@ use crate::claim::InsuranceClaimInvoiceCost;
 use crate::claim::InsuranceClaimInvoiceStatus;
 use crate::claim::InsuranceClaimInvoiceType;
 
-/// A medical invoice imported into an individual insurance claim.
+/// A medical invoice imported as financial evidence for an individual claim.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimInvoice {
     /// Optional persisted identifier.

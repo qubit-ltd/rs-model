@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim self-care items.
+//! Self-care charge components extracted from enterprise-claim invoices.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -17,7 +17,7 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// A partially self-paid charge extracted from an enterprise claim invoice.
+/// A charge for which the insured person bears a defined self-care share.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimSelfCareItem {
     /// Optional persisted identifier.

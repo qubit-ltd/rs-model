@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical settlement line items.
+//! Billed medical items and their reimbursement allocations.
 
 use bigdecimal::BigDecimal;
 use qubit_id::Id;
@@ -18,7 +18,7 @@ use qubit_model_derive::Model;
 use crate::commons::DictEntryInfo;
 use crate::medical::MedicareItemType;
 
-/// A charged medical item and its insurance reimbursement breakdown.
+/// A billed service or medicine together with its patient and insurer liability.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalSettlementItem {
     /// Optional persisted identifier.

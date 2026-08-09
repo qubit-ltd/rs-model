@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim medical encounters.
+//! Medical encounters imported for employer-sponsored claims.
 
 use chrono::DateTime;
 use chrono::NaiveDate;
@@ -22,7 +22,8 @@ use crate::claim::enterprise::EnterpriseInsuredType;
 use crate::claim::enterprise::SaveStatus;
 use crate::commons::DictEntryInfo;
 
-/// A medical encounter imported for an enterprise insurance claim.
+/// A treatment encounter imported into an enterprise claim, with its invoices
+/// and eligibility attributes.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimMedical {
     /// Optional persisted identifier.

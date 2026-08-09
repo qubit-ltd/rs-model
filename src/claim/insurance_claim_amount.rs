@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Insurance-claim amount summaries.
+//! Monetary totals accumulated for an individual claim.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -18,7 +18,8 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Submitted, covered, claimed, and actually paid amounts for a claim.
+/// Aggregates billed, covered, claimed, and ultimately paid amounts for one
+/// claim case.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimAmount {
     /// Optional persisted identifier.

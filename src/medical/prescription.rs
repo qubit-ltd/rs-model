@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Prescription workflow records.
+//! Persisted prescriptions and their dispensing-workflow context.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -20,8 +20,8 @@ use crate::medical::PrescriptionContent;
 use crate::medical::PrescriptionStatus;
 use crate::organization::EmployeeInfo;
 
-/// A prescription and the clinicians, signatures, order, and lifecycle around
-/// it.
+/// A prescription record that binds signable clinical content to review,
+/// dispensing, and order-fulfillment state.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Prescription {
     /// Optional persisted identifier.

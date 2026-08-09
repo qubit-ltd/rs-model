@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim workflow events.
+//! Immutable audit events for employer-sponsored claims.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -19,7 +19,7 @@ use qubit_model_derive::Model;
 use crate::claim::enterprise::EnterpriseClaimStatus;
 use crate::claim::enterprise::EnterpriseClaimStatusGroup;
 
-/// A state transition recorded for an enterprise insurance claim.
+/// An auditable transition that records progress through an enterprise claim.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimEvent {
     /// Optional persisted identifier.
