@@ -18,9 +18,14 @@ use serde::Serialize;
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
+use crate::commons::App;
+use crate::commons::Category;
 use crate::commons::Currency;
+use crate::commons::Source;
 use crate::invoice::InvoiceStatus;
 use crate::mixin::StatefulInfo;
+use crate::order::Order;
+use crate::order::Return;
 use crate::order::ReturnIssuer;
 use crate::payment::Participant;
 use crate::payment::Payment;
@@ -41,29 +46,30 @@ pub struct Transaction {
     pub r#type: Option<TransactionType>,
 
     /// Optional identifier of the originating transaction.
-    #[model(opaque)]
+    #[model(reference(target = Transaction, target_field = id), opaque)]
     pub origin_id: Id,
 
     /// Optional transaction state, omitted in filtered gateway requests.
     pub status: Option<TransactionStatus>,
 
     /// Optional owning application, omitted in filtered gateway requests.
+    #[model(reference(target = App, target_field = info))]
     pub app: Option<StatefulInfo>,
 
     /// Optional transaction source.
-    #[model(opaque)]
+    #[model(reference(target = Source, target_field = info), opaque)]
     pub source: Option<InfoWithEntity>,
 
     /// Optional transaction category.
-    #[model(opaque)]
+    #[model(reference(target = Category, target_field = info), opaque)]
     pub category: Option<InfoWithEntity>,
 
     /// Persisted order identifier.
-    #[model(opaque)]
+    #[model(reference(target = Order, target_field = id), opaque)]
     pub order_id: Id,
 
     /// Identifier of the return; its default value means that no related record is stored.
-    #[model(opaque)]
+    #[model(reference(target = Return, target_field = id), opaque)]
     pub return_id: Id,
 
     /// Optional party that initiated a return.

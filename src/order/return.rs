@@ -20,10 +20,14 @@ use qubit_model_derive::Model;
 use crate::commons::Currency;
 use crate::invoice::InvoiceStatus;
 use crate::order::Client;
+use crate::order::Order;
+use crate::order::OrderItem;
 use crate::order::ReturnIssuer;
 use crate::order::ReturnReason;
 use crate::order::ReturnStatus;
+use crate::product::Product;
 use crate::product::ProductInfo;
+use crate::settlement::Transaction;
 use crate::system::Environment;
 
 /// A return request and its refund, shipping, and lifecycle state.
@@ -35,21 +39,22 @@ pub struct Return {
     pub id: Id,
 
     /// Persisted order identifier.
-    #[model(opaque)]
+    #[model(reference(target = Order, target_field = id), opaque)]
     pub order_id: Id,
 
     /// Persisted order-item identifier.
-    #[model(opaque)]
+    #[model(reference(target = OrderItem, target_field = id), opaque)]
     pub order_item_id: Id,
 
     /// Identifier of the refund-transaction; its default value means that no related record is stored.
-    #[model(opaque)]
+    #[model(reference(target = Transaction, target_field = id), opaque)]
     pub transaction_id: Id,
 
     /// Party that initiated the return.
     pub issuer: ReturnIssuer,
 
     /// Returned product snapshot.
+    #[model(reference(target = Product, target_field = info))]
     pub product: ProductInfo,
 
     /// Returned quantity.
@@ -86,6 +91,7 @@ pub struct Return {
     pub shipping_id: Id,
 
     /// Optional return-shipment tracking number.
+    #[model(text(min_chars = 1, max_chars = 64))]
     pub shipping_number: Option<String>,
 
     /// Invoice lifecycle state.

@@ -16,6 +16,8 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 use crate::order::Client;
+use crate::order::Order;
+use crate::product::Product;
 use crate::product::ProductInfo;
 
 /// Quantity, pricing, fulfillment, and client data for one order line.
@@ -27,13 +29,14 @@ pub struct OrderItem {
     pub id: Id,
 
     /// Persisted owning-order identifier.
-    #[model(opaque)]
+    #[model(reference(target = Order, target_field = id), opaque)]
     pub order_id: Id,
 
     /// Position within the order.
     pub index: i32,
 
     /// Purchased product snapshot.
+    #[model(reference(target = Product, target_field = info))]
     pub product: ProductInfo,
 
     /// Purchased quantity.
@@ -48,6 +51,7 @@ pub struct OrderItem {
     pub discount: BigDecimal,
 
     /// Optional discount reason.
+    #[model(text(min_chars = 1, max_chars = 256))]
     pub discount_reason: Option<String>,
 
     /// Line shipping cost.

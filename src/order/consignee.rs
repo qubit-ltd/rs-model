@@ -19,6 +19,7 @@ use qubit_redact_derive::Redact;
 use crate::commons::CredentialInfo;
 use crate::contact::Address;
 use crate::contact::Phone;
+use crate::person::User;
 
 /// A saved recipient and delivery address for an order.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
@@ -30,7 +31,7 @@ pub struct Consignee {
     pub id: Id,
 
     /// Identifier of the owning-user; its default value means that no related record is stored.
-    #[model(opaque)]
+    #[model(reference(target = User, target_field = id), opaque)]
     pub user_id: Id,
 
     /// Optional saved-address title.
@@ -45,6 +46,7 @@ pub struct Consignee {
     pub mobile: Phone,
 
     /// Optional recipient email address.
+    #[model(text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 
