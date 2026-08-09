@@ -6,40 +6,29 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! REST response value wrappers.
+//! JSON-object wrappers for scalar REST response values.
 
 use serde::Deserialize;
 use serde::Serialize;
 
-/// Wraps one REST response value so it serializes as a JSON object.
+/// Wraps a response value so scalar results serialize as JSON objects.
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ResultValue<T> {
-    /// Wrapped response value.
+    /// The response payload represented by this object.
     pub value: T,
 }
 
-/// Java-compatible public name for [`ResultValue`].
+/// Java-compatible alias for [`ResultValue`].
 pub type Result<T> = ResultValue<T>;
 
 impl<T> ResultValue<T> {
-    /// Creates a response wrapper for `value`.
-    ///
-    /// # Parameters
-    ///
-    /// * `value` - The response value to wrap.
-    ///
-    /// # Returns
-    ///
-    /// A response wrapper that owns `value`.
+    /// Creates a wrapper that owns the supplied response payload.
     #[must_use]
     pub fn new(value: T) -> Self {
         Self { value }
     }
 
-    /// Consumes this wrapper and returns its response value.
-    ///
-    /// # Returns
-    /// The value previously held by this wrapper.
+    /// Consumes the wrapper and returns its response payload.
     #[must_use]
     pub fn into_inner(self) -> T {
         self.value

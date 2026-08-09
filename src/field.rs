@@ -5,574 +5,574 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Domain field identifiers.
+//! Standard field classifications used by model payloads and validation messages.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// Identifies a field that can appear in a model or validation message.
+/// Identifies a named property used across domain models and localized messages.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Field {
-    /// Source field `ACTION`.
+    /// The requested business action.
     Action,
-    /// Source field `ACTUAL`.
+    /// The value observed during validation.
     Actual,
-    /// Source field `ACTUAL_CREDENTIAL_NUMBER`.
+    /// The actual credential number used by the domain model.
     ActualCredentialNumber,
-    /// Source field `ACTUAL_CREDENTIAL_TYPE`.
+    /// The actual credential type used by the domain model.
     ActualCredentialType,
-    /// Source field `ADDRESS_DETAIL`.
+    /// The address's detail.
     AddressDetail,
-    /// Source field `ADDRESS_LATITUDE`.
+    /// The address's latitude.
     AddressLatitude,
-    /// Source field `ADDRESS_LONGITUDE`.
+    /// The address's longitude.
     AddressLongitude,
-    /// Source field `ADDRESS_POSTALCODE`.
+    /// The address's postalcode.
     AddressPostalcode,
-    /// Source field `ADDRESS_STREET_ID`.
+    /// The address's street id.
     AddressStreetId,
-    /// Source field `ADDRESS_VERIFY`.
+    /// The address's verify.
     AddressVerify,
-    /// Source field `AGE`.
+    /// The person's age.
     Age,
-    /// Source field `ALTITUDE`.
+    /// The geographic altitude.
     Altitude,
-    /// Source field `APP`.
+    /// The associated tenant application.
     App,
-    /// Source field `APP_ID`.
+    /// The identifier of the associated app.
     AppId,
-    /// Source field `AVATAR`.
+    /// The avatar image reference.
     Avatar,
-    /// Source field `BIRTHDAY`.
+    /// The person's date of birth.
     Birthday,
-    /// Source field `BLOOD`.
+    /// The person's blood type.
     Blood,
-    /// Source field `BUYER`.
+    /// The purchasing party.
     Buyer,
-    /// Source field `BUYER_ID`.
+    /// The identifier of the associated buyer.
     BuyerId,
-    /// Source field `CATEGORY_ID`.
+    /// The identifier of the associated category.
     CategoryId,
-    /// Source field `CHANGE_PASSWORD`.
+    /// The change password used by the domain model.
     ChangePassword,
-    /// Source field `CHANNEL`.
+    /// The originating business channel.
     Channel,
-    /// Source field `CHANNEL_NUMBER`.
+    /// The channel number used by the domain model.
     ChannelNumber,
-    /// Source field `CITY`.
+    /// The associated city.
     City,
-    /// Source field `CITY_ID`.
+    /// The identifier of the associated city.
     CityId,
-    /// Source field `CLIENT`.
+    /// The client associated with the record.
     Client,
-    /// Source field `CODE`.
+    /// A business code.
     Code,
-    /// Source field `COMMENT`.
+    /// Free-form explanatory text.
     Comment,
-    /// Source field `COMPLETE_TIME`.
+    /// The time at which complete occurred.
     CompleteTime,
-    /// Source field `COST`.
+    /// A cost amount.
     Cost,
-    /// Source field `COUNT`.
+    /// A quantity.
     Count,
-    /// Source field `COUNTRY`.
+    /// The associated country.
     Country,
-    /// Source field `COUNTRY_ID`.
+    /// The identifier of the associated country.
     CountryId,
-    /// Source field `CREATE_TIME`.
+    /// The time at which create occurred.
     CreateTime,
-    /// Source field `CREATOR_ID`.
+    /// The identifier of the associated creator.
     CreatorId,
-    /// Source field `CREDENTIAL`.
+    /// An identity credential.
     Credential,
-    /// Source field `CREDENTIAL_NUMBER`.
+    /// The credential number used by the domain model.
     CredentialNumber,
-    /// Source field `CREDENTIAL_TYPE`.
+    /// The credential type used by the domain model.
     CredentialType,
-    /// Source field `CREDENTIAL_VERIFY`.
+    /// The credential verify used by the domain model.
     CredentialVerify,
-    /// Source field `CURRENCY`.
+    /// The currency of a monetary amount.
     Currency,
-    /// Source field `DELETER_ID`.
+    /// The identifier of the associated deleter.
     DeleterId,
-    /// Source field `DELETE_TIME`.
+    /// The time at which delete occurred.
     DeleteTime,
-    /// Source field `DESCRIPTION`.
+    /// A human-readable description.
     Description,
-    /// Source field `DICT`.
+    /// The associated reference-data dictionary.
     Dict,
-    /// Source field `DISCOUNT`.
+    /// A discount amount.
     Discount,
-    /// Source field `DISCOUNT_REASON`.
+    /// The discount reason used by the domain model.
     DiscountReason,
-    /// Source field `DISTRICT`.
+    /// The associated district.
     District,
-    /// Source field `DISTRICT_ID`.
+    /// The identifier of the associated district.
     DistrictId,
-    /// Source field `EDUCATION`.
+    /// The person's education level.
     Education,
-    /// Source field `EMAIL`.
+    /// An email address.
     Email,
-    /// Source field `EMAIL_VERIFY`.
+    /// The email verify used by the domain model.
     EmailVerify,
-    /// Source field `ENCRYPTED`.
+    /// Whether the value is encrypted.
     Encrypted,
-    /// Source field `ENTITY`.
+    /// The referenced domain entity type.
     Entity,
-    /// Source field `ERROR_CODE`.
+    /// The error code used by the domain model.
     ErrorCode,
-    /// Source field `ERROR_MESSAGE`.
+    /// The error message used by the domain model.
     ErrorMessage,
-    /// Source field `ERROR_PARAMS`.
+    /// The error params used by the domain model.
     ErrorParams,
-    /// Source field `ERROR_TYPE`.
+    /// The error type used by the domain model.
     ErrorType,
-    /// Source field `ETHNIC`.
+    /// The person's ethnic group.
     Ethnic,
-    /// Source field `EXPECTED`.
+    /// The value expected by validation.
     Expected,
-    /// Source field `EXPECTED_CREDENTIAL_NUMBER`.
+    /// The expected credential number used by the domain model.
     ExpectedCredentialNumber,
-    /// Source field `EXPECTED_CREDENTIAL_TYPE`.
+    /// The expected credential type used by the domain model.
     ExpectedCredentialType,
-    /// Source field `EXPIRED_REASON`.
+    /// The expired reason used by the domain model.
     ExpiredReason,
-    /// Source field `EXPIRED_TIME`.
+    /// The time at which expired occurred.
     ExpiredTime,
-    /// Source field `FULLNAME`.
+    /// The person's full name.
     Fullname,
-    /// Source field `GENDER`.
+    /// The person's gender.
     Gender,
-    /// Source field `GUARDIAN`.
+    /// The person's guardian.
     Guardian,
-    /// Source field `HAS_CHILD`.
+    /// Whether the subject has child.
     HasChild,
-    /// Source field `HAS_MEDICARE`.
+    /// Whether the subject has medicare.
     HasMedicare,
-    /// Source field `HAS_MEDICARE_OR_SOCIAL_SECURITY`.
+    /// Whether the subject has medicare or social security.
     HasMedicareOrSocialSecurity,
-    /// Source field `HAS_SOCIAL_SECURITY`.
+    /// Whether the subject has social security.
     HasSocialSecurity,
-    /// Source field `HEIGHT`.
+    /// The person's height.
     Height,
-    /// Source field `HOST`.
+    /// The host name or address.
     Host,
-    /// Source field `ICON`.
+    /// An icon reference.
     Icon,
-    /// Source field `ID`.
+    /// The record identifier.
     Id,
-    /// Source field `IMAGE`.
+    /// An image reference.
     Image,
-    /// Source field `INCOMING`.
+    /// The person's income range.
     Incoming,
-    /// Source field `INDUSTRY`.
+    /// The associated industry.
     Industry,
-    /// Source field `INVENTORY`.
+    /// The available inventory quantity.
     Inventory,
-    /// Source field `INVOICE_STATUS`.
+    /// The invoice status used by the domain model.
     InvoiceStatus,
-    /// Source field `IP`.
+    /// The network IP address.
     Ip,
-    /// Source field `ITEM_ID`.
+    /// The identifier of the associated item.
     ItemId,
-    /// Source field `JOB`.
+    /// The person's job description.
     Job,
-    /// Source field `JOB_TITLE`.
+    /// The job title used by the domain model.
     JobTitle,
-    /// Source field `LAST_ACTIVE_TIME`.
+    /// The time at which last active occurred.
     LastActiveTime,
-    /// Source field `LAST_LOGIN_FAILURES`.
+    /// The last login failures used by the domain model.
     LastLoginFailures,
-    /// Source field `LAST_LOGIN_TIME`.
+    /// The time at which last login occurred.
     LastLoginTime,
-    /// Source field `LATITUDE`.
+    /// The geographic latitude.
     Latitude,
-    /// Source field `LEVEL`.
+    /// The hierarchy level.
     Level,
-    /// Source field `LOGIN_TIME`.
+    /// The time at which login occurred.
     LoginTime,
-    /// Source field `LONGITUDE`.
+    /// The geographic longitude.
     Longitude,
-    /// Source field `MANUFACTURER_ID`.
+    /// The identifier of the associated manufacturer.
     ManufacturerId,
-    /// Source field `MARRIAGE`.
+    /// The person's marital status.
     Marriage,
-    /// Source field `MEDICARE_CITY`.
+    /// The medicare city used by the domain model.
     MedicareCity,
-    /// Source field `MEDICARE_CITY_ID`.
+    /// The identifier of the associated medicare city.
     MedicareCityId,
-    /// Source field `MOBILE`.
+    /// A mobile telephone number.
     Mobile,
-    /// Source field `MOBILE_CITY_AREA`.
+    /// The mobile number's city area.
     MobileCityArea,
-    /// Source field `MOBILE_COUNTRY_AREA`.
+    /// The mobile number's country area.
     MobileCountryArea,
-    /// Source field `MOBILE_NUMBER`.
+    /// The mobile number's number.
     MobileNumber,
-    /// Source field `MOBILE_VERIFY`.
+    /// The mobile number's verify.
     MobileVerify,
-    /// Source field `MODE`.
+    /// The selected operating mode.
     Mode,
-    /// Source field `MODIFIER_ID`.
+    /// The identifier of the associated modifier.
     ModifierId,
-    /// Source field `MODIFY_TIME`.
+    /// The time at which modify occurred.
     ModifyTime,
-    /// Source field `MULTIPLE`.
+    /// Whether multiple values are permitted.
     Multiple,
-    /// Source field `NAME`.
+    /// The display name.
     Name,
-    /// Source field `NEED_DELIVERY`.
+    /// The need delivery used by the domain model.
     NeedDelivery,
-    /// Source field `NEW_CREDENTIAL_NUMBER`.
+    /// The proposed credential number.
     NewCredentialNumber,
-    /// Source field `NEW_CREDENTIAL_TYPE`.
+    /// The proposed credential type.
     NewCredentialType,
-    /// Source field `NEW_EMAIL`.
+    /// The proposed email.
     NewEmail,
-    /// Source field `NEW_FULLNAME`.
+    /// The proposed fullname.
     NewFullname,
-    /// Source field `NEW_MOBILE`.
+    /// The proposed mobile.
     NewMobile,
-    /// Source field `NICKNAME`.
+    /// The person's nickname.
     Nickname,
-    /// Source field `NULLABLE`.
+    /// Whether a value may be absent.
     Nullable,
-    /// Source field `NUMBER`.
+    /// A business number.
     Number,
-    /// Source field `OLD_CREDENTIAL_NUMBER`.
+    /// The previous credential number.
     OldCredentialNumber,
-    /// Source field `OLD_CREDENTIAL_TYPE`.
+    /// The previous credential type.
     OldCredentialType,
-    /// Source field `OLD_EMAIL`.
+    /// The previous email.
     OldEmail,
-    /// Source field `OLD_FULLNAME`.
+    /// The previous fullname.
     OldFullname,
-    /// Source field `OLD_MOBILE`.
+    /// The previous mobile.
     OldMobile,
-    /// Source field `OPERATION`.
+    /// The requested authorized operation.
     Operation,
-    /// Source field `OPERATOR_ID`.
+    /// The identifier of the associated operator.
     OperatorId,
-    /// Source field `ORDER_ID`.
+    /// The identifier of the associated order.
     OrderId,
-    /// Source field `ORDER_ITEM`.
+    /// The associated order line.
     OrderItem,
-    /// Source field `ORDER_ITEM_ID`.
+    /// The identifier of the associated order item.
     OrderItemId,
-    /// Source field `ORDER_TITLE`.
+    /// The order title used by the domain model.
     OrderTitle,
-    /// Source field `ORGANIZATION`.
+    /// The associated organization.
     Organization,
-    /// Source field `ORGANIZATION_ID`.
+    /// The identifier of the associated organization.
     OrganizationId,
-    /// Source field `ORGANIZATION_NAME`.
+    /// The organization name used by the domain model.
     OrganizationName,
-    /// Source field `ORIGIN_ID`.
+    /// The identifier of the associated origin.
     OriginId,
-    /// Source field `OWNER`.
+    /// The owning party.
     Owner,
-    /// Source field `OWNER_CODE`.
+    /// The owner code used by the domain model.
     OwnerCode,
-    /// Source field `OWNER_ID`.
+    /// The identifier of the associated owner.
     OwnerId,
-    /// Source field `OWNER_TYPE`.
+    /// The owner type used by the domain model.
     OwnerType,
-    /// Source field `PAID`.
+    /// The amount already paid.
     Paid,
-    /// Source field `PARENT_ID`.
+    /// The identifier of the associated parent.
     ParentId,
-    /// Source field `PASSWORD`.
+    /// The account password.
     Password,
-    /// Source field `PAYABLE`.
+    /// The amount due for payment.
     Payable,
-    /// Source field `PAYEE_ACCOUNT_ID`.
+    /// The payee's account id for the payment.
     PayeeAccountId,
-    /// Source field `PAYEE_ALTITUDE`.
+    /// The payee's altitude for the payment.
     PayeeAltitude,
-    /// Source field `PAYEE_CREDENTIAL_NUMBER`.
+    /// The payee's credential number for the payment.
     PayeeCredentialNumber,
-    /// Source field `PAYEE_CREDENTIAL_TYPE`.
+    /// The payee's credential type for the payment.
     PayeeCredentialType,
-    /// Source field `PAYEE_EMAIL`.
+    /// The payee's email for the payment.
     PayeeEmail,
-    /// Source field `PAYEE_ID`.
+    /// The payee's id for the payment.
     PayeeId,
-    /// Source field `PAYEE_IP`.
+    /// The payee's ip for the payment.
     PayeeIp,
-    /// Source field `PAYEE_LATITUDE`.
+    /// The payee's latitude for the payment.
     PayeeLatitude,
-    /// Source field `PAYEE_LONGITUDE`.
+    /// The payee's longitude for the payment.
     PayeeLongitude,
-    /// Source field `PAYEE_NAME`.
+    /// The payee's name for the payment.
     PayeeName,
-    /// Source field `PAYEE_PHONE`.
+    /// The payee's phone for the payment.
     PayeePhone,
-    /// Source field `PAYEE_PLATFORM`.
+    /// The payee's platform for the payment.
     PayeePlatform,
-    /// Source field `PAYEE_TYPE`.
+    /// The payee's type for the payment.
     PayeeType,
-    /// Source field `PAYER_ACCOUNT_ID`.
+    /// The payer's account id for the payment.
     PayerAccountId,
-    /// Source field `PAYER_ALTITUDE`.
+    /// The payer's altitude for the payment.
     PayerAltitude,
-    /// Source field `PAYER_CREDENTIAL_NUMBER`.
+    /// The payer's credential number for the payment.
     PayerCredentialNumber,
-    /// Source field `PAYER_CREDENTIAL_TYPE`.
+    /// The payer's credential type for the payment.
     PayerCredentialType,
-    /// Source field `PAYER_EMAIL`.
+    /// The payer's email for the payment.
     PayerEmail,
-    /// Source field `PAYER_ID`.
+    /// The payer's id for the payment.
     PayerId,
-    /// Source field `PAYER_IP`.
+    /// The payer's ip for the payment.
     PayerIp,
-    /// Source field `PAYER_LATITUDE`.
+    /// The payer's latitude for the payment.
     PayerLatitude,
-    /// Source field `PAYER_LONGITUDE`.
+    /// The payer's longitude for the payment.
     PayerLongitude,
-    /// Source field `PAYER_NAME`.
+    /// The payer's name for the payment.
     PayerName,
-    /// Source field `PAYER_PHONE`.
+    /// The payer's phone for the payment.
     PayerPhone,
-    /// Source field `PAYER_PLATFORM`.
+    /// The payer's platform for the payment.
     PayerPlatform,
-    /// Source field `PAYER_TYPE`.
+    /// The payer's type for the payment.
     PayerType,
-    /// Source field `PAY_TIME`.
+    /// The time at which pay occurred.
     PayTime,
-    /// Source field `PERSON_ID`.
+    /// The identifier of the associated person.
     PersonId,
-    /// Source field `PHONE`.
+    /// A telephone number.
     Phone,
-    /// Source field `PHONE_AREA`.
+    /// The telephone number's area.
     PhoneArea,
-    /// Source field `PHONE_CITY_AREA`.
+    /// The telephone number's city area.
     PhoneCityArea,
-    /// Source field `PHONE_COUNTRY_AREA`.
+    /// The telephone number's country area.
     PhoneCountryArea,
-    /// Source field `PHONE_NUMBER`.
+    /// The telephone number's number.
     PhoneNumber,
-    /// Source field `PHONE_VERIFY`.
+    /// The telephone number's verify.
     PhoneVerify,
-    /// Source field `PLATFORM`.
+    /// The client platform.
     Platform,
-    /// Source field `POSTALCODE`.
+    /// The postal code.
     Postalcode,
-    /// Source field `PREDEFINED`.
+    /// Whether the record is predefined by the platform.
     Predefined,
-    /// Source field `PRESCRIPTION_ID`.
+    /// The identifier of the associated prescription.
     PrescriptionId,
-    /// Source field `PRICE`.
+    /// A monetary price.
     Price,
-    /// Source field `PRIVATE_KEY`.
+    /// A private cryptographic key.
     PrivateKey,
-    /// Source field `PRIVILEGES`.
+    /// The collection of granted privileges.
     Privileges,
-    /// Source field `PRODUCT`.
+    /// The associated catalog product.
     Product,
-    /// Source field `PRODUCTION_DATE`.
+    /// The calendar date of production.
     ProductionDate,
-    /// Source field `PRODUCT_CODE`.
+    /// The catalog product's code.
     ProductCode,
-    /// Source field `PRODUCT_COUNT`.
+    /// The catalog product's count.
     ProductCount,
-    /// Source field `PRODUCT_CURRENCY`.
+    /// The catalog product's currency.
     ProductCurrency,
-    /// Source field `PRODUCT_DESCRIPTION`.
+    /// The catalog product's description.
     ProductDescription,
-    /// Source field `PRODUCT_ID`.
+    /// The catalog product's id.
     ProductId,
-    /// Source field `PRODUCT_IMAGE`.
+    /// The catalog product's image.
     ProductImage,
-    /// Source field `PRODUCT_ITEM`.
+    /// The catalog product's item.
     ProductItem,
-    /// Source field `PRODUCT_ITEM_ID`.
+    /// The catalog product's item id.
     ProductItemId,
-    /// Source field `PRODUCT_NAME`.
+    /// The catalog product's name.
     ProductName,
-    /// Source field `PRODUCT_PRICE`.
+    /// The catalog product's price.
     ProductPrice,
-    /// Source field `PRODUCT_QUALITY`.
+    /// The catalog product's quality.
     ProductQuality,
-    /// Source field `PRODUCT_SPECIFICATION`.
+    /// The catalog product's specification.
     ProductSpecification,
-    /// Source field `PRODUCT_UNIT`.
+    /// The catalog product's unit.
     ProductUnit,
-    /// Source field `PROVIDER_APP`.
+    /// The provider app used by the domain model.
     ProviderApp,
-    /// Source field `PROVIDER_APP_ID`.
+    /// The identifier of the associated provider app.
     ProviderAppId,
-    /// Source field `PROVINCE`.
+    /// The associated province or state.
     Province,
-    /// Source field `PROVINCE_ID`.
+    /// The identifier of the associated province.
     ProvinceId,
-    /// Source field `PUSH_TOKEN`.
+    /// The push-notification delivery token.
     PushToken,
-    /// Source field `READ_ONLY`.
+    /// Whether the value is read-only.
     ReadOnly,
-    /// Source field `REFUND_TIME`.
+    /// The time at which refund occurred.
     RefundTime,
-    /// Source field `RELIGION`.
+    /// The person's religion.
     Religion,
-    /// Source field `ROLE`.
+    /// The assigned authorization role.
     Role,
-    /// Source field `RSA_PUBLIC_KEY`.
+    /// An RSA public key.
     RsaPublicKey,
-    /// Source field `SALE_END_DATE`.
+    /// The calendar date of sale end.
     SaleEndDate,
-    /// Source field `SALE_START_DATE`.
+    /// The calendar date of sale start.
     SaleStartDate,
-    /// Source field `SCENE`.
+    /// The business scenario in which the operation occurs.
     Scene,
-    /// Source field `SECURITY_KEY`.
+    /// A security key used to protect the operation.
     SecurityKey,
-    /// Source field `SELLER`.
+    /// The selling party.
     Seller,
-    /// Source field `SELLER_ID`.
+    /// The identifier of the associated seller.
     SellerId,
-    /// Source field `SEX_ORIENTATION`.
+    /// The person's sexual orientation.
     SexOrientation,
-    /// Source field `SHIPPING_COST`.
+    /// The shipping cost used by the domain model.
     ShippingCost,
-    /// Source field `SHIPPING_DEMAND`.
+    /// The shipping demand used by the domain model.
     ShippingDemand,
-    /// Source field `SHIPPING_MODE`.
+    /// The shipping mode used by the domain model.
     ShippingMode,
-    /// Source field `SHIPPING_NUMBER`.
+    /// The shipping number used by the domain model.
     ShippingNumber,
-    /// Source field `SHIP_TIME`.
+    /// The time at which ship occurred.
     ShipTime,
-    /// Source field `SOCIAL_SECURITY_CITY`.
+    /// The social security city used by the domain model.
     SocialSecurityCity,
-    /// Source field `SOCIAL_SECURITY_CITY_ID`.
+    /// The identifier of the associated social security city.
     SocialSecurityCityId,
-    /// Source field `SOURCE`.
+    /// The originating source channel.
     Source,
-    /// Source field `SOURCE_ID`.
+    /// The identifier of the associated source.
     SourceId,
-    /// Source field `SPECIFICATION`.
+    /// The applicable specification.
     Specification,
-    /// Source field `STATE`.
+    /// The lifecycle state.
     State,
-    /// Source field `STATUS`.
+    /// The current business status.
     Status,
-    /// Source field `SUCCESS`.
+    /// Whether the operation succeeded.
     Success,
-    /// Source field `TARGET_ID`.
+    /// The identifier of the associated target.
     TargetId,
-    /// Source field `TARGET_TYPE`.
+    /// The target type used by the domain model.
     TargetType,
-    /// Source field `TIMESTAMP`.
+    /// A timestamp supplied by the caller or system.
     Timestamp,
-    /// Source field `TITLE`.
+    /// A human-readable title.
     Title,
-    /// Source field `TOKEN`.
+    /// An authentication or authorization token.
     Token,
-    /// Source field `TOKEN_CREATE_TIME`.
+    /// The time at which token create occurred.
     TokenCreateTime,
-    /// Source field `TOKEN_EXPIRED_TIME`.
+    /// The time at which token expired occurred.
     TokenExpiredTime,
-    /// Source field `TOTAL_DISCOUNT`.
+    /// The total discount used by the domain model.
     TotalDiscount,
-    /// Source field `TOTAL_PRICE`.
+    /// The total price used by the domain model.
     TotalPrice,
-    /// Source field `TRANSACTION_ID`.
+    /// The identifier of the associated transaction.
     TransactionId,
-    /// Source field `TYPE`.
+    /// The applicable business type.
     Type,
-    /// Source field `UDID`.
+    /// The device's unique identifier.
     Udid,
-    /// Source field `UNIT`.
+    /// The unit of measure.
     Unit,
-    /// Source field `UPLOAD_ID`.
+    /// The identifier of the associated upload.
     UploadId,
-    /// Source field `URL`.
+    /// A web resource URL.
     Url,
-    /// Source field `USER`.
+    /// The associated user account.
     User,
-    /// Source field `USERNAME`.
+    /// The account login name.
     Username,
-    /// Source field `USER_ID`.
+    /// The identifier of the associated user.
     UserId,
-    /// Source field `VALID_TIME`.
+    /// The time at which valid occurred.
     ValidTime,
-    /// Source field `VALUE`.
+    /// The associated value.
     Value,
-    /// Source field `VERIFY`.
+    /// Whether verification succeeded.
     Verify,
-    /// Source field `VERIFY_CODE`.
+    /// A one-time verification code.
     VerifyCode,
-    /// Source field `WEIGHT`.
+    /// The person's weight.
     Weight,
-    /// Source field `OPENID_TYPE`.
+    /// The openid type used by the domain model.
     OpenidType,
-    /// Source field `OPENID`.
+    /// The third-party OpenID.
     Openid,
-    /// Source field `QUESTION`.
+    /// A security or questionnaire prompt.
     Question,
-    /// Source field `THIRDPARTY_INSURANCE_ID`.
+    /// The identifier of the associated thirdparty insurance.
     ThirdpartyInsuranceId,
-    /// Source field `ACCIDENT_REASON`.
+    /// The accident reason used by the domain model.
     AccidentReason,
-    /// Source field `POLICY_NUMBER`.
+    /// The policy number used by the domain model.
     PolicyNumber,
-    /// Source field `KINSHIP_TYPE`.
+    /// The kinship type used by the domain model.
     KinshipType,
-    /// Source field `CLAIMANT`.
+    /// The party submitting the insurance claim.
     Claimant,
-    /// Source field `ACCIDENT_DATE`.
+    /// The calendar date of accident.
     AccidentDate,
-    /// Source field `ACCIDENT_PLACE`.
+    /// The accident place used by the domain model.
     AccidentPlace,
-    /// Source field `ACCIDENT_DESCRIPTION`.
+    /// The accident description used by the domain model.
     AccidentDescription,
-    /// Source field `ACCOUNT`.
+    /// The associated payment account.
     Account,
-    /// Source field `ACCOUNT_TYPE`.
+    /// The account type used by the domain model.
     AccountType,
-    /// Source field `INSURED`.
+    /// The insured person.
     Insured,
-    /// Source field `CLAIM_ID`.
+    /// The identifier of the associated claim.
     ClaimId,
-    /// Source field `CLAIM_MEDICAL_ID`.
+    /// The identifier of the associated claim medical.
     ClaimMedicalId,
-    /// Source field `CLAIM_INVOICE_ID`.
+    /// The identifier of the associated claim invoice.
     ClaimInvoiceId,
-    /// Source field `INVOICE_NUMBER`.
+    /// The invoice number used by the domain model.
     InvoiceNumber,
-    /// Source field `TREATMENT_DATE`.
+    /// The calendar date of treatment.
     TreatmentDate,
-    /// Source field `AMOUNT`.
+    /// A monetary amount.
     Amount,
-    /// Source field `INVOICE_LIST`.
+    /// The invoice list used by the domain model.
     InvoiceList,
-    /// Source field `FUND_PAID_AMOUNT`.
+    /// The fund paid amount used by the domain model.
     FundPaidAmount,
-    /// Source field `SELF_PAID_AMOUNT`.
+    /// The self paid amount used by the domain model.
     SelfPaidAmount,
-    /// Source field `SELF_CARE_AMOUNT`.
+    /// The self care amount used by the domain model.
     SelfCareAmount,
-    /// Source field `MEDICARE_AMOUNT`.
+    /// The medicare amount used by the domain model.
     MedicareAmount,
-    /// Source field `SERIOUS_ILLNESS_PAID`.
+    /// The serious illness paid used by the domain model.
     SeriousIllnessPaid,
-    /// Source field `SERIOUS_ILLNESS_INSURANCE_PAID`.
+    /// The serious illness insurance paid used by the domain model.
     SeriousIllnessInsurancePaid,
-    /// Source field `CIVIL_AFFAIR_SUBSIDY_PAID`.
+    /// The civil affair subsidy paid used by the domain model.
     CivilAffairSubsidyPaid,
-    /// Source field `MESSAGE_KEY`.
+    /// The message key used by the domain model.
     MessageKey,
-    /// Source field `PRIMARY_DIAGNOSIS`.
+    /// The primary medical diagnosis.
     PrimaryDiagnosis,
-    /// Source field `MEDICAL_CHARGE_NAME`.
+    /// The medical charge name used by the domain model.
     MedicalChargeName,
 }
 
 impl Field {
-    /// Returns the stable lowercase source code for this field.
+    /// Returns the stable lowercase code used in payloads and message keys.
     #[must_use]
     pub const fn code(self) -> &'static str {
         match self {

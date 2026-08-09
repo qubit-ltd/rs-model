@@ -6,38 +6,38 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! System module classifications.
+//! Functional modules used to group system capabilities and permissions.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies a functional module in the domain system.
+/// Identifies the functional area that owns an operation or permission.
 #[derive(Model, Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Module {
-    /// Basic account and profile operations.
+    /// Account registration, authentication, and profile basics.
     #[default]
     BasicOperation,
-    /// System administration.
+    /// Platform configuration and reference-data administration.
     SystemManagement,
-    /// User administration.
+    /// User, role, and permission administration.
     UserManagement,
-    /// Signature administration.
+    /// Key-pair and digital-signature administration.
     SignatureManagement,
-    /// Product administration.
+    /// Product-catalog administration.
     ProductManagement,
-    /// Order administration.
+    /// Order, fulfillment, and transaction administration.
     OrderManagement,
-    /// Prescription administration.
+    /// Prescription and related medical-record administration.
     PrescriptionManagement,
-    /// Business-system extensions.
+    /// Extensions supplied by an integrating business system.
     BusinessExtension,
-    /// Appointment administration.
+    /// Appointment scheduling and administration.
     AppointmentManagement,
-    /// Medical-service administration.
+    /// Delivery and administration of medical services.
     MedicalServiceManagement,
-    /// Work-schedule administration.
+    /// Work-schedule planning and administration.
     WorkScheduleManagement,
 }

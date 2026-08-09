@@ -6,38 +6,38 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Errors produced by domain-model operations.
+//! Platform error categories used to classify failed operations.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// Broad category assigned to a platform error code.
+/// Classifies the subsystem or boundary responsible for a platform error.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ErrorType {
-    /// The request itself is invalid.
+    /// The request cannot be processed as submitted.
     RequestError,
-    /// One or more request parameters are invalid.
+    /// One or more supplied parameters violate their contract.
     ParameterError,
-    /// A database operation failed.
+    /// Persistent storage could not complete the operation.
     DatabaseError,
-    /// An input/output operation failed.
+    /// An input or output operation failed.
     IoError,
-    /// A network operation failed.
+    /// Communication with a network resource failed.
     NetworkError,
-    /// An internal server operation failed.
+    /// The server encountered an unexpected internal failure.
     ServerError,
-    /// A domain-logic rule was violated.
+    /// The requested action violates a domain rule.
     LogicError,
-    /// Authentication failed.
+    /// The caller could not be authenticated.
     AuthenticationError,
-    /// Authorization failed.
+    /// The authenticated caller lacks permission for the action.
     AuthorizationError,
-    /// A payment operation failed.
+    /// A payment workflow could not complete.
     PaymentError,
-    /// A third-party service failed.
+    /// A required external service failed or rejected the request.
     ThirdPartyError,
 }

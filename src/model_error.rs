@@ -6,27 +6,26 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Errors produced by domain-model operations.
+//! Errors returned when data cannot be accepted as a valid domain model.
 
 use thiserror::Error;
 
 use super::ValidationViolation;
 
-/// Describes a failure encountered while constructing, converting, or
-/// validating a model.
+/// Describes a failure while constructing, converting, or validating a model.
 #[derive(Debug, Error)]
 #[non_exhaustive]
 pub enum ModelError {
-    /// One or more model fields violate their declared validation constraints.
+    /// One or more model fields violate their declared constraints.
     ///
-    /// `violations` may be empty, contain a single violation, or contain
-    /// multiple violations. `message` supplies an optional caller-defined
-    /// summary without including rejected field values.
+    /// `violations` contains every detected field failure and can be empty
+    /// when only a model-wide constraint failed. `message` is `None` when no
+    /// caller-defined summary is available; neither field preserves rejected values.
     #[error("{display_message}", display_message = message.as_deref().unwrap_or("model validation failed"))]
     ValidationFailed {
-        /// An optional summary of the validation failure.
+        /// A caller-defined summary, or `None` when no summary is available.
         message: Option<String>,
-        /// The individual validation failures.
+        /// All detected field-level violations; rejected values are omitted.
         violations: Vec<ValidationViolation>,
     },
 }
