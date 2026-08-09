@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim invoices.
+//! Invoice evidence imported for employer-sponsored claims.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -21,10 +21,10 @@ use qubit_model_derive::Model;
 use crate::claim::enterprise::EnterpriseClaimSelfCareItem;
 use crate::claim::enterprise::SaveStatus;
 
-/// A medical invoice imported into an enterprise insurance claim.
+/// A medical invoice imported as evidence for an enterprise claim.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimInvoice {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise claim invoice is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -44,7 +44,7 @@ pub struct EnterpriseClaimInvoice {
     /// Invoice number.
     pub number: String,
 
-    /// Deductible applied to the invoice.
+    /// Policy deductible allocated to this invoice before reimbursement.
     #[model(money(scale = 4))]
     pub deductible: BigDecimal,
 
@@ -72,7 +72,7 @@ pub struct EnterpriseClaimInvoice {
     #[model(money(scale = 4))]
     pub serious_illness_insurance_amount: BigDecimal,
 
-    /// Non-reimbursable amount.
+    /// Expense excluded from reimbursement by the medical-insurance rules.
     #[model(money(scale = 4))]
     pub no_reimbursement_amount: BigDecimal,
 
@@ -80,7 +80,7 @@ pub struct EnterpriseClaimInvoice {
     #[model(money(scale = 4))]
     pub invalid_amount: BigDecimal,
 
-    /// Class-B self-care amount.
+    /// Patient-borne amount for Class-B medical-insurance items.
     #[model(money(scale = 4))]
     pub class_b_self_care_amount: BigDecimal,
 
@@ -96,14 +96,14 @@ pub struct EnterpriseClaimInvoice {
     #[model(money(scale = 4))]
     pub medicare_amount: BigDecimal,
 
-    /// Invoice source information.
+    /// System or organization that supplied the invoice data.
     #[model(opaque)]
     pub source: InfoWithEntity,
 
     /// Optional operator name.
     pub operator_name: Option<String>,
 
-    /// Import state.
+    /// Status assigned while saving the imported invoice.
     pub status: SaveStatus,
 
     /// Whether extracted invoice data is accurate.
@@ -112,14 +112,14 @@ pub struct EnterpriseClaimInvoice {
     /// Explanation when extracted data is inaccurate.
     pub inaccurate_reason: String,
 
-    /// Class-B self-care details.
+    /// Itemized Class-B charges used to substantiate the self-care amount.
     pub self_care_items: Vec<EnterpriseClaimSelfCareItem>,
 
-    /// Claim calculation base.
+    /// Eligible monetary base used to calculate the enterprise benefit.
     #[model(money(scale = 4))]
     pub claim_base: BigDecimal,
 
-    /// Calculated claim amount.
+    /// Benefit calculated from this invoice under enterprise rules.
     #[model(money(scale = 4))]
     pub claim_amount: BigDecimal,
 
@@ -137,7 +137,8 @@ pub struct EnterpriseClaimInvoice {
 }
 
 impl EnterpriseClaimInvoice {
-    /// Checks whether the invoice total covers all payment components.
+    /// Checks whether the gross invoice amount is sufficient to contain the
+    /// recorded payment components.
     ///
     /// # Returns
     ///

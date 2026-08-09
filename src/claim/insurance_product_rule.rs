@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Insurance product rules.
+//! Configurable rules that govern claim handling for an insurance product.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -17,10 +17,10 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// A key-value processing rule attached to an insurance product.
+/// A product-scoped key-value rule consumed by the claim-processing domain.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceProductRule {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this product rule is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -29,13 +29,13 @@ pub struct InsuranceProductRule {
     #[model(opaque)]
     pub product: Info,
 
-    /// Rule key.
+    /// Stable configuration key interpreted by the claim-processing product.
     pub key: String,
 
-    /// Rule value.
+    /// Product-specific setting encoded for the associated rule key.
     pub value: String,
 
-    /// Rule description.
+    /// Operator-facing explanation of the rule's business effect.
     pub description: String,
 
     /// UTC creation timestamp.

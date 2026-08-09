@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim calculation items.
+//! Per-category allocation and reimbursement calculations for enterprise claims.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -24,11 +24,11 @@ use crate::claim::enterprise::EnterpriseHistoryClaimAmount;
 use crate::claim::enterprise::EnterpriseInsuredType;
 use crate::commons::DictEntryInfo;
 
-/// A calculated enterprise claim partition for one medical category and insured
-/// type.
+/// A calculated portion of an enterprise claim for one medical category and
+/// covered-person type.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimItem {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise claim allocation is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -40,18 +40,19 @@ pub struct EnterpriseClaimItem {
     /// Medical-category dictionary entry.
     pub medical_category: DictEntryInfo,
 
-    /// Optional insured-person classification.
+    /// Insured-person classification used by this allocation, absent when the
+    /// source does not distinguish it.
     pub insured_type: Option<EnterpriseInsuredType>,
 
     /// Total submitted amount.
     #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
-    /// Pooled-fund amount.
+    /// Combined pooled-fund expenditure, including serious-illness assistance.
     #[model(money(scale = 4))]
     pub overall_fund_amount: BigDecimal,
 
-    /// Invalid amount.
+    /// Charges excluded because they are invalid for reimbursement.
     #[model(money(scale = 4))]
     pub invalid_amount: BigDecimal,
 
@@ -59,11 +60,11 @@ pub struct EnterpriseClaimItem {
     #[model(money(scale = 4))]
     pub deductible: BigDecimal,
 
-    /// Personal amount.
+    /// Patient-borne expense after medical-insurance allocation.
     #[model(money(scale = 4))]
     pub self_amount: BigDecimal,
 
-    /// Claim calculation base.
+    /// Eligible base on which the enterprise benefit is calculated.
     #[model(money(scale = 4))]
     pub claim_base: BigDecimal,
 
@@ -75,7 +76,7 @@ pub struct EnterpriseClaimItem {
     #[model(money(scale = 4))]
     pub actual_claim_amount: BigDecimal,
 
-    /// Amount above the upper limit.
+    /// Eligible amount exceeding the product's reimbursement ceiling.
     #[model(money(scale = 4))]
     pub over_upper_limit: BigDecimal,
 
@@ -87,33 +88,34 @@ pub struct EnterpriseClaimItem {
     #[model(money(scale = 4))]
     pub serious_illness_insurance_amount: BigDecimal,
 
-    /// Yangtze program supplemental amount.
+    /// Supplemental benefit supplied by the Yangtze ownership program.
     #[model(money(scale = 4))]
     pub yangzi_supply: BigDecimal,
 
-    /// Optional derived hospital name.
+    /// Hospital summary derived from attached medicals; absent when none exist.
     pub hospital_name: Option<String>,
 
-    /// Optional derived hospital level.
+    /// Hospital grade derived from attached medicals; absent when none is known.
     pub hospital_level: Option<i32>,
 
-    /// Optional derived disease code.
+    /// Disease code from the first recorded medical; absent when it has no
+    /// disease.
     pub disease_code: Option<String>,
 
     /// Actual transferred amount.
     #[model(money(scale = 4))]
     pub actual_paid_amount: BigDecimal,
 
-    /// Optional payment date.
+    /// Benefit payment date, absent until the enterprise claim is paid.
     pub paid_date: Option<NaiveDate>,
 
-    /// Optional case-closing date.
+    /// Enterprise case-closing date, absent while the allocation remains open.
     pub endcase_date: Option<NaiveDate>,
 
-    /// Optional operator name.
+    /// Operator associated with the payment outcome, if supplied by the source.
     pub operator_name: Option<String>,
 
-    /// Optional payment description.
+    /// Source description of the payment outcome, if the source provided one.
     pub description: Option<String>,
 
     /// Calculation state.
@@ -125,7 +127,8 @@ pub struct EnterpriseClaimItem {
     /// Historical claim amounts used by the calculation.
     pub history_claim_amount: EnterpriseHistoryClaimAmount,
 
-    /// Whether the deductible was already subtracted.
+    /// Whether this calculation has already applied its deductible, preventing
+    /// it from being deducted again.
     pub deduct_deductible: bool,
 
     /// UTC creation timestamp.
@@ -142,12 +145,13 @@ pub struct EnterpriseClaimItem {
 }
 
 impl EnterpriseClaimItem {
-    /// Derives hospital and disease summaries from the attached medical
-    /// encounters.
+    /// Refreshes denormalized hospital and disease summaries from the attached
+    /// medical encounters.
     ///
-    /// A single hospital keeps its name and level. Multiple hospitals use the
-    /// source label `其他` and the greatest available level. The first
-    /// available disease supplies the disease code.
+    /// An empty list leaves existing summaries unchanged. A single hospital
+    /// keeps its name and level; multiple hospitals use the source label `其他`
+    /// and the greatest available level. The first recorded medical supplies
+    /// the disease code, including clearing it when that record has no disease.
     pub fn init_hospital_and_disease(&mut self) {
         let Some(first) = self.medicals.first() else {
             return;

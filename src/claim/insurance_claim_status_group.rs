@@ -6,14 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! High-level claim workflow groups.
+//! Reporting-level lifecycle groups for individual claims.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Groups detailed individual claim states into reporting stages.
+/// Collapses detailed individual-claim states into business-reporting stages.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InsuranceClaimStatusGroup {

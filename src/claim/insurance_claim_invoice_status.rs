@@ -6,14 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Claim-invoice ingestion states.
+//! Outcomes of importing invoice data for quick compensation.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes how an invoice was handled during quick-compensation ingestion.
+/// Records whether quick-compensation ingestion accepted an invoice or why it
+/// could not be used.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InsuranceClaimInvoiceStatus {

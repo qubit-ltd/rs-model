@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Complete drug catalog records.
+//! Regulatory and clinical reference data for medicines in the drug catalog.
 
 use chrono::DateTime;
 use chrono::NaiveDate;
@@ -20,10 +20,11 @@ use qubit_model_derive::Model;
 
 use crate::commons::DictEntryInfo;
 
-/// A pharmaceutical catalog record with regulatory and administration data.
+/// A complete medicine catalog entry, including regulatory, dispensing, and
+/// administration information.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Drug {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this drug catalogue entry is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -32,41 +33,42 @@ pub struct Drug {
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
-    /// Generic drug name.
+    /// Generic name listed in the national drug standard.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub name: String,
 
-    /// Optional drug category.
+    /// Catalogue category, absent when the drug has not been categorized.
     #[model(opaque)]
     pub category: Option<Info>,
 
-    /// Approved product name.
+    /// Proprietary name approved for use by a particular manufacturer.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub product_name: String,
 
-    /// Optional English generic name.
+    /// English rendering of the generic drug name.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub english_name: Option<String>,
 
-    /// Optional pinyin generic name.
+    /// Hanyu Pinyin rendering of the generic drug name.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub pinyin_name: Option<String>,
 
-    /// Optional chemical name.
+    /// Chemical name, absent when no separate chemical designation is recorded.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub chemical_name: Option<String>,
 
-    /// Drug specification.
+    /// Strength and package specification that distinguishes the catalog item.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub specification: String,
 
-    /// Dosage-form dictionary entry.
+    /// Dictionary entry for the prepared pharmaceutical form used for treatment
+    /// or prevention.
     pub dosage_form: DictEntryInfo,
 
-    /// Optional administration-route dictionary entry.
+    /// Recommended administration route, absent when the catalogue does not set one.
     pub administration_route: Option<DictEntryInfo>,
 
-    /// Optional administration-frequency dictionary entry.
+    /// Recommended administration frequency, absent when not standardized here.
     pub frequency: Option<DictEntryInfo>,
 
     /// Standard unit.
@@ -95,65 +97,66 @@ pub struct Drug {
     /// Whether this is a specially supplied medicine.
     pub special: bool,
 
-    /// Optional physical-characteristics description.
+    /// Physical characteristics such as colour, appearance, or taste.
     pub characteristics: Option<String>,
 
-    /// Optional composition description.
+    /// Ingredient composition, absent when no composition text is maintained.
     pub composition: Option<String>,
 
-    /// Optional indications.
+    /// Conditions for which this medicine is indicated.
     pub indications: Option<String>,
 
-    /// Optional dosage instructions.
+    /// Recommended method and quantity for taking the medicine.
     pub dosage: Option<String>,
 
-    /// Optional adverse-reaction description.
+    /// Known adverse symptoms that may occur while taking the medicine.
     pub adverse_reaction: Option<String>,
 
-    /// Optional contraindications.
+    /// Contraindications, absent when the catalogue supplies no warning text.
     pub contraindications: Option<String>,
 
-    /// Optional precautions.
+    /// Use precautions, absent when the catalogue supplies no precaution text.
     pub precautions: Option<String>,
 
-    /// Optional storage instructions.
+    /// Storage requirements, absent when the catalogue supplies none.
     pub storage: Option<String>,
 
-    /// Optional domestic production-license number.
+    /// Domestic manufacturing approval number issued by the drug regulator.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub license_number: Option<String>,
 
-    /// Optional license approval date.
+    /// Domestic licence approval date, absent when no domestic licence applies.
     pub license_date: Option<NaiveDate>,
 
-    /// Optional imported-drug registration number.
+    /// Certificate number issued after regulatory review of an imported drug.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub import_number: Option<String>,
 
-    /// Optional Hong Kong, Macao, or Taiwan registration number.
+    /// Registration-certificate number for a medicine produced in Hong Kong,
+    /// Macao, or Taiwan.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub registration_number: Option<String>,
 
-    /// Optional brand.
+    /// Brand name, absent when the product is not sold under one.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub brand: Option<String>,
 
-    /// Optional place of origin.
+    /// Place of origin, absent when it is not recorded by the catalogue.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub origin: Option<String>,
 
-    /// Optional manufacturer information.
+    /// Manufacturer identity, absent when the catalogue does not identify one.
     #[model(opaque)]
     pub manufacturer: Option<Info>,
 
-    /// Optional drug-classification dictionary entry.
+    /// Drug classification, absent when no secondary classification is assigned.
     pub classification: Option<DictEntryInfo>,
 
-    /// Optional ISO-8601 shelf-life period.
+    /// ISO-8601 period for which the medicine remains within shelf life.
     #[model(opaque)]
     pub shelf_life: Option<String>,
 
-    /// Optional remark.
+    /// Maintainer note, absent when the catalogue entry needs no qualification.
     pub comment: Option<String>,
 
     /// Whether this drug is predefined reference data.

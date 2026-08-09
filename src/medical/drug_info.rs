@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Lightweight drug information.
+//! Drug snapshots carried in prescriptions and product mappings.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -17,15 +17,17 @@ use qubit_model_derive::Model;
 
 use crate::commons::DictEntryInfo;
 
-/// A compact drug snapshot embedded in prescriptions and products.
+/// A portable drug snapshot for prescriptions and commerce records, containing
+/// the display, packaging, and dispensing flags needed without the full catalog
+/// monograph.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DrugInfo {
-    /// Optional persisted identifier.
+    /// Typed identifier carried by this drug snapshot when available upstream.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Globally unique drug code.
+    /// Globally unique catalogue code for the referenced drug.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
@@ -33,7 +35,7 @@ pub struct DrugInfo {
     #[model(text(min_chars = 1, max_chars = 256))]
     pub name: String,
 
-    /// Approved product name.
+    /// Manufacturer-specific proprietary product name.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub product_name: String,
 
@@ -64,18 +66,18 @@ pub struct DrugInfo {
     /// Whether use is restricted.
     pub restricted: bool,
 
-    /// Whether this is a single or compound herbal medicine.
+    /// Whether the medicine is classified as a single or compound herbal drug.
     pub herbal_compound: bool,
 
-    /// Optional brand.
+    /// Brand name carried from the catalogue, absent when none is recorded.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub brand: Option<String>,
 
-    /// Optional place of origin.
+    /// Place of origin carried from the catalogue, absent when none is recorded.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub origin: Option<String>,
 
-    /// Optional manufacturer information.
+    /// Manufacturer identity carried from the catalogue, absent when unknown.
     #[model(opaque)]
     pub manufacturer: Option<Info>,
 }

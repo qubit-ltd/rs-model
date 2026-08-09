@@ -6,14 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim-item states.
+//! Calculation states for individual enterprise-claim allocation items.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes calculation of an enterprise claim item.
+/// Describes whether an enterprise claim allocation item awaits calculation,
+/// has been disabled, or is complete.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum EnterpriseClaimItemStatus {

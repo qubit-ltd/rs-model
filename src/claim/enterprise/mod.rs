@@ -6,7 +6,12 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise insurance-claim models and classifications.
+//! Models for employer-sponsored claim imports, calculation, and reconciliation.
+//!
+//! This module contains the enterprise-specific claim case, imported coverage
+//! and encounter evidence, invoice allocations, and history used to calculate
+//! benefits. It is distinct from [`super::InsuranceClaim`], which models
+//! individually submitted claims.
 
 #[allow(clippy::module_inception)]
 mod enterprise_claim;

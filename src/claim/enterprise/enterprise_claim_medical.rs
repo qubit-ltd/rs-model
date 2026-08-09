@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim medical encounters.
+//! Medical encounters imported for employer-sponsored claims.
 
 use chrono::DateTime;
 use chrono::NaiveDate;
@@ -22,10 +22,11 @@ use crate::claim::enterprise::EnterpriseInsuredType;
 use crate::claim::enterprise::SaveStatus;
 use crate::commons::DictEntryInfo;
 
-/// A medical encounter imported for an enterprise insurance claim.
+/// A treatment encounter imported into an enterprise claim, with its invoices
+/// and eligibility attributes.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimMedical {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise treatment record is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -34,40 +35,42 @@ pub struct EnterpriseClaimMedical {
     #[model(opaque)]
     pub claim_id: Id,
 
-    /// Treatment start date.
+    /// First date of the treatment episode represented by this record.
     pub treatment_start_date: NaiveDate,
 
-    /// Treatment end date.
+    /// Final date of the treatment episode represented by this record.
     pub treatment_end_date: NaiveDate,
 
-    /// Optional medical encounter sequence number.
+    /// Source encounter sequence number, absent when the import does not
+    /// provide one.
     pub number: Option<String>,
 
-    /// Optional insurer-side claim application identifier.
+    /// Insurer-assigned application identifier, if this encounter was sent to
+    /// the insurer.
     pub claim_apply_id: Option<String>,
 
-    /// Optional medical-category dictionary entry.
+    /// Medical category used for benefit calculation, absent when unclassified.
     pub medical_category: Option<DictEntryInfo>,
 
-    /// Optional disease dictionary entry.
+    /// Disease recorded for the treatment episode, absent when not supplied.
     pub disease: Option<DictEntryInfo>,
 
-    /// Optional hospital dictionary entry.
+    /// Treating hospital, absent when the import cannot identify one.
     pub hospital: Option<DictEntryInfo>,
 
-    /// Optional hospital level.
+    /// Hospital grade used by the enterprise reimbursement rules, if supplied.
     pub hospital_level: Option<i32>,
 
-    /// Optional operator name.
+    /// Name of the source operator, absent when the import has no operator data.
     pub operator_name: Option<String>,
 
     /// Enterprise insured-person classification.
     pub insured_type: EnterpriseInsuredType,
 
-    /// Import state.
+    /// Status of saving this imported treatment record.
     pub status: SaveStatus,
 
-    /// Invoices belonging to this encounter.
+    /// Invoice evidence belonging to this treatment episode.
     pub invoices: Vec<EnterpriseClaimInvoice>,
 
     /// UTC creation timestamp.

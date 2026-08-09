@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Historical enterprise claim amounts.
+//! Prior-period amounts used in enterprise-claim calculations.
 
 use bigdecimal::BigDecimal;
 use serde::Deserialize;
@@ -14,7 +14,8 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Historical claim base, deductible, and pooled-fund totals.
+/// Historical calculation inputs: claim base, deductible, and pooled-fund
+/// amount.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct HistoryClaimAmount {
     /// Historical claim base.
