@@ -150,6 +150,15 @@ fn test_common_model_metadata_preserves_java_keys_indexes_and_references() {
     ] {
         assert!(credential.indexes().any(|index| index.contains(field)));
     }
+    let attachments = credential
+        .field("attachments")
+        .expect("credential attachments metadata");
+    assert!(attachments.reference().is_some());
+    let attachment_size = attachments
+        .sequence_constraint()
+        .expect("credential attachment size metadata");
+    assert_eq!(attachment_size.min_items(), Some(1));
+    assert_eq!(attachment_size.max_items(), Some(16));
 
     let payload = metadata_of::<Payload>();
     assert!(

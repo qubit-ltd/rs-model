@@ -20,6 +20,7 @@ use crate::commons::Payload;
 use crate::commons::State;
 use crate::contact::Address;
 use crate::contact::Location;
+use crate::contact::Street;
 use crate::device::DeviceType;
 use crate::device::Hardware;
 use crate::device::Software;
@@ -68,8 +69,9 @@ pub struct Device {
     /// Last known geographic location, if the device reported one.
     pub location: Option<Location>,
 
-    /// Physical deployment address, if assigned.
-    #[model(index)]
+    /// Physical deployment address, if assigned. Its nested administrative
+    /// references identify the terminal street entity.
+    #[model(reference(target = Street, target_field = info), index, opaque)]
     pub deploy_address: Option<Address>,
 
     /// Current network IP address, if known.
@@ -93,7 +95,10 @@ pub struct Device {
     pub state: State,
 
     /// Extension payloads attached to this device; empty when none are stored.
-    #[model(sequence(min_items = 1, max_items = 10))]
+    #[model(
+        reference(target = Payload, target_field = id, must_exist = false),
+        sequence(min_items = 1, max_items = 10)
+    )]
     pub payloads: Vec<Payload>,
 
     /// Optional administrator note.

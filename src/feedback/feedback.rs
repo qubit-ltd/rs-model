@@ -21,7 +21,7 @@ use crate::feedback::FeedbackStatus;
 use crate::feedback::FeedbackType;
 use crate::mixin::StatefulInfo;
 use crate::person::User;
-use crate::system::Environment;
+use crate::person::UserInfo;
 use crate::upload::Attachment;
 
 /// A user's complaint, report, or suggestion and its processing context.
@@ -33,45 +33,28 @@ pub struct Feedback {
     #[model(opaque)]
     pub id: Id,
 
-    /// Tenant reference for the application receiving this submission.
-    pub tenant: StatefulInfo,
-
     /// Application reference that receives and processes the feedback.
     #[model(reference(target = App, target_field = info), opaque)]
     pub app: StatefulInfo,
-
-    /// Client environment captured at submission time, or `None` when unavailable.
-    pub environment: Option<Environment>,
 
     /// Kind of issue or request selected by the submitter.
     #[model(index)]
     pub r#type: FeedbackType,
 
-    /// Stateful category used to classify the feedback, such as service quality.
-    #[model(index, opaque)]
-    pub category: StatefulInfo,
+    /// ASCII category used to classify the feedback, such as service quality.
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    pub category: String,
 
-    /// Submitting principal, or `None` for anonymous feedback.
+    /// Submitting principal.
     #[model(reference(target = User, target_field = info, must_exist = true), opaque)]
-    pub submitter: Option<StatefulInfo>,
-
-    /// Contact details volunteered by the submitter, or `None` if none were given.
-    #[model(text(max_chars = 128))]
-    pub contact: Option<String>,
-
-    /// Short subject supplied by the user, or `None` if the submission is untitled.
-    #[model(text(min_chars = 1, max_chars = 128))]
-    pub title: Option<String>,
+    pub submitter: UserInfo,
 
     /// Written account of the issue; normally supplied instead of [`Self::voice`].
     pub description: Option<String>,
 
-    /// Voice account of the issue; normally supplied instead of [`Self::description`].
+    /// Voice recording of the issue; normally supplied instead of [`Self::description`].
     #[model(reference(target = Attachment, target_field = id, must_exist = false), opaque)]
-    pub voice: Option<Attachment>,
-
-    /// Text transcribed from [`Self::voice`], or `None` when no transcription exists.
-    pub transcript: Option<String>,
+    pub record: Option<Attachment>,
 
     /// Supporting files, or `None` when the submitter supplied no attachments.
     #[model(reference(target = Attachment, target_field = id, must_exist = false), opaque)]
