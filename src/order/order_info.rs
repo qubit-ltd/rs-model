@@ -29,6 +29,7 @@ use crate::product::Seller;
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct OrderInfo {
     /// Persistent identifier; its default value denotes a record that has not yet been stored.
+    #[model(unique)]
     #[model(opaque)]
     pub id: Id,
 

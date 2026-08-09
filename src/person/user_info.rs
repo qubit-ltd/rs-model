@@ -22,6 +22,11 @@ use crate::person::Gender;
 /// A compact user-information snapshot.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
+#[model(
+    unique(name = "user_info_username", fields(username), ignore_case(username)),
+    unique(name = "user_info_mobile", fields(mobile)),
+    unique(name = "user_info_email", fields(email), ignore_case(email))
+)]
 pub struct UserInfo {
     /// Database identifier of the referenced user; default denotes an unsaved user.
     #[model(identifier)]
@@ -29,11 +34,11 @@ pub struct UserInfo {
     pub id: Id,
 
     /// Globally unique ASCII user name.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub username: String,
 
     /// Real name suitable for compact profile displays.
-    #[model(text(min_chars = 1, max_chars = 64))]
+    #[model(index, text(min_chars = 1, max_chars = 64))]
     pub name: Option<String>,
 
     /// Informal display name suitable for compact profile displays.
@@ -41,6 +46,7 @@ pub struct UserInfo {
     pub nickname: Option<String>,
 
     /// Gender copied for identity displays where the source provided it.
+    #[model(index)]
     pub gender: Option<Gender>,
 
     /// Avatar URI used by clients rendering the compact user identity.
@@ -48,18 +54,21 @@ pub struct UserInfo {
     pub avatar: Option<String>,
 
     /// Mobile contact channel included when the projection must contact the user.
+    #[model(index)]
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
     /// Email contact channel included when the projection must contact the user.
-    #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
+    #[model(index, sensitive(redact), text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 
     /// Lifecycle state.
+    #[model(index)]
     pub state: State,
 
     /// Marks a synthetic user so consumers can exclude it from live interactions.
+    #[model(index)]
     pub test: bool,
 
     /// Soft-deletion time copied from the user record; absence means the user is active.

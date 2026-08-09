@@ -47,7 +47,11 @@ pub struct OperationLog {
     pub property: Option<String>,
 
     /// Required permission names.
-    #[model(index, sequence(min_items = 1))]
+    #[model(
+        index,
+        sequence(min_items = 1, max_items = 64),
+        element(text(repertoire = ascii))
+    )]
     pub permissions: Vec<String>,
 
     /// Relation joining permissions.
@@ -55,7 +59,7 @@ pub struct OperationLog {
     pub permission_logic: LogicRelation,
 
     /// Optional encoded permission selectors.
-    #[model(index)]
+    #[model(index, text(repertoire = ascii))]
     pub selectors: Option<String>,
 
     /// Optional user information.
@@ -229,6 +233,7 @@ pub struct OperationLog {
     pub hash_algorithm: String,
 
     /// Optional encoded list of sensitive fields.
+    #[model(text(repertoire = ascii))]
     #[redact(level = "secret")]
     pub sensitive_fields: Option<String>,
 

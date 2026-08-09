@@ -15,15 +15,17 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 use crate::service::MedicalItem;
+use crate::service::MedicalPackage;
 
 /// A medical service item and the number of uses granted by a package.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalPackageItem {
     /// Identifier of the medical package that grants this entitlement.
-    #[model(opaque)]
+    #[model(reference(target = MedicalPackage, target_field = id), opaque)]
     pub package_id: Id,
 
     /// Medical service item included in the package.
+    #[model(reference(target = MedicalItem, target_field = id))]
     pub item: MedicalItem,
 
     /// Number of times the holder may use this item.

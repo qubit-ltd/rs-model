@@ -21,6 +21,7 @@ use crate::contact::Phone;
 /// Contact and identifying information for a product seller.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
+#[model(unique(name = "seller_code", fields(code), ignore_case(code)))]
 pub struct Seller {
     /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
@@ -28,7 +29,7 @@ pub struct Seller {
     pub id: Id,
 
     /// Globally unique seller code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(text(min_chars = 1, max_chars = 64))]
     pub code: String,
 
     /// Seller name.
@@ -42,7 +43,7 @@ pub struct Seller {
     pub mobile: Option<Phone>,
 
     /// Optional email address.
-    #[model(sensitive(redact), text(min_chars = 1, max_chars = 512, repertoire = ascii))]
+    #[model(sensitive(redact), text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 

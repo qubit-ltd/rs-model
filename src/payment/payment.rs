@@ -19,9 +19,11 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 use crate::commons::Currency;
+use crate::order::Order;
 use crate::payment::PaymentChannel;
 use crate::payment::PaymentMode;
 use crate::payment::PaymentType;
+use crate::settlement::Transaction;
 use crate::system::Environment;
 
 /// The provider-side execution and outcome of a payment transaction.
@@ -37,11 +39,11 @@ pub struct Payment {
     pub r#type: PaymentType,
 
     /// Persisted order identifier.
-    #[model(opaque)]
+    #[model(reference(target = Order, target_field = id), opaque)]
     pub order_id: Id,
 
     /// Persisted transaction identifier.
-    #[model(opaque)]
+    #[model(reference(target = Transaction, target_field = id), opaque)]
     pub transaction_id: Id,
 
     /// Payment provider application information.

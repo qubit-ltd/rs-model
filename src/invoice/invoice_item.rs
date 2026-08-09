@@ -55,7 +55,7 @@ pub struct InvoiceItem {
     pub discount: Option<BigDecimal>,
 
     /// Billed quantity.
-    #[model(decimal(scale = 4))]
+    #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
     /// Optional total-price discount.
@@ -67,7 +67,7 @@ pub struct InvoiceItem {
     pub payable: BigDecimal,
 
     /// Optional tax rate.
-    #[model(decimal(scale = 4))]
+    #[model(money(scale = 4))]
     pub tax_rate: Option<BigDecimal>,
 
     /// Optional tax amount.

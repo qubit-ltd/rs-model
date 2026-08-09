@@ -16,10 +16,12 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
+use crate::commons::App;
 use crate::mixin::StatefulInfo;
 
 /// A reusable expression that determines how a coupon is calculated.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[model(unique(name = "coupon_rule_app_code", fields(app, code), ignore_case(code)))]
 pub struct CouponRule {
     /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
@@ -27,7 +29,7 @@ pub struct CouponRule {
     pub id: Id,
 
     /// App-scoped unique rule code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(text(min_chars = 1, max_chars = 64))]
     pub code: String,
 
     /// Human-readable rule name.
@@ -35,6 +37,7 @@ pub struct CouponRule {
     pub name: String,
 
     /// Application that owns this rule.
+    #[model(reference(target = App, target_field = info))]
     pub app: StatefulInfo,
 
     /// Rule expression evaluated by the coupon engine.

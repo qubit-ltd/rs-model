@@ -48,7 +48,7 @@ pub struct Patient {
     pub hospital: Info,
 
     /// Globally unique patient code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Patient code within the owning hospital.

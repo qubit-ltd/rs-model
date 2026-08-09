@@ -35,6 +35,8 @@ use qubit_model::system::Session;
 use qubit_model::system::Setting;
 use qubit_model::system::VerifyCode;
 use qubit_model::system::VerifyScene;
+use qubit_model_metadata::AttributeMetadata;
+use qubit_model_metadata::TextRepertoire;
 use qubit_model_metadata::UniqueComparison;
 use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact;
@@ -137,6 +139,67 @@ fn system_model_metadata_preserves_source_constraints() {
         "service",
     ] {
         assert!(operation.indexes().any(|index| index.contains(field)));
+    }
+}
+
+#[test]
+fn system_metadata_preserves_remaining_java_constraints() {
+    let log = metadata_of::<Log>();
+    assert!(
+        log.unique_constraints().any(|unique| unique.contains("id")),
+        "log identifier must remain unique"
+    );
+
+    let operation = metadata_of::<OperationLog>();
+    let permissions = operation.field("permissions").unwrap();
+    let permission_count = permissions.sequence_constraint().unwrap();
+    assert_eq!(permission_count.min_items(), Some(1));
+    assert_eq!(permission_count.max_items(), Some(64));
+    assert!(matches!(
+        permissions.element_metadata().unwrap().attributes(),
+        [AttributeMetadata::Text(text)] if text.repertoire() == TextRepertoire::Ascii
+    ));
+    for field in ["selectors", "sensitive_fields"] {
+        assert_eq!(
+            operation
+                .field(field)
+                .unwrap()
+                .text_constraint()
+                .unwrap()
+                .repertoire(),
+            TextRepertoire::Ascii,
+            "{field} must remain ASCII"
+        );
+    }
+
+    let session = metadata_of::<Session>();
+    for field in ["roles", "privileges"] {
+        assert!(matches!(
+            session
+                .field(field)
+                .unwrap()
+                .element_metadata()
+                .unwrap()
+                .attributes(),
+            [AttributeMetadata::Text(text)] if text.repertoire() == TextRepertoire::Ascii
+        ));
+    }
+
+    let setting = metadata_of::<Setting>();
+    for field in ["create_time", "modify_time"] {
+        assert!(
+            setting.indexes().any(|index| index.contains(field)),
+            "missing setting index for {field}"
+        );
+    }
+
+    let verify_code = metadata_of::<VerifyCode>();
+    assert!(verify_code.field("app").unwrap().reference().is_some());
+    for field in ["mobile", "email", "scene", "verified", "create_time"] {
+        assert!(
+            verify_code.indexes().any(|index| index.contains(field)),
+            "missing verification-code index for {field}"
+        );
     }
 }
 

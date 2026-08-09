@@ -63,9 +63,11 @@ pub struct Session {
     pub token: Option<Token>,
 
     /// Assigned role codes.
+    #[model(element(text(repertoire = ascii)))]
     pub roles: Vec<String>,
 
     /// Effective privilege names.
+    #[model(element(text(repertoire = ascii)))]
     pub privileges: Vec<String>,
 
     /// Optional client environment.

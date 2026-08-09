@@ -16,6 +16,7 @@ use serde::Deserialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
+use crate::commons::App;
 use crate::contact::Phone;
 use crate::mixin::StatefulInfo;
 use crate::notification::VerifyScene;
@@ -33,16 +34,19 @@ pub struct VerifyCode {
     pub tenant: StatefulInfo,
 
     /// Application reference responsible for issuing and validating the token.
+    #[model(reference(target = App, target_field = info), opaque)]
     pub app: StatefulInfo,
 
     /// Mobile destination, or `None` when no mobile destination was recorded.
+    #[model(index)]
     pub mobile: Option<Phone>,
 
     /// ASCII email destination, or `None` when no email destination was recorded.
-    #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub email: Option<String>,
 
     /// Operation for which the recipient must present this token.
+    #[model(index)]
     pub scene: VerifyScene,
 
     /// Secret token compared during verification; never expose it to untrusted callers.
@@ -54,10 +58,11 @@ pub struct VerifyCode {
     pub message: String,
 
     /// Whether successful verification has already consumed this token.
+    #[model(index)]
     pub verified: bool,
 
     /// UTC instant, rounded to seconds, when the token was issued.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 }
 

@@ -31,6 +31,7 @@ pub struct RefererInfo {
     pub openid_type: OpenidType,
 
     /// Referral open identifier.
+    #[model(text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     pub openid: String,
 

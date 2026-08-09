@@ -23,10 +23,11 @@ pub struct DeviceCurrentData {
     pub id: Id,
 
     /// Code of the device that emitted this telemetry.
+    #[model(index, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub device_code: String,
 
     /// Identifier of the source telemetry message.
-    #[model(opaque)]
+    #[model(index, opaque)]
     pub msg_id: Id,
 
     /// Optional acknowledgement value supplied by the device protocol.
@@ -36,6 +37,7 @@ pub struct DeviceCurrentData {
     pub keep_push: Option<i32>,
 
     /// Optional source acquisition time in the device protocol's unit.
+    #[model(index)]
     pub gettime: Option<i64>,
 
     /// Heart-rate samples reported by the device; empty when no sample was reported.
@@ -60,14 +62,14 @@ pub struct DeviceCurrentData {
     pub onbed_status: Option<i32>,
 
     /// UTC time at which this telemetry record was created.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
     /// UTC time of the latest update, if the record was modified.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// UTC soft-deletion time, if the telemetry record was deleted.
-    #[model(time(precision=second,normalization=utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

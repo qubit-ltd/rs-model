@@ -18,6 +18,7 @@ use qubit_redact_derive::Redact;
 use crate::commons::CredentialInfo;
 use crate::contact::Phone;
 use crate::person::Gender;
+use crate::person::User;
 
 /// Identifying and contact information for the person placing an order.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
@@ -29,7 +30,7 @@ pub struct Buyer {
     pub id: Id,
 
     /// Identifier of the user; its default value means that no related record is stored.
-    #[model(opaque)]
+    #[model(reference(target = User, target_field = id), opaque)]
     pub user_id: Id,
 
     /// Buyer name.
@@ -49,6 +50,7 @@ pub struct Buyer {
     pub mobile: Option<Phone>,
 
     /// Optional email address.
+    #[model(text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 }

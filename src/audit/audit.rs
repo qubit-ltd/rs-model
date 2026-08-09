@@ -17,6 +17,7 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 use crate::audit::AuditStatus;
+use crate::organization::Employee;
 use crate::organization::EmployeeInfo;
 
 /// A review request targeting a persisted object in another domain.
@@ -27,12 +28,11 @@ pub struct Audit {
     #[model(opaque)]
     pub id: Id,
 
-    /// ASCII domain type that identifies how to interpret [`Self::objective_id`].
-    #[model(text(min_chars=1,max_chars=64,repertoire=ascii))]
+    /// Domain type that identifies how to interpret [`Self::objective_id`].
+    #[model(text(min_chars = 1, max_chars = 64))]
     pub objective_type: String,
 
     /// Identifier of the object selected for review.
-    #[model(identifier)]
     #[model(opaque)]
     pub objective_id: Id,
 
@@ -40,6 +40,7 @@ pub struct Audit {
     pub status: AuditStatus,
 
     /// Employee responsible for the review, or `None` until one is assigned.
+    #[model(reference(target = Employee, target_field = info), opaque)]
     pub auditor: Option<EmployeeInfo>,
 
     /// UTC creation instant, recorded with second precision.

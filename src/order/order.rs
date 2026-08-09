@@ -18,6 +18,7 @@ use serde::Serialize;
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
+use crate::commons::App;
 use crate::commons::Currency;
 use crate::invoice::InvoiceStatus;
 use crate::mixin::StatefulInfo;
@@ -26,6 +27,7 @@ use crate::order::Consignee;
 use crate::order::OrderItem;
 use crate::order::OrderStatus;
 use crate::order::PayType;
+use crate::person::User;
 use crate::product::Seller;
 use crate::shipping::ShippingDemand;
 use crate::shipping::ShippingMode;
@@ -40,10 +42,11 @@ pub struct Order {
     pub id: Id,
 
     /// Identifier of the owning-user; its default value means that no related record is stored.
-    #[model(opaque)]
+    #[model(reference(target = User, target_field = id), opaque)]
     pub user_id: Id,
 
     /// Owning application.
+    #[model(reference(target = App, target_field = info))]
     pub app: StatefulInfo,
 
     /// Buyer information.
@@ -87,6 +90,7 @@ pub struct Order {
     pub discount: BigDecimal,
 
     /// Optional order-level discount reason.
+    #[model(text(min_chars = 1, max_chars = 256))]
     pub discount_reason: Option<String>,
 
     /// Order-level shipping cost.
@@ -111,6 +115,7 @@ pub struct Order {
     pub shipping_id: Id,
 
     /// Optional shipment tracking number.
+    #[model(text(min_chars = 1, max_chars = 64))]
     pub shipping_number: Option<String>,
 
     /// Optional order comment.
