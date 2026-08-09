@@ -6,22 +6,22 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Feedback classification vocabularies.
+//! Satisfaction ratings supplied for feedback outcomes.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// A user's satisfaction rating for a feedback outcome.
+/// The submitter's assessment of a feedback outcome.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum FeedbackRating {
-    /// The user is satisfied.
+    /// The submitter considers the outcome satisfactory.
     Satisfied,
-    /// The user is neither satisfied nor dissatisfied.
+    /// The submitter gives neither positive nor negative approval.
     Neutral,
-    /// The user is dissatisfied.
+    /// The submitter considers the outcome unsatisfactory.
     Dissatisfied,
 }

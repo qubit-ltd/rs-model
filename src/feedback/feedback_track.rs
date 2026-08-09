@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Persisted feedback lifecycle events.
+//! Audit-trail entries for actions applied to feedback cases.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -22,56 +22,56 @@ use crate::feedback::FeedbackStatus;
 use crate::person::UserInfo;
 use crate::upload::Attachment;
 
-/// An immutable-in-purpose record of one operation applied to feedback.
+/// A history entry describing one action and its feedback state transition.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct FeedbackTrack {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value denotes an unpersisted history entry.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Identifier of the feedback record being tracked.
+    /// Identifier of the [`Feedback`] case affected by this action.
     #[model(identifier)]
     #[model(opaque)]
     pub feedback_id: Id,
 
-    /// Operation that produced this event.
+    /// Lifecycle action that produced this history entry.
     pub action: FeedbackAction,
 
-    /// User that submitted the event.
+    /// User who submitted or performed the action.
     pub submitter: UserInfo,
 
-    /// Optional textual description; either this or `record` is expected.
+    /// Written explanation accompanying the action, normally used instead of [`Self::record`].
     pub description: Option<String>,
 
-    /// Optional voice description; either this or `description` is expected.
+    /// Voice explanation accompanying the action, normally used instead of [`Self::description`].
     pub record: Option<Attachment>,
 
-    /// Optional supporting attachments.
+    /// Supporting files for this action, or `None` if no files were supplied.
     pub attachments: Option<Vec<Attachment>>,
 
-    /// Feedback state immediately before the operation.
+    /// Feedback lifecycle state immediately before the action.
     pub status_before: FeedbackStatus,
 
-    /// Feedback state immediately after the operation.
+    /// Feedback lifecycle state immediately after the action.
     pub status_after: FeedbackStatus,
 
-    /// Optional user rating for applicable user actions.
+    /// Submitter rating for actions that request it, or `None` otherwise.
     pub rating: Option<FeedbackRating>,
 
-    /// Optional administrative comment.
+    /// Administrator comment attached to this action, or `None` when absent.
     pub comment: Option<String>,
 
-    /// UTC creation timestamp.
+    /// UTC instant, rounded to seconds, when the action was recorded.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the latest history-entry change, or `None` when unchanged.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC soft-deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the entry is retained.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Persisted user feedback records.
+//! Feedback records submitted by users about an application or service.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -22,68 +22,68 @@ use crate::mixin::StatefulInfo;
 use crate::system::Environment;
 use crate::upload::Attachment;
 
-/// A user's feedback, including complaints, reports, and suggestions.
+/// A user's complaint, report, or suggestion and its processing context.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Feedback {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value denotes feedback not yet persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Tenant that owns the application receiving the feedback.
+    /// Tenant reference for the application receiving this submission.
     pub tenant: StatefulInfo,
 
-    /// Application receiving the feedback.
+    /// Application reference that receives and processes the feedback.
     pub app: StatefulInfo,
 
-    /// Optional environment captured when the feedback was submitted.
+    /// Client environment captured at submission time, or `None` when unavailable.
     pub environment: Option<Environment>,
 
-    /// User-facing feedback type.
+    /// Kind of issue or request selected by the submitter.
     pub r#type: FeedbackType,
 
-    /// Specific feedback category, such as service or product quality.
+    /// Stateful category used to classify the feedback, such as service quality.
     pub category: StatefulInfo,
 
-    /// Optional principal that submitted the feedback.
+    /// Submitting principal, or `None` for anonymous feedback.
     pub submitter: Option<StatefulInfo>,
 
-    /// Optional contact details supplied by the user.
+    /// Contact details volunteered by the submitter, or `None` if none were given.
     #[model(text(max_chars = 128))]
     pub contact: Option<String>,
 
-    /// Optional feedback title.
+    /// Short subject supplied by the user, or `None` if the submission is untitled.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub title: Option<String>,
 
-    /// Optional textual description; either this or `voice` is expected.
+    /// Written account of the issue; normally supplied instead of [`Self::voice`].
     pub description: Option<String>,
 
-    /// Optional voice recording; either this or `description` is expected.
+    /// Voice account of the issue; normally supplied instead of [`Self::description`].
     pub voice: Option<Attachment>,
 
-    /// Optional transcription of `voice`.
+    /// Text transcribed from [`Self::voice`], or `None` when no transcription exists.
     pub transcript: Option<String>,
 
-    /// Optional supporting attachments.
+    /// Supporting files, or `None` when the submitter supplied no attachments.
     pub attachments: Option<Vec<Attachment>>,
 
-    /// Current processing state.
+    /// Current stage in the feedback processing lifecycle.
     pub status: FeedbackStatus,
 
-    /// Optional administrative comment.
+    /// Administrator's internal or user-facing comment, or `None` when absent.
     pub comment: Option<String>,
 
-    /// UTC creation timestamp.
+    /// UTC instant, rounded to seconds, when the feedback was submitted.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the latest update, or `None` when it has not changed.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC soft-deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the record is retained.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

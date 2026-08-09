@@ -3,7 +3,7 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! User appointment records.
+//! Bookings submitted by people for application services.
 
 #[allow(clippy::module_inception)]
 mod appointment;

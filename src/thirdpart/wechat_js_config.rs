@@ -5,29 +5,29 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! WeChat JavaScript SDK configuration.
+//! Signed configuration used to initialize the WeChat JavaScript SDK.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// Parameters required to initialize the WeChat JavaScript SDK.
+/// Per-page signature parameters accepted by the WeChat JavaScript SDK.
 #[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct WechatJsConfig {
-    /// WeChat application identifier.
+    /// WeChat application identifier for the signing context.
     pub app_id: String,
 
-    /// WeChat timestamp text.
+    /// Timestamp supplied to WeChat as text, using its expected wire format.
     pub timestamp: String,
 
-    /// Per-request nonce.
+    /// One-time nonce paired with the signature.
     #[redact(level = "secret")]
     pub nonce_str: String,
 
-    /// WeChat request signature.
+    /// Signature that authorizes SDK initialization for the current request.
     #[redact(level = "secret")]
     pub signature: String,
 }

@@ -3,7 +3,7 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! Coupons issued by marketing activities.
+//! Models for campaign coupons issued to individual people.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -17,36 +17,36 @@ use qubit_redact_derive::Redact;
 use crate::order::OrderInfo;
 use crate::person::Person;
 
-/// A coupon issued to a person by an activity.
+/// A coupon granted by a campaign and associated with its recipient and use.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct ActivityCoupon {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value denotes an unpersisted coupon record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Activity that issued the coupon.
+    /// Reference to the campaign that issued this coupon.
     #[model(opaque)]
     pub activity: Info,
 
-    /// Coupon redemption code.
+    /// Secret code presented when the recipient redeems the coupon.
     #[model(text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     pub coupon_code: String,
 
-    /// Person receiving the coupon.
+    /// Person to whom this coupon was issued.
     #[redact(nested)]
     pub person: Person,
 
-    /// Order in which the coupon is used.
+    /// Order that redeemed this coupon; its empty reference denotes that it is unused.
     pub order: OrderInfo,
 
-    /// UTC creation timestamp.
+    /// UTC instant, rounded to seconds, when the coupon record was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// UTC receipt timestamp.
+    /// UTC instant, rounded to seconds, when the recipient received the coupon.
     #[model(time(precision = second, normalization = utc))]
     pub receive_time: DateTime<Utc>,
 }

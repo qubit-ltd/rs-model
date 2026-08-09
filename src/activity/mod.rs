@@ -3,7 +3,7 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! Marketing activities, product items, and issued coupons.
+//! Campaigns, their ordered product entries, and the coupons they issue.
 
 #[allow(clippy::module_inception)]
 mod activity;

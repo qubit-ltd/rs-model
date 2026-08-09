@@ -6,22 +6,22 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Feedback classification vocabularies.
+//! User-facing categories for feedback submissions.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// The user-facing category of a feedback record.
+/// Category selected by the submitter to express the purpose of feedback.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum FeedbackType {
-    /// A complaint.
+    /// Dissatisfaction with a product, service, or experience.
     Complaint,
-    /// A report of a problem or violation.
+    /// Report of a defect, incident, or policy violation.
     Report,
-    /// A suggestion for improvement.
+    /// Proposal to improve a product, service, or process.
     Suggestion,
 }

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Statistics domain models.
+//! Tabular and category-based value objects used in statistical responses.
 
 mod category_value;
 mod stats_dataset;

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Statistics value objects.
+//! Values grouped by a category and, optionally, a UTC time interval.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -16,20 +16,20 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// A value aggregated for one category and optional time interval.
+/// A decimal aggregate for one category, optionally bounded by UTC instants.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct CategoryValue {
-    /// Category name.
+    /// Label of the category represented by this aggregate.
     pub category: String,
 
-    /// Aggregated value for the category.
+    /// Decimal value accumulated for the category.
     pub value: BigDecimal,
 
-    /// Optional inclusive start of the aggregation interval.
+    /// Inclusive UTC start of the aggregation interval, or `None` when unbounded.
     #[model(time(precision = second, normalization = utc))]
     pub start_time: Option<DateTime<Utc>>,
 
-    /// Optional inclusive end of the aggregation interval.
+    /// Inclusive UTC end of the aggregation interval, or `None` when unbounded.
     #[model(time(precision = second, normalization = utc))]
     pub end_time: Option<DateTime<Utc>>,
 }

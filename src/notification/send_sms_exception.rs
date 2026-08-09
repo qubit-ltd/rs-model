@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Errors returned when an SMS provider rejects a send operation.
+//! Error details returned when an external SMS provider cannot send a message.
 
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -19,30 +19,30 @@ use crate::contact::Phone;
 use crate::error::ErrorType;
 use crate::notification::NotificationErrorCode;
 
-/// A failed single-recipient or batch SMS operation.
+/// A failed SMS send directed to one recipient or a batch of recipients.
 #[derive(Model, Redact, Clone, Deserialize, Error, PartialEq)]
 #[redact(debug, serde)]
 #[error("failed to send SMS: {third_party_message}")]
 pub struct SendSmsException {
-    /// Single destination, or `None` for a batch operation.
+    /// Sole destination for a single-recipient send, or `None` for a batch.
     #[redact(nested)]
     pub phone: Option<Phone>,
 
-    /// Batch destinations, or `None` for a single-recipient operation.
+    /// Batch destinations, or `None` when the failure concerns one recipient.
     #[redact(nested)]
     pub phones: Option<Vec<Phone>>,
 
-    /// Provider-specific error code.
+    /// Provider-defined code that explains the delivery failure.
     #[redact(level = "secret")]
     pub third_party_code: String,
 
-    /// Provider-specific error message.
+    /// Provider-defined diagnostic text for the delivery failure.
     #[redact(level = "secret")]
     pub third_party_message: String,
 }
 
 impl SendSmsException {
-    /// Creates an error for a single destination phone number.
+    /// Creates a delivery error for one destination and its provider response.
     #[must_use]
     pub fn for_phone(phone: Phone, third_party_code: String, third_party_message: String) -> Self {
         Self {
@@ -53,7 +53,7 @@ impl SendSmsException {
         }
     }
 
-    /// Creates an error for a batch of destination phone numbers.
+    /// Creates a delivery error for a recipient batch and its provider response.
     #[must_use]
     pub fn for_phones(
         phones: Vec<Phone>,
@@ -68,25 +68,25 @@ impl SendSmsException {
         }
     }
 
-    /// Returns the stable notification error code.
+    /// Returns the stable application error code for this failure.
     #[must_use]
     pub const fn code(&self) -> NotificationErrorCode {
         NotificationErrorCode::SendSmsFailed
     }
 
-    /// Returns the broad third-party error category.
+    /// Returns the platform category identifying a third-party failure.
     #[must_use]
     pub const fn error_type(&self) -> ErrorType {
         self.code().error_type()
     }
 
-    /// Returns the provider message used as the localized template's reason.
+    /// Returns the provider diagnostic inserted as the localized message reason.
     #[must_use]
     pub fn reason(&self) -> &str {
         &self.third_party_message
     }
 
-    /// Builds the message-template parameters exposed by the Java exception.
+    /// Builds named message-template parameters, including a formatted recipient list.
     #[must_use]
     pub fn parameters(&self) -> BTreeMap<&'static str, Option<String>> {
         let phone = if let Some(phone) = &self.phone {

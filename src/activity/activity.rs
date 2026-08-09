@@ -3,7 +3,7 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! Marketing activity records.
+//! Models for marketing campaigns and their availability windows.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -17,55 +17,55 @@ use qubit_redact_derive::Redact;
 use crate::activity::ActivityProductItem;
 use crate::commons::State;
 
-/// A marketing activity and the products participating in it.
+/// A campaign owned by an application, together with its participating products.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[model(unique(fields(code)))]
 pub struct Activity {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value means the campaign has not been persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Globally unique stable code.
+    /// Stable, globally unique code used to identify the campaign across integrations.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub code: String,
 
-    /// Activity name.
+    /// Display name shown for the campaign.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub name: String,
 
-    /// Owning application.
+    /// Application reference that owns and administers the campaign.
     #[model(opaque)]
     pub app: Info,
 
-    /// Products participating in the activity.
+    /// Products included in this campaign, in their configured display order.
     pub items: Vec<ActivityProductItem>,
 
-    /// Optional description.
+    /// Additional campaign details, when supplied.
     pub description: Option<String>,
 
-    /// UTC activity start timestamp.
+    /// UTC instant, rounded to seconds, at which the campaign becomes active.
     #[model(time(precision = second, normalization = utc))]
     pub start_time: DateTime<Utc>,
 
-    /// UTC activity end timestamp.
+    /// UTC instant, rounded to seconds, after which the campaign is no longer active.
     #[model(time(precision = second, normalization = utc))]
     pub end_time: DateTime<Utc>,
 
-    /// Lifecycle state.
+    /// Current lifecycle state controlling whether the campaign may be used.
     #[serde(default)]
     pub state: State,
 
-    /// UTC creation timestamp.
+    /// UTC instant, rounded to seconds, when this record was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the latest update, or `None` if it has never been updated.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC soft-deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the campaign remains available.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }
