@@ -59,7 +59,6 @@ pub struct InsuranceClaimMedical {
     pub department: String,
 
     /// Gross charge attributed to this encounter before claim calculation.
-    #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
     /// Primary diagnosis.
