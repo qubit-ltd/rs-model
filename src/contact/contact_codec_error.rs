@@ -9,19 +9,19 @@
 
 use thiserror::Error;
 
-/// Errors produced by contact and coordinate wire adapters.
+/// Failures raised while decoding contact values from their compact wire representations.
 #[derive(Debug, Error)]
 pub enum ContactCodecError {
-    /// A coordinate cannot be parsed as a decimal value.
+    /// A coordinate is absent where required or cannot be parsed as a decimal degree value.
     #[error("invalid coordinate")]
     InvalidCoordinate,
-    /// A location does not contain exactly one longitude/latitude separator.
+    /// A location string does not contain exactly one longitude/latitude separator.
     #[error("invalid location format")]
     InvalidLocation,
-    /// A phone does not match the supported one-, two-, or three-part format.
+    /// A phone string does not match the supported local, area/local, or country/area/local form.
     #[error("invalid phone number format")]
     InvalidPhone,
-    /// A JSON value cannot be decoded as the expected contact wire value.
+    /// JSON syntax or structure prevented decoding the expected contact wire value.
     #[error("invalid contact JSON value")]
     InvalidJson(#[source] serde_json::Error),
 }
