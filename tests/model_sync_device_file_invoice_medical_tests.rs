@@ -43,7 +43,7 @@ fn test_scoped_models_preserve_java_metadata_constraints() {
             .comparison_of("code"),
         Some(UniqueComparison::Exact)
     );
-    for field in ["app", "owner", "binder"] {
+    for field in ["app", "owner", "binder", "deploy_address", "payloads"] {
         assert!(
             device
                 .field(field)

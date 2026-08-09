@@ -23,7 +23,7 @@ fn assert_redact<T: Redact>() {}
 
 #[test]
 fn test_feedback_public_types_expose_model_and_redact_contracts() {
-    assert_eq!(metadata_of::<Feedback>().struct_fields().len(), 18);
+    assert_eq!(metadata_of::<Feedback>().struct_fields().len(), 13);
     assert_eq!(metadata_of::<FeedbackTrack>().struct_fields().len(), 14);
     assert_redact::<Feedback>();
     assert_redact::<FeedbackTrack>();
@@ -162,7 +162,7 @@ fn test_feedback_metadata_preserves_indexes_and_references() {
     );
     assert_eq!(submitter.target_field().segments(), ["info"]);
     assert!(submitter.must_exist());
-    for field in ["voice", "attachments"] {
+    for field in ["record", "attachments"] {
         let reference = feedback
             .field(field)
             .expect("feedback attachment field")
