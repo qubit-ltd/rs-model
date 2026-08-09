@@ -8,16 +8,25 @@
 
 //! Shared records used across the migrated model domains.
 
+use qubit_id::Id;
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-use super::Owner;
-
 /// A set of owners represented by their entity and identifier pairs.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
+#[model(key(name = "owners_key", fields(type, ids, property)))]
 pub struct Owners {
-    /// Owners in source order.
-    pub values: Vec<Owner>,
+    /// Owning entity type name.
+    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    pub r#type: String,
+
+    /// Persisted identifiers of the owned entities.
+    #[model(opaque)]
+    pub ids: Vec<Id>,
+
+    /// Optional property owned on the target entities.
+    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    pub property: Option<String>,
 }

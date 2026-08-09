@@ -20,7 +20,9 @@ use qubit_redact_derive::Redact;
 
 use super::Category;
 use super::Scope;
+use crate::commons::App;
 use crate::commons::State;
+use crate::mixin::StatefulInfo;
 
 /// A data dictionary without its entry collection.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
@@ -64,6 +66,10 @@ pub struct Dict {
     /// Optional administrator note kept separate from the user-facing description.
     pub comment: Option<String>,
 
+    /// Optional application that owns this dictionary.
+    #[model(reference(target = App, target_field = info), opaque)]
+    pub app: Option<StatefulInfo>,
+
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), opaque)]
     pub category: Option<InfoWithEntity>,
@@ -103,6 +109,7 @@ impl Dict {
             && self.url.as_ref().is_none_or(String::is_empty)
             && self.description.as_ref().is_none_or(String::is_empty)
             && self.comment.as_ref().is_none_or(String::is_empty)
+            && self.app.is_none()
             && self.category.as_ref().is_none_or(Emptyful::is_empty)
             && self.state == State::Normal
             && !self.predefined

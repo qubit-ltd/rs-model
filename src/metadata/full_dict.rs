@@ -22,7 +22,9 @@ use super::Category;
 use super::Dict;
 use super::DictEntry;
 use super::Scope;
+use crate::commons::App;
 use crate::commons::State;
+use crate::mixin::StatefulInfo;
 
 /// A dictionary carrying its complete entry collection.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
@@ -65,6 +67,10 @@ pub struct FullDict {
 
     /// Optional administrator note that is distinct from the user-facing description.
     pub comment: Option<String>,
+
+    /// Optional application that owns this dictionary.
+    #[model(reference(target = App, target_field = info), opaque)]
+    pub app: Option<StatefulInfo>,
 
     /// Optional category information.
     #[model(reference(target = Category, target_field = info), opaque)]
@@ -140,6 +146,7 @@ impl FullDict {
             && self.url.as_ref().is_none_or(String::is_empty)
             && self.description.as_ref().is_none_or(String::is_empty)
             && self.comment.as_ref().is_none_or(String::is_empty)
+            && self.app.is_none()
             && self.category.as_ref().is_none_or(Emptyful::is_empty)
             && self.state == State::Normal
             && !self.predefined
@@ -186,6 +193,7 @@ impl From<Dict> for FullDict {
             url: dict.url,
             description: dict.description,
             comment: dict.comment,
+            app: dict.app,
             category: dict.category,
             state: dict.state,
             predefined: dict.predefined,
