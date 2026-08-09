@@ -17,11 +17,11 @@ use qubit_model_derive::Model;
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SexOrientation {
-    /// Heterosexual.
+    /// Records attraction primarily to people of a different gender.
     Heterosexual,
-    /// Homosexual.
+    /// Records attraction primarily to people of the same gender.
     Homosexual,
-    /// Bisexual.
+    /// Records attraction to people of more than one gender.
     Bisexual,
     /// The person chose not to disclose an orientation.
     Secrecy,

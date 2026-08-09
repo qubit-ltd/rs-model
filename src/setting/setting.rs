@@ -35,26 +35,26 @@ pub struct Setting {
     #[redact(plain)]
     pub values: Vec<String>,
 
-    /// Whether callers may modify this setting.
+    /// Prevents administrative or application callers from changing this managed setting.
     pub readonly: bool,
 
-    /// Whether the setting may contain no values.
+    /// Allows the setting to be explicitly present with an empty value collection.
     pub nullable: bool,
 
-    /// Whether the setting may contain more than one value.
+    /// Allows a collection of values instead of requiring exactly one typed value.
     pub multiple: bool,
 
-    /// Whether persisted values are encrypted.
+    /// Requires the persisted value payload to be encrypted because it contains secrets.
     pub encrypted: bool,
 
-    /// Optional human-readable description.
+    /// Administrator-facing explanation of the setting's purpose and expected value.
     pub description: Option<String>,
 
-    /// Optional UTC creation timestamp.
+    /// UTC instant when the setting definition was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC last-modification timestamp.
+    /// UTC instant when the setting definition or its values last changed.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 }

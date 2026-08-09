@@ -22,7 +22,7 @@ pub struct BindDeviceParams {
     #[redact(level = "secret")]
     pub udid: String,
 
-    /// Optional patient identifier.
+    /// Identifier of the patient whose record will own the bound device.
     #[model(opaque)]
     pub patient_id: Id,
 }

@@ -25,7 +25,7 @@ use crate::mixin::StatefulInfo;
 /// Represents an organizational department and its hierarchy, contact, and payload data.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Department {
-    /// Optional persisted identifier.
+    /// Database identifier for this department; default denotes an unsaved record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -34,7 +34,7 @@ pub struct Department {
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
-    /// Optional organization-scoped ASCII code.
+    /// Organization-unique code used to address the department in integrations.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub internal_code: Option<String>,
 
@@ -42,11 +42,11 @@ pub struct Department {
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional category reference information.
+    /// Category used to group this department in organizational navigation and reporting.
     #[model(opaque)]
     pub category: Option<InfoWithEntity>,
 
-    /// Optional parent-department information.
+    /// Parent department that establishes this department's place in the hierarchy.
     pub parent: Option<StatefulInfo>,
 
     /// Organization information.
@@ -55,34 +55,34 @@ pub struct Department {
     /// Lifecycle state.
     pub state: State,
 
-    /// Optional ASCII icon URL.
+    /// Icon URI used when presenting the department in organizational interfaces.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub icon: Option<String>,
 
-    /// Optional description.
+    /// Description of the department's responsibilities or service scope.
     pub description: Option<String>,
 
-    /// Optional contact methods.
+    /// Contact channels for the department rather than an individual employee.
     pub contact: Option<Contact>,
 
-    /// Optional payload values.
+    /// Application-defined extension values associated with this department.
     pub payloads: Option<Vec<Payload>>,
 
-    /// Whether this is predefined reference data.
+    /// Marks a platform-defined department that is protected from ordinary maintenance.
     pub predefined: bool,
 
-    /// Whether this is a test department.
+    /// Marks non-production departmental data excluded from live operations.
     pub test: bool,
 
-    /// UTC creation timestamp.
+    /// UTC instant when this department record was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent department update.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC instant of soft deletion; absent while the department is active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

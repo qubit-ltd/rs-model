@@ -17,7 +17,7 @@ use qubit_model_derive::Model;
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Education {
-    /// No formal education.
+    /// Records that no formal educational attainment was reported.
     None,
     /// Elementary school.
     ElementarySchool,

@@ -28,34 +28,34 @@ pub struct SettingXmlAdapted {
     /// Stable setting name.
     pub name: String,
 
-    /// Optional non-default data-type name.
+    /// XML source type name when it differs from the default string representation.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_name: Option<String>,
 
-    /// Optional non-default read-only flag.
+    /// XML override that marks this imported setting as not user-modifiable.
     pub readonly: Option<bool>,
 
-    /// Optional non-default nullable flag.
+    /// XML override allowing this imported setting to have no values.
     pub nullable: Option<bool>,
 
-    /// Optional non-default multiple-value flag.
+    /// XML override allowing this imported setting to contain a value list.
     pub multiple: Option<bool>,
 
-    /// Optional non-default encrypted flag.
+    /// XML override requiring encryption for the imported setting values.
     pub encrypted: Option<bool>,
 
-    /// Optional human-readable description.
+    /// Human-facing XML description explaining the setting's operational purpose.
     pub description: Option<String>,
 
-    /// Optional UTC creation timestamp.
+    /// Source creation time retained when importing a setting definition.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC modification timestamp.
+    /// Source modification time retained when importing a setting definition.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional source-order setting values.
+    /// Raw values in source order before the adapter constructs the typed setting.
     #[redact(plain)]
     pub values: Option<Vec<String>>,
 }

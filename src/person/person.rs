@@ -53,166 +53,166 @@ use crate::upload::Attachment;
     unique(name = "person_credential", fields(credential))
 )]
 pub struct Person {
-    /// Optional persisted identifier.
+    /// Database identifier for this person; the default value denotes an unsaved profile.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Optional data-source information.
+    /// Originating system or import source used to trace how this profile was created.
     #[model(reference(target = Source, target_field = info), index, opaque)]
     pub source: Option<InfoWithEntity>,
 
-    /// Optional classification information.
+    /// Business category used to segment the person for workflows and reporting.
     #[model(reference(target = Category, target_field = info), index, opaque)]
     pub category: Option<InfoWithEntity>,
 
-    /// Real name.
+    /// Legal or commonly used real name shown on the person's profile.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional globally unique registered user name.
+    /// Globally unique login name when the person is associated with a user account.
     #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub username: Option<String>,
 
-    /// Optional gender.
+    /// Self-reported or source-supplied gender for demographic and service records.
     #[model(index)]
     pub gender: Option<Gender>,
 
-    /// Optional birth date.
+    /// Calendar birth date used for age-sensitive eligibility and demographic processing.
     #[model(index)]
     pub birthday: Option<NaiveDate>,
 
-    /// Optional birth time.
+    /// Reported local time of birth when the source provides it.
     #[model(index)]
     pub birth_time: Option<NaiveTime>,
 
-    /// Optional birth-country information.
+    /// Country recorded as the person's place of birth.
     #[model(reference(target = Country, target_field = info), index, opaque)]
     pub birth_country: Option<Info>,
 
-    /// Optional birth-province information.
+    /// Province or equivalent subdivision recorded as the person's place of birth.
     #[model(reference(target = Province, target_field = info), index, opaque)]
     pub birth_province: Option<Info>,
 
-    /// Optional birth-city information.
+    /// City recorded as the person's place of birth.
     #[model(reference(target = City, target_field = info), index, opaque)]
     pub birth_city: Option<Info>,
 
-    /// Optional identity credential.
+    /// Identity credential used to recognize the person across administrative processes.
     #[model(reference(target = Credential, target_field = info, must_exist = false))]
     #[redact(nested)]
     pub credential: Option<CredentialInfo>,
 
-    /// Whether the person has medical insurance.
+    /// Indicates whether the person is covered by a medical-insurance program.
     #[model(index)]
     pub has_medicare: Option<bool>,
 
-    /// Optional medical-insurance classification.
+    /// Medical-insurance scheme that determines the person's applicable benefits.
     #[model(index)]
     pub medicare_type: Option<MedicareType>,
 
-    /// Optional medical-insurance card.
+    /// Credential identifying the person's medical-insurance card, when issued.
     #[model(reference(target = Credential, target_field = info, must_exist = false))]
     #[redact(nested)]
     pub medicare_card: Option<CredentialInfo>,
 
-    /// Optional medical-insurance city.
+    /// City administering the person's medical-insurance enrollment.
     #[model(reference(target = City, target_field = info), index, opaque)]
     pub medicare_city: Option<Info>,
 
-    /// Whether the person has social security.
+    /// Indicates whether the person participates in a social-security program.
     #[model(index)]
     pub has_social_security: Option<bool>,
 
-    /// Optional social-security card.
+    /// Credential identifying the person's social-security card, when issued.
     #[model(reference(target = Credential, target_field = info, must_exist = false))]
     #[redact(nested)]
     pub social_security_card: Option<CredentialInfo>,
 
-    /// Optional social-security city.
+    /// City administering the person's social-security enrollment.
     #[model(reference(target = City, target_field = info), index, opaque)]
     pub social_security_city: Option<Info>,
 
-    /// Optional contact details.
+    /// Contact channels used to reach the person for services, care, or notifications.
     #[model(index)]
     #[redact(nested)]
     pub contact: Option<Contact>,
 
-    /// Optional guardian information.
+    /// Guardian or responsible person for minors or people needing representation.
     #[model(reference(target = Person, target_field = info))]
     #[redact(nested)]
     pub guardian: Option<PersonInfo>,
 
-    /// Optional education level.
+    /// Highest reported educational attainment for demographic profiling.
     pub education: Option<Education>,
 
-    /// Optional ethnicity.
+    /// Ethnic-group value retained for demographic reporting where permitted.
     pub ethnic: Option<Ethnic>,
 
-    /// Optional blood type.
+    /// Reported ABO blood group for clinical and emergency-reference workflows.
     pub blood: Option<Blood>,
 
-    /// Optional marital status.
+    /// Current or most recently reported marital-status classification.
     pub marriage: Option<Marriage>,
 
-    /// Whether the person has children.
+    /// Indicates whether the person reports having one or more children.
     #[model(index)]
     pub has_child: Option<bool>,
 
-    /// Optional sexual orientation.
+    /// Self-disclosed sexual orientation, retained only when the source provides it.
     pub sex_orientation: Option<SexOrientation>,
 
-    /// Optional religion.
+    /// Religious affiliation supplied for demographic or service-preference use.
     pub religion: Option<Religion>,
 
-    /// Optional political affiliation.
+    /// Political affiliation supplied for demographic or administrative use.
     pub politics: Option<Politics>,
 
-    /// Optional industry.
+    /// Industry sector of the person's current or primary employment.
     pub industry: Option<Industry>,
 
-    /// Optional occupation.
+    /// Free-text occupation or job function not represented by the industry category.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub job: Option<String>,
 
-    /// Optional professional title.
+    /// Professional-title or management-seniority band associated with the person's work.
     pub job_title: Option<JobTitle>,
 
-    /// Optional income band.
+    /// Reported annual-income band used for demographic segmentation.
     pub incoming: Option<Incoming>,
 
-    /// Optional employer information.
+    /// Employer organization associated with the person's current role.
     pub organization: Option<StatefulInfo>,
 
-    /// Optional height in centimetres.
+    /// Height in centimetres, when collected for clinical or service eligibility use.
     pub height: Option<i32>,
 
-    /// Optional weight in kilograms.
+    /// Weight in kilograms, when collected for clinical or service eligibility use.
     pub weight: Option<i32>,
 
-    /// Optional allergy history.
+    /// Free-text allergy history that may affect care or service delivery.
     pub allergic_history: Option<String>,
 
-    /// Optional portrait photograph.
+    /// Profile photograph used to help staff visually identify the person.
     #[model(reference(target = Attachment, target_field = id, must_exist = false))]
     pub photo: Option<Attachment>,
 
-    /// Optional comment.
+    /// Staff-maintained note that does not fit a structured profile field.
     pub comment: Option<String>,
 
-    /// Whether this is test data.
+    /// Marks synthetic or non-production data that must be excluded from live operations.
     #[model(index)]
     pub test: bool,
 
-    /// UTC creation timestamp.
+    /// UTC instant when the person profile was first created.
     #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent persisted profile update.
     #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC soft-deletion timestamp.
+    /// UTC instant when the profile was soft deleted; absence means it remains active.
     #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

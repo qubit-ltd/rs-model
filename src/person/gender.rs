@@ -19,9 +19,9 @@ use qubit_model_derive::Model;
 pub enum Gender {
     /// Gender is unknown.
     Unknown,
-    /// Male.
+    /// Records a male gender value supplied by the person or source system.
     Male,
-    /// Female.
+    /// Records a female gender value supplied by the person or source system.
     Female,
     /// Gender was intentionally not specified.
     Unspecified,

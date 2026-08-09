@@ -17,14 +17,14 @@ use qubit_model_derive::Model;
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SocialNetwork {
-    /// WeChat.
+    /// WeChat identity issued by Tencent's messaging and social platform.
     Wechat,
     /// Sina Weibo.
     Sina,
-    /// Zhihu.
+    /// Zhihu identity issued by the knowledge-sharing platform.
     Zhihu,
-    /// Douyin.
+    /// Douyin identity issued by ByteDance's short-video platform.
     Douyin,
-    /// Bilibili.
+    /// Bilibili identity issued by the video-community platform.
     Bilibili,
 }

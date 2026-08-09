@@ -21,7 +21,7 @@ use super::SignedInfo;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Signature {
-    /// Optional persisted identifier.
+    /// Database identifier for this signature record; default denotes an unsaved signature.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

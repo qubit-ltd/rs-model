@@ -17,13 +17,13 @@ use qubit_model_derive::Model;
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Blood {
-    /// Type A.
+    /// Records ABO group A for clinical matching and transfusion workflows.
     TypeA,
-    /// Type B.
+    /// Records ABO group B for clinical matching and transfusion workflows.
     TypeB,
-    /// Type AB.
+    /// Records ABO group AB for clinical matching and transfusion workflows.
     TypeAb,
-    /// Type O.
+    /// Records ABO group O for clinical matching and transfusion workflows.
     TypeO,
     /// The blood group is unknown.
     Unknown,

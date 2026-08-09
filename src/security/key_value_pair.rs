@@ -20,7 +20,7 @@ pub struct KeyValuePair {
     /// Payload key.
     pub key: String,
 
-    /// Optional payload value.
+    /// Optional string value associated with `key` in an extensible signed payload.
     #[redact(level = "secret")]
     pub value: Option<String>,
 }

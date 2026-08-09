@@ -13,13 +13,13 @@ use thiserror::Error;
 /// Errors produced while adapting settings to or from wire representations.
 #[derive(Debug, Error)]
 pub enum SettingAdapterError {
-    /// The supplied JSON document is malformed.
+    /// JSON setting input cannot be parsed into a syntactically valid document.
     #[error("invalid setting JSON")]
     InvalidJson(#[source] serde_json::Error),
-    /// The JSON root is not an object.
+    /// JSON setting input has a non-object root and therefore cannot name a setting.
     #[error("a setting JSON value must be an object")]
     InvalidJsonRoot,
-    /// The source data-type name is not supported.
+    /// Serialized setting names a data type that this model cannot map to a supported value.
     #[error("invalid setting data type: {0}")]
     InvalidDataType(String),
     /// A source timestamp is not an ISO-8601 timestamp.

@@ -19,17 +19,17 @@ use qubit_model_derive::Model;
 pub enum Marriage {
     /// Never married.
     Unmarried,
-    /// Married.
+    /// Records an active marriage without a more specific marriage-history state.
     Married,
     /// In a first marriage.
     MarriedFirstTime,
-    /// Remarried.
+    /// Records a current marriage entered after an earlier marriage ended.
     MarriedAgain,
     /// Marriage restored after divorce.
     MarriedRestored,
-    /// Widowed.
+    /// Records that the person's spouse has died and no later marriage is known.
     Widowed,
-    /// Divorced.
+    /// Records that the person's most recent marriage ended in divorce.
     Divorced,
     /// Legally or informally separated.
     Separated,

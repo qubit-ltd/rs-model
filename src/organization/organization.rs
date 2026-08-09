@@ -39,7 +39,7 @@ use crate::product::Seller;
     unique(name = "organization_name", fields(name), ignore_case(name))
 )]
 pub struct Organization {
-    /// Optional persisted identifier.
+    /// Database identifier for this organization; default denotes an unsaved record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -52,11 +52,11 @@ pub struct Organization {
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional category information.
+    /// Business category used to classify the organization in directory and workflow views.
     #[model(reference(target = Category, target_field = info), index, opaque)]
     pub category: Option<InfoWithEntity>,
 
-    /// Optional parent-organization information.
+    /// Parent organization in the organizational hierarchy, when this is a subunit.
     #[model(reference(target = Organization, target_field = info), index, opaque)]
     pub parent: Option<StatefulInfo>,
 
@@ -64,68 +64,68 @@ pub struct Organization {
     #[model(index)]
     pub state: State,
 
-    /// Optional ASCII icon path or URL.
+    /// Icon URI used to visually identify the organization in clients.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub icon: Option<String>,
 
-    /// Optional user-facing description.
+    /// Public-facing description of the organization's purpose or services.
     pub description: Option<String>,
 
-    /// Optional administrator comment.
+    /// Internal administrator note not represented by structured organization fields.
     pub comment: Option<String>,
 
-    /// Optional contact details.
+    /// Official contact channels for reaching the organization.
     #[model(index, opaque)]
     #[redact(nested)]
     pub contact: Option<Contact>,
 
-    /// Optional primary identity credential.
+    /// Primary registration or identity credential for the legal organization.
     #[model(reference(target = Credential, target_field = info, must_exist = false), opaque)]
     #[redact(nested)]
     pub credential: Option<CredentialInfo>,
 
-    /// Optional qualification credentials.
+    /// Licenses or qualification credentials that authorize the organization's activities.
     #[model(reference(target = Credential, target_field = info, must_exist = false), opaque)]
     #[redact(nested)]
     pub licenses: Option<Vec<CredentialInfo>>,
 
-    /// Optional legal representative or responsible person.
+    /// Person legally responsible for or representing the organization.
     #[model(index, opaque)]
     #[redact(nested)]
     pub principal: Option<PersonInfo>,
 
-    /// Optional tax-payer classification.
+    /// Taxpayer category used by invoicing and fiscal processes.
     pub tax_payer_type: Option<TaxPayerType>,
 
-    /// Optional ASCII tax number.
+    /// Tax registration number used for fiscal documents and validation.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub tax_number: Option<String>,
 
-    /// Optional extension payloads.
+    /// Application-defined key-value extensions retained with the organization record.
     #[model(
         reference(target = Payload, target_field = id, must_exist = false),
         sequence(max_items = 10)
     )]
     pub payloads: Option<Vec<Payload>>,
 
-    /// Whether this is predefined reference data.
+    /// Marks a platform-provided organization that administrators should not treat as ordinary data.
     #[model(index)]
     pub predefined: bool,
 
-    /// Whether this is development or test data.
+    /// Marks non-production organization data excluded from live operational reporting.
     #[model(index)]
     pub test: bool,
 
-    /// UTC creation timestamp.
+    /// UTC instant when the organization record was created.
     #[model(index, time(precision = second, normalization = utc))]
     pub create_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent persisted organization update.
     #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC instant of soft deletion; absent while the organization remains active.
     #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

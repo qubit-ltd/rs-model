@@ -19,13 +19,13 @@ use qubit_model_derive::Model;
 pub enum Industry {
     /// Agriculture, forestry, animal husbandry, or fishery.
     AgricultureForestryPastoralFishery,
-    /// Mining.
+    /// Mining and quarrying as the person's primary employment sector.
     Mining,
-    /// Manufacturing.
+    /// Manufacturing as the person's primary employment sector.
     Manufacturing,
     /// Electricity, heat, gas, or water supply.
     ElectricityHeatGasAndWater,
-    /// Construction.
+    /// Construction as the person's primary employment sector.
     Construction,
     /// Wholesale or retail sales.
     Sales,
@@ -37,7 +37,7 @@ pub enum Industry {
     Information,
     /// Financial services.
     Finance,
-    /// Real estate.
+    /// Real-estate services as the person's primary employment sector.
     RealEstate,
     /// Leasing or business services.
     LeasingAndBusinessServices,
@@ -47,7 +47,7 @@ pub enum Industry {
     ConservancyEnvironmentAndPublicFacilities,
     /// Residential or other personal services.
     ResidentialServices,
-    /// Education.
+    /// Education services as the person's primary employment sector.
     Education,
     /// Health care or social work.
     HealthAndSocialWork,
