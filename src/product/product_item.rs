@@ -21,10 +21,16 @@ use serde::Serialize;
 use qubit_model_derive::Model;
 
 use crate::Entity;
+use crate::product::Product;
 use crate::upload::Attachment;
 
 /// A priced specification belonging to a product.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[model(unique(
+    name = "product_item_product_specification",
+    fields(product_id, specification),
+    ignore_case(specification)
+))]
 pub struct ProductItem {
     /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
@@ -32,7 +38,7 @@ pub struct ProductItem {
     pub id: Id,
 
     /// Persisted identifier of the owning product.
-    #[model(opaque)]
+    #[model(reference(target = Product, target_field = id), opaque)]
     pub product_id: Id,
 
     /// Position in the owning product's item list.

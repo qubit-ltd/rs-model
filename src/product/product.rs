@@ -19,6 +19,8 @@ use qubit_mixin::Info;
 use qubit_mixin::InfoWithEntity;
 use qubit_model_derive::Model;
 
+use crate::commons::App;
+use crate::commons::Category;
 use crate::commons::Currency;
 use crate::commons::State;
 use crate::mixin::StatefulInfo;
@@ -29,6 +31,7 @@ use crate::upload::Attachment;
 
 /// A product together with its purchasable item specifications.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[model(unique(name = "product_app_code", fields(app, code), ignore_case(code)))]
 pub struct Product {
     /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
@@ -36,7 +39,7 @@ pub struct Product {
     pub id: Id,
 
     /// App-scoped unique product code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(text(min_chars = 1, max_chars = 64))]
     pub code: String,
 
     /// Product name.
@@ -44,10 +47,11 @@ pub struct Product {
     pub name: String,
 
     /// Application that owns this product.
+    #[model(reference(target = App, target_field = info))]
     pub app: StatefulInfo,
 
     /// Optional product category information.
-    #[model(opaque)]
+    #[model(reference(target = Category, target_field = info), opaque)]
     pub category: Option<InfoWithEntity>,
 
     /// Product quality.

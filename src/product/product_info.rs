@@ -21,6 +21,7 @@ use qubit_model_derive::Model;
 
 use crate::commons::Currency;
 use crate::product::ProductConstraint;
+use crate::product::ProductItem;
 use crate::product::Quality;
 use crate::upload::Attachment;
 
@@ -33,7 +34,7 @@ pub struct ProductInfo {
     pub id: Id,
 
     /// Persisted identifier of the selected product item.
-    #[model(opaque)]
+    #[model(reference(target = ProductItem, target_field = id), opaque)]
     pub item_id: Id,
 
     /// Product name.
@@ -41,7 +42,7 @@ pub struct ProductInfo {
     pub name: String,
 
     /// Product code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(text(min_chars = 1, max_chars = 64))]
     pub code: String,
 
     /// Product quality.
