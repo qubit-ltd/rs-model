@@ -18,11 +18,11 @@ use super::ValidationViolation;
 pub enum ModelError {
     /// One or more model fields violate their declared constraints.
     ///
-    /// `violations` contains every detected field failure and can be empty
-    /// when only a model-wide constraint failed. `message` is `None` when no
-    /// caller-defined summary is available. Callers must ensure that the
-    /// message and every violation omit sensitive rejected values before they
-    /// are stored in this error.
+    /// `violations` is a caller-supplied list of field-level violations and
+    /// may be empty, including for a model-wide failure. `message` is `None`
+    /// when no caller-defined summary is available. Callers must ensure that
+    /// the message and every violation omit sensitive rejected values before
+    /// they are stored in this error.
     #[error("{display_message}", display_message = message.as_deref().unwrap_or("model validation failed"))]
     ValidationFailed {
         /// A caller-defined summary stored verbatim, or `None` when unavailable.
