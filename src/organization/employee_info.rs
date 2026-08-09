@@ -22,11 +22,22 @@ use crate::commons::State;
 use crate::contact::Phone;
 use crate::mixin::StatefulInfo;
 use crate::person::Gender;
+use crate::person::User;
 use crate::upload::Attachment;
 
 /// Represents an employee snapshot including organization and department references.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
+#[model(
+    unique(name = "employee_info_code", fields(code), ignore_case(code)),
+    unique(
+        name = "employee_info_organization_internal_code",
+        fields(organization, internal_code),
+        ignore_case(internal_code)
+    ),
+    unique(name = "employee_info_credential", fields(credential)),
+    unique(name = "employee_info_mobile", fields(mobile))
+)]
 pub struct EmployeeInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
@@ -42,7 +53,10 @@ pub struct EmployeeInfo {
     pub internal_code: Option<String>,
 
     /// Optional registered ASCII user name.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(
+        reference(target = User, target_field = username),
+        text(min_chars = 1, max_chars = 64, repertoire = ascii)
+    )]
     pub username: Option<String>,
 
     /// Employee name.
@@ -68,6 +82,7 @@ pub struct EmployeeInfo {
     pub department: Option<StatefulInfo>,
 
     /// Optional profile photo.
+    #[model(reference(target = Attachment, target_field = id, must_exist = false))]
     pub photo: Option<Attachment>,
 
     /// Employment lifecycle state.
@@ -77,6 +92,5 @@ pub struct EmployeeInfo {
     pub test: bool,
 
     /// Optional UTC deletion timestamp.
-    #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

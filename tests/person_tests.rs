@@ -25,6 +25,8 @@ use qubit_model::person::PersonInfo;
 use qubit_model::person::SocialNetwork;
 use qubit_model::person::SocialNetworkAccount;
 use qubit_model::person::User;
+use qubit_model::person::UserInfo;
+use qubit_model_metadata::metadata_of;
 use qubit_redact::Redact as _;
 
 #[test]
@@ -124,4 +126,49 @@ fn test_social_network_account_uses_registration_defaults_and_normalizes_text() 
     assert_eq!(account.open_id, "open");
     assert_eq!(account.nickname.as_deref(), Some("nick"));
     assert_eq!(account.avatar.as_deref(), Some("avatar"));
+}
+
+#[test]
+fn test_user_models_preserve_source_uniques_indexes_and_references() {
+    let user = metadata_of::<User>();
+    assert_eq!(user.unique_constraints().count(), 3);
+    for field in [
+        "username",
+        "name",
+        "nickname",
+        "gender",
+        "mobile",
+        "email",
+        "organization",
+        "state",
+        "last_login",
+        "valid_time",
+        "expired_time",
+        "predefined",
+        "test",
+        "create_time",
+        "modify_time",
+        "delete_time",
+    ] {
+        assert!(
+            user.indexes().any(|index| index.contains(field)),
+            "missing user index for {field}"
+        );
+    }
+    assert!(user.field("organization").unwrap().reference().is_some());
+
+    let person = metadata_of::<Person>();
+    assert!(person.field("username").unwrap().reference().is_some());
+    assert!(person.field("organization").unwrap().reference().is_some());
+
+    let user_info = metadata_of::<UserInfo>();
+    assert_eq!(user_info.unique_constraints().count(), 3);
+    for field in [
+        "username", "name", "gender", "mobile", "email", "state", "test",
+    ] {
+        assert!(
+            user_info.indexes().any(|index| index.contains(field)),
+            "missing user info index for {field}"
+        );
+    }
 }

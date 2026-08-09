@@ -40,6 +40,55 @@ fn test_product_structs_expose_all_source_fields() {
     assert_eq!(metadata_of::<Seller>().struct_fields().len(), 9);
 }
 
+#[test]
+fn test_product_metadata_preserves_source_uniques_and_references() {
+    let product = metadata_of::<Product>();
+    assert_eq!(product.unique_constraints().count(), 1);
+    assert!(product.field("app").unwrap().reference().is_some());
+    assert!(product.field("category").unwrap().reference().is_some());
+
+    let coupon = metadata_of::<Coupon>();
+    assert_eq!(coupon.unique_constraints().count(), 1);
+    assert!(coupon.field("app").unwrap().reference().is_some());
+
+    let seller = metadata_of::<Seller>();
+    assert_eq!(seller.unique_constraints().count(), 1);
+
+    let coupon_rule = metadata_of::<CouponRule>();
+    assert_eq!(coupon_rule.unique_constraints().count(), 1);
+    assert!(coupon_rule.field("app").unwrap().reference().is_some());
+
+    let product_item = metadata_of::<ProductItem>();
+    assert_eq!(product_item.unique_constraints().count(), 1);
+    assert!(
+        product_item
+            .field("product_id")
+            .unwrap()
+            .reference()
+            .is_some()
+    );
+
+    let product_info = metadata_of::<ProductInfo>();
+    assert!(product_info.field("item_id").unwrap().reference().is_some());
+
+    let product_price = metadata_of::<ProductPrice>();
+    assert_eq!(product_price.unique_constraints().count(), 2);
+    assert!(
+        product_price
+            .field("product_id")
+            .unwrap()
+            .reference()
+            .is_some()
+    );
+    assert!(
+        product_price
+            .field("product_item_id")
+            .unwrap()
+            .reference()
+            .is_some()
+    );
+}
+
 /// Verifies product enum JSON values remain compatible with Java names.
 #[test]
 fn test_product_enums_preserve_java_wire_values() {
