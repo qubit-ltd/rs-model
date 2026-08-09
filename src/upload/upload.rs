@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Persisted upload metadata.
+//! Metadata for an uploaded source file and its optional derived images.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -19,46 +19,46 @@ use qubit_model_derive::Model;
 use crate::upload::AttachmentType;
 use crate::upload::FileInfo;
 
-/// A file received by the upload subsystem and its generated renditions.
+/// A stored uploaded file and the optional renditions produced from it.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Upload {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value denotes an unpersisted upload.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Optional user-facing original filename.
+    /// Original filename shown to users, or `None` when it was not captured.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub original_filename: Option<String>,
 
-    /// Type inferred for the uploaded file.
+    /// Attachment classification inferred for the original file.
     pub r#type: AttachmentType,
 
-    /// Original file storage metadata.
+    /// Storage metadata for the original uploaded file.
     pub file: FileInfo,
 
-    /// Optional screenshot rendition.
+    /// Screenshot rendition, or `None` when it was not generated.
     pub screenshot: Option<FileInfo>,
 
-    /// Optional small thumbnail rendition.
+    /// Small thumbnail rendition, or `None` when it was not generated.
     pub small_thumbnail: Option<FileInfo>,
 
-    /// Optional large thumbnail rendition.
+    /// Large thumbnail rendition, or `None` when it was not generated.
     pub large_thumbnail: Option<FileInfo>,
 
-    /// Optional hash algorithm name.
+    /// Digest algorithm name, or `None` when no digest is stored.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub hash_algorithm: Option<String>,
 
-    /// Optional content hash value.
+    /// Source-file digest, or `None` when integrity data is unavailable.
     #[model(text(min_chars = 1, max_chars = 512))]
     pub hash_value: Option<String>,
 
-    /// UTC creation timestamp.
+    /// UTC creation instant, rounded to seconds.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the upload is retained.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

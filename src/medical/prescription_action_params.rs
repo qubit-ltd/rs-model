@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Prescription workflow action parameters.
+//! Input captured when a participant advances a prescription workflow.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -18,7 +18,8 @@ use qubit_model_derive::Model;
 use crate::Entity;
 use crate::medical::PrescriptionAction;
 
-/// Actor, timestamp, description, and payload for a prescription action.
+/// Audit context for a prescription transition, including its actor and source
+/// payload.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionActionParams {
     /// Action applied to the prescription.

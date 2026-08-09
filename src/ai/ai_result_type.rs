@@ -3,24 +3,24 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! AI result classifications.
+//! Classifications for content produced by AI attachment processing.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// The kind of result produced by an AI engine.
+/// The business purpose of an AI engine's generated content.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AiResultType {
-    /// A description of image, audio, or video content.
+    /// Narrative description of image, audio, or video input.
     Description,
-    /// A textual transcription of audio or video content.
+    /// Text transcribed from audio or video input.
     Transcription,
-    /// A summary of text, image, audio, or video content.
+    /// Condensed summary of text or multimedia input.
     Summary,
-    /// An analysis of data, text, image, audio, or video content.
+    /// Analytical interpretation of data, text, or multimedia input.
     Analysis,
 }

@@ -6,31 +6,30 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Optional parameters controlling an upload operation.
+//! Optional caller input that controls an upload and its hash validation.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// User-supplied upload hints and hash verification material.
+/// Caller-provided filename, MIME type, cleanup, and digest-validation options.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct UploadParams {
-    /// Optional original filename.
+    /// Original filename, or `None` when the service should infer it.
     pub filename: Option<String>,
 
-    /// Optional MIME content type.
+    /// Source MIME type, or `None` when the service should determine it.
     pub content_type: Option<String>,
 
-    /// Whether the upload service removes the source file after a successful
-    /// upload.
+    /// Whether the service removes the local source file after a successful upload.
     pub delete_origin: bool,
 
-    /// Optional hash algorithm used to verify the source.
+    /// Digest algorithm used with [`Self::hash`], or `None` to omit validation.
     pub algorithm: Option<String>,
 
-    /// Optional expected source-file hash.
+    /// Expected source-file digest, or `None` to omit validation.
     #[redact(level = "secret")]
     pub hash: Option<String>,
 }

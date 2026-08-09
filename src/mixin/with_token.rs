@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Access-token contracts.
 
 use crate::commons::Token;
 
-/// Provides an optional token.
+/// Gives a model an optional issued access token.
 pub trait WithToken {
-    /// Returns the token.
+    /// Returns the current token, or `None` when no token has been issued.
     fn token(&self) -> Option<&Token>;
 
-    /// Replaces the token.
+    /// Sets the current token; `None` clears the stored token reference.
     fn set_token(&mut self, token: Option<Token>);
 }

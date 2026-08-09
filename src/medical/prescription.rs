@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Prescription workflow records.
+//! Persisted prescriptions and their dispensing-workflow context.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -20,11 +20,11 @@ use crate::medical::PrescriptionContent;
 use crate::medical::PrescriptionStatus;
 use crate::organization::EmployeeInfo;
 
-/// A prescription and the clinicians, signatures, order, and lifecycle around
-/// it.
+/// A prescription record that binds signable clinical content to review,
+/// dispensing, and order-fulfillment state.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Prescription {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this prescription is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -32,32 +32,42 @@ pub struct Prescription {
     /// Signable prescription content.
     pub content: PrescriptionContent,
 
-    /// Optional hospital reviewing pharmacist.
+    /// Hospital reviewing pharmacist; `Some` after an in-hospital audit records
+    /// its participant, while `None` means that audit has not occurred or does
+    /// not apply.
     pub auditor: Option<EmployeeInfo>,
 
-    /// Optional third-party reviewing pharmacist.
+    /// Third-party reviewing pharmacist; `Some` records an external inspection
+    /// participant, while `None` means no external inspection is recorded.
     pub inspector: Option<EmployeeInfo>,
 
-    /// Optional dispensing pharmacist.
+    /// Pharmacy pharmacist recorded for medication preparation; `None` means
+    /// no preparation participant record is present.
     pub pharmacist: Option<EmployeeInfo>,
 
-    /// Optional pharmacy reviewing pharmacist.
+    /// Pharmacy pharmacist recorded for review of prepared medication; `None`
+    /// means no pharmacy-review participant record is present.
     pub reviewer: Option<EmployeeInfo>,
 
-    /// Optional consigning pharmacist.
+    /// Pharmacy pharmacist who dispensed the medication; `Some` records the
+    /// participant, while `None` means no dispensing event is recorded.
     pub consignor: Option<EmployeeInfo>,
 
-    /// Optional digital-signature records from workflow participants.
+    /// Digital signatures collected during workflow transitions. `Some` holds
+    /// signatures from participants such as prescribers, pharmacists, and the
+    /// patient; `None` means no signatures have been retained.
     ///
     /// Signature is owned by the Java security package, which is outside this
     /// migration graph, so each record remains a lossless JSON value.
     #[model(opaque)]
     pub signatures: Option<Vec<serde_json::Value>>,
 
-    /// Current prescription state.
+    /// Authoritative prescription workflow state; use this `PrescriptionStatus`
+    /// rather than participant-record presence to determine workflow progress.
     pub status: PrescriptionStatus,
 
-    /// Optional identifier of the corresponding order.
+    /// Typed identifier linking this prescription to its product order; one
+    /// order may contain multiple prescriptions.
     #[model(opaque)]
     pub order_id: Id,
 
@@ -65,11 +75,12 @@ pub struct Prescription {
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC time of the latest update, absent until the persisted prescription is
+    /// modified after creation.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion time, absent while the prescription remains active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

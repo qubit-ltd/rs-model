@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Feedback records, tracking events, and lifecycle rules.
+//! Feedback cases, their action history, and the rules governing transitions.
 
 #[allow(clippy::module_inception)]
 mod feedback;

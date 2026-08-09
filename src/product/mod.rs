@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Product, coupon, pricing, seller, and purchase-constraint models.
+//! Catalogue models for products, prices, sellers, coupons, and eligibility rules.
 
 mod coupon;
 mod coupon_rule;

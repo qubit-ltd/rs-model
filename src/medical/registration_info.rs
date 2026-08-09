@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Hospital registration information.
+//! HIS details captured when a patient registers for care.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,14 +16,14 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// Hospital-system information for a registration event.
+/// Source-system record for a patient's registration with a department.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct RegistrationInfo {
     /// Source-system business sequence number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub number: String,
 
-    /// Optional remark.
+    /// Source-system registration note, absent when no remark was recorded.
     pub remark: Option<String>,
 
     /// Registered department.

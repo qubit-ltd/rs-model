@@ -5,41 +5,41 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Attachment classifications.
+//! Classifications that determine how stored attachments are handled.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// Classification of a persisted attachment.
+/// Category of an attachment's content or externally hosted representation.
 #[derive(Model, Redact, Clone, Copy, Default, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AttachmentType {
-    /// Image file.
+    /// Image file stored by the platform.
     Image,
-    /// Document or unknown file.
+    /// Document or content type not recognized more specifically.
     #[default]
     Document,
-    /// Audio file.
+    /// Audio file stored by the platform.
     Audio,
-    /// Video file.
+    /// Video file stored by the platform.
     Video,
-    /// vCard contact card.
+    /// vCard contact-card file.
     Vcard,
-    /// Geographic location.
+    /// Geographic location attachment rather than file content.
     Location,
-    /// Externally hosted image.
+    /// Image hosted outside the platform.
     ExternalImage,
-    /// Externally hosted audio.
+    /// Audio hosted outside the platform.
     ExternalAudio,
-    /// Externally hosted video.
+    /// Video hosted outside the platform.
     ExternalVideo,
 }
 
 impl AttachmentType {
-    /// Returns the stable lowercase source identifier.
+    /// Returns the stable lowercase identifier used by the source-domain model.
     #[must_use]
     pub const fn id(self) -> &'static str {
         match self {
@@ -55,7 +55,7 @@ impl AttachmentType {
         }
     }
 
-    /// Classifies a MIME content type using the source rules.
+    /// Maps a MIME type to a stored-file classification; unrecognized types become documents.
     #[must_use]
     pub fn for_content_type(content_type: &str) -> Self {
         if content_type.starts_with("image/") {

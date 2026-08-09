@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Mobile-number contracts.
 
 use crate::contact::Phone;
 
-/// Provides a mobile phone number.
+/// Gives a model an optional mobile telephone number.
 pub trait WithMobile {
-    /// Returns the mobile phone.
+    /// Returns the mobile number, or `None` when it has not been supplied.
     fn mobile(&self) -> Option<&Phone>;
 
-    /// Replaces the mobile phone.
+    /// Sets the mobile number; `None` clears it.
     fn set_mobile(&mut self, mobile: Option<Phone>);
 }

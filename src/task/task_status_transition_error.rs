@@ -6,20 +6,20 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! The complete legal task-state transition table.
+//! Error reported when a requested task lifecycle transition is not legal.
 
 use thiserror::Error;
 
 use super::TaskAction;
 use super::TaskStatus;
 
-/// An attempted task transition that the lifecycle does not permit.
+/// A rejected task action together with the state in which it was attempted.
 #[derive(Clone, Copy, Debug, Error, PartialEq, Eq)]
 #[error("cannot apply {action:?} to task status {status:?}")]
 pub struct TaskStatusTransitionError {
-    /// State before the invalid action.
+    /// Task state from which the rejected action was requested.
     pub status: TaskStatus,
 
-    /// Action that is invalid for `status`.
+    /// Lifecycle command that has no legal transition from `status`.
     pub action: TaskAction,
 }

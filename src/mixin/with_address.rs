@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Address-bearing domain-object contracts.
 
 use crate::contact::Address;
 
-/// Provides a postal address.
+/// Gives a model an optional postal delivery address.
 pub trait WithAddress {
-    /// Returns the address.
+    /// Returns the address, or `None` when no delivery address is recorded.
     fn address(&self) -> Option<&Address>;
 
-    /// Replaces the address.
+    /// Replaces the address; pass `None` to clear the recorded delivery address.
     fn set_address(&mut self, address: Option<Address>);
 }

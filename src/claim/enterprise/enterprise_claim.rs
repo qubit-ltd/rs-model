@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise insurance claims.
+//! Employer-sponsored claim cases and their imported evidence.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -27,21 +27,22 @@ use crate::order::Client;
 use crate::product::Product;
 use crate::upload::Attachment;
 
-/// An enterprise claim with insured parties, workflow events, and attachments.
+/// An employer-sponsored claim case containing covered parties, supporting
+/// records, calculation items, and its processing history.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaim {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise claim is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Insurance product being claimed.
+    /// Employer-sponsored product under which this benefit is assessed.
     pub product: Product,
 
     /// Cause of the insured event.
     pub reason: AccidentReason,
 
-    /// Insured-person treatment outcome.
+    /// Treatment outcome used by the enterprise claim workflow.
     pub insured_status: InsuredStatus,
 
     /// Insured person.
@@ -71,19 +72,19 @@ pub struct EnterpriseClaim {
     /// High-level enterprise claim workflow group.
     pub status_group: EnterpriseClaimStatusGroup,
 
-    /// Claim notes.
+    /// Free-form operator notes retained with the claim case.
     pub notes: String,
 
     /// Quick-compensation retrieval state.
     pub quick_compensation_state: QuickCompensationState,
 
-    /// Workflow events.
+    /// Recorded state transitions for the enterprise claim.
     pub events: Vec<EnterpriseClaimEvent>,
 
-    /// Supporting attachments.
+    /// Submitted evidence and other supporting attachments.
     pub attachment_list: Vec<Attachment>,
 
-    /// UTC creation timestamp.
+    /// UTC time at which the enterprise claim was submitted.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 

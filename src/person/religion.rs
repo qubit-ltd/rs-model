@@ -13,24 +13,24 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Religion classification.
+/// Religious affiliation reported for a person.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Religion {
-    /// Source variant `NONE`.
+    /// No religious affiliation.
     None,
-    /// Source variant `CONFUCIANISM`.
+    /// Confucianism.
     Confucianism,
-    /// Source variant `TAOISM`.
+    /// Taoism.
     Taoism,
-    /// Source variant `BUDDHISM`.
+    /// Buddhism.
     Buddhism,
-    /// Source variant `SHINTO`.
+    /// Shinto.
     Shinto,
-    /// Source variant `CHRISTIANITY`.
+    /// Christianity.
     Christianity,
-    /// Source variant `JUDAISM`.
+    /// Judaism.
     Judaism,
-    /// Source variant `ISLAM`.
+    /// Islam.
     Islam,
 }

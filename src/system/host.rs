@@ -13,7 +13,7 @@ use serde::Deserialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// A provider host identified by its device identifier.
+/// Represents a provider host identified by its device identifier.
 #[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]

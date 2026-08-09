@@ -33,7 +33,7 @@ use crate::person::Person;
 use crate::person::User;
 use crate::upload::Attachment;
 
-/// A complete employee record within an organization.
+/// Represents a complete employee record within an organization.
 #[allow(clippy::duplicated_attributes)]
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]

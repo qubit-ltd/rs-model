@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Drug-to-product mappings.
+//! Links between clinical drug references and products offered for sale.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 use crate::medical::DrugInfo;
 use crate::product::ProductInfo;
 
-/// Associates a medical drug snapshot with a sellable product snapshot.
+/// Maps the prescribed-drug snapshot to the corresponding purchasable product.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DrugProduct {
     /// Medical drug information.

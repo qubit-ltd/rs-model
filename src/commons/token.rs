@@ -14,23 +14,23 @@ use serde::Deserialize;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// Represents a token together with its issuance and lifetime metadata.
+/// An issued bearer token together with the metadata needed to assess its lifetime.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Token {
-    /// Current token value.
+    /// Secret bearer value presented by the holder for authentication.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
     pub value: String,
 
-    /// UTC timestamp at which the token was issued.
+    /// UTC issuance time, stored with second precision.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional maximum lifetime in whole seconds.
+    /// Maximum lifetime in whole seconds, or `None` when no lifetime limit is recorded.
     pub max_age: Option<i64>,
 
-    /// Optional value of the immediately preceding token.
+    /// Immediately preceding bearer value, or `None` when this token did not rotate another.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
     pub previous_value: Option<String>,

@@ -6,29 +6,29 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Payment account classifications.
+//! Kinds of accounts that can fund or receive payments.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies the kind of a payment account.
+/// The financial instrument or balance represented by an account record.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AccountType {
-    /// Bank card account.
+    /// A debit or bank card account.
     BankCard,
-    /// Credit card account.
+    /// A credit-card account.
     CreditCard,
-    /// Bank deposit book.
+    /// A passbook-based bank deposit account.
     DepositBook,
-    /// Third-party payment account.
+    /// An account maintained by a third-party payment provider.
     ThirdPart,
-    /// Settlement account.
+    /// An account used for settlement.
     Settlement,
-    /// Change or wallet account.
+    /// A stored-value or wallet balance.
     Change,
-    /// Virtual-currency account.
+    /// A virtual-currency balance.
     Virtual,
 }

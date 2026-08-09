@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Individual insurance claims.
+//! Individual claim cases submitted under a personal insurance policy.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -36,12 +36,12 @@ use crate::payment::Account;
 use crate::product::Product;
 use crate::upload::Attachment;
 
-/// An individual claim with insured event, payment, documents, and workflow
-/// data.
+/// A personal claim case that joins the covered event, submitted evidence,
+/// payment instructions, medical evidence, and processing history.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct InsuranceClaim {
-    /// Optional persisted identifier.
+    /// Globally unique claim-case identifier, assigned when the report is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -53,7 +53,7 @@ pub struct InsuranceClaim {
     #[model(opaque)]
     pub company: Info,
 
-    /// Claim source information.
+    /// Channel or upstream system from which the claim report originated.
     #[model(opaque)]
     pub source: Info,
 
@@ -67,10 +67,11 @@ pub struct InsuranceClaim {
     /// Insured person.
     pub insured: Client,
 
-    /// Optional insured-person address.
+    /// Insured person's address when it was supplied with the claim; `None`
+    /// means the report did not include one.
     pub insured_address: Option<Address>,
 
-    /// Optional insured-person treatment outcome.
+    /// Reported outcome of the insured person's treatment; absent until known.
     pub insured_status: Option<InsuredStatus>,
 
     /// Claimant's relationship to the insured person.
@@ -79,7 +80,8 @@ pub struct InsuranceClaim {
     /// Claimant information.
     pub claimant: Client,
 
-    /// Optional claimant address.
+    /// Claimant's address when it differs from or is supplied separately from
+    /// the insured person's address.
     pub claimant_address: Option<Address>,
 
     /// Date of the insured event.
@@ -91,23 +93,26 @@ pub struct InsuranceClaim {
     /// Description of the insured event.
     pub accident_description: String,
 
-    /// Optional treating hospital.
+    /// Treating hospital when the reported event involved medical care; `None`
+    /// covers non-medical claims or unavailable hospital data.
     #[model(opaque)]
     pub hospital: Option<Info>,
 
-    /// Optional treatment start date.
+    /// Start of the latest treatment, visit, or admission period, if reported.
     pub treatment_start_date: Option<NaiveDate>,
 
-    /// Optional treatment end date.
+    /// End of the latest treatment, visit, or admission period, if known.
     pub treatment_end_date: Option<NaiveDate>,
 
     /// Quick-compensation retrieval state.
     pub quick_compensation_state: QuickCompensationState,
 
-    /// Optional claim currency.
+    /// Currency of the reported invoice amounts; absent when the source does
+    /// not identify one.
     pub currency: Option<Currency>,
 
-    /// Optional total amount already paid by the claimant.
+    /// Total amount reported with the claim, before the insurer calculates a
+    /// payable benefit.
     #[model(money(scale = 4))]
     pub total_paid_amount: Option<BigDecimal>,
 
@@ -118,11 +123,11 @@ pub struct InsuranceClaim {
     /// Claim payment account.
     pub account: Account,
 
-    /// Claim number.
+    /// Business registration number used to track this claim externally.
     #[redact(level = "secret")]
     pub number: String,
 
-    /// Optional UTC issue timestamp.
+    /// UTC time at which the claimant initiated the report.
     #[model(time(precision = second, normalization = utc))]
     pub issue_time: Option<DateTime<Utc>>,
 
@@ -143,14 +148,15 @@ pub struct InsuranceClaim {
     /// Claim notes.
     pub notes: String,
 
-    /// Optional source-order key-value payload.
+    /// Additional source-order attributes; absent when no upstream payload was
+    /// supplied.
     #[model(opaque)]
     pub payload: Option<Vec<(String, String)>>,
 
     /// Supporting attachments.
     pub attachment_list: Vec<Attachment>,
 
-    /// Workflow events.
+    /// Claim events, with the newest transition conventionally supplied first.
     pub events: Vec<InsuranceClaimEvent>,
 
     /// Claimed medical encounters.
@@ -162,7 +168,7 @@ pub struct InsuranceClaim {
     /// Claim amount summary.
     pub amount: InsuranceClaimAmount,
 
-    /// UTC creation timestamp.
+    /// UTC submission time recorded when the claim case is created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 

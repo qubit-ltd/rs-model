@@ -6,13 +6,13 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Projection contracts for stateful identity information.
 
 use super::Stateful;
 use super::StatefulInfo;
 
-/// Exposes stateful identifying information.
+/// Produces a value snapshot containing identity and lifecycle information.
 pub trait HasStatefulInfo: Stateful {
-    /// Returns the stateful information projection.
+    /// Returns the current identity-and-state projection by value.
     fn stateful_info(&self) -> StatefulInfo;
 }

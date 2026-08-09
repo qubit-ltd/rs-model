@@ -29,7 +29,7 @@ use super::AggregateRef;
     ignore_case(key)
 ))]
 pub struct Payload {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this aggregate payload.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

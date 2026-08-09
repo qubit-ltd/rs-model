@@ -6,35 +6,35 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Order lifecycle states.
+//! States that govern the order fulfilment lifecycle.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes an order's lifecycle state.
+/// The current commercial and fulfilment state of an order.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OrderStatus {
-    /// The order expired.
+    /// The order was not completed before its payment deadline.
     Expired,
-    /// The order was cancelled.
+    /// The order was cancelled before completion.
     Cancelled,
-    /// The order was submitted.
+    /// The buyer submitted the order for seller processing.
     Submitted,
     /// The seller accepted the order.
     Accepted,
-    /// The seller rejected the order.
+    /// The seller declined the order.
     Rejected,
-    /// Payment failed.
+    /// Payment processing failed.
     PaidFail,
-    /// Payment succeeded.
+    /// Payment completed successfully.
     PaidSuccess,
-    /// The order was sent.
+    /// The goods were dispatched.
     Sent,
-    /// The order was received.
+    /// The recipient confirmed receipt.
     Received,
-    /// The order completed.
+    /// The order completed its fulfilment lifecycle.
     Completed,
 }

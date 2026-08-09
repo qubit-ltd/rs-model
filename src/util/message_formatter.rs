@@ -6,31 +6,25 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Small, dependency-free message-template formatting helpers.
+//! Dependency-free formatting for indexed message templates.
 
-/// Formats indexed message templates used by the migrated model APIs.
+/// Formats indexed templates and exposes standard localization key prefixes.
 pub struct MessageFormatter;
 
 impl MessageFormatter {
-    /// Error-message key prefix.
+    /// Prefix for localized error-message keys.
     pub const ERROR_PREFIX: &str = "error.";
-    /// Entity key prefix.
+    /// Prefix for localized entity-name keys.
     pub const ENTITY_PREFIX: &str = "entity.";
-    /// Field key prefix.
+    /// Prefix for localized field-name keys.
     pub const FIELD_PREFIX: &str = "field.";
-    /// Operation key prefix.
+    /// Prefix for localized operation-name keys.
     pub const OPERATION_PREFIX: &str = "operation.";
 
-    /// Replaces `{0}`, `{1}`, and subsequent indexed placeholders.
+    /// Replaces indexed placeholders in `template` with `parameters` by index.
     ///
-    /// # Parameters
-    ///
-    /// * `template` - Template containing indexed placeholders.
-    /// * `parameters` - Replacement text in index order.
-    ///
-    /// # Returns
-    ///
-    /// The formatted message. Unmatched placeholders remain unchanged.
+    /// Placeholders without a corresponding parameter remain unchanged, while
+    /// parameters without a placeholder are ignored.
     #[must_use]
     pub fn format(template: &str, parameters: &[&str]) -> String {
         parameters

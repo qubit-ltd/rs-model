@@ -6,19 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Coupon classifications.
+//! Ways in which coupon rules reduce a purchase price.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes how a coupon reduces a price.
+/// The discount algorithm selected by a coupon rule.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CouponType {
-    /// Subtracts a fixed amount directly.
+    /// Subtracts one fixed amount from the qualifying price.
     DirectDiscount,
-    /// Subtracts an amount for every qualifying price interval.
+    /// Applies the discount once for each qualifying price interval.
     DiscountEvery,
 }

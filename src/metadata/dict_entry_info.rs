@@ -28,7 +28,7 @@ use super::dict_entry::format_with_params;
 #[redact(debug, display)]
 #[serde(default)]
 pub struct DictEntryInfo {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of the referenced dictionary entry.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

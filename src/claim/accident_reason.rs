@@ -6,14 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Insurance-claim accident reasons.
+//! Causes of the covered event asserted in an insurance claim.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies the cause of an insured medical event.
+/// Identifies the event cause used to assess a claimant's insurance coverage.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AccidentReason {

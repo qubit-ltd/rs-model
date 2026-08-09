@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical payment breakdowns.
+//! Payment components produced by a medical-insurance settlement.
 
 use bigdecimal::BigDecimal;
 use serde::Deserialize;
@@ -14,7 +14,9 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// A complete breakdown of patient, insurer, fund, and prepayment amounts.
+/// Allocates a settlement across insurance funds, personal payment channels,
+/// and public subsidies. Values preserve the upstream settlement allocation and
+/// are not inferred from one another.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalPayment {
     /// Patient self-care amount for partially covered items.
@@ -37,23 +39,24 @@ pub struct MedicalPayment {
     #[model(money(scale = 4))]
     pub medicare_deductible: BigDecimal,
 
-    /// Patient burden within covered expenses.
+    /// Patient liability that remains after allocation of covered expenses.
     #[model(money(scale = 4))]
     pub personal_burden: BigDecimal,
 
-    /// Patient prepayment required for a referral.
+    /// Advance payment collected when the patient is transferred or referred.
     #[model(money(scale = 4))]
     pub transfer_prepaid: BigDecimal,
 
-    /// Patient share calculated by coverage section.
+    /// Patient payment determined by the applicable reimbursement tier.
     #[model(money(scale = 4))]
     pub sectional_paid: BigDecimal,
 
-    /// Amount borne by the hospital.
+    /// Amount contractually borne by the treating hospital.
     #[model(money(scale = 4))]
     pub hospital_burden: BigDecimal,
 
-    /// Amount paid by the pooled insurance fund.
+    /// Pooled-fund payment; its underlying program depends on the patient's
+    /// insured identity.
     #[model(money(scale = 4))]
     pub pool_fund_paid: BigDecimal,
 
@@ -77,7 +80,7 @@ pub struct MedicalPayment {
     #[model(money(scale = 4))]
     pub other_fund_paid: BigDecimal,
 
-    /// Amount paid from the patient's account.
+    /// Amount debited from the patient's personal medical-insurance account.
     #[model(money(scale = 4))]
     pub account_paid: BigDecimal,
 

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical settlement line items.
+//! Billed medical items and their reimbursement allocations.
 
 use bigdecimal::BigDecimal;
 use qubit_id::Id;
@@ -18,10 +18,10 @@ use qubit_model_derive::Model;
 use crate::commons::DictEntryInfo;
 use crate::medical::MedicareItemType;
 
-/// A charged medical item and its insurance reimbursement breakdown.
+/// A billed service or medicine together with its patient and insurer liability.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalSettlementItem {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this settlement line is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -30,13 +30,13 @@ pub struct MedicalSettlementItem {
     #[model(opaque)]
     pub settlement_id: Id,
 
-    /// Zero-based position in the settlement item list.
+    /// Zero-based source order of this line in the settlement detail list.
     pub index: i32,
 
     /// Medical-insurance item classification.
     pub r#type: MedicareItemType,
 
-    /// Charge-type dictionary entry.
+    /// Dictionary charge category used by the source medical-insurance system.
     pub charge_type: DictEntryInfo,
 
     /// Charged item code.
@@ -47,11 +47,11 @@ pub struct MedicalSettlementItem {
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional item specification.
+    /// Source item specification, absent when the billed item has none.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub specification: Option<String>,
 
-    /// Optional billing unit.
+    /// Billing unit, absent when the source reports an amount without one.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub unit: Option<String>,
 
@@ -63,7 +63,7 @@ pub struct MedicalSettlementItem {
     #[model(decimal(scale = 2))]
     pub amount: BigDecimal,
 
-    /// Total price before reimbursement.
+    /// Gross line charge before applying coverage and reimbursement limits.
     #[model(money(scale = 4))]
     pub total_price: BigDecimal,
 
@@ -71,18 +71,18 @@ pub struct MedicalSettlementItem {
     #[model(money(scale = 4))]
     pub self_paid: BigDecimal,
 
-    /// Patient self-paid rate.
+    /// Source-provided self-pay rate used to allocate this line to the patient.
     #[model(decimal(scale = 4))]
     pub self_paid_rate: BigDecimal,
 
-    /// Maximum reimbursable amount.
+    /// Maximum amount of this line eligible for reimbursement.
     #[model(money(scale = 4))]
     pub reimburse_limit: BigDecimal,
 
-    /// Amount due after reimbursement.
+    /// Amount payable for this line after the settlement allocation.
     #[model(money(scale = 4))]
     pub payable: BigDecimal,
 
-    /// Optional remark.
+    /// Source line-item note, absent when no clarification accompanies the charge.
     pub remark: Option<String>,
 }

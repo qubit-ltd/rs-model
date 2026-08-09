@@ -6,19 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Invoice classifications.
+//! Statutory forms of invoices.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies the legal form of an invoice.
+/// The statutory invoice form requested or issued.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InvoiceType {
-    /// Ordinary invoice.
+    /// A standard commercial invoice.
     Normal,
-    /// Value-added-tax special invoice.
+    /// A special invoice for value-added-tax purposes.
     ValueAdded,
 }

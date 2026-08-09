@@ -21,11 +21,11 @@ use super::ExpiredReason;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Expired {
-    /// UTC expiration timestamp.
+    /// UTC instant at which the session ceased to be valid, when the server recorded one.
     #[model(index, time(precision = second, normalization = utc))]
     pub time: Option<DateTime<Utc>>,
 
-    /// Expiration reason.
+    /// Reason that access ended, such as idle timeout, explicit logout, or token expiry.
     #[model(index)]
     pub reason: ExpiredReason,
 }

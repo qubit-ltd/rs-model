@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Prescription line items.
+//! Medication lines that make up a prescription.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -17,10 +17,11 @@ use qubit_model_derive::Model;
 use crate::medical::Dosage;
 use crate::medical::DrugInfo;
 
-/// A prescribed drug together with quantity and dosage instructions.
+/// One prescribed medicine, its dispensed quantity, and its administration
+/// instructions.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionItem {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this prescription line is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -42,6 +43,6 @@ pub struct PrescriptionItem {
     /// Administration and dosage instructions.
     pub dosage: Dosage,
 
-    /// Optional remark.
+    /// Prescriber or dispenser note for this line, absent when none is needed.
     pub comment: Option<String>,
 }

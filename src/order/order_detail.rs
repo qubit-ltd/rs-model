@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Expanded order query results.
+//! Expanded query view joining an order to its settlements and returns.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -17,15 +17,15 @@ use crate::order::Order;
 use crate::order::Return;
 use crate::settlement::Transaction;
 
-/// An order together with optional related transactions and returns.
+/// An order aggregate with optionally loaded transaction and return collections.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct OrderDetail {
-    /// Order aggregate.
+    /// The order aggregate for this detail view.
     pub order: Order,
 
-    /// Optional related transactions.
+    /// Related settlement transactions, or `None` when transactions were not included in the query.
     pub transactions: Option<Vec<Transaction>>,
 
-    /// Optional related returns.
+    /// Related return requests, or `None` when returns were not included in the query.
     pub returns: Option<Vec<Return>>,
 }

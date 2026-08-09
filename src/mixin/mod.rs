@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Shared composite values and traits from the Java model mixin package.
+//! Shared identity projections and optional-property contracts for domain models.
 
 mod expirable;
 mod has_stateful_info;

@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Reusable controller request, response, and query parameter models.
+//! Wire models for authentication, registration, binding, and audited queries.
 
 mod app_authenticate_params;
 mod auditable_query_params;

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Special outpatient clinic visit information.
+//! HIS data recorded for special-disease outpatient visits.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,21 +16,22 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// Hospital-system information for a special outpatient visit.
+/// Source-system details for an outpatient visit handled under a special-disease
+/// program.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct SpecificClinicInfo {
     /// Source-system business sequence number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub number: String,
 
-    /// Optional remark.
+    /// Source-system note, absent when the special-disease visit has no remark.
     pub remark: Option<String>,
 
     /// Department visited by the patient.
     #[model(opaque)]
     pub department: Info,
 
-    /// Optional outpatient record number.
+    /// Outpatient record number, absent when the HIS source did not provide it.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub record_number: Option<String>,
 
@@ -38,7 +39,8 @@ pub struct SpecificClinicInfo {
     #[model(time(precision = second, normalization = utc))]
     pub visit_time: DateTime<Utc>,
 
-    /// Optional special-disease information.
+    /// Special disease recognized for the visit; absent when it was not recorded
+    /// under the special-disease program.
     #[model(opaque)]
     pub special_disease: Option<Info>,
 }

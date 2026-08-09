@@ -17,12 +17,19 @@ pub struct SettingXmlAdapter;
 
 impl SettingXmlAdapter {
     /// Converts an optional setting to its XML transfer value.
+    ///
+    /// Returns `None` for `None`. For a setting, omits default type and flag values and omits an
+    /// empty value list; no validation or fallible conversion is performed.
     #[must_use]
     pub fn marshal(setting: Option<&Setting>) -> Option<SettingXmlAdapted> {
         setting.map(SettingXmlAdapted::from_setting)
     }
 
     /// Converts an optional XML transfer value back into a setting.
+    ///
+    /// Returns `Ok(None)` for `None`. For `Some`, missing XML type and flags use [`Setting`]'s
+    /// defaults and missing values become an empty vector. Returns
+    /// [`SettingAdapterError::InvalidDataType`] when the supplied type name is unknown.
     pub fn unmarshal(
         adapted: Option<&SettingXmlAdapted>,
     ) -> Result<Option<Setting>, SettingAdapterError> {

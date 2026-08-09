@@ -23,7 +23,7 @@ use crate::person::Gender;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct UserInfo {
-    /// Optional persisted identifier.
+    /// Database identifier of the referenced user; default denotes an unsaved user.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -32,26 +32,26 @@ pub struct UserInfo {
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub username: String,
 
-    /// Optional display name.
+    /// Real name suitable for compact profile displays.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub name: Option<String>,
 
-    /// Optional nickname.
+    /// Informal display name suitable for compact profile displays.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub nickname: Option<String>,
 
-    /// Optional gender.
+    /// Gender copied for identity displays where the source provided it.
     pub gender: Option<Gender>,
 
-    /// Optional ASCII avatar URL.
+    /// Avatar URI used by clients rendering the compact user identity.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub avatar: Option<String>,
 
-    /// Optional mobile number.
+    /// Mobile contact channel included when the projection must contact the user.
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
-    /// Optional email address.
+    /// Email contact channel included when the projection must contact the user.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub email: Option<String>,
@@ -59,10 +59,10 @@ pub struct UserInfo {
     /// Lifecycle state.
     pub state: State,
 
-    /// Whether this is a test user.
+    /// Marks a synthetic user so consumers can exclude it from live interactions.
     pub test: bool,
 
-    /// Optional UTC deletion timestamp.
+    /// Soft-deletion time copied from the user record; absence means the user is active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

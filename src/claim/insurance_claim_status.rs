@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Detailed individual claim workflow states.
+//! Fine-grained lifecycle states for an individual claim case.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -15,7 +15,8 @@ use qubit_model_derive::Model;
 
 use crate::claim::InsuranceClaimStatusGroup;
 
-/// Describes the detailed processing state of an individual insurance claim.
+/// Captures the detailed workflow state used to control individual-claim
+/// processing.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InsuranceClaimStatus {

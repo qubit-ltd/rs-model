@@ -6,21 +6,21 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Referral identity classifications.
+//! Namespaces used to identify referral sources.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies the namespace of a referral open identifier.
+/// The system in which a referral identifier is meaningful.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OpenidType {
-    /// Weixin open identifier.
+    /// A Weixin open identifier.
     Weixin,
-    /// Mobile-number identifier.
+    /// A mobile telephone number.
     Mobile,
-    /// E-signature identity.
+    /// An electronic-signature identity.
     Esign,
 }

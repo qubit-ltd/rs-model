@@ -9,11 +9,11 @@
 
 use crate::upload::Attachment;
 
-/// Provides an optional ordered attachment collection.
+/// Gives a model an optional, ordered collection of attachments.
 pub trait WithAttachments {
-    /// Returns the current attachments.
+    /// Returns the attachments in stored order, or `None` when the collection is absent.
     fn attachments(&self) -> Option<&[Attachment]>;
 
-    /// Replaces the current attachments.
+    /// Replaces the full ordered collection; `None` clears the collection.
     fn set_attachments(&mut self, attachments: Option<Vec<Attachment>>);
 }

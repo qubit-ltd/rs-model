@@ -5,84 +5,84 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Task-pipeline execution interface.
+//! Contract for ordered execution, suspension, and cancellation of domain tasks.
 
 use serde_json::Value;
 
 use super::Task;
 use super::TaskPipelineStatus;
 
-/// An ordered pipeline of executable tasks.
+/// An ordered collection of executable tasks controlled as one pipeline.
 ///
 /// Target and configuration values use JSON values because the Java source
 /// accepts arbitrary `Identifiable` and `Config` implementations that have no
 /// single concrete Rust representation.
 pub trait TaskPipeline {
-    /// Returns the pipeline's current execution status.
+    /// Returns the pipeline's current lifecycle status.
     fn status(&self) -> TaskPipelineStatus;
 
-    /// Returns the pipeline target value.
+    /// Returns the JSON value identifying the pipeline's target.
     fn target(&self) -> &Value;
 
-    /// Replaces the pipeline target value.
+    /// Replaces the pipeline target with the supplied JSON value.
     fn set_target(&mut self, target: Value);
 
-    /// Returns the pipeline configuration.
+    /// Returns the JSON configuration used by the pipeline.
     fn config(&self) -> &Value;
 
-    /// Appends a task to the pipeline.
+    /// Appends a task to the execution order.
     fn add(&mut self, task: Box<dyn Task>);
 
-    /// Reports whether the pipeline has not started.
+    /// Returns whether no task in the pipeline has started.
     fn is_idle(&self) -> bool {
         self.status().is_idle()
     }
 
-    /// Reports whether the pipeline has left its idle state.
+    /// Returns whether the pipeline has left its initial idle state.
     fn is_started(&self) -> bool {
         self.status().is_started()
     }
 
-    /// Reports whether the pipeline is running.
+    /// Returns whether the pipeline is actively executing a task.
     fn is_running(&self) -> bool {
         self.status().is_running()
     }
 
-    /// Reports whether the pipeline is paused.
+    /// Returns whether execution is paused.
     fn is_paused(&self) -> bool {
         self.status().is_paused()
     }
 
-    /// Reports whether the pipeline completed successfully.
+    /// Returns whether every task completed successfully.
     fn is_finished(&self) -> bool {
         self.status().is_finished()
     }
 
-    /// Reports whether the pipeline failed.
+    /// Returns whether the pipeline ended because a task failed.
     fn is_failed(&self) -> bool {
         self.status().is_failed()
     }
 
-    /// Reports whether the pipeline was cancelled.
+    /// Returns whether the pipeline was explicitly cancelled.
     fn is_cancelled(&self) -> bool {
         self.status().is_cancelled()
     }
 
-    /// Starts execution at the first task.
+    /// Starts execution at the first queued task.
     fn start(&mut self);
 
-    /// Returns the currently executing task, or `None` when no task is active.
+    /// Returns the active task, or `None` when the pipeline is idle or terminal.
     fn current(&self) -> Option<&dyn Task>;
 
-    /// Advances execution to the next task.
+    /// Advances execution from the current task to the next task.
     fn next(&mut self);
 
-    /// Pauses pipeline execution.
+    /// Suspends execution without discarding the current pipeline state.
     fn pause(&mut self);
 
-    /// Resumes a paused pipeline.
+    /// Resumes a pipeline previously suspended by `pause`.
     fn resume(&mut self);
 
-    /// Cancels pipeline execution.
+    /// Cancels the pipeline and prevents further task execution.
     fn cancel(&mut self);
 }

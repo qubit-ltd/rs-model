@@ -21,7 +21,7 @@ use crate::product::ProductInfo;
 /// Quantity, pricing, fulfillment, and client data for one order line.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct OrderItem {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

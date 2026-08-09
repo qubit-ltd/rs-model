@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Hospitalization information.
+//! HIS data for an inpatient admission and discharge episode.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,14 +16,14 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// Hospital-system information for an inpatient stay.
+/// Source-system record of an inpatient stay, from admission through discharge.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct HospitalizationInfo {
     /// Source-system business sequence number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub number: String,
 
-    /// Optional remark.
+    /// Source-system note, absent when the inpatient episode has no remark.
     pub remark: Option<String>,
 
     /// Admission department.
@@ -34,19 +34,19 @@ pub struct HospitalizationInfo {
     #[model(opaque)]
     pub discharge_department: Info,
 
-    /// Optional inpatient patient number.
+    /// Inpatient patient number, absent when not issued by the HIS source.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub patient_number: Option<String>,
 
-    /// Optional inpatient record number.
+    /// Inpatient medical-record number, absent when the HIS source omitted it.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub record_number: Option<String>,
 
-    /// Optional ward.
+    /// Inpatient ward, absent when ward placement is not recorded.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub ward: Option<String>,
 
-    /// Optional bed number.
+    /// Inpatient bed number, absent when bed placement is not recorded.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub bed: Option<String>,
 

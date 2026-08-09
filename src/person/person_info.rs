@@ -24,7 +24,7 @@ use crate::upload::Attachment;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct PersonInfo {
-    /// Optional persisted identifier.
+    /// Database identifier of the referenced person; default denotes an unsaved person.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -33,7 +33,7 @@ pub struct PersonInfo {
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional registered ASCII user name.
+    /// Account username associated with the person, when the person has one.
     #[model(
         reference(target = User, target_field = username),
         index,
@@ -41,36 +41,36 @@ pub struct PersonInfo {
     )]
     pub username: Option<String>,
 
-    /// Optional gender.
+    /// Gender included for compact identity and demographic displays.
     pub gender: Option<Gender>,
 
-    /// Optional birthday.
+    /// Birth date included when age or identity context is required.
     pub birthday: Option<NaiveDate>,
 
-    /// Optional credential summary.
+    /// Redacted identity-credential summary used to distinguish people safely.
     #[model(index)]
     #[redact(nested)]
     pub credential: Option<CredentialInfo>,
 
-    /// Optional mobile number.
+    /// Mobile contact channel included in this compact person projection.
     #[model(index)]
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
-    /// Optional ASCII email address.
+    /// Email contact channel included in this compact person projection.
     #[model(index, text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 
-    /// Optional profile photograph.
+    /// Profile image used to help staff recognize the person.
     #[model(reference(target = Attachment, target_field = id))]
     pub photo: Option<Attachment>,
 
-    /// Whether this is test data.
+    /// Marks synthetic person data excluded from live workflows.
     #[model(index)]
     pub test: bool,
 
-    /// Optional UTC deletion timestamp.
+    /// Soft-deletion time copied from the source person; absence means active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

@@ -23,26 +23,26 @@ use crate::system::Platform;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Environment {
-    /// Optional ASCII client IP address.
+    /// Network source IP observed for the client request or application session.
     #[model(index, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
     pub ip: Option<String>,
 
-    /// Optional geographic location.
+    /// Geographic location reported by the client for location-aware services or auditing.
     #[model(index)]
     #[redact(nested)]
     pub location: Option<Location>,
 
-    /// Optional operating-system platform.
+    /// Client operating-system family used for compatibility and telemetry analysis.
     #[model(index)]
     pub platform: Option<Platform>,
 
-    /// Optional unique device identifier.
+    /// Stable device installation identifier used to recognize the client device.
     #[model(index, sensitive(token), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub udid: Option<String>,
 
-    /// Optional push-notification token.
+    /// Push-provider token used to address notifications to this client installation.
     #[model(index, sensitive(token), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub push_token: Option<String>,

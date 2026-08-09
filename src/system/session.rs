@@ -35,7 +35,7 @@ thread_local! {
     static SUPER_ADMIN_SESSION: RefCell<Option<Session>> = const { RefCell::new(None) };
 }
 
-/// An application session with caller identity, permissions, and expiration.
+/// Represents an application session with caller identity, permissions, and expiration.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display)]
 #[serde(default)]
@@ -171,7 +171,9 @@ impl Session {
         SUPER_ADMIN_SESSION.with(|session| session.borrow().is_some())
     }
 
-    /// Reports whether this session contains `role`.
+    /// Reports whether this session contains an exactly matching role code.
+    ///
+    /// Comparison is case-sensitive and does not normalize `role` or the stored role list.
     #[must_use]
     pub fn has_role(&self, role: &str) -> bool {
         self.roles.iter().any(|candidate| candidate == role)
@@ -183,7 +185,11 @@ impl Session {
         self.user.as_ref().map(|user| user.username.as_str())
     }
 
-    /// Replaces role codes and effective privileges from role models.
+    /// Replaces role codes and effective privileges derived from `roles`.
+    ///
+    /// Duplicate role codes and privilege names are removed independently. Both resulting vectors
+    /// are built from [`HashSet`] iteration, so their order is intentionally unspecified and must
+    /// not be used for display or precedence decisions.
     pub fn set_roles_and_privileges(&mut self, roles: &[Role]) {
         let role_codes: HashSet<_> = roles.iter().map(|role| role.code.clone()).collect();
         let privileges: HashSet<_> = roles
@@ -202,7 +208,7 @@ impl Normalizable for Session {
     }
 }
 
-/// Returns whether an identifier is the default identifier.
+/// Produces whether an identifier is the default identifier.
 ///
 /// # Parameters
 ///

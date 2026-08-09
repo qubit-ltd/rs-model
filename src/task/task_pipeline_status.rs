@@ -6,29 +6,29 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Task lifecycle vocabularies and errors.
+//! States for an ordered task pipeline.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// The execution status of a task pipeline.
+/// The execution state of a pipeline that coordinates multiple tasks.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TaskPipelineStatus {
-    /// The Idle classification.
+    /// No task has started yet.
     Idle,
-    /// The Running classification.
+    /// The pipeline is advancing its current task.
     Running,
-    /// The Paused classification.
+    /// Execution is suspended and can be resumed.
     Paused,
-    /// The Failed classification.
+    /// Execution ended because a task failed.
     Failed,
-    /// The Finished classification.
+    /// Every task completed successfully.
     Finished,
-    /// The Cancelled classification.
+    /// Execution was explicitly cancelled.
     Cancelled,
 }
 

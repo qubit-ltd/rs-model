@@ -6,7 +6,8 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical records, prescriptions, settlements, and classifications.
+//! Domain models exchanged by clinical records, prescription workflows, and
+//! medical-insurance settlement processing.
 
 mod clinic_info;
 mod diagnosis;

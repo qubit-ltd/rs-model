@@ -13,26 +13,26 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain JobTitle classification.
+/// Employment seniority or professional-title band.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum JobTitle {
-    /// Source variant `FREELANCE`.
+    /// Self-employed or freelance worker.
     Freelance,
-    /// Source variant `EMPLOYEE`.
+    /// Individual contributor without a title band.
     Employee,
-    /// Source variant `JUNIOR_TITLE`.
+    /// Junior professional title.
     JuniorTitle,
-    /// Source variant `MIDDLE_TITLE`.
+    /// Intermediate professional title.
     MiddleTitle,
-    /// Source variant `SENIOR_TITLE`.
+    /// Senior professional title.
     SeniorTitle,
-    /// Source variant `JUNIOR_MANAGER`.
+    /// First-line manager.
     JuniorManager,
-    /// Source variant `MIDDLE_MANAGER`.
+    /// Middle manager.
     MiddleManager,
-    /// Source variant `SENIOR_MANAGER`.
+    /// Senior manager.
     SeniorManager,
-    /// Source variant `OWNER`.
+    /// Business owner.
     Owner,
 }

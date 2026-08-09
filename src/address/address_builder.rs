@@ -17,7 +17,7 @@ use qubit_redact_derive::Redact;
 use crate::contact::Address;
 use crate::contact::Location;
 
-/// Builds an address from independently supplied administrative components.
+/// Incrementally assembles a postal address from administrative references and coordinates.
 #[derive(Model, Redact, Clone, Default)]
 #[redact(debug, display, serde)]
 pub struct AddressBuilder {
@@ -55,140 +55,143 @@ impl AddressBuilder {
         Self::default()
     }
 
-    /// Sets the country identifier.
+    /// Sets the country reference identifier; `None` clears an existing identifier.
     #[must_use]
     pub fn country_id(mut self, id: Option<i64>) -> Self {
         self.address.country.id = id;
         self
     }
 
-    /// Sets the country code.
+    /// Sets the stable code used to identify the country.
     #[must_use]
     pub fn country_code(mut self, code: &str) -> Self {
         self.address.country.code = code.to_owned();
         self
     }
 
-    /// Sets the country name.
+    /// Sets the human-readable country name.
     #[must_use]
     pub fn country_name(mut self, name: &str) -> Self {
         self.address.country.name = name.to_owned();
         self
     }
 
-    /// Sets the province identifier.
+    /// Sets the province reference identifier; `None` clears an existing identifier.
     #[must_use]
     pub fn province_id(mut self, id: Option<i64>) -> Self {
         self.address.province.id = id;
         self
     }
 
-    /// Sets the province code.
+    /// Sets the stable code used to identify the province.
     #[must_use]
     pub fn province_code(mut self, code: &str) -> Self {
         self.address.province.code = code.to_owned();
         self
     }
 
-    /// Sets the province name.
+    /// Sets the human-readable province name.
     #[must_use]
     pub fn province_name(mut self, name: &str) -> Self {
         self.address.province.name = name.to_owned();
         self
     }
 
-    /// Sets the city identifier.
+    /// Sets the city reference identifier; `None` clears an existing identifier.
     #[must_use]
     pub fn city_id(mut self, id: Option<i64>) -> Self {
         self.address.city.id = id;
         self
     }
 
-    /// Sets the city code.
+    /// Sets the stable code used to identify the city.
     #[must_use]
     pub fn city_code(mut self, code: &str) -> Self {
         self.address.city.code = code.to_owned();
         self
     }
 
-    /// Sets the city name.
+    /// Sets the human-readable city name.
     #[must_use]
     pub fn city_name(mut self, name: &str) -> Self {
         self.address.city.name = name.to_owned();
         self
     }
 
-    /// Sets the district identifier.
+    /// Sets the district reference identifier; `None` clears an existing identifier.
     #[must_use]
     pub fn district_id(mut self, id: Option<i64>) -> Self {
         self.address.district.id = id;
         self
     }
 
-    /// Sets the district code.
+    /// Sets the stable code used to identify the district.
     #[must_use]
     pub fn district_code(mut self, code: &str) -> Self {
         self.address.district.code = code.to_owned();
         self
     }
 
-    /// Sets the district name.
+    /// Sets the human-readable district name.
     #[must_use]
     pub fn district_name(mut self, name: &str) -> Self {
         self.address.district.name = name.to_owned();
         self
     }
 
-    /// Sets the street identifier.
+    /// Sets the street reference identifier; `None` clears an existing identifier.
     #[must_use]
     pub fn street_id(mut self, id: Option<i64>) -> Self {
         self.address.street.id = id;
         self
     }
 
-    /// Sets the street code.
+    /// Sets the stable code used to identify the street.
     #[must_use]
     pub fn street_code(mut self, code: &str) -> Self {
         self.address.street.code = code.to_owned();
         self
     }
 
-    /// Sets the street name.
+    /// Sets the human-readable street name.
     #[must_use]
     pub fn street_name(mut self, name: &str) -> Self {
         self.address.street.name = name.to_owned();
         self
     }
 
-    /// Sets the detailed street address.
+    /// Sets the house number, building, or other address detail below street level.
     #[must_use]
     pub fn detail(mut self, detail: &str) -> Self {
         self.address.detail = detail.to_owned();
         self
     }
 
-    /// Sets the postal code.
+    /// Sets the postal code, making it present in the built address.
     #[must_use]
     pub fn postalcode(mut self, postalcode: &str) -> Self {
         self.address.postalcode = Some(postalcode.to_owned());
         self
     }
 
-    /// Sets the longitude.
+    /// Sets longitude in decimal degrees for the optional built location.
     #[must_use]
     pub fn longitude(mut self, longitude: BigDecimal) -> Self {
         self.longitude = Some(longitude);
         self
     }
 
-    /// Sets the latitude.
+    /// Sets latitude in decimal degrees for the optional built location.
     #[must_use]
     pub fn latitude(mut self, latitude: BigDecimal) -> Self {
         self.latitude = Some(latitude);
         self
     }
 
-    /// Builds an address containing the accumulated values.
+    /// Builds an address from the accumulated fields.
+    ///
+    /// A location is included only when both longitude and latitude are set; altitude and
+    /// coordinate system remain absent.
     #[must_use]
     pub fn build(&self) -> Address {
         let location = match (&self.longitude, &self.latitude) {

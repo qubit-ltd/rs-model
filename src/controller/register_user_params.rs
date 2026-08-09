@@ -46,52 +46,52 @@ pub struct RegisterUserParams {
     #[redact(level = "secret")]
     pub password: String,
 
-    /// Optional registration verification code.
+    /// One-time code required when registration verifies an email or mobile channel.
     #[model(text(min_chars = 1, max_chars = 64))]
     #[redact(level = "secret")]
     pub verify_code: Option<String>,
 
-    /// Optional real name.
+    /// Real name to display on the new account profile.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub name: Option<String>,
 
-    /// Optional nickname.
+    /// Informal display name distinct from the account username.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub nickname: Option<String>,
 
-    /// Optional gender.
+    /// Self-reported gender to seed the new user's profile.
     pub gender: Option<Gender>,
 
-    /// Optional avatar path or URL.
+    /// Avatar location shown for the user in account-facing experiences.
     #[model(text(min_chars = 1, max_chars = 512))]
     pub avatar: Option<String>,
 
-    /// Optional globally unique mobile number.
+    /// Mobile contact number to attach to the account and optionally verify.
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
-    /// Optional globally unique email address.
+    /// Email contact address to attach to the account and optionally verify.
     #[model(text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 
-    /// Optional social-network provider.
+    /// Provider for a social identity linked during registration.
     pub social_network: Option<SocialNetwork>,
 
-    /// Optional social-network application identifier.
+    /// Provider application identifier that scopes the linked social account.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub app_id: Option<String>,
 
-    /// Optional social-network open identifier.
+    /// Provider-issued subject identifier for the linked social account.
     #[model(text(min_chars = 1, max_chars = 64))]
     #[redact(level = "secret")]
     pub open_id: Option<String>,
 
-    /// Optional organization information.
+    /// Organization context under which the account is initially registered.
     #[model(reference(target = Organization, target_field = info), opaque)]
     pub organization: Option<StatefulInfo>,
 
-    /// Optional registration client environment.
+    /// Device and network context captured for registration risk assessment.
     #[redact(nested)]
     pub environment: Option<Environment>,
 }

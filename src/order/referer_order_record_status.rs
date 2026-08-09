@@ -6,23 +6,23 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Referral order record states.
+//! Payment outcomes recorded for referral attribution.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes the payment outcome tracked for a referred order.
+/// The order outcome used to determine referral attribution.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum RefererOrderRecordStatus {
-    /// The order was submitted.
+    /// The referred order was submitted.
     Submitted,
-    /// Payment failed.
+    /// The associated payment failed.
     PaidFail,
-    /// Payment succeeded.
+    /// The associated payment succeeded.
     PaidSuccess,
-    /// The order was refunded.
+    /// The order was refunded after payment.
     Refund,
 }

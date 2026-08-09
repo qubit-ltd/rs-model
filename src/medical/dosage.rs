@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medication dosage instructions.
+//! Clinical instructions governing a prescribed medication course.
 
 use bigdecimal::BigDecimal;
 use serde::Deserialize;
@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 
 use crate::commons::DictEntryInfo;
 
-/// Instructions describing how and for how long to administer medication.
+/// Administration schedule, dose, and course duration for a prescribed drug.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Dosage {
     /// Optional administration method or usage dictionary entry.

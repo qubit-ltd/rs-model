@@ -13,16 +13,16 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain SexOrientation classification.
+/// Sexual orientation reported for a person.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SexOrientation {
-    /// Source variant `HETEROSEXUAL`.
+    /// Records attraction primarily to people of a different gender.
     Heterosexual,
-    /// Source variant `HOMOSEXUAL`.
+    /// Records attraction primarily to people of the same gender.
     Homosexual,
-    /// Source variant `BISEXUAL`.
+    /// Records attraction to people of more than one gender.
     Bisexual,
-    /// Source variant `SECRECY`.
+    /// The person chose not to disclose an orientation.
     Secrecy,
 }

@@ -22,42 +22,42 @@ use super::Action;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct OperationLogInfo {
-    /// Optional persisted identifier.
+    /// Database identifier of the source audit entry; default denotes an unsaved projection.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Audited action.
+    /// Business action recorded by the audit trail.
     pub action: Action,
 
-    /// Optional resource name.
+    /// Resource namespace or type targeted by the audited action.
     #[model(text(min_chars = 1, max_chars = 256, repertoire = ascii))]
     pub resource: Option<String>,
 
-    /// Optional resource property.
+    /// Resource property or operation detail associated with the audited action.
     #[model(text(min_chars = 1, max_chars = 256, repertoire = ascii))]
     pub property: Option<String>,
 
-    /// Optional username.
+    /// Username of the actor when the request was authenticated as a user.
     pub username: Option<String>,
 
-    /// Optional application name.
+    /// Application through which the action was performed, when known.
     pub app: Option<String>,
 
-    /// Client IP address.
+    /// Network address observed for the audit event's client.
     #[redact(level = "secret")]
     pub client_ip: String,
 
-    /// Optional operation outcome.
+    /// Whether the audited action completed successfully; absent when not yet known.
     pub success: Option<bool>,
 
-    /// Optional error code.
+    /// Structured failure code captured when the audited action did not succeed.
     pub error_code: Option<String>,
 
-    /// Optional error message.
+    /// Display-safe failure detail captured with the audit event.
     pub error_message: Option<String>,
 
-    /// Optional UTC request timestamp.
+    /// UTC instant when the audited request began.
     #[model(time(precision = millisecond, normalization = utc))]
     pub timestamp: Option<DateTime<Utc>>,
 }

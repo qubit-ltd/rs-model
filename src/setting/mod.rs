@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Typed system settings and their stable wire adapters.
+//! Typed settings, persistent encodings, and JSON/XML wire adapters.
 
 mod data_type;
 #[allow(clippy::module_inception)]

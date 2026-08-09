@@ -28,7 +28,7 @@ use crate::mixin::StatefulInfo;
 #[serde(default)]
 #[model(unique(name = "dict_entry_dict_code", fields(dict, code), ignore_case(code)))]
 pub struct DictEntry {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this dictionary entry.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -45,10 +45,10 @@ pub struct DictEntry {
     #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional description.
+    /// Optional user-facing explanation of this selectable entry.
     pub description: Option<String>,
 
-    /// Optional comment.
+    /// Optional administrator note kept separate from the entry description.
     pub comment: Option<String>,
 
     /// Optional parent-entry information.

@@ -6,14 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Insured-person treatment outcomes.
+//! Post-treatment outcomes reported for the insured person.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes the insured person's outcome after treatment.
+/// Describes the claimant-reported outcome of treatment for the insured person.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InsuredStatus {

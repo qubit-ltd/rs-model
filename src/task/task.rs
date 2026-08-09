@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Executable task interface.
+//! Contract implemented by domain tasks that participate in the standard lifecycle.
 
 use qubit_mixin::InfoWithEntity;
 
@@ -15,30 +15,30 @@ use super::TaskInfo;
 use super::TaskStatusTransitionError;
 use super::TaskStatusTransitionRule;
 
-/// Behaviour required from an executable task.
+/// Domain work plus the metadata needed to persist and transition a task.
 pub trait Task {
-    /// Returns the task metadata.
+    /// Returns the task's persisted metadata and current lifecycle state.
     fn info(&self) -> &TaskInfo;
 
-    /// Mutably returns the task metadata.
+    /// Returns mutable task metadata for implementations that update task state.
     fn info_mut(&mut self) -> &mut TaskInfo;
 
-    /// Returns the persisted task identifier, or `None` before persistence.
+    /// Returns the task identifier as an `i64`; the default identifier is returned for an unsaved task.
     fn id(&self) -> Option<i64> {
         Some(self.info().id.value() as i64)
     }
 
-    /// Returns the source task name derived from its category.
+    /// Returns the category name used as this task's source-facing name.
     fn name(&self) -> &str {
         self.info().category.info.name.as_str()
     }
 
-    /// Returns the category classifying this task.
+    /// Returns the category reference that classifies this task.
     fn category(&self) -> &InfoWithEntity {
         &self.info().category
     }
 
-    /// Returns the target entity name and optional identifier.
+    /// Returns the target entity type and identifier; the identifier may be the default value.
     fn target(&self) -> (&str, Option<i64>) {
         (
             self.info().target_entity.as_str(),
@@ -46,7 +46,7 @@ pub trait Task {
         )
     }
 
-    /// Returns the optional result entity name and identifier.
+    /// Returns the result entity type and identifier, or `None` before a result exists.
     fn result(&self) -> Option<(&str, Option<i64>)> {
         self.info()
             .result_entity
@@ -54,13 +54,13 @@ pub trait Task {
             .map(|entity| (entity, Some(self.info().result_id.value() as i64)))
     }
 
-    /// Executes the task's domain work.
+    /// Executes this task's domain work.
     ///
     /// Implementations update their result before returning. Failures are
     /// represented by [`TaskExecutionError`].
     fn run(&mut self) -> Result<(), TaskExecutionError>;
 
-    /// Applies a lifecycle action and records its optional message.
+    /// Applies a lifecycle command and replaces the task's status message.
     ///
     /// Returns [`TaskStatusTransitionError`] when the action is invalid for
     /// the current task state.
@@ -75,7 +75,7 @@ pub trait Task {
         Ok(())
     }
 
-    /// Replaces the task's latest status message.
+    /// Stores the latest human-readable status message for the task.
     fn update_message(&mut self, message: String) {
         self.info_mut().message = Some(message);
     }

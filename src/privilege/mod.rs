@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Role assignments and permission collections.
+//! Roles, user assignments, and serialized permission collections.
 
 mod privileges;
 mod privileges_codec;

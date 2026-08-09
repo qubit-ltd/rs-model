@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Category-classification contracts.
 
 use qubit_mixin::InfoWithEntity;
 
-/// Provides category information.
+/// Gives a model an optional category reference.
 pub trait WithCategory {
-    /// Returns the category.
+    /// Returns the category snapshot, or `None` when the model is uncategorized.
     fn category(&self) -> Option<&InfoWithEntity>;
 
-    /// Replaces the category.
+    /// Sets the category snapshot; `None` removes the classification.
     fn set_category(&mut self, category: Option<InfoWithEntity>);
 }

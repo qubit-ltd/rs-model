@@ -6,19 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Payment classifications.
+//! Business programs under which a payment is settled.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies the business program used for a payment.
+/// The business program that determines how a payment is processed.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PaymentType {
-    /// Ordinary payment.
+    /// A standard commercial payment.
     Normal,
-    /// Medicare payment.
+    /// A payment processed under the Medicare program.
     Medicare,
 }

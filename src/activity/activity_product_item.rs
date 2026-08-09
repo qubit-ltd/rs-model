@@ -3,7 +3,7 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! Products participating in marketing activities.
+//! Ordered product entries belonging to marketing campaigns.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -17,26 +17,26 @@ use crate::activity::Activity;
 use crate::product::Product;
 use crate::product::ProductInfo;
 
-/// One indexed product entry within an activity.
+/// A product snapshot placed at a specific position in a campaign.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct ActivityProductItem {
-    /// Identifier of the owning activity.
+    /// Identifier of the owning [`Activity`].
     #[model(reference(target = Activity, target_field = id), opaque)]
     pub activity_id: Id,
 
-    /// Zero-based position within the activity's product list.
+    /// Zero-based position in the campaign's product collection.
     pub index: i32,
 
-    /// Product snapshot.
+    /// Product information captured for this campaign entry.
     #[model(reference(target = Product, target_field = info))]
     pub product: ProductInfo,
 
-    /// UTC creation timestamp.
+    /// UTC instant, rounded to seconds, when this entry was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC soft-deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the entry is retained.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

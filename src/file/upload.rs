@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Persisted upload metadata and generated renditions.
+//! Upload records, original-file metadata, and generated image renditions.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -22,75 +22,74 @@ use super::AttachmentType;
 use super::FileInfo;
 use super::UploadParams;
 
-/// A received file and its generated image renditions.
+/// A received file together with metadata for its original and derived images.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Upload {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value denotes an upload not yet persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Optional user-facing original filename.
+    /// Original filename shown to users, or `None` when it was not supplied.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     pub original_filename: Option<String>,
 
-    /// Type inferred for the uploaded file.
+    /// Attachment type inferred from the original file's MIME type.
     #[model(index)]
     pub r#type: AttachmentType,
 
-    /// Original file storage metadata.
+    /// Storage metadata for the uploaded source file.
     #[redact(nested)]
     pub file: FileInfo,
 
-    /// Optional screenshot rendition.
+    /// Screenshot rendition; `None` when this file kind has no screenshot.
     #[redact(nested)]
     pub screenshot: Option<FileInfo>,
 
-    /// Optional small-thumbnail rendition.
+    /// Small thumbnail rendition, or `None` when one was not generated.
     #[redact(nested)]
     pub small_thumbnail: Option<FileInfo>,
 
-    /// Optional large-thumbnail rendition.
+    /// Large thumbnail rendition, or `None` when one was not generated.
     #[redact(nested)]
     pub large_thumbnail: Option<FileInfo>,
 
-    /// Optional hash algorithm name.
+    /// Digest algorithm name, or `None` when no source-file hash is tracked.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub hash_algorithm: Option<String>,
 
-    /// Optional content hash value.
+    /// Digest of the source file, or `None` when integrity verification is not used.
     #[model(text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub hash_value: Option<String>,
 
-    /// UTC creation timestamp.
+    /// UTC creation instant, or `None` until persistence assigns it.
     #[model(index, time(precision = second, normalization = utc))]
     pub create_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the upload is retained.
     #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
 impl Upload {
-    /// Suffix appended to screenshot renditions.
+    /// Filename suffix used for screenshot renditions.
     pub const SCREENSHOT_SUFFIX: &'static str = "_screenshot";
-    /// Suffix appended to small thumbnails.
+    /// Filename suffix used for small-thumbnail renditions.
     pub const SMALL_THUMBNAIL_SUFFIX: &'static str = "_thumbnail_small";
-    /// Suffix appended to large thumbnails.
+    /// Filename suffix used for large-thumbnail renditions.
     pub const LARGE_THUMBNAIL_SUFFIX: &'static str = "_thumbnail_large";
-    /// Generated image extension.
+    /// File extension assigned to generated image renditions.
     pub const IMAGE_EXTENSION: &'static str = ".jpg";
-    /// Generated image format.
+    /// Format label assigned to generated image renditions.
     pub const IMAGE_FORMAT: &'static str = "jpeg";
-    /// Generated image MIME type.
+    /// MIME type assigned to generated image renditions.
     pub const IMAGE_CONTENT_TYPE: &'static str = "image/jpeg";
 
-    /// Returns whether every source property is empty or at its Rust null
-    /// representation.
+    /// Returns whether all fields use their default, empty, or absent representation.
     #[must_use]
     pub fn is_empty(&self) -> bool {
         self.id == Id::default()
@@ -106,16 +105,14 @@ impl Upload {
             && self.delete_time.is_none()
     }
 
-    /// Creates upload metadata for an existing local file.
+    /// Creates upload metadata from a local file and caller-provided upload parameters.
     ///
-    /// The original filename and content type are taken directly from the
-    /// upload parameters.
+    /// The caller supplies the original filename and mandatory MIME type through `params`.
     ///
     /// # Errors
     ///
-    /// Returns [`std::io::ErrorKind::InvalidInput`] when the required content
-    /// type is absent, or an I/O error when a relative path cannot be made
-    /// absolute.
+    /// Returns `InvalidInput` if `params.content_type` is absent, or an I/O error if a
+    /// relative `path` cannot be resolved against the current directory.
     pub fn create(path: &Path, params: &UploadParams) -> std::io::Result<Self> {
         let content_type = params.content_type.as_deref().ok_or_else(|| {
             std::io::Error::new(
@@ -134,12 +131,12 @@ impl Upload {
         Ok(upload)
     }
 
-    /// Replaces the original-file metadata from a local path.
+    /// Replaces original-file metadata using `path` and the supplied MIME type.
     ///
     /// # Errors
     ///
-    /// Returns an I/O error when a relative path cannot be made absolute.
-    /// A nonexistent source path has size zero, matching `File.length()`.
+    /// Returns an I/O error if a relative `path` cannot be resolved. A missing source
+    /// receives a size of zero, matching the source model's `File.length()` behavior.
     pub fn set_file_info(&mut self, path: &Path, content_type: &str) -> std::io::Result<&FileInfo> {
         let absolute_path = if path.is_absolute() {
             path.to_path_buf()
@@ -159,14 +156,14 @@ impl Upload {
         Ok(&self.file)
     }
 
-    /// Updates the original file MIME type and inferred attachment type.
+    /// Sets the original MIME type and returns the corresponding inferred attachment type.
     pub fn set_content_type(&mut self, content_type: &str) -> AttachmentType {
         self.file.content_type = content_type.to_owned();
         self.r#type = AttachmentType::for_content_type(content_type);
         self.r#type
     }
 
-    /// Creates and stores screenshot metadata in the temporary directory.
+    /// Creates and stores screenshot metadata with a unique path in the system temp directory.
     pub fn set_screenshot_info(&mut self) -> &FileInfo {
         self.screenshot = Some(self.rendition(Self::SCREENSHOT_SUFFIX));
         self.screenshot
@@ -174,7 +171,7 @@ impl Upload {
             .expect("screenshot was just stored")
     }
 
-    /// Creates and stores small-thumbnail metadata in the temporary directory.
+    /// Creates and stores small-thumbnail metadata with a unique temporary path.
     pub fn set_small_thumbnail_info(&mut self) -> &FileInfo {
         self.small_thumbnail = Some(self.rendition(Self::SMALL_THUMBNAIL_SUFFIX));
         self.small_thumbnail
@@ -182,7 +179,7 @@ impl Upload {
             .expect("small thumbnail was just stored")
     }
 
-    /// Creates and stores large-thumbnail metadata in the temporary directory.
+    /// Creates and stores large-thumbnail metadata with a unique temporary path.
     pub fn set_large_thumbnail_info(&mut self) -> &FileInfo {
         self.large_thumbnail = Some(self.rendition(Self::LARGE_THUMBNAIL_SUFFIX));
         self.large_thumbnail
