@@ -37,10 +37,10 @@ pub struct InsuranceClaimInvoiceCost {
     #[model(opaque)]
     pub claim_invoice_id: Id,
 
-    /// Medical charge name.
+    /// Label of the billed medical service or charge category.
     pub medical_charge_name: String,
 
-    /// Charge amount.
+    /// Amount charged for this named component of the source invoice.
     #[model(money(scale = 4))]
     pub amount: BigDecimal,
 

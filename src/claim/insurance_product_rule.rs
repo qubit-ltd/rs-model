@@ -29,13 +29,13 @@ pub struct InsuranceProductRule {
     #[model(opaque)]
     pub product: Info,
 
-    /// Rule key.
+    /// Stable configuration key interpreted by the claim-processing product.
     pub key: String,
 
-    /// Rule value.
+    /// Product-specific setting encoded for the associated rule key.
     pub value: String,
 
-    /// Rule description.
+    /// Operator-facing explanation of the rule's business effect.
     pub description: String,
 
     /// UTC creation timestamp.

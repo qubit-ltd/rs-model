@@ -46,10 +46,10 @@ pub struct InsuranceClaimEvent {
     #[redact(level = "secret")]
     pub operator_mobile: String,
 
-    /// Event details.
+    /// Human-readable transition detail retained in the claim audit trail.
     pub detail: String,
 
-    /// UTC creation timestamp.
+    /// UTC time at which the workflow transition was recorded.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 }

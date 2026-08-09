@@ -41,7 +41,7 @@ use crate::upload::Attachment;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct InsuranceClaim {
-    /// Optional persisted identifier.
+    /// Globally unique claim-case identifier, assigned when the report is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -53,7 +53,7 @@ pub struct InsuranceClaim {
     #[model(opaque)]
     pub company: Info,
 
-    /// Claim source information.
+    /// Channel or upstream system from which the claim report originated.
     #[model(opaque)]
     pub source: Info,
 
@@ -70,7 +70,7 @@ pub struct InsuranceClaim {
     /// Optional insured-person address.
     pub insured_address: Option<Address>,
 
-    /// Optional insured-person treatment outcome.
+    /// Reported outcome of the insured person's treatment; absent until known.
     pub insured_status: Option<InsuredStatus>,
 
     /// Claimant's relationship to the insured person.
@@ -107,7 +107,8 @@ pub struct InsuranceClaim {
     /// Optional claim currency.
     pub currency: Option<Currency>,
 
-    /// Optional total amount already paid by the claimant.
+    /// Total amount reported with the claim, before the insurer calculates a
+    /// payable benefit.
     #[model(money(scale = 4))]
     pub total_paid_amount: Option<BigDecimal>,
 
@@ -118,11 +119,11 @@ pub struct InsuranceClaim {
     /// Claim payment account.
     pub account: Account,
 
-    /// Claim number.
+    /// Business registration number used to track this claim externally.
     #[redact(level = "secret")]
     pub number: String,
 
-    /// Optional UTC issue timestamp.
+    /// UTC time at which the claimant initiated the report.
     #[model(time(precision = second, normalization = utc))]
     pub issue_time: Option<DateTime<Utc>>,
 
@@ -150,7 +151,7 @@ pub struct InsuranceClaim {
     /// Supporting attachments.
     pub attachment_list: Vec<Attachment>,
 
-    /// Workflow events.
+    /// Claim events, with the newest transition conventionally supplied first.
     pub events: Vec<InsuranceClaimEvent>,
 
     /// Claimed medical encounters.
@@ -162,7 +163,7 @@ pub struct InsuranceClaim {
     /// Claim amount summary.
     pub amount: InsuranceClaimAmount,
 
-    /// UTC creation timestamp.
+    /// UTC submission time recorded when the claim case is created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 

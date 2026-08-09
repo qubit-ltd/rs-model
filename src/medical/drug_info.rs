@@ -17,8 +17,9 @@ use qubit_model_derive::Model;
 
 use crate::commons::DictEntryInfo;
 
-/// The drug attributes needed by prescription and commerce records, without the
-/// complete catalog entry.
+/// A portable drug snapshot for prescriptions and commerce records, containing
+/// the display, packaging, and dispensing flags needed without the full catalog
+/// monograph.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DrugInfo {
     /// Optional persisted identifier.
@@ -26,7 +27,7 @@ pub struct DrugInfo {
     #[model(opaque)]
     pub id: Id,
 
-    /// Globally unique drug code.
+    /// Globally unique catalogue code for the referenced drug.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
@@ -34,7 +35,7 @@ pub struct DrugInfo {
     #[model(text(min_chars = 1, max_chars = 256))]
     pub name: String,
 
-    /// Approved product name.
+    /// Manufacturer-specific proprietary product name.
     #[model(text(min_chars = 1, max_chars = 256))]
     pub product_name: String,
 
@@ -65,7 +66,7 @@ pub struct DrugInfo {
     /// Whether use is restricted.
     pub restricted: bool,
 
-    /// Whether this is a single or compound herbal medicine.
+    /// Whether the medicine is classified as a single or compound herbal drug.
     pub herbal_compound: bool,
 
     /// Optional brand.

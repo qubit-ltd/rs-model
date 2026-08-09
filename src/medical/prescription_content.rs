@@ -24,23 +24,29 @@ use crate::medical::PrescriptionItem;
 use crate::organization::EmployeeInfo;
 
 /// The clinical facts of a prescription, separated from its mutable workflow
-/// record so they can be signed consistently.
+/// record so they can be digitally signed and verified as one stable payload.
+///
+/// The fields model electronic outpatient and traditional-medicine
+/// prescriptions; workflow participants are recorded by [`Prescription`].
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionContent {
     /// Prescription sequence number within the issuing organization.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub number: String,
 
-    /// Drug-category dictionary entry.
+    /// Dictionary category such as Western medicine, Chinese medicine, or
+    /// health products.
     pub category: DictEntryInfo,
 
-    /// Prescription-type dictionary entry.
+    /// Dictionary subtype; Chinese and Western prescriptions use different
+    /// subtype vocabularies.
     pub r#type: DictEntryInfo,
 
-    /// Prescription-destination dictionary entry.
+    /// Dictionary flow direction, for example in-hospital or external filling.
     pub direction: DictEntryInfo,
 
-    /// Cost-source dictionary entry.
+    /// Payer-source dictionary entry, such as employee insurance, resident
+    /// insurance, public expense, or self-pay.
     pub cost_source: DictEntryInfo,
 
     /// Medical encounter classification.
@@ -65,11 +71,11 @@ pub struct PrescriptionContent {
     /// Clinical-subject dictionary entry.
     pub subject: DictEntryInfo,
 
-    /// Optional inpatient ward.
+    /// Inpatient ward; omitted for outpatient prescriptions.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub ward: Option<String>,
 
-    /// Optional inpatient bed number.
+    /// Inpatient bed number; omitted for outpatient prescriptions.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub bed: Option<String>,
 
@@ -83,7 +89,8 @@ pub struct PrescriptionContent {
     #[model(sequence(min_items = 1, max_items = 8))]
     pub diagnoses: Vec<Diagnosis>,
 
-    /// Optional patient weight in kilograms.
+    /// Patient weight in kilograms, recorded when clinically required (for
+    /// example, for newborn dosing).
     pub weight: Option<i32>,
 
     /// Patient allergy history.
@@ -100,7 +107,9 @@ pub struct PrescriptionContent {
     #[model(sequence(min_items = 1, max_items = 10))]
     pub items: Vec<PrescriptionItem>,
 
-    /// Optional shared dosage instructions for a herbal prescription.
+    /// Course-level directions for a traditional-medicine prescription whose
+    /// items are individual ingredients rather than separately administered
+    /// medicines.
     pub dosage: Option<Dosage>,
 
     /// Optional notes.

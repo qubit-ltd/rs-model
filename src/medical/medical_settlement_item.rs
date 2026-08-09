@@ -30,13 +30,13 @@ pub struct MedicalSettlementItem {
     #[model(opaque)]
     pub settlement_id: Id,
 
-    /// Zero-based position in the settlement item list.
+    /// Zero-based source order of this line in the settlement detail list.
     pub index: i32,
 
     /// Medical-insurance item classification.
     pub r#type: MedicareItemType,
 
-    /// Charge-type dictionary entry.
+    /// Dictionary charge category used by the source medical-insurance system.
     pub charge_type: DictEntryInfo,
 
     /// Charged item code.
@@ -63,7 +63,7 @@ pub struct MedicalSettlementItem {
     #[model(decimal(scale = 2))]
     pub amount: BigDecimal,
 
-    /// Total price before reimbursement.
+    /// Gross line charge before applying coverage and reimbursement limits.
     #[model(money(scale = 4))]
     pub total_price: BigDecimal,
 
@@ -71,15 +71,15 @@ pub struct MedicalSettlementItem {
     #[model(money(scale = 4))]
     pub self_paid: BigDecimal,
 
-    /// Patient self-paid rate.
+    /// Fraction of the line charge assigned to the patient as self-pay.
     #[model(decimal(scale = 4))]
     pub self_paid_rate: BigDecimal,
 
-    /// Maximum reimbursable amount.
+    /// Maximum amount of this line eligible for reimbursement.
     #[model(money(scale = 4))]
     pub reimburse_limit: BigDecimal,
 
-    /// Amount due after reimbursement.
+    /// Amount payable for this line after the settlement allocation.
     #[model(money(scale = 4))]
     pub payable: BigDecimal,
 

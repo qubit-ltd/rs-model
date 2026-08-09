@@ -31,7 +31,8 @@ pub struct InsuranceClaimAmount {
     #[model(opaque)]
     pub claim_id: Id,
 
-    /// Optional total medical expense.
+    /// Total medical expense across the reported encounters, if settlement data
+    /// has been received.
     #[model(money(scale = 4))]
     pub total_amount: Option<BigDecimal>,
 
@@ -63,11 +64,11 @@ pub struct InsuranceClaimAmount {
     #[model(money(scale = 4))]
     pub civil_affair_subsidy_paid: Option<BigDecimal>,
 
-    /// Optional claimed self-paid amount.
+    /// Portion of the claimant's self-paid expense requested for reimbursement.
     #[model(money(scale = 4))]
     pub self_paid_claim_amount: Option<BigDecimal>,
 
-    /// Optional claimed self-care amount.
+    /// Portion of the claimant's self-care expense requested for reimbursement.
     #[model(money(scale = 4))]
     pub self_care_claim_amount: Option<BigDecimal>,
 
@@ -83,11 +84,12 @@ pub struct InsuranceClaimAmount {
     #[model(money(scale = 4))]
     pub actual_self_care_amount: Option<BigDecimal>,
 
-    /// Optional actual insurer payment.
+    /// Final benefit amount actually paid by the insurer.
     #[model(money(scale = 4))]
     pub actual_paid_amount: Option<BigDecimal>,
 
-    /// Whether paid amounts were calibrated.
+    /// Whether the final payment figures were manually or systemically
+    /// reconciled after calculation.
     pub paid_amount_calibration: bool,
 
     /// Optional payment date.
@@ -96,10 +98,10 @@ pub struct InsuranceClaimAmount {
     /// Optional case-closing date.
     pub endcase_date: Option<NaiveDate>,
 
-    /// Optional raw amount payload.
+    /// Opaque upstream payload retained with the calculated amounts.
     pub payload: Option<String>,
 
-    /// UTC creation timestamp.
+    /// UTC submission time for this claim-amount snapshot.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 

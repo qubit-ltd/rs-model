@@ -29,17 +29,18 @@ pub struct EnterpriseClaimSelfCareItem {
     #[model(opaque)]
     pub claim_invoice_id: Id,
 
-    /// Charge name.
+    /// Name of the Class-B service, material, or medicine charge.
     pub name: String,
 
-    /// Medical-insurance charge code.
+    /// Medical-insurance catalogue code for the charge.
     pub medicare_charge_code: String,
 
-    /// Charge amount.
+    /// Full billed amount before applying the patient's self-care ratio.
     #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
-    /// Self-care ratio.
+    /// Patient-borne share of `amount`, expressed as an inclusive ratio from
+    /// zero to one.
     pub ratio: f64,
 
     /// UTC creation timestamp.

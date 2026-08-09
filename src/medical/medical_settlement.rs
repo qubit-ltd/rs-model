@@ -24,8 +24,8 @@ use crate::medical::MedicareType;
 use crate::medical::PatientInfo;
 use crate::mixin::StatefulInfo;
 
-/// A completed medical-insurance settlement with the patient, HIS encounter,
-/// payment allocation, and billed items that support it.
+/// A completed medical-insurance settlement with the patient, source HIS
+/// encounter, payment allocation, and itemized charges that support it.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalSettlement {
     /// Optional persisted identifier inherited from the settlement model.
@@ -33,10 +33,10 @@ pub struct MedicalSettlement {
     #[model(opaque)]
     pub id: Id,
 
-    /// Application that owns this settlement.
+    /// Application namespace responsible for the settlement record.
     pub app: StatefulInfo,
 
-    /// Organization that owns this settlement.
+    /// Organization that performed or owns the settlement.
     pub organization: StatefulInfo,
 
     /// Optional settlement remark.
@@ -60,17 +60,18 @@ pub struct MedicalSettlement {
     /// Patient information.
     pub patient: PatientInfo,
 
-    /// Medical card used by the patient.
+    /// Credential presented as the patient's medical-insurance card.
     pub card: CredentialInfo,
 
-    /// Polymorphic hospital-information-system payload.
+    /// Encounter payload from the hospital-information system; its tagged
+    /// variant identifies the source care setting.
     #[model(opaque)]
     pub his_info: HisInfo,
 
     /// Medical payment breakdown.
     pub payment: MedicalPayment,
 
-    /// Settlement line items.
+    /// Non-empty itemized charges from which the settlement can be audited.
     #[model(sequence(min_items = 1))]
     pub items: Vec<MedicalSettlementItem>,
 }

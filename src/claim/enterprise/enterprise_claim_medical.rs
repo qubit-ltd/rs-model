@@ -35,16 +35,17 @@ pub struct EnterpriseClaimMedical {
     #[model(opaque)]
     pub claim_id: Id,
 
-    /// Treatment start date.
+    /// First date of the treatment episode represented by this record.
     pub treatment_start_date: NaiveDate,
 
-    /// Treatment end date.
+    /// Final date of the treatment episode represented by this record.
     pub treatment_end_date: NaiveDate,
 
     /// Optional medical encounter sequence number.
     pub number: Option<String>,
 
-    /// Optional insurer-side claim application identifier.
+    /// Insurer-assigned application identifier, if this encounter was sent to
+    /// the insurer.
     pub claim_apply_id: Option<String>,
 
     /// Optional medical-category dictionary entry.
@@ -56,7 +57,7 @@ pub struct EnterpriseClaimMedical {
     /// Optional hospital dictionary entry.
     pub hospital: Option<DictEntryInfo>,
 
-    /// Optional hospital level.
+    /// Hospital grade used by the enterprise reimbursement rules, if supplied.
     pub hospital_level: Option<i32>,
 
     /// Optional operator name.
@@ -65,10 +66,10 @@ pub struct EnterpriseClaimMedical {
     /// Enterprise insured-person classification.
     pub insured_type: EnterpriseInsuredType,
 
-    /// Import state.
+    /// Status of saving this imported treatment record.
     pub status: SaveStatus,
 
-    /// Invoices belonging to this encounter.
+    /// Invoice evidence belonging to this treatment episode.
     pub invoices: Vec<EnterpriseClaimInvoice>,
 
     /// UTC creation timestamp.

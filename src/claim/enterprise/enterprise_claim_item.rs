@@ -47,11 +47,11 @@ pub struct EnterpriseClaimItem {
     #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
-    /// Pooled-fund amount.
+    /// Combined pooled-fund expenditure, including serious-illness assistance.
     #[model(money(scale = 4))]
     pub overall_fund_amount: BigDecimal,
 
-    /// Invalid amount.
+    /// Charges excluded because they are invalid for reimbursement.
     #[model(money(scale = 4))]
     pub invalid_amount: BigDecimal,
 
@@ -59,11 +59,11 @@ pub struct EnterpriseClaimItem {
     #[model(money(scale = 4))]
     pub deductible: BigDecimal,
 
-    /// Personal amount.
+    /// Patient-borne expense after medical-insurance allocation.
     #[model(money(scale = 4))]
     pub self_amount: BigDecimal,
 
-    /// Claim calculation base.
+    /// Eligible base on which the enterprise benefit is calculated.
     #[model(money(scale = 4))]
     pub claim_base: BigDecimal,
 
@@ -75,7 +75,7 @@ pub struct EnterpriseClaimItem {
     #[model(money(scale = 4))]
     pub actual_claim_amount: BigDecimal,
 
-    /// Amount above the upper limit.
+    /// Eligible amount exceeding the product's reimbursement ceiling.
     #[model(money(scale = 4))]
     pub over_upper_limit: BigDecimal,
 
@@ -87,7 +87,7 @@ pub struct EnterpriseClaimItem {
     #[model(money(scale = 4))]
     pub serious_illness_insurance_amount: BigDecimal,
 
-    /// Yangtze program supplemental amount.
+    /// Supplemental benefit supplied by the Yangtze ownership program.
     #[model(money(scale = 4))]
     pub yangzi_supply: BigDecimal,
 
@@ -125,7 +125,8 @@ pub struct EnterpriseClaimItem {
     /// Historical claim amounts used by the calculation.
     pub history_claim_amount: EnterpriseHistoryClaimAmount,
 
-    /// Whether the deductible was already subtracted.
+    /// Whether this calculation has already applied its deductible, preventing
+    /// it from being deducted again.
     pub deduct_deductible: bool,
 
     /// UTC creation timestamp.
@@ -142,12 +143,13 @@ pub struct EnterpriseClaimItem {
 }
 
 impl EnterpriseClaimItem {
-    /// Derives hospital and disease summaries from the attached medical
-    /// encounters.
+    /// Refreshes denormalized hospital and disease summaries from the attached
+    /// medical encounters.
     ///
-    /// A single hospital keeps its name and level. Multiple hospitals use the
-    /// source label `其他` and the greatest available level. The first
-    /// available disease supplies the disease code.
+    /// An empty list leaves existing summaries unchanged. A single hospital
+    /// keeps its name and level; multiple hospitals use the source label `其他`
+    /// and the greatest available level. The first available disease supplies
+    /// the disease code.
     pub fn init_hospital_and_disease(&mut self) {
         let Some(first) = self.medicals.first() else {
             return;
