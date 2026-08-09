@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Payment accounts, participants, records, and gateway messages.
+//! Models exchanged between payment participants, providers, and settlement flows.
 
 mod account;
 mod account_type;

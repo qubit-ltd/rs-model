@@ -19,7 +19,7 @@ use qubit_model_derive::Model;
 use crate::commons::State;
 use crate::mixin::StatefulInfo;
 
-/// A named role and its privileges within one application.
+/// Represents a named role and its privileges within one application.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Role {
     /// Optional persisted identifier.

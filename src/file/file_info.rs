@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Stored-file metadata.
+//! Storage metadata for original files and generated file renditions.
 
 use bigdecimal::BigDecimal;
 use serde::Deserialize;
@@ -15,44 +15,44 @@ use qubit_mixin::Emptyful;
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// Storage metadata for a file, image, video, or audio asset.
+/// Location and technical metadata for a stored file or media rendition.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
 #[model(unique(name = "file_info_path", fields(path), ignore_case(path)))]
 pub struct FileInfo {
-    /// ASCII filesystem path or storage URL.
+    /// ASCII path or URL interpreted by the configured storage backend.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub path: String,
 
-    /// ASCII format name.
+    /// ASCII format label, such as a container or image format name.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub format: String,
 
-    /// ASCII MIME content type.
+    /// ASCII MIME content type of the stored bytes.
     #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub content_type: String,
 
-    /// File size in bytes.
+    /// Stored file size in bytes.
     pub size: i64,
 
-    /// Optional image or video width in pixels.
+    /// Image or video width in pixels, or `None` for nonvisual content.
     pub width: Option<i32>,
 
-    /// Optional image or video height in pixels.
+    /// Image or video height in pixels, or `None` for nonvisual content.
     pub height: Option<i32>,
 
-    /// Optional audio or video duration in seconds.
+    /// Audio or video duration in seconds, or `None` when not applicable.
     pub duration: Option<i32>,
 
-    /// Optional compression quality percentage with two fractional digits.
+    /// Compression quality percentage, where 100 represents lossless compression, or `None`.
     #[model(decimal(scale = 2))]
     pub quality: Option<BigDecimal>,
 }
 
 impl FileInfo {
-    /// Returns whether the storage path is empty.
+    /// Returns whether every metadata field has its empty or absent value.
     #[must_use]
     pub fn is_empty(&self) -> bool {
         self.path.is_empty()
@@ -65,13 +65,13 @@ impl FileInfo {
             && self.quality.is_none()
     }
 
-    /// Returns this object's local filesystem path.
+    /// Interprets the storage path as a local filesystem path without validating it.
     #[must_use]
     pub fn to_local_path(&self) -> PathBuf {
         PathBuf::from(&self.path)
     }
 
-    /// Replaces the optional image dimensions.
+    /// Replaces both visual dimensions; `None` clears both width and height.
     pub fn set_image_size(&mut self, image_size: Option<(i32, i32)>) {
         match image_size {
             Some((width, height)) => {

@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Basic information carrying an access token.
+//! Identity projections paired with issued access tokens.
 
 use serde::Deserialize;
 
@@ -16,28 +16,28 @@ use qubit_redact_derive::Redact;
 use crate::commons::Token;
 use crate::mixin::WithToken;
 
-/// Basic identifying information together with an optional access token.
+/// Compact entity identity paired with the optional token issued for that entity.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct InfoWithToken {
-    /// Basic identifying information.
+    /// Compact identity of the referenced entity.
     #[model(opaque)]
     #[redact(plain)]
     pub info: Info,
 
-    /// Optional access token.
+    /// Current issued token, or `None` when no token is available.
     #[redact(nested)]
     pub token: Option<Token>,
 }
 
 impl InfoWithToken {
-    /// Creates a composed information value.
+    /// Creates an identity-and-token projection.
     #[must_use]
     pub const fn new(info: Info, token: Option<Token>) -> Self {
         Self { info, token }
     }
 
-    /// Reports whether the identifying information and token are present.
+    /// Returns `true` only when the identity is complete and a token is present.
     #[must_use]
     pub fn is_complete(&self) -> bool {
         self.info.is_complete() && self.token.is_some()

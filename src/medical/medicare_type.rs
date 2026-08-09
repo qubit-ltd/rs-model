@@ -6,14 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical-insurance classifications.
+//! Classifications for the medical-insurance scheme covering a patient.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies a patient's medical-insurance program.
+/// Identifies the basic medical-insurance program used for settlement.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum MedicareType {

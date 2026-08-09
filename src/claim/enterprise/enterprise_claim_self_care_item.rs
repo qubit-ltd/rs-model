@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise claim self-care items.
+//! Self-care charge components extracted from enterprise-claim invoices.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -17,10 +17,10 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// A partially self-paid charge extracted from an enterprise claim invoice.
+/// A charge for which the insured person bears a defined self-care share.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct EnterpriseClaimSelfCareItem {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this self-care charge is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -29,17 +29,18 @@ pub struct EnterpriseClaimSelfCareItem {
     #[model(opaque)]
     pub claim_invoice_id: Id,
 
-    /// Charge name.
+    /// Name of the Class-B service, material, or medicine charge.
     pub name: String,
 
-    /// Medical-insurance charge code.
+    /// Medical-insurance catalogue code for the charge.
     pub medicare_charge_code: String,
 
-    /// Charge amount.
+    /// Full billed amount before applying the patient's self-care ratio.
     #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
-    /// Self-care ratio.
+    /// Expected patient-borne share of `amount`; invoice validation checks that
+    /// imported values lie between zero and one.
     pub ratio: f64,
 
     /// UTC creation timestamp.

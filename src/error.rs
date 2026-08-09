@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Error values emitted by model validation and conversion.
+//! Errors at the boundary where external data becomes a domain model.
 
 #[path = "error_type.rs"]
 mod error_type;
@@ -15,6 +15,9 @@ mod model_error;
 #[path = "validation_violation.rs"]
 mod validation_violation;
 
+/// Broad category assigned to a platform error.
 pub use error_type::ErrorType;
+/// Failure raised while constructing, converting, or validating a model.
 pub use model_error::ModelError;
+/// One field-level constraint failure; callers must redact sensitive rejected values.
 pub use validation_violation::ValidationViolation;

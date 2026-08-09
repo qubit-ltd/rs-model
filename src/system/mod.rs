@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Runtime environment, sessions, hosts, and operation-log models.
+//! Runtime environment, sessions, hosts, and audit-log models.
 
 mod action;
 mod environment;

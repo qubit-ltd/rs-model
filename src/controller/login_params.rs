@@ -21,42 +21,42 @@ use crate::system::Environment;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct LoginParams {
-    /// Optional username identity.
+    /// Account username supplied as one possible login identifier.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub username: Option<String>,
 
-    /// Optional email identity.
+    /// Verified account email supplied as an alternative login identifier.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 
-    /// Optional mobile identity.
+    /// Verified mobile number supplied as an alternative login identifier.
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
-    /// Optional password credential.
+    /// Password proof for password-based authentication; absent for other login flows.
     #[model(text(min_chars = 1, max_chars = 64))]
     #[redact(level = "secret")]
     pub password: Option<String>,
 
-    /// Optional one-time verification code.
+    /// One-time code that proves control of the selected email or mobile channel.
     #[model(text(min_chars = 1, max_chars = 64))]
     #[redact(level = "secret")]
     pub verify_code: Option<String>,
 
-    /// Optional social-network provider.
+    /// Social provider used when the caller authenticates through a linked account.
     pub social_network: Option<SocialNetwork>,
 
-    /// Optional social-network application identifier.
+    /// Provider application identifier that scopes the supplied social `open_id`.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub app_id: Option<String>,
 
-    /// Optional social-network open identifier.
+    /// Provider-issued subject identifier for the authenticating social account.
     #[model(text(min_chars = 1, max_chars = 64))]
     #[redact(level = "secret")]
     pub open_id: Option<String>,
 
-    /// Optional login client environment.
+    /// Client device and network context recorded with the authentication attempt.
     #[redact(nested)]
     pub environment: Option<Environment>,
 }

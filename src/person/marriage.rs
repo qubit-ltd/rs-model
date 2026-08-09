@@ -13,26 +13,26 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Marriage classification.
+/// Marital status recorded for a person.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Marriage {
-    /// Source variant `UNMARRIED`.
+    /// Never married.
     Unmarried,
-    /// Source variant `MARRIED`.
+    /// Records an active marriage without a more specific marriage-history state.
     Married,
-    /// Source variant `MARRIED_FIRST_TIME`.
+    /// In a first marriage.
     MarriedFirstTime,
-    /// Source variant `MARRIED_AGAIN`.
+    /// Records a current marriage entered after an earlier marriage ended.
     MarriedAgain,
-    /// Source variant `MARRIED_RESTORED`.
+    /// Marriage restored after divorce.
     MarriedRestored,
-    /// Source variant `WIDOWED`.
+    /// Records that the person's spouse has died and no later marriage is known.
     Widowed,
-    /// Source variant `DIVORCED`.
+    /// Records that the person's most recent marriage ended in divorce.
     Divorced,
-    /// Source variant `SEPARATED`.
+    /// Legally or informally separated.
     Separated,
-    /// Source variant `UNPROVIDED`.
+    /// Marital status was not provided.
     Unprovided,
 }

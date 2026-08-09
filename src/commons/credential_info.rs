@@ -21,7 +21,7 @@ use super::VerifyState;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq, Eq)]
 #[redact(debug, display, serde)]
 pub struct CredentialInfo {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of the referenced credential.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Stateful basic-information snapshots.
+//! Compact identity snapshots that include lifecycle state.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -18,29 +18,29 @@ use qubit_model_derive::Model;
 
 use crate::commons::State;
 
-/// Basic identifying information together with a lifecycle state.
+/// Compact identity projection enriched with lifecycle and soft-deletion state.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct StatefulInfo {
-    /// Optional persisted identifier.
+    /// Persisted identifier, using the neutral ID value when no identifier is supplied.
     #[model(opaque)]
     pub id: Id,
 
-    /// Stable code for the referenced entity.
+    /// Stable code of the referenced entity.
     pub code: String,
 
-    /// Human-readable name for the referenced entity.
+    /// Human-readable display name of the referenced entity.
     pub name: String,
 
-    /// Optional lifecycle state.
+    /// Lifecycle state, or `None` when this projection carries no state.
     pub state: Option<State>,
 
-    /// Optional UTC soft-deletion timestamp.
+    /// UTC soft-deletion time, or `None` while the entity is not deleted.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }
 
 impl StatefulInfo {
-    /// Creates a stateful information snapshot.
+    /// Creates a stateful identity snapshot without altering the supplied code or name.
     ///
     /// # Parameters
     ///

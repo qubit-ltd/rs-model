@@ -17,6 +17,9 @@ pub struct PhoneJsonDeserializer;
 
 impl PhoneJsonDeserializer {
     /// Deserializes an optional telephone number from JSON.
+    ///
+    /// Returns [`ContactCodecError::InvalidJson`] unless `value` is a JSON string or `null`,
+    /// and [`ContactCodecError::InvalidPhone`] when that string has an unsupported phone form.
     pub fn deserialize(value: &str) -> Result<Option<Phone>, ContactCodecError> {
         let encoded: Option<String> =
             serde_json::from_str(value).map_err(ContactCodecError::InvalidJson)?;

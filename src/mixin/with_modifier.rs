@@ -9,11 +9,11 @@
 
 use crate::person::UserInfo;
 
-/// Provides optional information about the user that last modified an object.
+/// Gives a model the optional user identity that last changed it.
 pub trait WithModifier {
-    /// Returns the modifier information.
+    /// Returns the last modifier snapshot, or `None` when the actor is unknown.
     fn modifier(&self) -> Option<&UserInfo>;
 
-    /// Replaces the modifier information.
+    /// Sets the last modifier snapshot; `None` clears it.
     fn set_modifier(&mut self, modifier: Option<UserInfo>);
 }

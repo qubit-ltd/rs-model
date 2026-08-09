@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Persisted mobile and email verification codes.
+//! Verification tokens issued to mobile numbers or email addresses.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -20,52 +20,52 @@ use crate::contact::Phone;
 use crate::mixin::StatefulInfo;
 use crate::notification::VerifyScene;
 
-/// A verification code delivered to a mobile number or email address.
+/// A one-time verification token issued for a specific application scenario.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct VerifyCode {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value denotes an unpersisted token record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Tenant that owns the issuing application.
+    /// Tenant reference for the application that issued the token.
     pub tenant: StatefulInfo,
 
-    /// Application that issued the code.
+    /// Application reference responsible for issuing and validating the token.
     pub app: StatefulInfo,
 
-    /// Optional destination mobile number.
+    /// Mobile destination, or `None` when no mobile destination was recorded.
     pub mobile: Option<Phone>,
 
-    /// Optional destination email address.
+    /// ASCII email destination, or `None` when no email destination was recorded.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub email: Option<String>,
 
-    /// Verification scenario.
+    /// Operation for which the recipient must present this token.
     pub scene: VerifyScene,
 
-    /// Secret verification token.
+    /// Secret token compared during verification; never expose it to untrusted callers.
     #[model(sensitive(token), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     #[redact(level = "secret")]
     pub code: String,
 
-    /// Message delivered with the code.
+    /// Notification message delivered with the token.
     pub message: String,
 
-    /// Whether this code has already been verified.
+    /// Whether successful verification has already consumed this token.
     pub verified: bool,
 
-    /// UTC creation timestamp.
+    /// UTC instant, rounded to seconds, when the token was issued.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 }
 
 impl VerifyCode {
-    /// Replaces the verification token with the Java TOKEN-level masked form.
+    /// Masks this token in place before it is exposed.
     ///
-    /// Tokens longer than eight characters retain four characters at each end
-    /// with `...` in the middle. Shorter tokens are replaced entirely by `*`.
+    /// Tokens longer than eight characters retain four characters at each end;
+    /// shorter tokens are replaced entirely with asterisks.
     pub fn desensitize(&mut self) {
         let character_count = self.code.chars().count();
         if character_count > 8 {

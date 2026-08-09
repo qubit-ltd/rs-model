@@ -13,16 +13,16 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Gender classification.
+/// Gender recorded for a person.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Gender {
-    /// Source variant `UNKNOWN`.
+    /// Gender is unknown.
     Unknown,
-    /// Source variant `MALE`.
+    /// Records a male gender value supplied by the person or source system.
     Male,
-    /// Source variant `FEMALE`.
+    /// Records a female gender value supplied by the person or source system.
     Female,
-    /// Source variant `UNSPECIFIED`.
+    /// Gender was intentionally not specified.
     Unspecified,
 }

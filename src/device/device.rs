@@ -5,6 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
+//! Registered device records and their lifecycle telemetry.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -24,92 +25,92 @@ use crate::device::Software;
 use crate::mixin::StatefulInfo;
 use crate::person::PersonInfo;
 use crate::person::UserInfo;
-/// Represents the Device domain type.
+/// A registered device, including its ownership, software inventory, and state.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Device {
-    /// The id value associated with this model.
+    /// Persisted device identifier; the default value denotes an unsaved device.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// The code value associated with this model.
+    /// Stable ASCII code that identifies the device within the application.
     #[model(text(min_chars=1,max_chars=64,repertoire=ascii))]
     pub code: String,
 
-    /// The name value associated with this model.
+    /// Human-readable device name.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// The app value associated with this model.
+    /// Application that registered or manages this device.
     pub app: StatefulInfo,
 
-    /// The description value associated with this model.
+    /// Optional user-facing description; absent when none was supplied.
     pub description: Option<String>,
 
-    /// The device_type value associated with this model.
+    /// Physical category of the device.
     pub device_type: DeviceType,
 
-    /// The hardware value associated with this model.
+    /// Optional hardware inventory; absent when it has not been collected.
     pub hardware: Option<Hardware>,
 
-    /// The operating_system value associated with this model.
+    /// Optional operating-system software record.
     pub operating_system: Option<Software>,
 
-    /// The softwares value associated with this model.
+    /// Software installed on the device; an empty collection means none was reported.
     pub softwares: Vec<Software>,
 
-    /// The location value associated with this model.
+    /// Last known geographic location, if the device reported one.
     pub location: Option<Location>,
 
-    /// The deploy_address value associated with this model.
+    /// Physical deployment address, if assigned.
     pub deploy_address: Option<Address>,
 
-    /// The ip_address value associated with this model.
+    /// Current network IP address, if known.
     pub ip_address: Option<String>,
 
-    /// The owner value associated with this model.
+    /// Person currently responsible for the device, if it is bound.
     pub owner: Option<PersonInfo>,
 
-    /// The binding_time value associated with this model.
+    /// UTC time at which the current owner binding was established, if any.
     #[model(time(precision=second,normalization=utc))]
     pub binding_time: Option<DateTime<Utc>>,
 
-    /// The binder value associated with this model.
+    /// User who established the current owner binding, if recorded.
     pub binder: Option<UserInfo>,
 
-    /// The state value associated with this model.
+    /// Lifecycle state of this device record.
     pub state: State,
 
-    /// The payloads value associated with this model.
+    /// Extension payloads attached to this device; empty when none are stored.
     pub payloads: Vec<Payload>,
 
-    /// The comment value associated with this model.
+    /// Optional administrator note.
     pub comment: Option<String>,
 
-    /// The test value associated with this model.
+    /// Whether this record is test data rather than a production device.
     pub test: bool,
 
-    /// The register_time value associated with this model.
+    /// UTC time at which the device was registered, if known.
     #[model(time(precision=second,normalization=utc))]
     pub register_time: Option<DateTime<Utc>>,
 
-    /// The last_startup_time value associated with this model.
+    /// Most recent device startup time in UTC, if reported.
     #[model(time(precision=second,normalization=utc))]
     pub last_startup_time: Option<DateTime<Utc>>,
 
-    /// The last_heartbeat_time value associated with this model.
+    /// Most recent heartbeat time in UTC, if reported.
     #[model(time(precision=second,normalization=utc))]
     pub last_heartbeat_time: Option<DateTime<Utc>>,
 
-    /// The create_time value associated with this model.
+    /// UTC time at which this record was created.
     #[model(time(precision=second,normalization=utc))]
     pub create_time: DateTime<Utc>,
 
-    /// The modify_time value associated with this model.
+    /// UTC time of the most recent update, if the record has been modified.
     #[model(time(precision=second,normalization=utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// The delete_time value associated with this model.
+    /// UTC soft-deletion time, if the device has been deleted.
     #[model(time(precision=second,normalization=utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Verification-code models and notification errors.
+//! Verification-code records and errors raised by notification delivery.
 
 mod notification_error_code;
 mod send_sms_exception;

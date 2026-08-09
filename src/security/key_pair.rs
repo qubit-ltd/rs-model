@@ -26,7 +26,7 @@ use crate::commons::State;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct KeyPair {
-    /// Optional persisted identifier.
+    /// Database identifier for this key pair; default denotes an unsaved key record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -39,7 +39,7 @@ pub struct KeyPair {
     #[model(opaque)]
     pub owner_id: Id,
 
-    /// Optional owner code.
+    /// Business code that distinguishes the owner within its owner-type namespace.
     pub owner_code: Option<String>,
 
     /// Signature algorithm.
@@ -56,7 +56,7 @@ pub struct KeyPair {
     #[model(text(min_chars = 1, max_chars = 4096))]
     pub public_key: String,
 
-    /// Optional encoded private key.
+    /// Private-key material in the declared format; it must be handled as secret data.
     #[model(text(min_chars = 1, max_chars = 4096))]
     #[redact(level = "secret")]
     pub private_key: Option<String>,
@@ -65,15 +65,15 @@ pub struct KeyPair {
     #[serde(default)]
     pub state: State,
 
-    /// UTC creation timestamp.
+    /// UTC instant when the key pair was generated or registered.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the latest key-record update.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC instant when the key pair was revoked by soft deletion.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

@@ -22,7 +22,7 @@ use super::App;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct AppResource {
-    /// Optional persisted identifier.
+    /// Platform-assigned identifier of this application-to-resource association.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

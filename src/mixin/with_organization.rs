@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Organization-ownership contracts.
 
 use super::StatefulInfo;
 
-/// Provides an owning organization.
+/// Gives a model an optional reference to its owning organization.
 pub trait WithOrganization {
-    /// Returns the organization information.
+    /// Returns the organization snapshot, or `None` when no organization owns the model.
     fn organization(&self) -> Option<&StatefulInfo>;
 
-    /// Replaces the organization information.
+    /// Sets the organization snapshot; `None` removes the ownership reference.
     fn set_organization(&mut self, organization: Option<StatefulInfo>);
 }

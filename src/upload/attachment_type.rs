@@ -6,40 +6,39 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Upload classification vocabularies.
+//! Content classifications used for upload attachments.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Classification of an attachment.
+/// Content or hosting classification for an attachment.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AttachmentType {
-    /// The Image classification.
+    /// Image content stored by the platform.
     Image,
-    /// The Document classification.
+    /// Document or unrecognized content.
     Document,
-    /// The Audio classification.
+    /// Audio content stored by the platform.
     Audio,
-    /// The Video classification.
+    /// Video content stored by the platform.
     Video,
-    /// The Vcard classification.
+    /// vCard contact information.
     Vcard,
-    /// The Location classification.
+    /// Geographic location content.
     Location,
-    /// The ExternalImage classification.
+    /// Externally hosted image.
     ExternalImage,
-    /// The ExternalAudio classification.
+    /// Externally hosted audio.
     ExternalAudio,
-    /// The ExternalVideo classification.
+    /// Externally hosted video.
     ExternalVideo,
 }
 
 impl AttachmentType {
-    /// Classifies a MIME content type using the source model's deterministic
-    /// rules.
+    /// Maps a MIME type to an attachment type; unrecognized types become documents.
     #[must_use]
     pub fn for_content_type(content_type: &str) -> Self {
         if content_type.starts_with("image/") {

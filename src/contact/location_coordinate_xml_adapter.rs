@@ -18,6 +18,9 @@ pub struct LocationCoordinateXmlAdapter;
 
 impl LocationCoordinateXmlAdapter {
     /// Decodes an optional XML text value.
+    ///
+    /// Returns [`ContactCodecError::InvalidCoordinate`] when present text is not a decimal
+    /// coordinate.
     pub fn unmarshal(value: Option<&str>) -> Result<Option<BigDecimal>, ContactCodecError> {
         LocationCoordinateCodec::decode(value)
     }

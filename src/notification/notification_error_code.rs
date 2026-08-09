@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Error codes emitted by the notification domain.
+//! Stable error codes exposed by notification operations.
 
 use serde::Deserialize;
 
@@ -15,17 +15,17 @@ use qubit_redact_derive::Redact;
 
 use crate::error::ErrorType;
 
-/// A stable notification-module error code.
+/// Machine-readable error code for a failed notification operation.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum NotificationErrorCode {
-    /// Sending an SMS through a third-party provider failed.
+    /// A third-party SMS provider rejected or failed the send operation.
     SendSmsFailed,
 }
 
 impl NotificationErrorCode {
-    /// Returns the broad platform error category for this code.
+    /// Returns the platform error category associated with this notification failure.
     #[must_use]
     pub const fn error_type(self) -> ErrorType {
         match self {
@@ -33,8 +33,7 @@ impl NotificationErrorCode {
         }
     }
 
-    /// Returns the Simplified Chinese message template from the Java resource
-    /// bundle.
+    /// Returns the Simplified Chinese template for this code's user-facing message.
     #[must_use]
     pub const fn message_template_zh_cn(self) -> &'static str {
         match self {

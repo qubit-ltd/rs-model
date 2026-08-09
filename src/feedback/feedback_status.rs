@@ -6,34 +6,34 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Feedback classification vocabularies.
+//! States used to track feedback handling from submission to closure.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// The processing state of a feedback record.
+/// Current state of a feedback case in the processing workflow.
 #[derive(Model, Redact, Clone, Copy, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum FeedbackStatus {
-    /// The feedback has been submitted.
+    /// The case was submitted and awaits review.
     Submitted,
-    /// The feedback is under administrative review.
+    /// An administrator is assessing the case.
     UnderReview,
-    /// The accepted feedback is being processed.
+    /// The accepted case is actively being handled.
     Processing,
-    /// The feedback was rejected.
+    /// The case was rejected during review and awaits submitter confirmation.
     Rejected,
-    /// Processing is complete and awaits user confirmation.
+    /// Handling is complete and awaits the submitter's assessment.
     Resolved,
-    /// The user rejected the outcome.
+    /// The submitter disapproved the outcome.
     Disapproved,
-    /// The user accepted the outcome and the feedback is closed.
+    /// The submitter accepted the outcome, so the case is closed.
     Closed,
-    /// A disapproved record has been reopened.
+    /// A disputed case was reopened for a further review cycle.
     Reopened,
-    /// The feedback was withdrawn.
+    /// The submitter withdrew the case before it completed.
     Withdrawn,
 }

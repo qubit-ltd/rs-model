@@ -13,34 +13,34 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-domain Incoming classification.
+/// Annual income band in the source system's currency unit (thousands).
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Incoming {
-    /// Source variant `ANNUAL_25K_BELOW`.
+    /// Below 25k per year.
     Annual25kBelow,
-    /// Source variant `ANNUAL_25K_50K`.
+    /// 25k to 50k per year.
     Annual25k50k,
-    /// Source variant `ANNUAL_50K_100K`.
+    /// 50k to 100k per year.
     Annual50k100k,
-    /// Source variant `ANNUAL_100K_150K`.
+    /// 100k to 150k per year.
     Annual100k150k,
-    /// Source variant `ANNUAL_150K_200K`.
+    /// 150k to 200k per year.
     Annual150k200k,
-    /// Source variant `ANNUAL_200K_300K`.
+    /// 200k to 300k per year.
     Annual200k300k,
-    /// Source variant `ANNUAL_300K_400K`.
+    /// 300k to 400k per year.
     Annual300k400k,
-    /// Source variant `ANNUAL_400K_500K`.
+    /// 400k to 500k per year.
     Annual400k500k,
-    /// Source variant `ANNUAL_500K_800K`.
+    /// 500k to 800k per year.
     Annual500k800k,
-    /// Source variant `ANNUAL_800K_1000K`.
+    /// 800k to 1,000k per year.
     Annual800k1000k,
-    /// Source variant `ANNUAL_1000K_5000K`.
+    /// 1,000k to 5,000k per year.
     Annual1000k5000k,
-    /// Source variant `ANNUAL_5000K_10000K`.
+    /// 5,000k to 10,000k per year.
     Annual5000k10000k,
-    /// Source variant `ANNUAL_10000K_ABOVE`.
+    /// At least 10,000k per year.
     Annual10000kAbove,
 }

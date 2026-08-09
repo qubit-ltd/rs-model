@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Individual claim medical encounters.
+//! Medical encounters supplied as evidence for an individual claim.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -22,10 +22,11 @@ use qubit_model_derive::Model;
 use crate::claim::InsuranceClaimInvoice;
 use crate::medical::MedicalType;
 
-/// A medical encounter and its invoices within an individual claim.
+/// A treatment encounter included in a claim, with the invoices substantiating
+/// its costs.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimMedical {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this claim treatment record is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -34,13 +35,14 @@ pub struct InsuranceClaimMedical {
     #[model(opaque)]
     pub claim_id: Id,
 
-    /// Optional insurer-side claim application identifier.
+    /// Insurer-assigned application identifier, when the encounter has been
+    /// submitted to an insurer.
     pub claim_apply_id: Option<String>,
 
-    /// Treatment date.
+    /// Date on which the billed treatment or encounter occurred.
     pub treatment_date: NaiveDate,
 
-    /// Medical record or invoice number.
+    /// Hospital medical-record or invoice number that identifies the encounter.
     pub number: String,
 
     /// Medical encounter classification.
@@ -56,14 +58,14 @@ pub struct InsuranceClaimMedical {
     /// Treating department name.
     pub department: String,
 
-    /// Total encounter amount.
+    /// Gross charge attributed to this encounter before claim calculation.
     #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
     /// Primary diagnosis.
     pub primary_diagnosis: String,
 
-    /// Whether the encounter has an invoice.
+    /// Whether invoice evidence is available for this encounter.
     pub has_invoice: bool,
 
     /// UTC creation timestamp.

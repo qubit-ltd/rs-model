@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Individual claim invoices.
+//! Invoice evidence captured for individual insurance claims.
 
 use bigdecimal::BigDecimal;
 use chrono::DateTime;
@@ -21,10 +21,10 @@ use crate::claim::InsuranceClaimInvoiceCost;
 use crate::claim::InsuranceClaimInvoiceStatus;
 use crate::claim::InsuranceClaimInvoiceType;
 
-/// A medical invoice imported into an individual insurance claim.
+/// A medical invoice imported as financial evidence for an individual claim.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InsuranceClaimInvoice {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this claim invoice is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -44,7 +44,7 @@ pub struct InsuranceClaimInvoice {
     /// Invoice number.
     pub number: String,
 
-    /// Total invoice amount.
+    /// Gross amount printed on the source medical invoice.
     #[model(money(scale = 4))]
     pub amount: BigDecimal,
 
@@ -64,38 +64,40 @@ pub struct InsuranceClaimInvoice {
     #[model(money(scale = 4))]
     pub medicare_amount: BigDecimal,
 
-    /// Optional serious-illness fund payment.
+    /// Serious-illness assistance payment, when the invoice received one.
     #[model(money(scale = 4))]
     pub serious_illness_paid: Option<BigDecimal>,
 
-    /// Optional serious-illness insurance payment.
+    /// Serious-illness insurance payment, when the invoice received one.
     #[model(money(scale = 4))]
     pub serious_illness_insurance_paid: Option<BigDecimal>,
 
-    /// Optional civil-affairs subsidy payment.
+    /// Civil-affairs subsidy allocated to this invoice, when applicable.
     #[model(money(scale = 4))]
     pub civil_affair_subsidy_paid: Option<BigDecimal>,
 
-    /// Optional total personal amount.
+    /// Total patient-borne amount, when the invoice source provides it.
     #[model(money(scale = 4))]
     pub self_amount: Option<BigDecimal>,
 
-    /// Whether the invoice describes a pre-existing symptom.
+    /// Whether the invoice is associated with a symptom predating the insured
+    /// event, which may affect coverage.
     pub past_symptom: bool,
 
     /// Medical encounter represented by the invoice.
     pub r#type: InsuranceClaimInvoiceType,
 
-    /// Import state.
+    /// Outcome of importing this invoice into quick-compensation processing.
     pub status: InsuranceClaimInvoiceStatus,
 
-    /// Whether extracted invoice data is accurate.
+    /// Whether extracted values have been verified against the invoice image.
     pub accuracy: bool,
 
-    /// Explanation when extracted data is inaccurate.
+    /// Reconciliation reason when extracted values do not match the source
+    /// invoice.
     pub inaccurate_reason: String,
 
-    /// Optional supplemental personal amount.
+    /// Supplemental patient-borne amount, when supplied by the import source.
     #[model(money(scale = 4))]
     pub self_amount_supply: Option<BigDecimal>,
 
@@ -111,12 +113,13 @@ pub struct InsuranceClaimInvoice {
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 
-    /// Extracted medical-charge breakdowns.
+    /// Itemized charge lines extracted from the invoice for audit and review.
     pub costs: Vec<InsuranceClaimInvoiceCost>,
 }
 
 impl InsuranceClaimInvoice {
-    /// Checks whether the total invoice amount covers all component amounts.
+    /// Checks whether the gross invoice amount is sufficient to contain the
+    /// recorded payer and patient components.
     ///
     /// # Returns
     ///

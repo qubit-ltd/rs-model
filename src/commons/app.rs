@@ -6,6 +6,8 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
+//! Registered third-party applications and their authorization context.
+
 use chrono::DateTime;
 use chrono::Utc;
 use qubit_id::Id;
@@ -21,68 +23,68 @@ use super::Token;
 use crate::mixin::StatefulInfo;
 use crate::person::UserInfo;
 
-/// Represents the App domain type.
+/// A third-party application registered on the platform.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct App {
-    /// The id value associated with this model.
+    /// Platform-assigned identifier for this application.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// The code value associated with this model.
+    /// Immutable, globally unique application code.
     pub code: String,
 
-    /// The name value associated with this model.
+    /// Application name, unique within its owning organization.
     pub name: String,
 
-    /// The organization value associated with this model.
+    /// Required stateful reference to the organization that owns the application.
     pub organization: StatefulInfo,
 
-    /// The category value associated with this model.
+    /// Optional category used to classify the application; `None` means uncategorized.
     #[model(opaque)]
     pub category: Option<InfoWithEntity>,
 
-    /// The state value associated with this model.
+    /// Lifecycle state that determines whether the application is available.
     pub state: State,
 
-    /// The icon value associated with this model.
+    /// Optional ASCII icon URI; `None` means no icon has been supplied.
     pub icon: Option<String>,
 
-    /// The url value associated with this model.
+    /// Optional ASCII homepage URL; `None` means no homepage is recorded.
     pub url: Option<String>,
 
-    /// The description value associated with this model.
+    /// Optional user-facing description maintained by the application owner.
     pub description: Option<String>,
 
-    /// The comment value associated with this model.
+    /// Optional administrator-only note, distinct from the user-facing description.
     pub comment: Option<String>,
 
-    /// The security_key value associated with this model.
+    /// Optional secret used to authenticate the application; persisted values are salted hashes.
     #[redact(level = "secret")]
     pub security_key: Option<String>,
 
-    /// The token value associated with this model.
+    /// Optional current access token issued to this application.
     pub token: Option<Token>,
 
-    /// The last_authorize value associated with this model.
+    /// Last authorization time and consecutive authorization-failure count.
     pub last_authorize: AuthorizeRecord,
 
-    /// The default_user value associated with this model.
+    /// User assumed for calls without an authenticated user; `None` disables this fallback.
     pub default_user: Option<UserInfo>,
 
-    /// The predefined value associated with this model.
+    /// Whether this application is platform-provided reference data.
     pub predefined: bool,
 
-    /// The create_time value associated with this model.
+    /// Creation time in UTC, stored with second precision.
     #[model(time(precision=second,normalization=utc))]
     pub create_time: DateTime<Utc>,
 
-    /// The modify_time value associated with this model.
+    /// Most recent modification time in UTC, or `None` if never modified.
     #[model(time(precision=second,normalization=utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// The delete_time value associated with this model.
+    /// UTC soft-deletion time, or `None` while the application remains active.
     #[model(time(precision=second,normalization=utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

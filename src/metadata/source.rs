@@ -27,7 +27,7 @@ use super::Scope;
 #[serde(default)]
 #[model(unique(name = "source_code", fields(code), ignore_case(code)))]
 pub struct Source {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this metadata source.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -48,7 +48,7 @@ pub struct Source {
     #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub entity: String,
 
-    /// Optional description.
+    /// Optional explanation of the channel or acquisition source.
     pub description: Option<String>,
 
     /// Optional category information.

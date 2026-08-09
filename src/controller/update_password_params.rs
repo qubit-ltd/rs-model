@@ -17,7 +17,7 @@ use qubit_redact_derive::Redact;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct UpdatePasswordParams {
-    /// Optional current password.
+    /// Existing password used to authorize a self-service password replacement.
     #[model(text(min_chars = 1, max_chars = 64))]
     #[redact(level = "secret")]
     pub old_password: Option<String>,
@@ -27,10 +27,10 @@ pub struct UpdatePasswordParams {
     #[redact(level = "secret")]
     pub new_password: String,
 
-    /// Whether the next login must require another password change.
+    /// Requests that the newly set password be treated as temporary at the next login.
     pub change_password: Option<bool>,
 
-    /// Optional verification code.
+    /// One-time recovery code used when the current password is unavailable.
     #[model(text(min_chars = 1, max_chars = 64))]
     #[redact(level = "secret")]
     pub verify_code: Option<String>,

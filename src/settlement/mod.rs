@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Settlement and transaction records.
+//! Settlement ownership data and the purchase or refund transactions it contains.
 
 #[allow(clippy::module_inception)]
 mod settlement;

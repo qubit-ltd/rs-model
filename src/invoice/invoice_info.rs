@@ -22,7 +22,7 @@ use crate::invoice::InvoiceStatus;
 /// A compact invoice snapshot used by related-invoice references.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct InvoiceInfo {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

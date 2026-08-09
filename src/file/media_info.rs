@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Compact media metadata.
+//! Compact metadata for independently referenced media resources.
 
 use serde::Deserialize;
 
@@ -14,21 +14,21 @@ use qubit_redact_derive::Redact;
 
 use super::MediaType;
 
-/// Metadata describing an independently referenced media resource.
+/// Presentation metadata for a media resource referenced independently of uploads.
 #[derive(Model, Redact, Clone, Default, Deserialize, Eq, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct MediaInfo {
-    /// Media classification.
+    /// Media category used by the consumer.
     pub r#type: MediaType,
 
-    /// Size in bytes.
+    /// Resource size in bytes.
     pub size: i64,
 
-    /// Screen dimensions such as `1920x1080`.
+    /// Display dimensions encoded as text, such as `1920x1080`.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub screen: String,
 
-    /// Duration in seconds.
+    /// Playback duration in seconds.
     pub duration: i64,
 }

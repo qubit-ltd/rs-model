@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Extensible-payload contracts.
 
 use crate::commons::Payload;
 
-/// Provides payloads.
+/// Gives a model an optional, ordered set of extension payloads.
 pub trait WithPayloads {
-    /// Returns the payloads.
+    /// Returns payloads in stored order, or `None` when no payload collection was loaded.
     fn payloads(&self) -> Option<&[Payload]>;
 
-    /// Replaces the payloads.
+    /// Replaces the payload collection; `None` clears it.
     fn set_payloads(&mut self, payloads: Option<Vec<Payload>>);
 }

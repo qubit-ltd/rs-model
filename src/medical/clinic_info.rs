@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! General clinic visit information.
+//! HIS data for standard outpatient clinic encounters.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -16,21 +16,21 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
-/// Hospital-system information for a general outpatient visit.
+/// Source-system record for a routine outpatient appointment.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ClinicInfo {
     /// Source-system business sequence number.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub number: String,
 
-    /// Optional remark.
+    /// Source-system note, absent when the visit carried no free-text remark.
     pub remark: Option<String>,
 
     /// Department visited by the patient.
     #[model(opaque)]
     pub department: Info,
 
-    /// Optional outpatient record number.
+    /// Outpatient record number, absent when the HIS source did not provide it.
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub record_number: Option<String>,
 

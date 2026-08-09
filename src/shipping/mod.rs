@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Shipping records and delivery requirements.
+//! Shipment parties, carrier records, and recipient delivery constraints.
 
 mod consign_info;
 mod packing;

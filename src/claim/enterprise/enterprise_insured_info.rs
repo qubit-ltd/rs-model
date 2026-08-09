@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise insured-person information.
+//! Covered-person data imported from an enterprise insurance program.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -21,11 +21,12 @@ use crate::claim::enterprise::EnterpriseHistoryClaimAmount;
 use crate::claim::enterprise::EnterpriseInsuredType;
 use crate::claim::enterprise::EnterpriseOwnership;
 
-/// An enterprise insured person and their linked employee and claim history.
+/// A covered person with employee linkage and historical enterprise-claim
+/// amounts used for eligibility and calculation.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct EnterpriseInsuredInfo {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this enterprise insured-person record is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -41,30 +42,31 @@ pub struct EnterpriseInsuredInfo {
     #[redact(level = "secret")]
     pub credential_number: String,
 
-    /// Optional enterprise ownership program.
+    /// Enterprise ownership program, absent when the import cannot classify it.
     pub ownership: Option<EnterpriseOwnership>,
 
-    /// Optional enterprise insured-person classification.
+    /// Covered-person category, absent when the enterprise source omits it.
     pub insured_type: Option<EnterpriseInsuredType>,
 
-    /// Optional age.
+    /// Age used by enterprise eligibility rules, absent when not supplied.
     pub age: Option<i32>,
 
-    /// Optional relationship to the covered employee.
+    /// Relationship to the covered employee, absent for the employee themself or
+    /// when the source omits it.
     pub employee_relation: Option<String>,
 
-    /// Optional employee credential number.
+    /// Employee credential number, absent when no employee linkage is supplied.
     #[redact(level = "secret")]
     pub employee_credential_number: Option<String>,
 
-    /// Optional employee medical-insurance number.
+    /// Employee medical-insurance number, absent when the source lacks it.
     #[redact(level = "secret")]
     pub employee_medicare_number: Option<String>,
 
-    /// Optional employee name.
+    /// Linked employee name, absent when the covered person has no supplied link.
     pub employee_name: Option<String>,
 
-    /// Optional employee company.
+    /// Linked employee's company, absent when the source does not identify one.
     pub employee_company: Option<String>,
 
     /// Historical claim amounts.

@@ -28,11 +28,11 @@ pub struct BindPersonParams {
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
-    /// Optional mobile number.
+    /// Mobile contact channel to associate with the newly bound person record.
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
-    /// Optional email address.
+    /// Email contact channel to associate with the newly bound person record.
     #[redact(level = "secret")]
     pub email: Option<String>,
 

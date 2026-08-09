@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Uploaded-file and attachment domain models.
+//! Legacy upload, media, and attachment value models.
 
 mod attachment;
 mod attachment_type;

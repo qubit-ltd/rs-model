@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Order submission messages.
+//! Order submission payloads and their callback endpoints.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -15,15 +15,15 @@ use qubit_model_derive::Model;
 
 use crate::order::Order;
 
-/// An order and the callback URLs used during submission.
+/// An order submitted to a checkout flow with browser and server callback URLs.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct OrderSubmitRequest {
-    /// Order being submitted.
+    /// The complete order aggregate submitted for checkout.
     pub order: Order,
 
-    /// Browser return URL.
+    /// Browser destination after checkout returns control to the client.
     pub return_url: String,
 
-    /// Server notification URL.
+    /// Server endpoint for asynchronous checkout notifications.
     pub notify_url: String,
 }

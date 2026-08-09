@@ -6,14 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Claim-invoice classifications.
+//! Care-setting classifications for invoices imported into a claim.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies the medical encounter represented by a claim invoice.
+/// Identifies the encounter category represented by a claim invoice.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InsuranceClaimInvoiceType {

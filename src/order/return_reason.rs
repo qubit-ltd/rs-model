@@ -6,45 +6,45 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Return reason classifications.
+//! Buyer and seller reasons for returning an order item.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Explains why an order item is being returned.
+/// The business reason recorded when an order item enters the return workflow.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ReturnReason {
-    /// No reason was supplied.
+    /// No specific reason was recorded.
     NoReason,
-    /// The buyer cannot complete the purchase.
+    /// The buyer is unable to complete the purchase.
     BuyerIncapable,
-    /// The item is out of stock.
+    /// The item became unavailable because it is out of stock.
     OutOfStock,
-    /// The item is no longer sold.
+    /// The seller no longer offers the item.
     StopSelling,
-    /// The buyer dislikes the item.
+    /// The buyer is dissatisfied with the item.
     Dislike,
     /// The buyer no longer wants the item.
     DontWant,
-    /// The purchase was accidental.
+    /// The purchase was made by mistake.
     Misoperation,
-    /// Parts are missing.
+    /// The delivered item is missing required parts.
     LackOfPart,
-    /// The product is broken.
+    /// The delivered product is damaged or unusable.
     BrokenProduct,
-    /// The wrong product was supplied.
+    /// The delivered product differs from the item ordered.
     WrongProduct,
-    /// The product is expired.
+    /// The product has passed its expiry date.
     ExpiredProduct,
-    /// The product has quality problems.
+    /// The product has a quality defect.
     QualityProblems,
-    /// The product differs from its description.
+    /// The product does not match its listing description.
     MismatchDescription,
-    /// The product is too expensive.
+    /// The charged price is considered excessive.
     TooExpensive,
-    /// The product is an imitation.
+    /// The product is suspected to be counterfeit.
     Imitation,
 }

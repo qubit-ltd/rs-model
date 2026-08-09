@@ -21,7 +21,7 @@ use super::Owner;
 /// A named payload belonging to an owner.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Payload {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this owner-scoped payload.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

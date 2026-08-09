@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Audit request model.
+//! Review requests for persisted domain objects.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -19,38 +19,38 @@ use qubit_model_derive::Model;
 use crate::audit::AuditStatus;
 use crate::organization::EmployeeInfo;
 
-/// Describes a request to audit a persisted objective.
+/// A review request targeting a persisted object in another domain.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Audit {
-    /// Persistent audit identifier when assigned.
+    /// Database identifier; the default value denotes a request not yet persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Source type of the audited objective.
+    /// ASCII domain type that identifies how to interpret [`Self::objective_id`].
     #[model(text(min_chars=1,max_chars=64,repertoire=ascii))]
     pub objective_type: String,
 
-    /// Persistent identifier of the audited objective when assigned.
+    /// Identifier of the object selected for review.
     #[model(identifier)]
     #[model(opaque)]
     pub objective_id: Id,
 
-    /// Current lifecycle state of the request.
+    /// Current state in the audit-request lifecycle.
     pub status: AuditStatus,
 
-    /// Employee assigned to perform the audit, when assigned.
+    /// Employee responsible for the review, or `None` until one is assigned.
     pub auditor: Option<EmployeeInfo>,
 
-    /// UTC time when the request was created.
+    /// UTC creation instant, recorded with second precision.
     #[model(time(precision=second,normalization=utc))]
     pub create_time: DateTime<Utc>,
 
-    /// UTC time when the request was last modified, when modified.
+    /// UTC instant of the latest modification, or `None` when unchanged.
     #[model(time(precision=second,normalization=utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// UTC time when the request was deleted, when deleted.
+    /// UTC soft-deletion instant, or `None` while the request is retained.
     #[model(time(precision=second,normalization=utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

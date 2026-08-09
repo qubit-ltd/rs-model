@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Third-party service configuration models.
+//! Configuration values exchanged with third-party services.
 
 mod wechat_js_config;
 

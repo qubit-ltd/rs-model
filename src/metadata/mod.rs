@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Categories, dictionaries, payloads, and source metadata.
+//! Scoped metadata for categories, dictionaries, aggregate payloads, and acquisition sources.
 
 mod aggregate_ref;
 mod category;

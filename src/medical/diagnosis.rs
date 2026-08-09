@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical diagnoses.
+//! Ranked diagnoses assigned to clinical records.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -17,10 +17,11 @@ use qubit_model_derive::Model;
 
 use crate::Entity;
 
-/// A ranked western or traditional-Chinese diagnosis owned by a medical record.
+/// A prioritized Western-medicine or traditional-Chinese diagnosis for one
+/// clinical record.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Diagnosis {
-    /// Optional persisted identifier.
+    /// Typed identifier used when this diagnosis is persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -32,21 +33,23 @@ pub struct Diagnosis {
     #[model(opaque)]
     pub owner_id: Id,
 
-    /// Optional western-medicine disease information.
+    /// Western-medicine disease entry; absent for a diagnosis recorded only in
+    /// the traditional-Chinese classification.
     #[model(opaque)]
     pub disease: Option<Info>,
 
-    /// Optional traditional-Chinese-medicine disease information.
+    /// Traditional-Chinese-medicine disease entry; absent for a Western-only
+    /// diagnosis.
     #[model(opaque)]
     pub tcm_disease: Option<Info>,
 
-    /// Optional symptom or traditional syndrome.
+    /// Symptom or traditional syndrome qualifier, absent when not documented.
     pub syndrome: Option<String>,
 
-    /// Optional diagnosis description.
+    /// Free-text clinical diagnosis detail, absent when the coded entry suffices.
     pub description: Option<String>,
 
-    /// Optional remark.
+    /// Source or clinician remark, absent when no supplementary note was given.
     pub comment: Option<String>,
 
     /// Diagnosis priority, starting at zero for the primary diagnosis.

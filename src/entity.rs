@@ -6,42 +6,39 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Entity classifications used by shared model references.
+//! Entity classifications used by generic model references and localized messages.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies a domain entity category.
+/// Classifies the kind of domain record addressed by a generic reference.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Entity {
-    /// Application entity.
+    /// A tenant application.
     App,
-    /// Category entity.
+    /// A reusable classification category.
     Category,
-    /// Credential entity.
+    /// An identity credential.
     Credential,
-    /// Dictionary entity.
+    /// A reference-data dictionary.
     Dict,
-    /// Dictionary entry entity.
+    /// An entry belonging to a reference-data dictionary.
     DictEntry,
-    /// Source entity.
+    /// A source channel or origin.
     Source,
-    /// Payload entity.
+    /// An auxiliary payload record.
     Payload,
-    /// Session entity.
+    /// An authenticated session.
     Session,
-    /// Verification-code entity.
+    /// A one-time verification code.
     VerifyCode,
 }
 
 impl Entity {
-    /// Returns the stable lowercase entity identifier.
-    ///
-    /// # Returns
-    /// The identifier used for serialization-independent entity matching.
+    /// Returns the stable lowercase identifier used in model references.
     #[must_use]
     pub const fn as_str(self) -> &'static str {
         match self {

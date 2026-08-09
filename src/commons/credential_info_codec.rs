@@ -18,6 +18,10 @@ pub struct CredentialInfoCodec;
 
 impl CredentialInfoCodec {
     /// Decodes `[TYPE]-[NUMBER]`, treating null or blank input as absent.
+    ///
+    /// Returns [`CredentialInfoCodecError::InvalidFormat`] when the nonblank input lacks a
+    /// separator, or [`CredentialInfoCodecError::UnsupportedType`] when its type name is not a
+    /// supported Java enum constant.
     pub fn decode(
         source: Option<&str>,
     ) -> Result<Option<CredentialInfo>, CredentialInfoCodecError> {

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Invoice records, applications, stock, and classifications.
+//! Models for issuing invoices, allocating invoice numbers, and tracking stock.
 
 #[allow(clippy::module_inception)]
 mod invoice;

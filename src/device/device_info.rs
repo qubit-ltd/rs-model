@@ -5,6 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
+//! Lightweight cross-domain references to registered devices.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -19,47 +20,47 @@ use crate::contact::Location;
 use crate::device::DeviceType;
 use crate::mixin::StatefulInfo;
 use crate::person::PersonInfo;
-/// Represents the DeviceInfo domain type.
+/// Compact device projection for references that do not need full inventory data.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct DeviceInfo {
-    /// The id value associated with this model.
+    /// Persisted device identifier; the default value denotes no stored device.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// The code value associated with this model.
+    /// Stable device code within the managing application.
     pub code: String,
 
-    /// The name value associated with this model.
+    /// Human-readable device name.
     pub name: String,
 
-    /// The app value associated with this model.
+    /// Application that manages the device.
     pub app: StatefulInfo,
 
-    /// The owner value associated with this model.
+    /// Current device owner, if the device is bound.
     pub owner: Option<PersonInfo>,
 
-    /// The state value associated with this model.
+    /// Lifecycle state of the referenced device.
     pub state: State,
 
-    /// The device_type value associated with this model.
+    /// Physical category of the device.
     pub device_type: DeviceType,
 
-    /// The location value associated with this model.
+    /// Last known device location, if reported.
     pub location: Option<Location>,
 
-    /// The test value associated with this model.
+    /// Whether the device is test data.
     pub test: bool,
 
-    /// The binding_time value associated with this model.
+    /// UTC time at which the current owner binding was made, if any.
     #[model(time(precision=second,normalization=utc))]
     pub binding_time: Option<DateTime<Utc>>,
 
-    /// The register_time value associated with this model.
+    /// UTC device-registration time, if known.
     #[model(time(precision=second,normalization=utc))]
     pub register_time: Option<DateTime<Utc>>,
 
-    /// The delete_time value associated with this model.
+    /// UTC soft-deletion time, if the device has been deleted.
     #[model(time(precision=second,normalization=utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

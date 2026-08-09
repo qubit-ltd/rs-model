@@ -6,23 +6,23 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Invoice-application states.
+//! Review outcomes for requests to allocate invoice numbers.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes the review state of an invoice application.
+/// The current outcome of an invoice-number allocation request.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InvoiceApplyStatus {
-    /// The application was submitted for review.
+    /// Awaiting the platform's review.
     Submitted,
-    /// The application was approved.
+    /// Approved for invoice-number allocation.
     Approved,
-    /// The application was rejected.
+    /// Rejected by the reviewing authority.
     Rejected,
-    /// The application was cancelled.
+    /// Withdrawn before a final approval decision.
     Cancelled,
 }

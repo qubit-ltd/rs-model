@@ -6,15 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Rust traits for shared Java model mixins.
+//! Application-ownership contracts.
 
 use super::StatefulInfo;
 
-/// Provides an owning application.
+/// Gives a model an optional reference to its owning application.
 pub trait WithApp {
-    /// Returns the application information.
+    /// Returns the owning application snapshot, or `None` when ownership is not assigned.
     fn app(&self) -> Option<&StatefulInfo>;
 
-    /// Replaces the application information.
+    /// Sets the owning application snapshot; `None` removes the ownership reference.
     fn set_app(&mut self, app: Option<StatefulInfo>);
 }

@@ -6,19 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Product quality classifications.
+//! Condition classes used in product listings.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes whether a product is new or previously used.
+/// Whether the listed product is new or has prior use.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Quality {
-    /// A brand-new product.
+    /// A product that has not previously been used.
     BrandNew,
-    /// A previously used product.
+    /// A product offered after prior use.
     Used,
 }

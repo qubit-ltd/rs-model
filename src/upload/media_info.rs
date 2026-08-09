@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Compact metadata for a media asset.
+//! Compact presentation metadata for a media asset.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -15,19 +15,19 @@ use qubit_model_derive::Model;
 
 use crate::upload::MediaType;
 
-/// Metadata describing an independently referenced media resource.
+/// Presentation metadata for a media resource referenced independently.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct MediaInfo {
-    /// Media classification.
+    /// Media category.
     pub r#type: MediaType,
 
-    /// Size in bytes.
+    /// Resource size in bytes.
     pub size: i64,
 
-    /// Screen dimensions such as `1920x1080`.
+    /// Display dimensions expressed as text, for example `1920x1080`.
     #[model(text(min_chars = 1, max_chars = 64))]
     pub screen: String,
 
-    /// Duration in seconds.
+    /// Playback duration in seconds.
     pub duration: i64,
 }

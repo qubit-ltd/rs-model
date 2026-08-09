@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Persisted attachment metadata.
+//! Persisted attachments associated with aggregate-root properties.
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -24,65 +24,65 @@ use crate::commons::State;
 use crate::metadata::AggregateRef;
 use crate::metadata::Category;
 
-/// A categorized attachment belonging to an aggregate root.
+/// A stored upload attached to a categorized property of an aggregate root.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display)]
 #[serde(default)]
 pub struct Attachment {
-    /// Optional persisted identifier.
+    /// Database identifier; the default value denotes an attachment not yet persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
-    /// Owning aggregate-root reference.
+    /// Aggregate and property that own this attachment, or `None` before association.
     #[model(index)]
     #[redact(nested)]
     pub aggregate_ref: Option<AggregateRef>,
 
-    /// Attachment classification.
+    /// Classification used to choose attachment-specific handling and presentation.
     #[model(index)]
     pub r#type: AttachmentType,
 
-    /// Optional category information.
+    /// Category reference, or `None` when the owner has not classified the attachment.
     #[model(reference(target = Category, target_field = info), opaque)]
     pub category: Option<InfoWithEntity>,
 
-    /// Zero-based order within the aggregate property.
+    /// Zero-based order within the owning aggregate property's attachment collection.
     #[model(index)]
     #[serde(default)]
     pub index: i32,
 
-    /// Optional title.
+    /// User-facing title, or `None` when the attachment has no title.
     #[model(index, text(min_chars = 1, max_chars = 128))]
     #[redact(level = "secret")]
     pub title: Option<String>,
 
-    /// Optional description.
+    /// Additional attachment description, or `None` when none was entered.
     pub description: Option<String>,
 
-    /// Stored upload.
+    /// Upload record that provides the original file and generated renditions.
     #[model(reference(target = Upload, target_field = id))]
     #[redact(nested)]
     pub upload: Upload,
 
-    /// Lifecycle state.
+    /// Lifecycle state that governs use of the attachment.
     #[model(index)]
     pub state: State,
 
-    /// Whether the attachment is visible.
+    /// Whether the attachment is visible to permitted consumers; defaults to `true`.
     #[model(index)]
     #[serde(default = "default_visible")]
     pub visible: bool,
 
-    /// UTC creation timestamp.
+    /// UTC creation instant, or `None` until persistence assigns it.
     #[model(index, time(precision = second, normalization = utc))]
     pub create_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the latest update, or `None` when unchanged.
     #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the attachment is retained.
     #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }
@@ -93,7 +93,7 @@ const fn default_visible() -> bool {
 }
 
 impl Attachment {
-    /// Creates an attachment from an upload using source defaults.
+    /// Creates a normal, visible attachment from `upload`, using its filename and type.
     #[must_use]
     pub fn create(upload: Upload) -> Self {
         Self {
@@ -104,13 +104,13 @@ impl Attachment {
         }
     }
 
-    /// Returns the original file path.
+    /// Returns the original upload's storage path.
     #[must_use]
     pub fn file_path(&self) -> Option<&str> {
         Some(&self.upload.file.path)
     }
 
-    /// Returns the screenshot path when present.
+    /// Returns the screenshot rendition path, or `None` when no screenshot exists.
     #[must_use]
     pub fn screenshot_path(&self) -> Option<&str> {
         self.upload
@@ -119,7 +119,7 @@ impl Attachment {
             .map(|file| file.path.as_str())
     }
 
-    /// Returns the large-thumbnail path when present.
+    /// Returns the large-thumbnail path, or `None` when that rendition is absent.
     #[must_use]
     pub fn large_thumbnail_path(&self) -> Option<&str> {
         self.upload
@@ -128,7 +128,7 @@ impl Attachment {
             .map(|file| file.path.as_str())
     }
 
-    /// Returns the small-thumbnail path when present.
+    /// Returns the small-thumbnail path, or `None` when that rendition is absent.
     #[must_use]
     pub fn small_thumbnail_path(&self) -> Option<&str> {
         self.upload
@@ -163,7 +163,7 @@ struct AttachmentWire<'a> {
 }
 
 impl Serialize for Attachment {
-    /// Serializes persisted fields plus source computed path properties.
+    /// Serializes stored fields and the computed original, screenshot, and thumbnail paths.
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,

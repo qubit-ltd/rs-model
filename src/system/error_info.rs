@@ -27,10 +27,10 @@ pub struct ErrorInfo {
     #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
-    /// Optional user-facing error message.
+    /// Localized or display-safe explanation associated with the error code.
     pub message: Option<String>,
 
-    /// Optional message parameters.
+    /// Named values used to render the error message or provide structured diagnostics.
     #[redact(nested)]
     pub params: Option<Vec<KeyValuePair>>,
 }

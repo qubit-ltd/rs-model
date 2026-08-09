@@ -3,7 +3,7 @@
 //
 //    SPDX-License-Identifier: Apache-2.0
 // =============================================================================
-//! AI-generated attachment processing results.
+//! AI-generated results linked to processed uploaded attachments.
 
 mod ai_result;
 mod ai_result_type;

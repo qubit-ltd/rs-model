@@ -22,7 +22,7 @@ use crate::service::MedicalPackage;
 /// Records a patient's use of one item from a medical service package.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalItemUseRecord {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

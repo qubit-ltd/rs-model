@@ -27,7 +27,7 @@ use crate::person::Gender;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct User {
-    /// Optional persisted identifier.
+    /// Database identifier for this account; default denotes an account not yet persisted.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -41,79 +41,79 @@ pub struct User {
     #[redact(level = "secret")]
     pub password: String,
 
-    /// Optional real name.
+    /// Real name associated with the account for profile and administrative displays.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub name: Option<String>,
 
-    /// Optional nickname.
+    /// Informal display name selected by the account holder.
     #[model(text(min_chars = 1, max_chars = 128))]
     pub nickname: Option<String>,
 
-    /// Optional gender.
+    /// Gender supplied for the account profile.
     pub gender: Option<Gender>,
 
-    /// Optional mobile number.
+    /// Mobile contact channel that can be used for login or verification.
     pub mobile: Option<Phone>,
 
-    /// Optional mobile verification state.
+    /// Verification outcome for the mobile channel before it can be trusted for access flows.
     pub mobile_verified: Option<VerifyState>,
 
-    /// Optional ASCII email address.
+    /// Email contact channel that can be used for login or verification.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub email: Option<String>,
 
-    /// Optional email verification state.
+    /// Verification outcome for the email channel before it can be trusted for access flows.
     pub email_verified: Option<VerifyState>,
 
-    /// Optional ASCII avatar URL.
+    /// Avatar URI shown with the account in user-facing interfaces.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub avatar: Option<String>,
 
-    /// Optional ASCII web URL.
+    /// Personal or organization web address published on the account profile.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub url: Option<String>,
 
-    /// Optional self-description.
+    /// Account holder's profile biography or self-description.
     pub description: Option<String>,
 
-    /// Optional organization information.
+    /// Organization context to which this account is currently associated.
     pub organization: Option<StatefulInfo>,
 
-    /// Current lifecycle state.
+    /// Account lifecycle state controlling whether authentication is allowed.
     pub state: State,
 
     /// Most recent authorization record.
     pub last_login: AuthorizeRecord,
 
-    /// Whether the user must change the password.
+    /// Requires the account holder to replace the current password at the next login.
     pub change_password: bool,
 
-    /// Optional UTC validity start timestamp.
+    /// UTC instant before which the account must not authenticate.
     #[model(time(precision = second, normalization = utc))]
     pub valid_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC expiration timestamp.
+    /// UTC instant after which the account must no longer authenticate.
     #[model(time(precision = second, normalization = utc))]
     pub expired_time: Option<DateTime<Utc>>,
 
-    /// Optional comment.
+    /// Internal administrator note about account handling or provenance.
     pub comment: Option<String>,
 
-    /// Whether the user is predefined reference data.
+    /// Marks a platform-provided account that has special administrative semantics.
     pub predefined: bool,
 
-    /// Whether this is a test user.
+    /// Marks synthetic account data excluded from production operations.
     pub test: bool,
 
-    /// UTC creation timestamp.
+    /// UTC instant when the account was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent account update.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC instant of account soft deletion; absence means the account remains active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

@@ -6,14 +6,15 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Enterprise insured-person classifications.
+//! Employment and dependent categories recognized by enterprise insurance.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies an insured person's employment or dependent classification.
+/// Identifies the covered person's employment or dependent category for an
+/// enterprise insurance program.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum EnterpriseInsuredType {

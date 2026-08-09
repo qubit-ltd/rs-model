@@ -22,7 +22,19 @@ use crate::setting::parse_data_type_name;
 pub struct SettingJsonDeserializer;
 
 impl SettingJsonDeserializer {
-    /// Deserializes a setting from a JSON object string.
+    /// Deserializes a source-compatible JSON setting object.
+    ///
+    /// Missing or non-string `name` becomes an empty name; a missing `type` uses
+    /// [`DataType::default`]; missing or non-boolean flags use the corresponding [`Setting`]
+    /// defaults; missing, non-array, or null `values` become an empty vector. Non-null array
+    /// values are preserved as strings or rendered with JSON's textual representation, and
+    /// unrecognized object members are ignored.
+    ///
+    /// Returns [`SettingAdapterError::InvalidJson`] for malformed JSON,
+    /// [`SettingAdapterError::InvalidJsonRoot`] for a non-object root,
+    /// [`SettingAdapterError::InvalidDataType`] for an unsupported string `type`, and
+    /// [`SettingAdapterError::InvalidTimestamp`] for an invalid string timestamp. Non-string
+    /// timestamp fields are treated as absent.
     pub fn deserialize(source: &str) -> Result<Setting, SettingAdapterError> {
         let value: Value =
             serde_json::from_str(source).map_err(SettingAdapterError::InvalidJson)?;

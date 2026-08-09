@@ -6,27 +6,27 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Invoice issuance states.
+//! States that describe whether an invoice can be or has been issued.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes whether and how an invoice was issued.
+/// The invoice obligation and issuance outcome for a business transaction.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InvoiceStatus {
-    /// The transaction cannot be invoiced.
+    /// The transaction is not eligible for invoicing.
     NoInvoice,
-    /// No invoice is required.
+    /// No invoice was requested for the transaction.
     NotRequired,
-    /// An invoice is required but has not been issued.
+    /// An invoice is required but issuance has not completed.
     NotPrinted,
-    /// The invoice was issued.
+    /// The original invoice was issued successfully.
     Printed,
-    /// The invoice was reissued.
+    /// A replacement invoice was issued.
     Reprinted,
-    /// The invoice was invalidated or reversed.
+    /// The invoice was voided or reversed.
     Invalid,
 }

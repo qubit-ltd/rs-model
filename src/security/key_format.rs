@@ -25,7 +25,7 @@ pub enum KeyFormat {
 }
 
 impl KeyFormat {
-    /// Returns the JDK format code.
+    /// Returns the exact JDK-compatible format code for this key encoding.
     #[must_use]
     pub const fn code(self) -> &'static str {
         match self {
@@ -34,7 +34,10 @@ impl KeyFormat {
         }
     }
 
-    /// Resolves an enum name or JDK format code without case sensitivity.
+    /// Resolves a recognized enum-style or JDK format code without case sensitivity.
+    ///
+    /// Accepts only `PKCS8`, `PKCS#8`, `X509`, and `X.509` after case folding. Input is not
+    /// trimmed, so leading or trailing whitespace and every other spelling return `None`.
     #[must_use]
     pub fn for_name(value: &str) -> Option<Self> {
         match value.to_ascii_uppercase().as_str() {

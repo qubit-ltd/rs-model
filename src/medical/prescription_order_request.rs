@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Prescription order submission messages.
+//! Requests that submit a prescription together with its product order.
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -16,7 +16,7 @@ use qubit_model_derive::Model;
 use crate::medical::Prescription;
 use crate::order::Order;
 
-/// A prescription and the order submitted for its products.
+/// The prescription and the order generated to obtain its prescribed products.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct PrescriptionOrderRequest {
     /// Prescription content and workflow record.

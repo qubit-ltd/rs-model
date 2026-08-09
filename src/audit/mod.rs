@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Audit request models.
+//! Requests and states for reviewing persisted domain objects.
 
 #[allow(clippy::module_inception)]
 mod audit;

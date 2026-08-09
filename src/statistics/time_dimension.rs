@@ -6,31 +6,31 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Statistics value objects.
+//! Calendar and clock granularities for statistics aggregation.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Time granularity used by a statistics aggregation.
+/// Calendar or clock granularity used to bucket an aggregate.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TimeDimension {
-    /// Calendar year.
+    /// Calendar-year bucket.
     Year,
-    /// Calendar quarter.
+    /// Calendar-quarter bucket.
     Quarter,
-    /// Calendar month.
+    /// Calendar-month bucket.
     Month,
-    /// Calendar week.
+    /// Calendar-week bucket.
     Week,
-    /// Calendar day.
+    /// Calendar-day bucket.
     Day,
-    /// Hour.
+    /// Hourly bucket.
     Hour,
-    /// Minute.
+    /// Minute-level bucket.
     Minute,
-    /// Second.
+    /// Second-level bucket.
     Second,
 }
