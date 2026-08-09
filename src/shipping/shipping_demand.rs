@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Recipient delivery requirements.
+//! Recipient preferences and restrictions for delivery scheduling and handling.
 
 use chrono::NaiveDate;
 use chrono::NaiveTime;
@@ -18,10 +18,10 @@ use qubit_model_derive::Model;
 use crate::commons::DayType;
 use crate::shipping::Packing;
 
-/// Optional scheduling, packing, and comment requirements for delivery.
+/// Delivery constraints that a carrier should honor when fulfilling an order.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ShippingDemand {
-    /// Optional accepted day classification.
+    /// Accepted day type, or `None` when any day type is acceptable.
     pub day_type: Option<DayType>,
 
     /// Optional half-open local-date range with independently open bounds.
@@ -32,9 +32,9 @@ pub struct ShippingDemand {
     #[model(opaque)]
     pub time_range: Option<(Option<NaiveTime>, Option<NaiveTime>)>,
 
-    /// Required packing method.
+    /// Packing protection required for the shipment.
     pub packing: Packing,
 
-    /// Optional additional delivery request.
+    /// Additional delivery instructions, or `None` when none were provided.
     pub comment: Option<String>,
 }

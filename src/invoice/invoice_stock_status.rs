@@ -6,21 +6,21 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Invoice-stock states.
+//! Inventory states for allocated invoice-number ranges.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes the stock state of an invoice-number segment.
+/// Whether an allocated invoice-number segment is available for use.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InvoiceStockStatus {
-    /// The invoice numbers have not entered stock.
+    /// Allocation has not yet been entered into inventory.
     Unstocked,
-    /// The invoice numbers entered stock.
+    /// The number range is stocked and available for issuance.
     Stocked,
-    /// The stock entry was cancelled.
+    /// The allocated range was cancelled and must not be used.
     Cancelled,
 }

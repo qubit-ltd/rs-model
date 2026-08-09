@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Employee medical-item assignments.
+//! Assignment links between an organization employee and a medical service item.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -14,18 +14,18 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Assigns a medical service item to an employee within an organization.
+/// Identifies an employee authorized to provide a particular medical service item.
 #[derive(Model, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct EmployeeMedicalItem {
-    /// Persisted organization identifier.
+    /// Identifier of the organization that owns the authorization.
     #[model(opaque)]
     pub organization_id: Id,
 
-    /// Persisted employee identifier.
+    /// Identifier of the employee authorized to provide the item.
     #[model(opaque)]
     pub employee_id: Id,
 
-    /// Persisted medical-item identifier.
+    /// Identifier of the medical service item assigned to the employee.
     #[model(opaque)]
     pub medical_item_id: Id,
 }

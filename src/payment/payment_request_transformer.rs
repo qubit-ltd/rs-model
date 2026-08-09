@@ -6,21 +6,22 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Payment-request transaction filtering.
+//! In-place filtering that produces the transaction view safe for a payment gateway.
 
 use qubit_id::Id;
 use qubit_model_derive::Model;
 
 use crate::settlement::Transaction;
 
-/// Removes internal settlement data before a transaction leaves the service.
+/// Stateless transformer that strips settlement-only data from a gateway request.
 #[derive(Model, Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct PaymentRequestTransformer;
 
 impl PaymentRequestTransformer {
-    /// Removes provider-irrelevant and internal fields from a transaction.
+    /// Removes provider-irrelevant and internal fields from a transaction in place.
     ///
-    /// Fields needed to identify and execute the transaction remain unchanged.
+    /// Fields required to identify the payer and execute the charge are retained; the input is
+    /// permanently mutated.
     ///
     /// # Parameters
     ///

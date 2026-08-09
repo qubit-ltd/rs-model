@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Messages submitted to payment gateways.
+//! Signed transaction submissions sent to payment gateways.
 
 use serde::Deserialize;
 
@@ -16,28 +16,31 @@ use qubit_redact_derive::Redact;
 use crate::payment::PaymentRequestTransformer;
 use crate::settlement::Transaction;
 
-/// A signed transaction request submitted to a payment gateway.
+/// A gateway-ready transaction plus the browser and server callback endpoints.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct PaymentRequest {
-    /// Transaction data to submit after filtering.
+    /// Transaction data after provider-irrelevant internal fields have been removed.
     pub data: Transaction,
 
-    /// URL to which a user returns after payment.
+    /// Browser destination after the provider completes the customer flow.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub return_url: String,
 
-    /// URL that receives the payment provider's POST notification.
+    /// Server endpoint that receives the provider's asynchronous POST notification.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub notify_url: String,
 
-    /// Optional RSA signature of the JSON message excluding this field.
+    /// RSA signature over the message without this field; `None` means it has not been signed.
     #[model(text(min_chars = 1, max_chars = 2048, repertoire = ascii))]
     pub signature: Option<String>,
 }
 
 impl PaymentRequest {
-    /// Removes internal fields from the transaction before submission.
+    /// Removes internal-only transaction data before gateway submission.
+    ///
+    /// This mutates `data` in place and leaves only the fields required to identify and execute
+    /// the payment.
     pub fn filter(&mut self) {
         PaymentRequestTransformer::transform(&mut self.data);
     }

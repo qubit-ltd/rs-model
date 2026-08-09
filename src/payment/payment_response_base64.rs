@@ -6,18 +6,18 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Base64-encoded payment responses.
+//! Opaque Base64 envelopes used for payment-provider responses.
 
 use serde::Deserialize;
 
 use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
-/// A payment gateway response serialized as a Base64 string.
+/// A sensitive payment-gateway response represented as Base64 text.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct PaymentResponseBase64 {
-    /// Base64-encoded response payload.
+    /// The Base64-encoded provider payload; callers must decode it before interpreting it.
     #[model(sensitive(token), text(min_chars = 1, repertoire = ascii))]
     #[redact(level = "secret")]
     pub data: String,

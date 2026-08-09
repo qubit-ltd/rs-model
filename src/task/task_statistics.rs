@@ -6,25 +6,25 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Counters summarizing task execution.
+//! Aggregate counters that describe an executor's task workload.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Aggregate counters for a task executor.
+/// Snapshot of queued, active, completed, and submitted task counts.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct TaskStatistics {
-    /// Number of currently active tasks.
+    /// Number of tasks currently being initialized or executed.
     pub active_count: i32,
 
-    /// Number of queued tasks.
+    /// Number of submitted tasks waiting to start.
     pub waiting_count: i32,
 
-    /// Number of completed tasks.
+    /// Cumulative number of tasks that reached successful completion.
     pub completed_count: i64,
 
-    /// Total number of submitted tasks.
+    /// Cumulative number of tasks submitted to the executor.
     pub submitted_count: i64,
 }

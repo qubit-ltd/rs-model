@@ -6,13 +6,13 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Replacement marker records.
+//! Marker type retained for replacement-workflow compatibility.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Source-compatible marker for a replacement workflow.
+/// Zero-sized marker identifying the replacement workflow in serialized models.
 #[derive(Model, Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Replacement;

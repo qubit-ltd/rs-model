@@ -6,21 +6,21 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Shipping packing requirements.
+//! Protection levels required when a shipment is packed.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes how a shipment must be packed.
+/// The packing protection required for safe shipment handling.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Packing {
-    /// Ordinary packing.
+    /// Standard packing suitable for ordinary goods.
     Normal,
-    /// Reinforced packing.
+    /// Reinforced packing for additional protection.
     Reinforcement,
-    /// A protective wooden frame.
+    /// A protective wooden-frame package.
     WoodenFrame,
 }

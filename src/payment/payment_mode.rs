@@ -6,33 +6,33 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Payment interaction modes.
+//! Customer interaction modes supported by payment providers.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes the client interaction used to complete a payment.
+/// The client or merchant interaction through which a payment is initiated.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PaymentMode {
-    /// Native application.
+    /// A native mobile application.
     App,
-    /// Lightweight application.
+    /// A provider-hosted lightweight application.
     LiteApp,
-    /// Mobile web page.
+    /// A mobile web page.
     Wap,
-    /// Desktop web page.
+    /// A desktop browser page.
     Web,
-    /// JavaScript API.
+    /// A JavaScript API integration.
     Jsapi,
-    /// Customer scans a generated QR code.
+    /// The customer scans a merchant-generated QR code.
     ActiveQr,
-    /// Merchant scans the customer's QR code.
+    /// The merchant scans a customer-presented QR code.
     PassiveQr,
-    /// Offline payment.
+    /// A payment completed outside an online provider flow.
     Offline,
-    /// Unknown interaction mode.
+    /// An interaction mode not recognized by the source system.
     Unknown,
 }

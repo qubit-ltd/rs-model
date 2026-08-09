@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Purchase constraints for a product.
+//! Product-level rules that restrict purchasers, recipients, sources, and frequency.
 
 use chrono::NaiveDate;
 use serde::Deserialize;
@@ -16,30 +16,30 @@ use qubit_model_derive::Model;
 
 use crate::product::PersonConstraint;
 
-/// Optional rules that constrain who can purchase a product and how often.
+/// Independently optional purchase restrictions applied before an order is accepted.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct ProductConstraint {
-    /// Date against which an age restriction is evaluated.
+    /// Reference date for age evaluation, or `None` to use the consuming service's default.
     pub age_epoch: Option<NaiveDate>,
 
-    /// Age in years at which a person is considered an adult.
+    /// Adult threshold in whole years, or `None` when the default threshold applies.
     pub adult_age: Option<i32>,
 
-    /// Whether a buyer may purchase only for themself.
+    /// Whether the buyer must also be the client, or `None` when either arrangement is allowed.
     pub self_only: Option<bool>,
 
-    /// Restrictions applied to the buyer.
+    /// Eligibility requirements for the buyer, or `None` when the buyer is unrestricted.
     pub buyer: Option<PersonConstraint>,
 
-    /// Restrictions applied to the client receiving the product.
+    /// Eligibility requirements for the recipient, or `None` when the recipient is unrestricted.
     pub client: Option<PersonConstraint>,
 
     /// Allowed source identifiers; `None` means unrestricted.
     pub sources: Option<Vec<String>>,
 
-    /// Maximum number of purchases allowed for one buyer.
+    /// Per-buyer purchase cap, or `None` when no cap is imposed.
     pub limit_for_buyer: Option<i32>,
 
-    /// Maximum number of purchases allowed for one client.
+    /// Per-client purchase cap, or `None` when no cap is imposed.
     pub limit_for_client: Option<i32>,
 }
