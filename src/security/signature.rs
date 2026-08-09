@@ -55,7 +55,10 @@ pub struct Signature {
 }
 
 impl Signature {
-    /// Sets or replaces a string payload entry and returns this signature.
+    /// Sets or replaces a string payload claim and returns this signature for chaining.
+    ///
+    /// This mutates the data covered by [`Self::signed_value`]. The existing signature bytes
+    /// are therefore invalid until the caller signs the updated [`Self::signed_info`] again.
     pub fn set_payload(&mut self, key: &str, value: &str) -> &mut Self {
         if let Some(entry) = self
             .signed_info
@@ -73,7 +76,10 @@ impl Signature {
         self
     }
 
-    /// Replaces the covered message and returns this signature.
+    /// Replaces the covered message and returns this signature for chaining.
+    ///
+    /// This mutates the data covered by [`Self::signed_value`]. The existing signature bytes
+    /// are therefore invalid until the caller signs the updated [`Self::signed_info`] again.
     pub fn set_message(&mut self, message: &str) -> &mut Self {
         self.signed_info.message = message.to_owned();
         self

@@ -218,7 +218,12 @@ pub struct Person {
 }
 
 impl Person {
-    /// Assigns the fields represented by an order client projection.
+    /// Merges an order-client projection into this person record.
+    ///
+    /// Overwrites `id`, `name`, `gender`, `birthday`, `credential`, all medical- and
+    /// social-security fields, and `guardian`. Replaces the entire `contact` value with a new
+    /// projection containing only the client's mobile and email channels. All other fields,
+    /// including profile, employment, and lifecycle data, are retained.
     pub fn assign_client(&mut self, client: &Client) {
         self.id = client.id;
         self.name = client.name.clone();
@@ -242,7 +247,11 @@ impl Person {
         self.guardian = client.guardian.clone();
     }
 
-    /// Assigns the fields represented by compact person information.
+    /// Merges compact person information into this record.
+    ///
+    /// Overwrites `id`, `name`, `gender`, `birthday`, `credential`, `test`, and `delete_time`.
+    /// It also replaces the entire `contact` value with a new projection containing only mobile
+    /// and email. Every other field, including the photograph and organization, is retained.
     pub fn assign_info(&mut self, info: &PersonInfo) {
         self.id = info.id;
         self.name = info.name.clone();
@@ -254,7 +263,10 @@ impl Person {
         self.delete_time = info.delete_time;
     }
 
-    /// Assigns the fields represented by a saved consignee.
+    /// Merges a saved order consignee into this record.
+    ///
+    /// Overwrites `id`, `name`, and `credential`, then replaces the entire `contact` value with
+    /// the consignee's mobile, email, and address. Fields not listed here are retained.
     pub fn assign_consignee(&mut self, consignee: &Consignee) {
         self.id = consignee.id;
         self.name = consignee.name.clone();
@@ -267,7 +279,11 @@ impl Person {
         });
     }
 
-    /// Assigns the fields represented by an order buyer.
+    /// Merges an order-buyer projection into this record.
+    ///
+    /// Overwrites `id`, `name`, `credential`, `gender`, and `birthday`. It replaces the entire
+    /// `contact` value with a new projection containing only mobile and email; all other fields
+    /// remain unchanged.
     pub fn assign_buyer(&mut self, buyer: &Buyer) {
         self.id = buyer.id;
         self.name = buyer.name.clone();
@@ -301,7 +317,7 @@ impl Person {
         }
     }
 
-    /// Applies compact person information to this record.
+    /// Applies compact person information using the same replacement rules as [`Self::assign_info`].
     pub fn set_info(&mut self, info: &PersonInfo) {
         self.assign_info(info);
     }
@@ -314,8 +330,10 @@ impl Person {
 
     /// Reports whether another projection identifies the same person.
     ///
-    /// Persisted identifiers take precedence whenever both sides have one;
-    /// credentials are considered only when at least one identifier is absent.
+    /// When `other.person_id()` returns `Some`, compares it with `self.id.value() as i64`,
+    /// including the default identifier. Credentials are compared only when
+    /// `other.person_id()` returns `None`; a matching credential pair returns `true`, and missing
+    /// credentials return `false`.
     #[must_use]
     pub fn is_same<T: PersonIdentity + ?Sized>(&self, other: &T) -> bool {
         match (self.id, other.person_id()) {

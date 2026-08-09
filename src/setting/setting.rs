@@ -75,7 +75,10 @@ impl Setting {
     /// Separator used for multiple non-string values.
     pub const STANDARD_DELIMITER: &'static str = ",";
 
-    /// Creates an empty setting with the source defaults.
+    /// Creates an empty setting with the supplied name and data type.
+    ///
+    /// Initializes no values and applies the source defaults for all flags. This constructor does
+    /// not validate the name or the eventual value cardinality.
     #[must_use]
     pub fn new(name: impl Into<String>, data_type: DataType) -> Self {
         Self {
@@ -92,13 +95,21 @@ impl Setting {
         }
     }
 
-    /// Returns whether the nullability and cardinality constraints are met.
+    /// Reports whether this setting satisfies its nullability and cardinality constraints.
+    ///
+    /// Returns `false` when a non-nullable setting has no values or a single-value setting has
+    /// more than one value. It does not validate value syntax, encryption, or the setting name.
     #[must_use]
     pub fn is_valid(&self) -> bool {
         (self.nullable || !self.values.is_empty()) && (self.multiple || self.values.len() <= 1)
     }
 
     /// Encodes all values into the source database representation.
+    ///
+    /// Returns `None` for no values, the sole value unchanged for one value, and a delimiter-joined
+    /// string for multiple values. Strings use [`Self::STRING_DELIMITER`]; every other data type
+    /// uses [`Self::STANDARD_DELIMITER`]. Values containing the applicable delimiter cannot be
+    /// losslessly reconstructed by [`Self::set_persistent_value`].
     #[must_use]
     pub fn persistent_value(&self) -> Option<String> {
         match self.values.as_slice() {
@@ -116,6 +127,11 @@ impl Setting {
     }
 
     /// Replaces all values from the source database representation.
+    ///
+    /// `None` clears the collection. Otherwise the value is split on the delimiter selected by
+    /// the current [`Self::data_type`]; a value without that delimiter becomes one value, including
+    /// an empty string. This method does not validate nullability, cardinality, or escaped
+    /// delimiters.
     pub fn set_persistent_value(&mut self, persistent_value: Option<&str>) {
         let Some(value) = persistent_value else {
             self.values.clear();
@@ -152,13 +168,13 @@ impl PartialOrd for Setting {
     }
 }
 
-/// Parses a case-insensitive source data-type name.
+/// Parses a case-insensitive source data-type name after trimming and converting hyphens to underscores.
 pub(crate) fn parse_data_type_name(name: &str) -> Option<DataType> {
     let normalized = name.trim().replace('-', "_").to_ascii_uppercase();
     serde_json::from_value(serde_json::Value::String(normalized)).ok()
 }
 
-/// Produces the source enumeration name for a data type.
+/// Produces the canonical uppercase source enumeration name for a data type.
 pub(crate) fn data_type_source_name(data_type: DataType) -> &'static str {
     match data_type {
         DataType::Bool => "BOOL",

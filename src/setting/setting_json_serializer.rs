@@ -14,7 +14,12 @@ use crate::setting::Setting;
 pub struct SettingJsonSerializer;
 
 impl SettingJsonSerializer {
-    /// Serializes a setting into a JSON object string.
+    /// Serializes a setting into the source-compatible JSON object representation.
+    ///
+    /// Uses camel-case field names and emits the data type as `type`. Empty `values` are omitted;
+    /// default flags remain explicit, and absent optional description and timestamp fields are
+    /// emitted as JSON `null`. Returns the JSON text on success, or the underlying
+    /// [`serde_json::Error`] if JSON serialization fails.
     pub fn serialize(value: &Setting) -> Result<String, serde_json::Error> {
         serde_json::to_string(value)
     }

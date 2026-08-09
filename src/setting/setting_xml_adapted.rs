@@ -62,6 +62,9 @@ pub struct SettingXmlAdapted {
 
 impl SettingXmlAdapted {
     /// Creates the XML transfer representation of a setting.
+    ///
+    /// Default type and flag values, as well as empty values, become `None` so XML can omit them;
+    /// this conversion is infallible and does not validate the setting's cardinality.
     #[must_use]
     pub fn from_setting(setting: &Setting) -> Self {
         Self {
@@ -81,6 +84,10 @@ impl SettingXmlAdapted {
     }
 
     /// Converts the transfer representation back into a setting.
+    ///
+    /// Missing type and flag fields use [`DataType::default`] and [`Setting`] defaults, and a
+    /// missing value list becomes empty. Returns [`SettingAdapterError::InvalidDataType`] only
+    /// when a supplied type name is not recognized.
     pub fn to_setting(&self) -> Result<Setting, SettingAdapterError> {
         let data_type = self
             .type_name
