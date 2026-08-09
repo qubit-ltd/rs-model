@@ -25,11 +25,11 @@ pub struct CategoryValue {
     /// Decimal value accumulated for the category.
     pub value: BigDecimal,
 
-    /// Inclusive UTC start of the aggregation interval, or `None` when unbounded.
+    /// UTC start of the aggregation interval, or `None` when no start is recorded.
     #[model(time(precision = second, normalization = utc))]
     pub start_time: Option<DateTime<Utc>>,
 
-    /// Inclusive UTC end of the aggregation interval, or `None` when unbounded.
+    /// UTC end of the aggregation interval, or `None` when no end is recorded.
     #[model(time(precision = second, normalization = utc))]
     pub end_time: Option<DateTime<Utc>>,
 }

@@ -17,11 +17,11 @@ use qubit_redact_derive::Redact;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct UploadParams {
-    /// Original filename, or `None` to derive it from the source path.
+    /// Original filename, if supplied by the caller.
     #[redact(level = "secret")]
     pub filename: Option<String>,
 
-    /// Source MIME type, or `None` when the upload service should determine it.
+    /// Source MIME type; [`Upload::create`](super::Upload::create) rejects `None`.
     pub content_type: Option<String>,
 
     /// Whether a successful upload should remove the source file from local storage.

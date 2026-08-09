@@ -35,10 +35,10 @@ pub struct VerifyCode {
     /// Application reference responsible for issuing and validating the token.
     pub app: StatefulInfo,
 
-    /// Mobile destination, or `None` when this token was delivered by email.
+    /// Mobile destination, or `None` when no mobile destination was recorded.
     pub mobile: Option<Phone>,
 
-    /// ASCII email destination, or `None` when this token was delivered by mobile.
+    /// ASCII email destination, or `None` when no email destination was recorded.
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub email: Option<String>,
 
@@ -62,7 +62,7 @@ pub struct VerifyCode {
 }
 
 impl VerifyCode {
-    /// Masks this token in place using the source model's token-redaction convention.
+    /// Masks this token in place before it is exposed.
     ///
     /// Tokens longer than eight characters retain four characters at each end;
     /// shorter tokens are replaced entirely with asterisks.
