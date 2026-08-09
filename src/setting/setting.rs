@@ -51,11 +51,11 @@ pub struct Setting {
     pub description: Option<String>,
 
     /// UTC instant when the setting definition was created.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: Option<DateTime<Utc>>,
 
     /// UTC instant when the setting definition or its values last changed.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 }
 
