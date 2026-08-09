@@ -16,6 +16,8 @@ use serde::Serialize;
 
 use qubit_model_derive::Model;
 
+use crate::metadata::Dict;
+
 /// Compact identity and display data for a dictionary entry.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct DictEntryInfo {
@@ -25,20 +27,21 @@ pub struct DictEntryInfo {
     pub id: Id,
 
     /// Stable entry code in the referenced dictionary.
+    #[model(text(min_chars = 1, max_chars = 64))]
     pub code: String,
 
     /// Human-readable entry name.
+    #[model(text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Identifier of the dictionary that owns the entry.
-    #[model(identifier)]
-    #[model(opaque)]
+    #[model(reference(target = Dict, target_field = id), opaque)]
     pub dict_id: Id,
 
     /// Values substituted into numbered placeholders in code or name templates, in order.
+    #[model(sequence(min_items = 1, max_items = 5))]
     pub params: Vec<String>,
 
     /// UTC soft-deletion time, or `None` if the entry is still available.
-    #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

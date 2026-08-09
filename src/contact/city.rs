@@ -19,11 +19,18 @@ use qubit_redact_derive::Redact;
 
 use crate::contact::Location;
 
+use super::Province;
+
 /// A city in the administrative hierarchy.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
+#[model(
+    unique(name = "city_code", fields(code), ignore_case(code)),
+    unique(name = "city_name", fields(name), ignore_case(name))
+)]
 pub struct City {
     /// Platform-assigned identifier of this city reference record.
+    #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
@@ -32,22 +39,23 @@ pub struct City {
     pub code: String,
 
     /// Globally unique city name.
-    #[model(text(min_chars = 1, max_chars = 128))]
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Basic information for the province.
-    #[model(opaque)]
+    #[model(reference(target = Province, target_field = info), index, opaque)]
     pub province: Info,
 
     /// Optional telephone area code.
-    #[model(text(min_chars = 1, max_chars = 16, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 16, repertoire = ascii))]
     pub phone_area: Option<String>,
 
     /// Optional ASCII postal code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub postalcode: Option<String>,
 
     /// Optional administrative level.
+    #[model(index)]
     pub level: Option<i32>,
 
     /// Optional ASCII icon URI.
@@ -65,17 +73,18 @@ pub struct City {
     pub location: Option<Location>,
 
     /// Whether this is predefined reference data.
+    #[model(index)]
     pub predefined: bool,
 
     /// UTC creation timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
     /// Optional UTC modification timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC soft-deletion timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

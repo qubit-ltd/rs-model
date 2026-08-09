@@ -19,6 +19,10 @@ use qubit_model_derive::Model;
 
 /// A common category record.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
+#[model(
+    unique(name = "category_code", fields(code), ignore_case(code)),
+    unique(name = "category_entity_name", fields(entity, name), ignore_case(name))
+)]
 pub struct Category {
     /// Platform-assigned identifier of this common category.
     #[model(identifier)]
@@ -26,7 +30,7 @@ pub struct Category {
     pub id: Id,
 
     /// Entity discriminator.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub entity: String,
 
     /// Globally unique category code.
@@ -34,7 +38,7 @@ pub struct Category {
     pub code: String,
 
     /// Category name.
-    #[model(text(min_chars = 1, max_chars = 128))]
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Optional icon URL or key.
@@ -45,24 +49,26 @@ pub struct Category {
     pub description: Option<String>,
 
     /// Query-computed display title.
+    #[model(text(min_chars = 1, max_chars = 4096))]
     pub title: Option<String>,
 
     /// Optional parent category information.
-    #[model(opaque)]
+    #[model(reference(target = Category, target_field = info), index, opaque)]
     pub parent: Option<InfoWithEntity>,
 
     /// Whether this record is predefined.
+    #[model(index)]
     pub predefined: bool,
 
     /// UTC creation timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
     /// Optional UTC modification timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC deletion timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }
