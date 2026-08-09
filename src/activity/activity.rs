@@ -20,7 +20,6 @@ use crate::commons::State;
 /// A campaign owned by an application, together with its participating products.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(unique(fields(code)))]
 pub struct Activity {
     /// Database identifier; the default value means the campaign has not been persisted.
     #[model(identifier)]
@@ -28,7 +27,7 @@ pub struct Activity {
     pub id: Id,
 
     /// Stable, globally unique code used to identify the campaign across integrations.
-    #[model(text(min_chars = 1, max_chars = 64))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64))]
     pub code: String,
 
     /// Display name shown for the campaign.

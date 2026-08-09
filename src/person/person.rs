@@ -50,10 +50,6 @@ use crate::upload::Attachment;
 /// A person's complete demographic, contact, and administrative record.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "person_username", fields(username), ignore_case(username)),
-    unique(name = "person_credential", fields(credential))
-)]
 pub struct Person {
     /// Database identifier for this person; the default value denotes an unsaved profile.
     #[model(identifier)]
@@ -76,6 +72,7 @@ pub struct Person {
     #[model(
         reference(target = User, target_field = username),
         index,
+        unique(ignore_case),
         text(min_chars = 1, max_chars = 64, repertoire = ascii)
     )]
     pub username: Option<String>,
@@ -105,7 +102,10 @@ pub struct Person {
     pub birth_city: Option<Info>,
 
     /// Identity credential used to recognize the person across administrative processes.
-    #[model(reference(target = Credential, target_field = info, must_exist = false))]
+    #[model(
+        reference(target = Credential, target_field = info, must_exist = false),
+        unique
+    )]
     #[redact(nested)]
     pub credential: Option<CredentialInfo>,
 

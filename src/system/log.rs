@@ -23,10 +23,9 @@ use crate::person::UserInfo;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
-#[model(unique(name = "log_id", fields(id)))]
 pub struct Log {
     /// Optional unique log identifier.
-    #[model(opaque)]
+    #[model(unique, opaque)]
     pub id: Id,
 
     /// Optional UTC event timestamp.

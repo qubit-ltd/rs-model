@@ -26,19 +26,14 @@ use crate::system::Environment;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
-#[model(
-    unique(name = "register_username", fields(username), ignore_case(username)),
-    unique(name = "register_mobile", fields(mobile)),
-    unique(name = "register_email", fields(email), ignore_case(email)),
-    unique(
-        name = "register_social_identity",
-        fields(social_network, app_id, open_id),
-        ignore_case(open_id)
-    )
-)]
+#[model(unique(
+    name = "register_social_identity",
+    fields(social_network, app_id, open_id),
+    ignore_case(open_id)
+))]
 pub struct RegisterUserParams {
     /// Globally unique username.
-    #[model(text(min_chars = 1, max_chars = 64))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64))]
     pub username: String,
 
     /// Plaintext password supplied during registration.
@@ -67,11 +62,12 @@ pub struct RegisterUserParams {
     pub avatar: Option<String>,
 
     /// Mobile contact number to attach to the account and optionally verify.
+    #[model(unique)]
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
     /// Email contact address to attach to the account and optionally verify.
-    #[model(text(min_chars = 1, max_chars = 512))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 512))]
     #[redact(level = "secret")]
     pub email: Option<String>,
 
