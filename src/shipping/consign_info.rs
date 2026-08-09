@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Consignor and consignee values.
+//! Contact and identity information for either party to a shipment.
 
 use serde::Deserialize;
 
@@ -17,23 +17,23 @@ use crate::commons::CredentialInfo;
 use crate::contact::Address;
 use crate::contact::Phone;
 
-/// Identifying and contact information for one side of a shipment.
+/// Delivery identity, contact channel, and address for a consignor or consignee.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct ConsignInfo {
-    /// Person or organization name.
+    /// Name of the sending or receiving person or organization.
     pub name: String,
 
-    /// Mobile number.
+    /// Mobile number used for delivery contact.
     pub mobile: Phone,
 
-    /// Optional email address.
+    /// Email delivery contact, or `None` when no email address was supplied.
     #[redact(level = "secret")]
     pub email: Option<String>,
 
-    /// Optional credential used for identity-verified delivery.
+    /// Credential used for identity-verified delivery, or `None` when verification is unnecessary.
     pub credential: Option<CredentialInfo>,
 
-    /// Shipping address.
+    /// Physical address at which the shipment is collected or delivered.
     pub address: Address,
 }

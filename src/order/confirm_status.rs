@@ -6,19 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Confirmation states.
+//! Outcomes of a time-limited confirmation request.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes whether a confirmation request expired or was accepted.
+/// The terminal outcome of a confirmation request.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ConfirmStatus {
-    /// The confirmation window expired.
+    /// The response window closed before acceptance.
     Expired,
-    /// The request was accepted.
+    /// The requested confirmation was accepted in time.
     Accepted,
 }

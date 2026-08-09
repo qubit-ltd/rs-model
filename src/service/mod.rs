@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical-service entitlements, packages, and usage records.
+//! Medical-service catalogues, user entitlements, and service-use records.
 
 mod employee_medical_item;
 mod medical_item;

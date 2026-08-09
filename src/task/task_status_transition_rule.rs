@@ -6,21 +6,21 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! The complete legal task-state transition table.
+//! Fixed transition table that defines the legal task lifecycle.
 
 use super::TaskAction;
 use super::TaskStatus;
 use super::TaskStatusTransitionError;
 
-/// Evaluates the fixed task lifecycle transition table.
+/// Stateless evaluator for the task lifecycle's permitted state-and-action pairs.
 #[derive(Clone, Copy, Debug, Default)]
 pub struct TaskStatusTransitionRule;
 impl TaskStatusTransitionRule {
-    /// Returns the status reached by applying `action` to `status`.
+    /// Applies `action` to `status` according to the fixed task lifecycle.
     ///
-    /// Returns [`TaskStatusTransitionError`] when this pair is not listed in
-    /// the Java task lifecycle; terminal states therefore have no outgoing
-    /// transitions.
+    /// Returns the destination state for a legal pair. Returns [`TaskStatusTransitionError`]
+    /// with the rejected state and action when the pair is absent from the lifecycle table;
+    /// terminal states consequently have no outgoing transitions.
     pub fn next(
         status: TaskStatus,
         action: TaskAction,

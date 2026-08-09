@@ -26,7 +26,7 @@ use crate::upload::Attachment;
 /// A priced specification belonging to a product.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductItem {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -95,15 +95,15 @@ pub struct ProductItem {
     #[model(opaque)]
     pub service_id: Id,
 
-    /// UTC creation timestamp.
+    /// UTC instant at which this record was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent update, or `None` when no update has occurred.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the record remains active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

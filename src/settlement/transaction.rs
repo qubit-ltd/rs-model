@@ -31,7 +31,7 @@ use crate::system::Environment;
 /// A purchase or refund transaction and its payment participants.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Transaction {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
@@ -62,7 +62,7 @@ pub struct Transaction {
     #[model(opaque)]
     pub order_id: Id,
 
-    /// Optional persisted return identifier.
+    /// Identifier of the return; its default value means that no related record is stored.
     #[model(opaque)]
     pub return_id: Id,
 
@@ -97,7 +97,7 @@ pub struct Transaction {
     #[model(time(precision = second, normalization = utc))]
     pub expired_time: DateTime<Utc>,
 
-    /// Optional UTC completion timestamp.
+    /// UTC instant at which processing completed, or `None` until it completes.
     #[model(time(precision = second, normalization = utc))]
     pub complete_time: Option<DateTime<Utc>>,
 
@@ -110,15 +110,15 @@ pub struct Transaction {
     /// Optional transaction comment.
     pub comment: Option<String>,
 
-    /// UTC creation timestamp.
+    /// UTC instant at which this record was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent update, or `None` when no update has occurred.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the record remains active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

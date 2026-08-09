@@ -6,26 +6,26 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Delivery mode classifications.
+//! Ways an order can be delivered or collected.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes how a product is delivered to its recipient.
+/// The fulfilment channel used to make a product available to its recipient.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ShippingMode {
-    /// No delivery is required.
+    /// No separate delivery step is required.
     None,
-    /// Delivery by an express carrier.
+    /// Delivery through an express carrier.
     Express,
-    /// The recipient collects the product.
+    /// The recipient collects the product in person.
     #[serde(rename = "SELF")]
     SelfPickup,
-    /// Delivery by email.
+    /// Delivery through email.
     Email,
-    /// Delivery by SMS.
+    /// Delivery through SMS.
     Sms,
 }

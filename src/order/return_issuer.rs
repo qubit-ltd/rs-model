@@ -6,23 +6,23 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Return initiator classifications.
+//! Parties allowed to initiate a product return.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies the party that initiated a return.
+/// The party responsible for opening a return workflow.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ReturnIssuer {
-    /// The buyer initiated the return.
+    /// The purchasing party opened the return.
     Buyer,
-    /// The seller initiated the return.
+    /// The selling party opened the return.
     Seller,
-    /// The platform initiated the return.
+    /// The platform opened the return.
     Platform,
-    /// Medicare initiated the return.
+    /// The Medicare program opened the return.
     Medicare,
 }

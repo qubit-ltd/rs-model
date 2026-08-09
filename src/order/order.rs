@@ -39,7 +39,7 @@ pub struct Order {
     #[model(opaque)]
     pub id: Id,
 
-    /// Optional persisted owning-user identifier.
+    /// Identifier of the owning-user; its default value means that no related record is stored.
     #[model(opaque)]
     pub user_id: Id,
 
@@ -106,7 +106,7 @@ pub struct Order {
     /// Optional delivery requirements.
     pub shipping_demand: Option<ShippingDemand>,
 
-    /// Optional persisted shipment identifier.
+    /// Identifier of the shipment; its default value means that no related record is stored.
     #[model(opaque)]
     pub shipping_id: Id,
 
@@ -123,23 +123,23 @@ pub struct Order {
     #[model(time(precision = second, normalization = utc))]
     pub expired_time: DateTime<Utc>,
 
-    /// Optional UTC payment timestamp.
+    /// UTC instant at which payment completed, or `None` before successful payment.
     #[model(time(precision = second, normalization = utc))]
     pub pay_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC shipment timestamp.
+    /// UTC instant at which the goods were handed to the carrier, or `None` before dispatch.
     #[model(time(precision = second, normalization = utc))]
     pub ship_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC refund timestamp.
+    /// UTC instant at which the refund completed, or `None` before it succeeds.
     #[model(time(precision = second, normalization = utc))]
     pub refund_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC completion timestamp.
+    /// UTC instant at which processing completed, or `None` until it completes.
     #[model(time(precision = second, normalization = utc))]
     pub complete_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC cancellation timestamp.
+    /// UTC instant at which it was cancelled, or `None` unless cancellation occurred.
     #[model(time(precision = second, normalization = utc))]
     pub cancel_time: Option<DateTime<Utc>>,
 
@@ -153,15 +153,15 @@ pub struct Order {
     #[model(opaque)]
     pub payload: Option<Vec<(String, String)>>,
 
-    /// UTC creation timestamp.
+    /// UTC instant at which this record was created.
     #[model(time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
-    /// Optional UTC modification timestamp.
+    /// UTC instant of the most recent update, or `None` when no update has occurred.
     #[model(time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
-    /// Optional UTC deletion timestamp.
+    /// UTC soft-deletion instant, or `None` while the record remains active.
     #[model(time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

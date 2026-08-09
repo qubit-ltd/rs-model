@@ -6,14 +6,14 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Payment channel classifications.
+//! Provider rails used to execute payments.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies the provider rail used for a payment.
+/// The payment provider or internal balance rail that processed a charge.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PaymentChannel {
@@ -29,18 +29,18 @@ pub enum PaymentChannel {
     JdPay,
     /// PayPal.
     Paypal,
-    /// UnionPay.
+    /// China UnionPay.
     UnionPay,
     /// Apple Pay.
     ApplePay,
     /// China Merchants Bank wallet.
     CmbWallet,
-    /// Direct bank payment.
+    /// A direct bank-transfer rail.
     Bank,
-    /// Stored balance.
+    /// An internal stored balance.
     Balance,
-    /// Medicare payment.
+    /// A Medicare settlement rail.
     Medicare,
-    /// Unknown channel.
+    /// A channel that was not identified by the source system.
     Unknown,
 }

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Medical package line items.
+//! Included service entitlements within a medical package.
 
 use qubit_id::Id;
 use serde::Deserialize;
@@ -16,16 +16,16 @@ use qubit_model_derive::Model;
 
 use crate::service::MedicalItem;
 
-/// A medical service item and its quantity within a package.
+/// A medical service item and the number of uses granted by a package.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct MedicalPackageItem {
-    /// Persisted identifier of the owning medical package.
+    /// Identifier of the medical package that grants this entitlement.
     #[model(opaque)]
     pub package_id: Id,
 
-    /// Included medical service item.
+    /// Medical service item included in the package.
     pub item: MedicalItem,
 
-    /// Number of uses included in the package.
+    /// Number of times the holder may use this item.
     pub count: i32,
 }

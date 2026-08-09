@@ -19,7 +19,7 @@ use crate::service::UserServiceState;
 /// A user's remaining quantity and state for one medical service item.
 #[derive(Model, Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct UserMedicalItem {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

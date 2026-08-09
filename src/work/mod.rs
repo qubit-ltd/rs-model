@@ -5,7 +5,7 @@
 //
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
-//! Employee work-schedule models.
+//! Employee work schedules expressed as local calendar dates and time ranges.
 
 mod local_time_range;
 mod work_schedule;

@@ -6,43 +6,43 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Return lifecycle states.
+//! States through which a return and its refund progress.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes a return request's lifecycle state.
+/// The current operational state of a return request.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ReturnStatus {
-    /// The return expired.
+    /// The return was not completed before its deadline.
     Expired,
-    /// The return was cancelled.
+    /// The return workflow was cancelled.
     Cancelled,
-    /// The return was submitted.
+    /// The return awaits review or processing.
     Submitted,
-    /// The return was accepted.
+    /// The return was accepted for fulfilment.
     Accepted,
-    /// The return was rejected.
+    /// The return request was rejected.
     Rejected,
-    /// The returned item was sent.
+    /// The customer dispatched the returned item.
     Sent,
-    /// The returned item was received.
+    /// The seller or carrier received the returned item.
     Received,
-    /// The return completed.
+    /// The return workflow completed without a pending refund.
     Completed,
-    /// A refund is being processed.
+    /// The associated refund is in progress.
     Refunding,
-    /// The refund failed.
+    /// The refund attempt failed.
     RefundFail,
-    /// The refund succeeded.
+    /// The refund completed successfully.
     RefundSuccess,
 }
 
 impl ReturnStatus {
-    /// Returns whether this state ends the return workflow.
+    /// Returns whether this state has no further legal return transitions.
     ///
     /// # Returns
     ///

@@ -6,19 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Transaction business classifications.
+//! Commercial directions represented by settlement transactions.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Identifies whether a transaction buys or refunds goods.
+/// Whether a transaction collects a purchase payment or sends a refund.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TransactionType {
-    /// Purchase transaction.
+    /// A transaction that collects payment for a purchase.
     Buy,
-    /// Refund transaction.
+    /// A transaction that returns money for a prior purchase.
     Refund,
 }

@@ -6,7 +6,7 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Order, return, referral, and checkout models.
+//! Purchase, fulfilment, return, referral, and checkout domain models.
 
 mod buyer;
 mod client;

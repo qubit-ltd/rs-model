@@ -6,25 +6,25 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Transaction lifecycle states.
+//! Terminal and in-progress states for settlement transactions.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Describes a settlement transaction's lifecycle state.
+/// The processing state of a purchase or refund transaction.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TransactionStatus {
-    /// The transaction expired.
+    /// The transaction passed its expiry deadline.
     Expired,
-    /// The transaction was submitted.
+    /// The transaction was submitted for processing.
     Submitted,
-    /// Processing failed.
+    /// Processing ended in failure.
     Fail,
-    /// Processing succeeded.
+    /// Processing ended successfully.
     Success,
-    /// The transaction was cancelled.
+    /// The transaction was cancelled before completion.
     Cancelled,
 }

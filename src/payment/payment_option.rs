@@ -6,19 +6,19 @@
 //    Licensed under the Apache License, Version 2.0.
 // =============================================================================
 
-//! Payment responsibility options.
+//! Choices for allocating responsibility for an eligible charge.
 
 use serde::Deserialize;
 use serde::Serialize;
 
 use qubit_model_derive::Model;
 
-/// Selects who pays an eligible charge.
+/// Selects the party that bears an eligible transaction amount.
 #[derive(Model, Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PaymentOption {
-    /// The customer pays the charge.
+    /// The customer pays the amount personally.
     PaidBySelf,
-    /// Medicare pays the charge.
+    /// The Medicare program pays the amount.
     PaidByMedicare,
 }

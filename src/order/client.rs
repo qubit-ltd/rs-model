@@ -28,7 +28,7 @@ use crate::person::PersonInfo;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct Client {
-    /// Optional persisted identifier.
+    /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
