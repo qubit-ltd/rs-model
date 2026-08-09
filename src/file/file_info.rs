@@ -19,10 +19,9 @@ use qubit_redact_derive::Redact;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
-#[model(unique(name = "file_info_path", fields(path), ignore_case(path)))]
 pub struct FileInfo {
     /// ASCII path or URL interpreted by the configured storage backend.
-    #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     #[redact(level = "secret")]
     pub path: String,
 

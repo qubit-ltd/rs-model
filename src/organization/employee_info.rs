@@ -28,16 +28,11 @@ use crate::upload::Attachment;
 /// Represents an employee snapshot including organization and department references.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "employee_info_code", fields(code), ignore_case(code)),
-    unique(
-        name = "employee_info_organization_internal_code",
-        fields(organization, internal_code),
-        ignore_case(internal_code)
-    ),
-    unique(name = "employee_info_credential", fields(credential)),
-    unique(name = "employee_info_mobile", fields(mobile))
-)]
+#[model(unique(
+    name = "employee_info_organization_internal_code",
+    fields(organization, internal_code),
+    ignore_case(internal_code)
+))]
 pub struct EmployeeInfo {
     /// Optional persisted identifier.
     #[model(identifier)]
@@ -45,7 +40,7 @@ pub struct EmployeeInfo {
     pub id: Id,
 
     /// Globally unique ASCII employee code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Optional ASCII internal organization code.
@@ -70,9 +65,11 @@ pub struct EmployeeInfo {
     pub birthday: Option<NaiveDate>,
 
     /// Optional credential summary.
+    #[model(unique)]
     pub credential: Option<CredentialInfo>,
 
     /// Employee mobile number.
+    #[model(unique)]
     pub mobile: Phone,
 
     /// Employer information.

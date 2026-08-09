@@ -27,7 +27,6 @@ use crate::organization::Organization;
 /// Represents an organizational department and its hierarchy, contact, and payload data.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[model(
-    unique(name = "department_code", fields(code), ignore_case(code)),
     unique(
         name = "department_organization_internal_code",
         fields(organization, internal_code),
@@ -46,7 +45,7 @@ pub struct Department {
     pub id: Id,
 
     /// Globally unique ASCII department code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Organization-unique code used to address the department in integrations.

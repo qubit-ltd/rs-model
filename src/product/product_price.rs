@@ -24,14 +24,11 @@ use crate::product::ProductItem;
 
 /// A product-item price supplied by a particular source.
 #[derive(Model, Clone, Debug, Deserialize, PartialEq, Serialize)]
-#[model(
-    unique(name = "product_price_code", fields(code), ignore_case(code)),
-    unique(
-        name = "product_price_product_specification",
-        fields(product_id, specification),
-        ignore_case(specification)
-    )
-)]
+#[model(unique(
+    name = "product_price_product_specification",
+    fields(product_id, specification),
+    ignore_case(specification)
+))]
 pub struct ProductPrice {
     /// Persistent identifier; its default value denotes a record that has not yet been stored.
     #[model(identifier)]
@@ -47,7 +44,7 @@ pub struct ProductPrice {
     pub product_item_id: Id,
 
     /// Globally unique product price code.
-    #[model(text(min_chars = 1, max_chars = 64))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64))]
     pub code: String,
 
     /// Product name.

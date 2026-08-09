@@ -29,14 +29,11 @@ use crate::person::UserInfo;
 /// A third-party application registered on the platform.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "app_code", fields(code), ignore_case(code)),
-    unique(
-        name = "app_organization_name",
-        fields(organization, name),
-        ignore_case(name)
-    )
-)]
+#[model(unique(
+    name = "app_organization_name",
+    fields(organization, name),
+    ignore_case(name)
+))]
 pub struct App {
     /// Platform-assigned identifier for this application.
     #[model(identifier)]
@@ -44,7 +41,7 @@ pub struct App {
     pub id: Id,
 
     /// Immutable, globally unique application code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Application name, unique within its owning organization.
@@ -83,6 +80,7 @@ pub struct App {
     pub security_key: Option<String>,
 
     /// Optional current access token issued to this application.
+    #[model(opaque)]
     pub token: Option<Token>,
 
     /// Last authorization time and consecutive authorization-failure count.

@@ -34,10 +34,6 @@ use crate::product::Seller;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
-#[model(
-    unique(name = "organization_code", fields(code), ignore_case(code)),
-    unique(name = "organization_name", fields(name), ignore_case(name))
-)]
 pub struct Organization {
     /// Database identifier for this organization; default denotes an unsaved record.
     #[model(identifier)]
@@ -45,11 +41,11 @@ pub struct Organization {
     pub id: Id,
 
     /// Globally unique ASCII code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Globally unique display name.
-    #[model(index, text(min_chars = 1, max_chars = 128))]
+    #[model(index, unique(ignore_case), text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Business category used to classify the organization in directory and workflow views.

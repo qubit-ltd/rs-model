@@ -24,14 +24,11 @@ use super::District;
 /// A street in the administrative hierarchy.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "street_code", fields(code), ignore_case(code)),
-    unique(
-        name = "street_district_name",
-        fields(district, name),
-        ignore_case(name)
-    )
-)]
+#[model(unique(
+    name = "street_district_name",
+    fields(district, name),
+    ignore_case(name)
+))]
 pub struct Street {
     /// Platform-assigned identifier of this street reference record.
     #[model(identifier)]
@@ -39,7 +36,7 @@ pub struct Street {
     pub id: Id,
 
     /// Globally unique ASCII street code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Street name, unique within its district.

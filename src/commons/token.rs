@@ -17,13 +17,9 @@ use qubit_redact_derive::Redact;
 /// An issued bearer token together with the metadata needed to assess its lifetime.
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "token_value", fields(value)),
-    unique(name = "token_previous_value", fields(previous_value))
-)]
 pub struct Token {
     /// Secret bearer value presented by the holder for authentication.
-    #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
+    #[model(unique, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
     pub value: String,
 
@@ -36,7 +32,7 @@ pub struct Token {
     pub max_age: Option<i64>,
 
     /// Immediately preceding bearer value, or `None` when this token did not rotate another.
-    #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
+    #[model(unique, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     #[redact(level = "secret")]
     pub previous_value: Option<String>,
 }

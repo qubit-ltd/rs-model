@@ -27,11 +27,6 @@ use crate::person::Gender;
 /// A system user with authentication, contact, and lifecycle data.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
-#[model(
-    unique(name = "user_username", fields(username), ignore_case(username)),
-    unique(name = "user_mobile", fields(mobile)),
-    unique(name = "user_email", fields(email), ignore_case(email))
-)]
 pub struct User {
     /// Database identifier for this account; default denotes an account not yet persisted.
     #[model(identifier)]
@@ -39,7 +34,7 @@ pub struct User {
     pub id: Id,
 
     /// Globally unique ASCII user name.
-    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub username: String,
 
     /// Stored password hash, which must never appear in diagnostic output.
@@ -60,7 +55,7 @@ pub struct User {
     pub gender: Option<Gender>,
 
     /// Mobile contact channel that can be used for login or verification.
-    #[model(index)]
+    #[model(index, unique)]
     #[redact(nested)]
     pub mobile: Option<Phone>,
 
@@ -68,7 +63,12 @@ pub struct User {
     pub mobile_verified: Option<VerifyState>,
 
     /// Email contact channel that can be used for login or verification.
-    #[model(index, sensitive(redact), text(min_chars = 1, max_chars = 512, repertoire = ascii))]
+    #[model(
+        index,
+        unique(ignore_case),
+        sensitive(redact),
+        text(min_chars = 1, max_chars = 512, repertoire = ascii)
+    )]
     #[redact(level = "secret")]
     pub email: Option<String>,
 

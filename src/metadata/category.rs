@@ -24,10 +24,7 @@ use super::Scope;
 #[derive(Model, Redact, Clone, Default, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 #[serde(default)]
-#[model(
-    unique(name = "category_code", fields(code), ignore_case(code)),
-    unique(name = "category_entity_name", fields(entity, name), ignore_case(name))
-)]
+#[model(unique(name = "category_entity_name", fields(entity, name), ignore_case(name)))]
 pub struct Category {
     /// Platform-assigned identifier of this metadata category.
     #[model(identifier)]
@@ -35,7 +32,7 @@ pub struct Category {
     pub id: Id,
 
     /// Globally unique ASCII code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Name unique within the associated entity.
