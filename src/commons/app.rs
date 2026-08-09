@@ -18,6 +18,7 @@ use qubit_model_derive::Model;
 use qubit_redact_derive::Redact;
 
 use super::AuthorizeRecord;
+use super::Category;
 use super::State;
 use super::Token;
 use crate::mixin::StatefulInfo;

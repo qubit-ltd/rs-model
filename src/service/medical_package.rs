@@ -29,7 +29,7 @@ pub struct MedicalPackage {
     pub id: Id,
 
     /// Globally unique package code.
-    #[model(unique, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Package name.

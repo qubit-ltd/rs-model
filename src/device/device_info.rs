@@ -27,7 +27,8 @@ pub struct DeviceInfo {
     pub id: Id,
 
     /// Stable device code within the managing application.
-    #[model(unique, text(min_chars = 1, max_chars = 128, repertoire = ascii))]
+    #[model(unique)]
+    #[model(text(min_chars = 1, max_chars = 128, repertoire = ascii))]
     pub code: String,
 
     /// Human-readable device name.
