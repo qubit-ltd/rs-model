@@ -33,13 +33,13 @@ pub struct Patient {
     #[model(opaque)]
     pub id: Id,
 
-    /// Linked registered-user identifier, absent when the patient has no user
-    /// account.
+    /// Typed identifier linking this patient record to its registered user
+    /// account when persisted.
     #[model(opaque)]
     pub user_id: Id,
 
-    /// Linked full person-record identifier, absent when no person record is
-    /// associated.
+    /// Typed identifier linking this patient record to its complete person
+    /// record when persisted.
     #[model(opaque)]
     pub person_id: Id,
 
