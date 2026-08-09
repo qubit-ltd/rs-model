@@ -16,7 +16,10 @@ use crate::contact::PhoneCodec;
 pub struct PhoneJsonKeyDeserializer;
 
 impl PhoneJsonKeyDeserializer {
-    /// Decodes a non-null JSON object key.
+    /// Decodes a required JSON object key.
+    ///
+    /// Returns [`ContactCodecError::InvalidPhone`] when the key is blank or has an unsupported
+    /// phone form.
     pub fn deserialize_key(value: &str) -> Result<Phone, ContactCodecError> {
         PhoneCodec::decode(Some(value))?.ok_or(ContactCodecError::InvalidPhone)
     }

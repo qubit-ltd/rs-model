@@ -24,7 +24,7 @@ use super::Code;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct CodeMap {
-    /// Optional persisted identifier.
+    /// Platform-assigned identifier of this external-to-platform code mapping.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

@@ -17,6 +17,9 @@ pub struct PhoneXmlAdapter;
 
 impl PhoneXmlAdapter {
     /// Decodes an optional XML text value.
+    ///
+    /// Returns [`ContactCodecError::InvalidPhone`] when present text has an unsupported phone
+    /// form.
     pub fn unmarshal(value: Option<&str>) -> Result<Option<Phone>, ContactCodecError> {
         PhoneCodec::decode(value)
     }

@@ -23,7 +23,7 @@ use crate::contact::Location;
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
 pub struct District {
-    /// Optional persisted identifier.
+    /// Platform-assigned identifier of this district reference record.
     #[model(opaque)]
     pub id: Id,
 
@@ -54,7 +54,7 @@ pub struct District {
     #[model(text(min_chars = 1, max_chars = 512, repertoire = ascii))]
     pub url: Option<String>,
 
-    /// Optional description.
+    /// Optional explanatory text for the district reference record.
     pub description: Option<String>,
 
     /// Optional geographic location.

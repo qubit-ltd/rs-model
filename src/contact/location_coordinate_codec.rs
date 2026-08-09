@@ -50,6 +50,9 @@ impl LocationCoordinateCodec {
     }
 
     /// Decodes a decimal coordinate, treating null as absent.
+    ///
+    /// Returns [`ContactCodecError::InvalidCoordinate`] when non-null input cannot be parsed
+    /// as a trimmed decimal value.
     pub fn decode(source: Option<&str>) -> Result<Option<BigDecimal>, ContactCodecError> {
         source
             .map(|source| {

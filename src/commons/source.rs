@@ -22,7 +22,7 @@ use crate::mixin::StatefulInfo;
 /// Source-system metadata for an imported record.
 #[derive(Model, Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct Source {
-    /// Persisted identifier.
+    /// Platform-assigned identifier of this import-source record.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

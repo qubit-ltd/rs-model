@@ -15,7 +15,9 @@ use crate::contact::PhoneCodec;
 pub struct PhoneJsonSerializer;
 
 impl PhoneJsonSerializer {
-    /// Serializes an optional telephone number as a JSON string or null.
+    /// Serializes an optional telephone number as a JSON string or `null`.
+    ///
+    /// Returns the underlying [`serde_json::Error`] only if JSON string serialization fails.
     pub fn serialize(phone: Option<&Phone>) -> Result<String, serde_json::Error> {
         serde_json::to_string(&PhoneCodec::encode(phone))
     }

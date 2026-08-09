@@ -29,7 +29,7 @@ use crate::mixin::StatefulInfo;
 #[redact(debug, display, serde)]
 #[serde(default)]
 pub struct Faq {
-    /// Optional persisted identifier.
+    /// Platform-assigned identifier of this frequently asked question.
     #[model(identifier)]
     #[model(opaque)]
     pub id: Id,

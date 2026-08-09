@@ -16,6 +16,9 @@ pub struct PhoneCodec;
 
 impl PhoneCodec {
     /// Decodes an optional telephone number, treating blank input as absent.
+    ///
+    /// Returns [`ContactCodecError::InvalidPhone`] when the nonblank text has an unsupported
+    /// number of hyphen-separated parts or a country prefix without `+`.
     pub fn decode(source: Option<&str>) -> Result<Option<Phone>, ContactCodecError> {
         let Some(source) = source.map(str::trim).filter(|value| !value.is_empty()) else {
             return Ok(None);

@@ -32,6 +32,10 @@ impl LocationCodec {
     }
 
     /// Decodes a location, treating null or empty input as absent.
+    ///
+    /// Returns [`ContactCodecError::InvalidLocation`] unless the input contains exactly two
+    /// comma-separated components, and [`ContactCodecError::InvalidCoordinate`] when either
+    /// component is not a decimal coordinate.
     pub fn decode(&self, source: Option<&str>) -> Result<Option<Location>, ContactCodecError> {
         let Some(source) = source.filter(|value| !value.is_empty()) else {
             return Ok(None);
@@ -56,8 +60,11 @@ impl LocationCodec {
         }))
     }
 
-    /// Decodes a location and overrides the codec's coordinate system for this
-    /// call.
+    /// Decodes a location and overrides the codec's coordinate system for this call.
+    ///
+    /// Returns the same errors as [`Self::decode`]: malformed component counts yield
+    /// [`ContactCodecError::InvalidLocation`], and invalid decimal components yield
+    /// [`ContactCodecError::InvalidCoordinate`].
     pub fn decode_with_coordinate_system(
         &self,
         source: Option<&str>,
