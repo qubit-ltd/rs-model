@@ -19,11 +19,18 @@ use qubit_redact_derive::Redact;
 
 use crate::contact::Location;
 
+use super::City;
+
 /// A district in the administrative hierarchy.
 #[derive(Model, Redact, Clone, Deserialize, PartialEq)]
 #[redact(debug, display, serde)]
+#[model(
+    unique(name = "district_code", fields(code), ignore_case(code)),
+    unique(name = "district_city_name", fields(city, name), ignore_case(name))
+)]
 pub struct District {
     /// Platform-assigned identifier of this district reference record.
+    #[model(identifier)]
     #[model(opaque)]
     pub id: Id,
 
@@ -32,18 +39,19 @@ pub struct District {
     pub code: String,
 
     /// District name, unique within its city.
-    #[model(text(min_chars = 1, max_chars = 128))]
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Basic information for the city.
-    #[model(opaque)]
+    #[model(reference(target = City, target_field = info), index, opaque)]
     pub city: Info,
 
     /// Optional administrative level.
+    #[model(index)]
     pub level: Option<i32>,
 
     /// Optional ASCII postal code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(index, text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub postalcode: Option<String>,
 
     /// Optional ASCII icon URI.
@@ -61,17 +69,18 @@ pub struct District {
     pub location: Option<Location>,
 
     /// Whether this is predefined reference data.
+    #[model(index)]
     pub predefined: bool,
 
     /// UTC creation timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
     /// Optional UTC modification timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub modify_time: Option<DateTime<Utc>>,
 
     /// Optional UTC soft-deletion timestamp.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }
