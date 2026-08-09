@@ -28,10 +28,11 @@ pub struct Upload {
     pub id: Id,
 
     /// Original filename shown to users, or `None` when it was not captured.
-    #[model(text(min_chars = 1, max_chars = 128))]
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub original_filename: Option<String>,
 
     /// Attachment classification inferred for the original file.
+    #[model(index)]
     pub r#type: AttachmentType,
 
     /// Storage metadata for the original uploaded file.
@@ -55,10 +56,10 @@ pub struct Upload {
     pub hash_value: Option<String>,
 
     /// UTC creation instant, rounded to seconds.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub create_time: DateTime<Utc>,
 
     /// UTC soft-deletion instant, or `None` while the upload is retained.
-    #[model(time(precision = second, normalization = utc))]
+    #[model(index, time(precision = second, normalization = utc))]
     pub delete_time: Option<DateTime<Utc>>,
 }

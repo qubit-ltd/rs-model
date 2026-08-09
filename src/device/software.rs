@@ -22,27 +22,35 @@ pub struct Software {
     pub id: Id,
 
     /// Software code, usually its package or bundle name; it need not be unique.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub code: String,
 
     /// Product display name; it need not be unique.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub name: String,
 
     /// Operating-system platform on which the software runs.
+    #[model(index)]
     pub platform: Platform,
 
     /// Released software version.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub version: String,
 
     /// Optional build identifier.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub build: Option<String>,
 
     /// Optional patch-level identifier.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub patch: Option<String>,
 
     /// Optional internal code name.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub code_name: Option<String>,
 
     /// Optional software vendor name.
+    #[model(index, text(min_chars = 1, max_chars = 128))]
     pub manufacturer: Option<String>,
 
     /// Optional descriptive text.

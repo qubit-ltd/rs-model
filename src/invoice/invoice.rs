@@ -19,11 +19,13 @@ use serde::Serialize;
 use qubit_mixin::Info;
 use qubit_model_derive::Model;
 
+use crate::commons::App;
 use crate::commons::Currency;
 use crate::invoice::InvoiceInfo;
 use crate::invoice::InvoiceItem;
 use crate::invoice::InvoiceStatus;
 use crate::mixin::StatefulInfo;
+use crate::organization::Organization;
 use crate::payment::Participant;
 use crate::payment::PaymentChannel;
 use crate::payment::PaymentMode;
@@ -38,13 +40,15 @@ pub struct Invoice {
     pub id: Id,
 
     /// Application that owns this invoice.
+    #[model(reference(target = App, target_field = info))]
     pub app: StatefulInfo,
 
     /// Organization that owns this invoice.
+    #[model(reference(target = Organization, target_field = info))]
     pub organization: StatefulInfo,
 
     /// Invoice-issuing location.
-    #[model(opaque)]
+    #[model(reference(target = InvoicePlace, target_field = info), opaque)]
     pub place: Info,
 
     /// Invoice code.
@@ -83,7 +87,7 @@ pub struct Invoice {
     pub currency: Currency,
 
     /// Optional exchange rate.
-    #[model(decimal(scale = 8))]
+    #[model(money(scale = 4))]
     pub exchange_rate: Option<BigDecimal>,
 
     /// Total invoiced amount.
@@ -105,6 +109,7 @@ pub struct Invoice {
     pub supervisor_remark: Option<String>,
 
     /// Optional original invoice referenced by a red invoice.
+    #[model(reference(target = Invoice, target_field = info))]
     pub related_invoice: Option<InvoiceInfo>,
 
     /// Issuing-organization seal number.
@@ -112,9 +117,11 @@ pub struct Invoice {
     pub seal_number: String,
 
     /// Optional invoice line items.
+    #[model(reference(target = InvoiceItem, target_field = id))]
     pub items: Option<Vec<InvoiceItem>>,
 
     /// Optional associated settlement summary.
+    #[model(reference(target = Settlement, target_field = id))]
     pub settlement: Option<Settlement>,
 
     /// Optional electronic-invoice URL.

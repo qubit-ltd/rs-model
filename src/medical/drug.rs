@@ -30,7 +30,7 @@ pub struct Drug {
     pub id: Id,
 
     /// Globally unique internal code.
-    #[model(text(min_chars = 1, max_chars = 64, repertoire = ascii))]
+    #[model(unique(ignore_case), text(min_chars = 1, max_chars = 64, repertoire = ascii))]
     pub code: String,
 
     /// Generic name listed in the national drug standard.
